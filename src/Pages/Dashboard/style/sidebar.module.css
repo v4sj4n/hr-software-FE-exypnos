@@ -1,0 +1,38 @@
+nav {
+    background-color: #276AFF;
+    color: white;
+    height: 100vh;
+    max-width: 200px;
+    font-size: 20px;
+    position: absolute;
+    }
+    
+    
+    .navbar .item {
+    padding: 0 30px;
+    }
+    
+    
+    .navbar .item:hover {
+    background-color: white;
+    border-radius: 8px;
+    }
+    
+    
+    .navbar .item:hover a {
+    color: #0096ff;
+    }
+    
+    
+    .navbar .item a {
+    color: white;
+    }
+
+.logo {
+    width: 100px; 
+    height: auto; 
+    margin-bottom: 20px;
+    margin-top: 0px;
+    position: relative;
+    
+}

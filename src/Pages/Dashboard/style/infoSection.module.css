@@ -1,0 +1,27 @@
+.infoSection {
+    display:inline;
+    margin:20px   auto 0;
+    padding: 20px;
+    align-items: first baseline;
+    
+}
+
+.infoSection ul{
+    list-style-type: none;
+    padding: 0;
+}
+
+button {
+    background: linear-gradient(135deg, #3164a2, #276AFF);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #eaedf1;
+    color: #276AFF;
+  }
