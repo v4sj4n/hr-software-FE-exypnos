@@ -4,6 +4,7 @@ type InputState = {
   enteredValue: string;
   isTouched: boolean;
   showPassword: boolean;
+  type: boolean;
 };
 
 type InputActions = {
