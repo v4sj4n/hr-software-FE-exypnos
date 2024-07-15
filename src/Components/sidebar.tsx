@@ -1,12 +1,13 @@
-import style from '../../../Pages/Dashboard/style/sidebar.module.css'
 import React ,{useState} from 'react';
 import { Dropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faBars } from '@fortawesome/free-solid-svg-icons';
+import style from '../../src/Components/sidebar.module.css'
 
 const SideBar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(true);
+
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen);

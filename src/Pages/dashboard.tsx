@@ -1,11 +1,9 @@
 import React from 'react';
-
+import SideBar from '../../src/Components/sidebar.tsx'
 import Header from '../Components/header.tsx';
 import Card from './Dashboard/components/card.tsx';
 import InfoSection from './Dashboard/components/infoSection.tsx';
-import SideBar from './Dashboard/components/sidebar.tsx';
 import style from '../../src/Pages/Dashboard/style/dashboard.module.css';
-//import Calendar from '../Pages/Dashboard/components/calendar.tsx'
 
 const Dashboard:React.FC =()=> {
     return (
