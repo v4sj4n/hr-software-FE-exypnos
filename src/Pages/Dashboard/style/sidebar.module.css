@@ -1,38 +1,89 @@
-nav {
+.toggleButton {
+    position: absolute;
+    top: 90px;
+    left: 10px;
+    background: #3164a2;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1001; 
+  }
+  
+  .toggleButton:hover {
     background-color: #276AFF;
+  }
+  
+  nav {
+    background: linear-gradient(139deg, #3164a2, #276AFF, #69acef);
     color: white;
     height: 100vh;
-    max-width: 200px;
+    max-width: 230px;
     font-size: 20px;
     position: absolute;
-    }
-    
-    
-    .navbar .item {
-    padding: 0 30px;
-    }
-    
-    
-    .navbar .item:hover {
+    z-index: 1000;
+    transition: transform 0.3s ease;
+  }
+  
+  .navbar {
+    text-align: justify;
+    margin-top: 4rem;
+    width: 188px;
+  }
+  
+  .item {
+    padding: 0 20px;
+    margin-bottom: 10px;
+    position: relative; 
+  }
+  
+  .item:hover {
     background-color: white;
-    border-radius: 8px;
-    }
-    
-    
-    .navbar .item:hover a {
-    color: #0096ff;
-    }
-    
-    
-    .navbar .item a {
+  }
+  
+  .item:hover .link {
+    color: #3164a2;
+  }
+  
+  .link {
     color: white;
-    }
-
-.logo {
-    width: 100px; 
-    height: auto; 
-    margin-bottom: 20px;
-    margin-top: 0px;
-    position: relative;
-    
-}
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown-menu {
+    display: none; 
+    position: absolute;
+    left: 0;
+    background: white;
+    color: #3164a2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    margin-top: 10px;
+    width: 100%;
+    z-index: 1000; }
+  
+  .item:hover .dropdown-menu {
+    display: block; 
+  }
+  
+  .dropdown-item {
+    padding: 10px 20px;
+    color: #3164a2;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .user {
+    font-size: 400%;
+    align-items: center;
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+  }
+  

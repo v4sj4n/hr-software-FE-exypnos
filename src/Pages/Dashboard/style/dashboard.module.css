@@ -1,0 +1,52 @@
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    height: 110vh;
+  }
+  
+  .dashboard header{
+    width: 100%;
+  }
+  
+  .layout {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: flex-start; 
+
+  }
+  
+  .content {
+    flex: 1;
+    padding: 20px;
+    color: #a6a7aa;
+   
+  }
+  
+  h4 {
+    color: #a6a7aa;
+    margin-bottom: 20px;
+    padding-left: 15%;
+  }
+  .cardContainer{
+    display: flex;
+    gap: 40px;
+    padding-left: 15%;
+  }
+
+  .infoSection {
+    width: 300px; 
+    margin-left: 77%; 
+    background: linear-gradient(135deg, #9cc4f4, #dbe3f4);
+    padding: 20px; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  margin-top: -11%;
+  }
+
+  
+  
+  
+  

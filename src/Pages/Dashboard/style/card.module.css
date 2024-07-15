@@ -1,16 +1,16 @@
 .card {
-    background-color: #fff;
     margin-bottom: 20px;
     text-align: center;
     overflow: hidden;
     border-radius: 20px;
-    width: 250px;
-    height: 250px;
+    width: 170px;
+    height: 140px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
     cursor: pointer;
-    background: linear-gradient(135deg, #3164a2, #276AFF);
-    color: #fff;
+    background: linear-gradient(135deg, #9cc4f4, #dbe3f4);
+    color: #3164a2;
+    
   }
   
   .card:hover {
@@ -20,24 +20,18 @@
   
   .card p {
     color: #ffffff;
-    text-align: center;
+    text-align:center;
   }
   
   .card h2 {
     color: #fefefe;
+    text-align:center;
+
+
   }
   
-  .card-container h3 {
-    color: #73abef;
-  }
-  .card-container {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 20px;
-    flex-wrap: wrap;
+  
    
-  }
   .CardIcon {
     font-size:xx-large; 
     color: #ffffff;

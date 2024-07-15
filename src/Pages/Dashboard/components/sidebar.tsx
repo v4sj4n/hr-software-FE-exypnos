@@ -1,31 +1,69 @@
-import codeviderLogo from '../../../Assets/codevider_logo.ico'
 import style from '../../../Pages/Dashboard/style/sidebar.module.css'
-import React from 'react';
-
+import React ,{useState} from 'react';
+import { Dropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faBars } from '@fortawesome/free-solid-svg-icons';
 
-const SideBar : React.FC = () => {
-    return ( 
-        <nav className={style.nav}>
-            <div className={style.logo}>
-                <img alt='logo' src={codeviderLogo}/> 
-                </div>
-               <ul className={style.navbar}>    
-               <li className="item"><a className="link" href="/dashboard">Dashboard</a> </li>
-                <li className="item"><a className="link" href="/employee"> Employee </a></li>
-                <li className="item"><a className="link" href="/recruiting">Recruting</a></li>
-                <li className="item"><a className="link" href="/payroll">Payroll</a></li>
-                <li className="item"><a className="link" href="/promotion">Promotion</a></li>
-                <li className="item"><a className="link" href="/noLeave">On Leave </a></li>
-                <li className="item"><a className="link" href="/assets">Assets</a></li>
-                <li className="item"><a className="link" href="/structure">Structure</a></li>
-                <li className="item"><a className="link" href="/events">Events</a></li>
-                <li className="item"><a className="link" href="/vacancies">Open Vacancies</a></li>
-                
+const SideBar: React.FC = () => {
+    const [isOpen, setIsOpen] = useState(true);
 
-            </ul>
-        </nav>
+    const toggleSidebar = () => {
+        setIsOpen(!isOpen);
+    };
+
+    return (
+        <div>
+            <div className={style.toggleButton} onClick={toggleSidebar}>
+                <FontAwesomeIcon icon={isOpen ? faBars : faBars} />
+            </div>
+            {isOpen && (
+                <nav className={style.nav}>
+                    <div className={style.user}>
+                        <FontAwesomeIcon icon={faUser} />
+                    </div>
+
+                    <div className={style.navbar}>
+                        <div className={style.item}>
+                            <a className={style.link} href="/dashboard">Dashboard</a>
+                        </div>
+                        <div className={style.item}>
+                            <a className={style.link} href="/recruiting">Recruiting</a>
+                        </div>
+                        <Dropdown as="div" className={style.item}>
+                            <Dropdown.Toggle as="a" className={style.link} variant="link" id="dropdown-employee">
+                                Employee
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu className={style.dropdownMenu}>
+                                <Dropdown.Item className={style.dropdownItem} href="/employee">Employees</Dropdown.Item>
+                                <Dropdown.Item className={style.dropdownItem} href="/payroll">Payroll</Dropdown.Item>
+                                <Dropdown.Item className={style.dropdownItem} href="/noLeave">On Leave</Dropdown.Item>
+                                <Dropdown.Item className={style.dropdownItem} href="/promotion">Promotion</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        <div className={style.item}>
+                            <a className={style.link} href="/assets">Assets</a>
+                        </div>
+                        <div className={style.item}>
+                            <a className={style.link} href="/structure">Structure</a>
+                        </div>
+                        <Dropdown as="div" className={style.item}>
+                            <Dropdown.Toggle as="a" className={style.link} variant="link" id="dropdown-events">
+                                Events
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu className={style.dropdownMenu}>
+                                <Dropdown.Item className={style.dropdownItem} href="/activities">Activities</Dropdown.Item>
+                                <Dropdown.Item className={style.dropdownItem} href="/career">Career</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        <div className={style.item}>
+                            <a className={style.link} href="/historic">Historic</a>
+                        </div>
+                    </div>
+                </nav>
+            )}
+        </div>
     );
 };
 
-export default SideBar
+export default SideBar;

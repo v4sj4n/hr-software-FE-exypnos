@@ -1,27 +1,45 @@
-.infoSection {
-    display:inline;
-    margin:20px   auto 0;
-    padding: 20px;
-    align-items: first baseline;
-    
+
+
+.infoSection h2 {
+  color: #fbf9f9; 
+  margin-bottom: 15px; 
 }
 
-.infoSection ul{
-    list-style-type: none;
-    padding: 0;
+.infoSection ul {
+  list-style-type: none;
+  padding: 0;
+  width: 100%; 
 }
 
-button {
-    background: linear-gradient(135deg, #3164a2, #276AFF);
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #eaedf1;
-    color: #276AFF;
-  }
+.infoSection li {
+  margin-bottom: 10px; 
+  display: flex; 
+  flex-direction: column; 
+  color: #fbf9f9;
+}
+
+.infoSection li strong {
+  margin-bottom: 5px; 
+}
+
+.infoSection .button {
+  margin-top: 20px;
+  width: 100%; 
+  text-align: center;
+}
+
+.infoSection .button button {
+  background: linear-gradient(135deg, #3164a2, #276AFF);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.infoSection .button button:hover {
+  background-color: #eaedf1;
+  color: #276AFF;
+}
