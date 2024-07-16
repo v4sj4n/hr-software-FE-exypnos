@@ -1,15 +1,17 @@
 .card {
-    margin-bottom: 20px;
-    text-align: center;
+  margin-bottom: 4px; 
+  text-align: center;
     overflow: hidden;
-    border-radius: 20px;
-    width: 170px;
-    height: 140px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: 120px;
+    height: 120px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
     cursor: pointer;
-    background: linear-gradient(135deg, #9cc4f4, #dbe3f4);
+    background-color: #ffffff;    
     color: #3164a2;
+
+
     
   }
   
@@ -19,14 +21,16 @@
   }
   
   .card p {
-    color: #ffffff;
-    text-align:center;
+    color: #3164a2;
+    margin-bottom: 20px; 
+
   }
   
   .card h2 {
-    color: #fefefe;
-    text-align:center;
-
+    color: #3164a2;
+    font-size: medium;
+    font-weight: bold;
+margin-top: 14px;
 
   }
   
@@ -35,4 +39,6 @@
   .CardIcon {
     font-size:xx-large; 
     color: #ffffff;
+    margin-bottom: 4%;
+
   }

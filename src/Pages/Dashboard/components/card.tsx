@@ -1,9 +1,12 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faUserTimes, faUserClock, faDesktop } from '@fortawesome/free-solid-svg-icons';
+import PersonIcon from '@mui/icons-material/Person';
+import PersonOffIcon from '@mui/icons-material/PersonOff';
+import WatchLaterIcon from '@mui/icons-material/WatchLater';
+import DesktopMacIcon from '@mui/icons-material/DesktopMac';
 import style from '../../../Pages/Dashboard/style/card.module.css';
 
 type IconType = 'Present' | 'Absent' | 'On Leave' | 'Remote';
+
 interface CardProps {
     title: string;
     content: string;
@@ -12,18 +15,18 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ title, content, icon }) => {
     const icons = {
-        'Present': faUser,
-        'Absent': faUserTimes,
-        'On Leave': faUserClock,
-        'Remote': faDesktop
+        'Present': <PersonIcon />,
+        'Absent': <PersonOffIcon />,
+        'On Leave': <WatchLaterIcon />,
+        'Remote': <DesktopMacIcon />
     };
 
     return (
         <div className={style.card}>
-           <h2>{title} </h2>
+            <h2>{title}</h2>
             <p>{content}</p>
             <div className={style.cardIcon}>
-                {icon && <FontAwesomeIcon icon={icons[icon]} />}
+                {icons[icon]}
             </div>
         </div>
     );

@@ -4,6 +4,7 @@ import Header from '../Components/header.tsx';
 import Card from './Dashboard/components/card.tsx';
 import InfoSection from './Dashboard/components/infoSection.tsx';
 import style from '../../src/Pages/Dashboard/style/dashboard.module.css';
+import NewApplications from './Dashboard/components/applications.tsx';
 
 const Dashboard:React.FC =()=> {
     return (
@@ -20,12 +21,19 @@ const Dashboard:React.FC =()=> {
                 <Card title='On Leave' content='5'icon='On Leave'  />
                 <Card title='Remote' content='3'  icon ='Remote'/>
               </div>
+              <div className={style.newApplications}>
+            <NewApplications />
+          </div>
               <div className={style.infoSection}>
               <InfoSection />
+
               </div>
             </div>
+
           </div>
+
         </div>
+
       );
     };
     

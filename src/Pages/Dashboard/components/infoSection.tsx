@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import style from '../style/infoSection.module.css'
-
 interface Event {
   id: number;
   title: string;
@@ -31,15 +30,17 @@ const InfoSection: React.FC = () => {
       <ul>
         {events.map(event => (
           <li key={event.id}>
-            <strong>{event.title}</strong> - {event.time}<br />
-            {event.description}
+            <span className={style.redDot}></span>
+            <div>
+              <strong>{event.title}</strong> - {event.time}<br />
+              {event.description}
+            </div>
           </li>
         ))}
       </ul>
       <div className={style.button}>
-      <button onClick={addEvent}>Add Event</button> 
+        <button onClick={addEvent}>Add Event</button>
       </div>
-
     </div>
   );
 };
