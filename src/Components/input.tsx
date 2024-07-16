@@ -24,6 +24,8 @@ interface InputProps {
   name: string;
   onClick?: () => void;
   onMouseDown?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  width?: string | number;
+  height?: string | number;
 }
 
 const Input: React.FC<InputProps> = (props) => {
@@ -48,7 +50,7 @@ const Input: React.FC<InputProps> = (props) => {
           fullWidth
           autoComplete="off"
           sx={{
-            maxWidth: "350px",
+         
             "& .MuiFilledInput-root": {
               border: "1px solid #999999",
               overflow: "hidden",
@@ -81,7 +83,7 @@ const Input: React.FC<InputProps> = (props) => {
             },
           }}
           InputLabelProps={{
-            style: { color: "#000000" },
+            style: { color: "#4C556B" },
           }}
           InputProps={{
             disableUnderline: true,
@@ -102,7 +104,7 @@ const Input: React.FC<InputProps> = (props) => {
             id={props.id}
             type={props.type === true ? "text" : "password"}
             InputLabelProps={{
-              style: { color: "#000000" },
+              style: { color: "#4C556B" },
             }}
             sx={{
                maxWidth: "350px",

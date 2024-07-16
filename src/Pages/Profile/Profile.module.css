@@ -1,0 +1,36 @@
+.container{
+    background-color: #F4F4F4;
+    top: 0;
+    left: 0;
+    height: 100%;
+    display: flex;
+    gap: 300px;
+    padding-bottom: 30px;
+}
+
+.tab {
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    width: 100%;
+    color: #4C556B;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+  }
+  
+  
+  .activetab {
+    padding: 14px;
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    color: #026CDF;
+  }
+  
+  
+  .tabs{
+    display: flex;
+    flex-direction: row;
+  }
+  

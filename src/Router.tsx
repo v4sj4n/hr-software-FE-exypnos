@@ -5,12 +5,18 @@ import Homepage from './Pages/Homepage'
 import UpdateUser from './Pages/UpdateUser'
 import Profile from './Pages/Profile/Profile'
 import PrivateRoute from './Components/ProtectedRoute'
+import ResetPass from './Pages/Login/Component/ResetPass'
+import Signup from './Pages/Signup'
 
 export default function Router() {
   const router = createBrowserRouter([
     {
       path: '/login',
       element: <Login/>,
+    },
+    {
+      path: '/forgot-password',
+      element: <ResetPass/>,
     },
     {
       path: '/',
@@ -32,6 +38,10 @@ export default function Router() {
         {
           path: 'profile',
           element: <Profile />,
+        },
+        {
+          path: 'Signup',
+          element: <Signup />,
         },
       ],
     },

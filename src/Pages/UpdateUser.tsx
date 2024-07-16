@@ -1,25 +1,68 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import Input from '../Components/input';
 import Card from '../Ui/Crad/Crard';
 import Button from '../Ui/Button/Button';
 import { ButtonTypes } from '../Ui/Button/ButtonTypes';
-import { Avatar } from "@mui/material";
+import { Avatar, IconButton } from "@mui/material";
+import { PhotoCamera } from "@mui/icons-material";
 import AxiosInstance from '../Helpers/Axios';
+import { useAuth } from '../Context/AuthContext';
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from '../firebase/firebase';
+import UploadStatus from '../Components/uploads/uploadStatus';
 
 interface User {
     email: string;
     lastName: string;
     phone: string;
     firstName: string;
-    createdAt: Date;
+    image?: string; 
 }
 
 const UpdateUser: React.FC = () => {
-    const { id } = useParams();
+    const { id } = useParams<{ id: string }>();
     const [user, setUser] = useState<User | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [file, setFile] = useState<File | null>(null);
+    const [filePerc, setFilePerc] = useState(0);
+    const [fileUploadError, setFileUploadError] = useState<string>("");
+    const [image, setImage] = useState<string>("");
     const navigate = useNavigate();
+    const { userRole } = useAuth();
+
+    const isAdmin = userRole === 'admin';
+
+    useEffect(() => {
+        if (file) {
+            handleFileUpload(file);
+        }
+    }, [file]);
+
+    const handleFileUpload = (file: File) => {
+        const fileName = new Date().getTime() + file.name;
+        const storageRef = ref(storage, fileName);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const progress =
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                setFilePerc(Math.round(progress));
+            },
+            (error) => {
+                console.error("Error uploading image:", error);
+                setFileUploadError(error.message);
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    setImage(downloadURL);
+                    setUser((prevUser) => prevUser ? { ...prevUser, image: downloadURL } : null);
+                });
+            }
+        );
+    };
 
     useEffect(() => {
         AxiosInstance.get<User>(`/user/${id}`)
@@ -43,42 +86,70 @@ const UpdateUser: React.FC = () => {
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (!isAdmin) return;
         const { name, value } = event.target;
-        setUser(prevUser => ({
-            ...prevUser!,
-            [name]: value
-        }));
-    }
+        setUser(prevUser => prevUser ? ({ ...prevUser, [name]: value }) : null);
+    };
 
     const handleUpdate = (event: React.FormEvent<HTMLButtonElement>) => {
         event.preventDefault();
+        if (!isAdmin) {
+            setError('Only admins can update user information');
+            return;
+        }
         const userToUpdate = {
             firstName: user.firstName,
             lastName: user.lastName,
             phone: user.phone,
             email: user.email,
-        }
+            image: user.image,
+        };
         AxiosInstance.patch(`/user/${id}`, userToUpdate)
             .then(() => {
                 console.log('User updated successfully');
-                navigate('/home')
+                navigate('/home');
             })
             .catch(error => {
                 console.error('Error updating user:', error);
-                console.log(user)
                 setError('Failed to update user');
             });
     };
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setFile(e.target.files[0]);
+        }
+    };
+
     return (
-        <div style={{display:"flex", justifyContent:'center'}}>
+        <div style={{ display: "flex", justifyContent: 'center' }}>
             <Card>
-                <Avatar/>
-                <Input IsUsername name="firstName" value={user.firstName} onChange={handleChange}/>
-                <Input IsUsername name="lastName" value={user.lastName} onChange={handleChange}/>
-                <Input IsUsername name="email" value={user.email} onChange={handleChange}/>
-                <Input IsUsername name="phone" value={user.phone} onChange={handleChange}/>
-                <Button onClick={handleUpdate} type={ButtonTypes.PRIMARY} btnText='Update' />
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                    <Avatar src={user.image || image} sx={{ width: 100, height: 100 }} />
+                    <input
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        id="icon-button-file"
+                        type="file"
+                        onChange={handleFileChange}
+                    />
+                    <label htmlFor="icon-button-file">
+                        <IconButton color="primary" aria-label="upload picture" component="span">
+                            <PhotoCamera />
+                        </IconButton>
+                    </label>
+                </div>
+                <Input IsUsername name="firstName" value={user.firstName} onChange={handleChange} />
+                <Input IsUsername name="lastName" value={user.lastName} onChange={handleChange} />
+                <Input IsUsername name="email" value={user.email} onChange={handleChange} />
+                <Input IsUsername name="phone" value={user.phone} onChange={handleChange} />
+               
+                <UploadStatus fileUploadError={fileUploadError} filePerc={filePerc} />
+                {isAdmin ? (
+                    <Button onClick={handleUpdate} type={ButtonTypes.PRIMARY} btnText='Update' />
+                ) : (
+                    <Link to='/home'>Back to homepage</Link>
+                )}
             </Card>
         </div>
     );

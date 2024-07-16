@@ -24,6 +24,12 @@
     align-items: center;
 }
 
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 .img {
     width: 510px;
     height: auto;
@@ -40,3 +46,10 @@
     font-size: 20px;
 }
 
+.error{
+    color: #d32f2f;
+    font-Size: 13px;
+    padding: 0;
+    margin: 0;
+    top: 0;
+}

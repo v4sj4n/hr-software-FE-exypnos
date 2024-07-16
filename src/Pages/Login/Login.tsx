@@ -9,8 +9,6 @@ import { useLogin } from '../../Hooks/Actions';
 import ClipLoader from "react-spinners/ClipLoader";
 import style from './Login.module.css'
 
-
-
 const Login: React.FC = () => {
 
     const { isLoading,
@@ -27,12 +25,6 @@ const Login: React.FC = () => {
         handleSubmit,
         enteredEmail,
         formIsValid,
-        isForgotPassword,
-        confirmPassword,
-        confirmPasswordChangeHandler,
-        handleForgotPasswordClick,
-        passwordsMatch,
-        setIsForgotPassword,
         error
     } = useLogin();
 
@@ -45,26 +37,22 @@ const Login: React.FC = () => {
             <Card>
                 <div style={{ display: 'flex', justifyContent: 'center' }}><img className={style.img2} alt="img" src={logo} /></div>
                 <div className={style.title}>
-                    {isForgotPassword ? "Reset Password" : "Login"}
+                    Login
                 </div>
-
-                {!isForgotPassword && (
-                    <Input
-                        label="Email"
-                        name='email'
-                        value={enteredEmail}
-                        IsUsername
-                        onChange={emailChangeHandler}
-                        onBlur={emailBlurHandler}
-                        variant="filled"
-                        type="email"
-                        error={emailInputHasError}
-                        helperText={emailInputHasError ? "Email must include '@'" : ""}
-                    />
-                )}
-
                 <Input
-                    label={isForgotPassword ? "New Password" : "Password"}
+                    label="Email"
+                    name='email'
+                    value={enteredEmail}
+                    IsUsername
+                    onChange={emailChangeHandler}
+                    onBlur={emailBlurHandler}
+                    variant="filled"
+                    type="email"
+                    error={emailInputHasError}
+                    helperText={emailInputHasError ? "Email must include '@'" : ""}
+                />
+                <Input
+                    label={"Password"}
                     id="outlined-adornment-password"
                     variant="filled"
                     name='password'
@@ -78,28 +66,9 @@ const Login: React.FC = () => {
                     onClick={handleClickShowPassword}
                     onMouseDown={handleMouseDownPassword}
                 />
-
-                {isForgotPassword && (
-                    <Input
-                        label="Confirm Password"
-                        name="Confirm Password"
-                        id="outlined-adornment-confirm-password"
-                        variant="filled"
-                        value={confirmPassword}
-                        onChange={confirmPasswordChangeHandler}
-                        error={!passwordsMatch}
-                        errortext="Passwords do not match."
-                        type={showPassword}
-                        isPassword
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                    />
-                )}
-
                 <Button
-                    type={isForgotPassword ?
-                        (passwordsMatch ? ButtonTypes.PRIMARY : ButtonTypes.DISABLED) :
-                        (formIsValid ? ButtonTypes.PRIMARY : ButtonTypes.DISABLED)}
+                    type={
+                        formIsValid ? ButtonTypes.PRIMARY : ButtonTypes.DISABLED}
                     onClick={handleSubmit}
                     btnText={
                         isLoading ? (
@@ -110,40 +79,18 @@ const Login: React.FC = () => {
                                 data-testid="loader"
                             />
                         ) : (
-                            isForgotPassword ? "Reset Password" : "Login"
+                            "Login"
                         )
                     }
                 />
-                {error && (
-                    <div
-                        style={{
-                            color: "#d32f2f",
-                            fontSize: "13px",
-                            padding: "0",
-                            margin: "0",
-                            top: "0"
-                        }}
-                    >
-                        {error}
-                    </div>
-                )}
-                {!isForgotPassword ? (
-                    <Link
-                        to="/forgot-password"
-                        style={{ textAlign: "center", color: "#000000", marginTop: '10px' }}
-                        onClick={handleForgotPasswordClick}
-                    >
-                        Forgot your password?
-                    </Link>
-                ) : (
-                    <Link
-                        to="/login"
-                        style={{ textAlign: "center", color: "#000000", marginTop: '10px' }}
-                        onClick={() => setIsForgotPassword(false)}
-                    >
-                        Back to Login
-                    </Link>
-                )}
+                {error && ( <div className={style.error}> {error} </div> ) }
+                <Link
+                    to="/forgot-password"
+                    style={{ textAlign: "center", color: "#000000", marginTop: '10px' }}
+                >
+                    Forgot your password?
+                </Link>
+
             </Card>
         </div>
     );

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useInput, { InputHookReturn } from "../Hooks/use-inpute"
 import { useAuth } from '../Context/AuthContext';
 import { LoginErrorType, LoginSuccessType } from '../Helpers/AuthMessages';
@@ -10,6 +10,10 @@ interface User {
     email: string;
     _id: number;
     name: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+    isAdmin: boolean;
 }
 
 export const useLogin = () => {
@@ -39,20 +43,8 @@ export const useLogin = () => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [isForgotPassword, setIsForgotPassword] = useState(false);
-    const [confirmPassword, setConfirmPassword] = useState('');
-
-    const confirmPasswordChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setConfirmPassword(event.target.value);
-    };
-
-    const handleForgotPasswordClick = (e: React.MouseEvent) => {
-        e.preventDefault();
-        setIsForgotPassword(true);
-    };
-
-    const passwordsMatch = enteredPassword === confirmPassword;
-    const formIsValid = emailInputIsValid && passwordInputIsValid && (!isForgotPassword || passwordsMatch);
+ 
+    const formIsValid = emailInputIsValid && passwordInputIsValid 
 
     const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -114,12 +106,6 @@ export const useLogin = () => {
         resetPassword,
         formIsValid,
         handleSubmit,
-        isForgotPassword,
-        confirmPassword,
-        confirmPasswordChangeHandler,
-        handleForgotPasswordClick,
-        passwordsMatch,
-        setIsForgotPassword,
         error,
         userRole,
     };
@@ -143,4 +129,70 @@ export const useGetAllUsers = () => {
     }, [API_URL]);
 
     return { users, error };
+}
+
+
+export const useUpdateUserByID = () => {
+    const { id } = useParams();
+    const [user, setUser] = useState<User | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const navigate = useNavigate();
+    const { userRole } = useAuth();
+
+    const isAdmin = userRole === 'admin';
+
+    useEffect(() => {
+        AxiosInstance.get<User>(`/user/${id}`)
+            .then(response => {
+                setUser(response.data);
+                setError(null);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                setError('Failed to fetch user data');
+                setUser(null);
+            });
+    }, [id]);
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
+    if (!user) {
+        return <div>Loading...</div>;
+    }
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (!isAdmin) return;
+        const { name, value } = event.target;
+        setUser(prevUser => ({
+            ...prevUser!,
+            [name]: value
+        }));
+    }
+
+    const handleUpdate = (event: React.FormEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        if (!isAdmin) {
+            setError('Only admins can update user information');
+            return;
+        }
+        const userToUpdate = {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            phone: user.phone,
+            email: user.email,
+        }
+        AxiosInstance.patch(`/user/${id}`, userToUpdate)
+            .then(() => {
+                console.log('User updated successfully');
+                navigate('/home')
+            })
+            .catch(error => {
+                console.error('Error updating user:', error);
+                console.log(user)
+                setError('Failed to update user');
+            });
+    };
+    return { user, handleChange, handleUpdate, error };
 }
