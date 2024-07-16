@@ -1,0 +1,23 @@
+
+  
+  .newApplications h2 {
+    margin-bottom: 20px;
+  }
+  
+  .applicationItem {
+    list-style-type: none;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .applicationDetails h3 {
+    margin: 0;
+    font-size: 1.2em;
+  }
+  
+  .applicationDetails p {
+    margin: 5px 0;
+  }
+  

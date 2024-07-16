@@ -1,0 +1,67 @@
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    height: 110vh;
+  }
+  
+  .dashboard header{
+    width: 100%;
+  }
+  
+  .layout {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: flex-start; 
+    background-color: #ebebeb;
+
+  }
+  
+  .content {
+    flex: 1;
+    padding: 20px;
+    color: #a6a7aa;
+    padding-bottom: 0%;
+   
+  }
+  
+  h4 {
+    color: black;
+      margin-bottom: 20px;
+    padding-left: 15%;
+  }
+  .cardContainer{
+    display: flex;
+    gap: 40px;
+    padding-left: 15%;
+    grid-template-columns: repeat(2, 1fr);
+    width: min-content;
+
+
+  }
+
+  .infoSection {
+    width:50vh;
+    height: 99vh;
+    margin-left: 79%; 
+    background: white;
+    padding: 20px; 
+    border-radius: 1px; 
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); 
+  margin-top: -44%;
+    float: right; 
+     padding-bottom: 13%;
+
+  }
+
+  .newApplications {
+    margin-top: 20px;
+    justify-content: center;
+    display: flex;
+    margin-right: 50%;
+  }
+  
+  
+  
