@@ -1,13 +1,14 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import App from "./App";
-import Dashboard from "./Pages/dashboard";
-import Login from "./Pages/Login/Login";
-import Homepage from "./Pages/Homepage";
-import UpdateUser from "./Pages/UpdateUser";
-import Profile from "./Pages/Profile/Profile";
-import PrivateRoute from "./Components/ProtectedRoute";
-import ResetPass from "./Pages/Login/Component/ResetPass";
-import Signup from "./Pages/Signup";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import App from './App'
+import Login from './Pages/Login/Login'
+import Homepage from './Pages/Homepage'
+import UpdateUser from './Pages/UpdateUser'
+import Profile from './Pages/Profile/Profile'
+import PrivateRoute from './Components/ProtectedRoute'
+import ResetPass from './Pages/Login/Component/ResetPass'
+import Signup from './Pages/Signup'
+import Dashboard from './Pages/dashboard'
+
 
 export default function Router() {
   const router = createBrowserRouter([
@@ -22,6 +23,7 @@ export default function Router() {
       path: "/forgot-password",
       element: <ResetPass />,
     },
+
     {
       path: "/",
       element: <PrivateRoute />,
@@ -32,7 +34,7 @@ export default function Router() {
           index: true,
         },
         {
-          path: "home",
+          path: 'home',
           element: <Homepage />,
         },
         {
@@ -50,6 +52,7 @@ export default function Router() {
       ],
     },
   ]);
+
 
   return <RouterProvider router={router} />;
 }

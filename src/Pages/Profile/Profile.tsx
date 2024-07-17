@@ -1,14 +1,21 @@
-import SignUp from "./Components/SignUp";
 import style from "./Profile.module.css"
-
+import Tabs from "./Components/Tabs";
+import Header from "../../Components/header";
+import SideBar from "../../Components/sidebar";
 
 export default function Profile() {
   return (
-    <div className={style.container}>
-      <div style={{display:'flex', flexDirection:"column"}}>
-      <div style={{ color: "#000000", fontSize: "18px", marginBottom:"10px", marginTop:"10px" }}>Account Settings</div>
-      <SignUp/>
+    <>   
+      <Header />
+      <div className={style.container}>
+        <SideBar />
+        <div className={style.content}>
+          <div className={style.formContainer}>
+          <div className={style.account}>Account Settings</div>
+            <Tabs />
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   )
 }

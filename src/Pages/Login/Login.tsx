@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import Card from '../../Ui/Crad/Crard';
-import Input from '../../Components/input';
-import Button from '../../Ui/Button/Button';
-import { ButtonTypes } from '../../Ui/Button/ButtonTypes';
+import Card from '../../Components/Card/Card';
+import Input from '../../Components/Input/input';
+import Button from '../../Components/Button/Button';
+import { ButtonTypes } from '../../Components/Button/ButtonTypes';
 import img from '../../Assets/10-Functions-of-Human-Resource-Management-banner2 1 (1).png'
 import logo from "../../Assets/image_1-removebg-preview.png"
 import { useLogin } from '../../Hooks/Actions';
@@ -32,7 +32,7 @@ const Login: React.FC = () => {
         <div className={style.container}>
             <div className={style.content}>
                 <img className={style.img} alt="img" src={img} />
-                <Link style={{ textDecoration: "none", color: "#FFFFFF" }} to='/'>System tagline here</Link>
+                <Link style={{ textDecoration: "none", color: "#FFFFFF", fontSize:"18px" }} to='/'>Code With Love</Link>
             </div>
             <Card>
                 <div style={{ display: 'flex', justifyContent: 'center' }}><img className={style.img2} alt="img" src={logo} /></div>
