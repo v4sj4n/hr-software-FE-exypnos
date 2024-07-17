@@ -20,7 +20,6 @@ const Signup: React.FC = () => {
         role: 'dev'
     });
 
-
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 event.preventDefault();
         const { name, value } = event.target;

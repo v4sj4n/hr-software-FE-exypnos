@@ -1,0 +1,17 @@
+@font-face {
+    font-family: "Outfit";
+    src: url('./Assets/Font/static/Outfit-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "Outfit";
+    src: url('./Assets/Font/static/Outfit-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  body {
+    font-family: "Outfit", sans-serif;
+  }

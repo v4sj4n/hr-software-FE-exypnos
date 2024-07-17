@@ -10,8 +10,8 @@ export default function Profile() {
       <div className={style.container}>
         <SideBar />
         <div className={style.content}>
-          <div className={style.account}>Account Settings</div>
           <div className={style.formContainer}>
+          <div className={style.account}>Account Settings</div>
             <Tabs />
           </div>
         </div>
