@@ -3,7 +3,7 @@
   top: 90px;
   left: 10px;
   background: transparent;
-  color: #276AFF;
+  color: rgba(0, 0, 0, 0.8);
   border: none;
   padding: 10px;
   border-radius: 5px;
@@ -16,8 +16,7 @@
 }
 
 nav {
-  background:white;
-  color: black;
+  background-color:#F5F5F5;
   height: 100vh;
   font-size: 20px;
   position: absolute;
@@ -45,23 +44,21 @@ nav {
 }
 
 .item:hover {
-background: #276AFF;  
-width: 80%;
-  margin-left: 20px;
-  border-radius: 7px;
+background: transparent;  
+
 
 }
 
 .item:hover .icon {
-  color: white;
+  color: #276AFF;
 }
 
 .item:hover .link {
-  color: white;
+  color: #276AFF  ;
 }
 
 .link {
-  color: black;
+  color: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   width: 100%;
@@ -88,7 +85,7 @@ width: 80%;
 }
 
 .dropdownItem {
-  color: black;
+  color: white;
   padding: 8px 50px;
   font-size: 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
@@ -104,13 +101,13 @@ width: 80%;
 }
 
 .dropdownItem:hover {
-  background:linear-gradient(139deg, #3164A2, #276AFF, #69ACEF);
-  color: white;
+  color: #276AFF;
+  background-color: white;
 }
 
 .icon {
   margin-right: 10px;
-  color: #276AFF;
+  color: rgba(0, 0, 0, 0.8);
   font-size: larger;
 }
 
