@@ -11,7 +11,6 @@ const Dashboard:React.FC =()=> {
         <div className={style.dashboard}>
           <Header />
           <div className={style.layout}>
-            
             <SideBar />
             <div className={style.content}>
               <h4>Hi, Elisabeta! Here is what is happening with your team today</h4>
@@ -26,12 +25,9 @@ const Dashboard:React.FC =()=> {
           </div>
               <div className={style.infoSection}>
               <InfoSection />
-
               </div>
             </div>
-
           </div>
-
         </div>
 
       );

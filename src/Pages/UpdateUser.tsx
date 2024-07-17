@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import Input from '../Components/input';
-import Card from '../Ui/Crad/Crard';
-import Button from '../Ui/Button/Button';
-import { ButtonTypes } from '../Ui/Button/ButtonTypes';
+import Input from '../Components/Input/input';
+import Card from '../Components/Card/Card';
+import Button from '../Components/Button/Button';
+import { ButtonTypes } from '../Components/Button/ButtonTypes';
 import { Avatar, IconButton } from "@mui/material";
 import { PhotoCamera } from "@mui/icons-material";
 import AxiosInstance from '../Helpers/Axios';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Input from '../Components/input';
+import Input from '../Components/Input/input';
 import AxiosInstance from '../Helpers/Axios';
 
 interface User {
