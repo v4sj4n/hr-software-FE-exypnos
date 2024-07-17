@@ -13,26 +13,24 @@ import Dashboard from './Pages/dashboard'
 export default function Router() {
   const router = createBrowserRouter([
     {
-      path: '/login',
-      element: <Login/>,
+      path: "/login",
+      element: <Login />,
+      index: false,
+    },
+    { path: "/dashboard", element: <Dashboard />, index: false },
+
+    {
+      path: "/forgot-password",
+      element: <ResetPass />,
     },
 
     {
-      path: '/forgot-password',
-      element: <ResetPass/>,
-    },
-    {
-      path: '/',
+      path: "/",
       element: <PrivateRoute />,
       children: [
         {
-          path: '/',
+          path: "/",
           element: <App />,
-          index: true,
-        },
-        {
-          path: '/dashboard',
-          element: <Dashboard />,
           index: true,
         },
         {
@@ -40,20 +38,21 @@ export default function Router() {
           element: <Homepage />,
         },
         {
-          path: 'user/:id',
+          path: "user/:id",
           element: <UpdateUser />,
         },
         {
-          path: 'profile',
+          path: "profile",
           element: <Profile />,
         },
         {
-          path: 'Signup',
+          path: "Signup",
           element: <Signup />,
         },
       ],
     },
-  ])
+  ]);
 
-  return <RouterProvider router={router} />
+
+  return <RouterProvider router={router} />;
 }
