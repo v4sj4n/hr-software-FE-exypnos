@@ -44,17 +44,17 @@ nav {
 }
 
 .item:hover {
-background: transparent;  
+background: white;  
 
 
 }
 
 .item:hover .icon {
-  color: #276AFF;
+  color: #2457a3;
 }
 
 .item:hover .link {
-  color: #276AFF  ;
+  color: #2457a3;
 }
 
 .link {
@@ -85,7 +85,7 @@ background: transparent;
 }
 
 .dropdownItem {
-  color: white;
+  color: rgba(0, 0, 0, 0.8);
   padding: 8px 50px;
   font-size: 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
@@ -101,7 +101,7 @@ background: transparent;
 }
 
 .dropdownItem:hover {
-  color: #276AFF;
+  color: #2457a3;
   background-color: white;
 }
 
