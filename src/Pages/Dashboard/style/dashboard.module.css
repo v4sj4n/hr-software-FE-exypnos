@@ -1,118 +1,148 @@
-.dashboard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: Arial, sans-serif;
-  height: 100vh;
-  background-color: #ebebeb;
 
-}
-
-.dashboard header {
-  width: 100%;
-}
 
 .layout {
   display: flex;
-  
-  width: 100%;
-  background-color: #ebebeb;
-  column-gap: 30px;
-padding-top: 5px;
+  gap: 20px;
+  padding: 0;
+  align-items: stretch;
+}
+
+.content {
+  display: flex;
+justify-content: flex-end;
+margin-right: 60px;}
+
+
+
+.topSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-left: 270px;
+
+}
+
+.welcome {
+  flex: 1;
+
+  background: #e6f3f8;
+  color: #fff;
+  border-radius: 25px;
+  margin-top: -10%;
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  height: 230px;
+  width: 750px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.welcome h4 {
+color: #2457a3;
+padding-left: 10px;
 
 }
 
 
 
-.sidebar {
-  flex: 0 0 200px;
+.calendar {
+  flex: 0 0 300px;
+  border-radius: 10px;
+  padding: 2rem;
+  height: 360px;
+  margin-top: 1rem;
+
 }
 
+.calendar h2 {
+  color: #2457a3;
+  margin-left: 23%;
+}
 
 .cardContainer {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  background-color: #ffffff;
-  margin: 20px;
-  gap: 10px;
-  
+  display: flex;
+gap: 45px;
+  padding-left: 290px;
+  padding-top: -50%;
+  margin-top:-6%;
+
 }
 
-.cardBlue{
-  background-color: #b7def9; 
-  max-height: 120px;
+
+
+.infoSection {
+  background-color: #fff;
+  padding: 1rem;
+  width: 300px;
+  margin-top: 2rem;
+
+}
+
+.pieChart {
+  background-color: #fff;
+  width: 300px;
+  color: #2457a3;
+  margin-top: 2%;
+
+}
+.pieChart h2{
+  padding-right: 15px;
+}
+
+.cardGreen {
+  background-color: #60baee;
   text-align: center;
   width: 150px;
   max-height: 120px;
   box-shadow: 0 3px 0px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   color: #ffffff;
-
 }
+
+.cardGreen:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.cardBlue {
+  background-color: #e2a9eb;
+  text-align: center;
+  width: 150px;
+  max-height: 120px;
+  box-shadow: 0 3px 0px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  color: #ffffff;
+}
+
 .cardBlue:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.cardGreen{
-  background-color: #bbf8c5;
-  max-height: 120px;
+.cardYellow {
+  background-color: #a370cc;
   text-align: center;
   width: 150px;
   max-height: 120px;
   box-shadow: 0 3px 0px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   color: #ffffff;
-}
-.cardGreen:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-.cardPurple{
-  background-color: rgb(243, 213, 243);
-  max-height: 120px;
-  text-align: center;
-  width: 150px;
-  max-height: 120px;
-  box-shadow: 0 3px 0px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  color: #ffffff;
-
-}
-.cardPurple:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  
 }
 
-.cardYellow{
-background-color: rgb(246, 244, 186);
-max-height: 120px;
-text-align: center;
-width: 150px;
-max-height: 120px;
-box-shadow: 0 3px 0px rgba(0, 0, 0, 0.1);
-cursor: pointer;
-color: #ffffff;
-}
 .cardYellow:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
-.calendar h2 {
-margin-top: 35px;
-justify-content: center;
-text-align: center;
-width: 150px;
-max-height: 120px;
-box-shadow: 0 3px 0px rgba(0, 0, 0, 0.1);
-cursor: pointer;
-color: #ffffff;
+
+.cardPurple {
+  background-color: rgb(173, 227, 250);
+  text-align: center;
+  width: 150px;
+  max-height: 120px;
+  box-shadow: 0 3px 0px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  color: #ffffff;
 }
 
-.welcome{
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #e3f2fd;
-  border-radius: 50px; 
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  height: 200px;
+.cardPurple:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }

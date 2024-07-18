@@ -12,8 +12,6 @@ const InfoSection: React.FC = () => {
     { id: 1, title: 'Team Meeting', time: '10:00 AM', description: 'Weekly team sync' },
     { id: 2, title: 'Project Deadline', time: '3:00 PM', description: 'Submit project report' },
     { id: 4, title: 'Client Call', time: '5:00 PM', description: 'Discuss project updates' },
-    { id: 5, title: 'Client Call', time: '3:30 PM', description: 'Discuss project updates' },
-
 
   ]);
 
