@@ -23,10 +23,9 @@
   
 
   .secondaryBtn {
-    background:  #000000;
-    color:  #FFFFFF;
+    background: transparent;
+    color:  #2469FF;
     border-radius: 5px;
-    padding: 12px 0px;
     max-width: 416px;
     font-size: 16px;
     text-align: center;

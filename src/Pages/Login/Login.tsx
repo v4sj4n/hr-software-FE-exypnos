@@ -46,7 +46,6 @@ const Login: React.FC = () => {
                     IsUsername
                     onChange={emailChangeHandler}
                     onBlur={emailBlurHandler}
-                    variant="filled"
                     type="email"
                     error={emailInputHasError}
                     helperText={emailInputHasError ? "Email must include '@'" : ""}
@@ -54,7 +53,6 @@ const Login: React.FC = () => {
                 <Input
                     label={"Password"}
                     id="outlined-adornment-password"
-                    variant="filled"
                     name='password'
                     value={enteredPassword}
                     onChange={passwordChangeHandler}

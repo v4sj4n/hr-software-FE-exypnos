@@ -1,11 +1,11 @@
 import React from "react";
-import SideBar from "../../src/Components/sidebar.tsx";
-import Header from "../Components/header.tsx";
-import Card from "./Dashboard/components/card.tsx";
-import InfoSection from "./Dashboard/components/infoSection.tsx";
-import style from "../../src/Pages/Dashboard/style/dashboard.module.css";
-import PieChartComponent from "./Dashboard/components/piechart.tsx";
-import Calendar from "./Dashboard/components/calendar.tsx";
+import SideBar from "../../Components/SideBar/sidebar.tsx";
+import Header from "../../Components/Header/header.tsx";
+import Card from "./components/card.tsx";
+import InfoSection from "./components/infoSection.tsx";
+import style from '../Dashboard/style/dashboard.module.css'
+import PieChartComponent from "./components/piechart.tsx";
+import Calendar from "./components/calendar.tsx";
 
 const Dashboard: React.FC = () => {
   const data = [

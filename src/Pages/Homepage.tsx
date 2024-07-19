@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useGetAllUsers } from "../Hooks/Actions";
 import { useAuth } from "../Context/AuthProvider"; 
 import { useNavigate } from "react-router-dom";
+// import DataTable from "../Components/Table/Table";
 
 export default function Homepage() {
     const { users } = useGetAllUsers();
@@ -13,13 +14,17 @@ export default function Homepage() {
         navigate("/login"); 
     };
 
+    const canViewUserList = userRole === 'admin' || userRole === 'hr';
+
     return (
         <>
-            {(userRole === 'admin' || userRole === 'hr') ? (
+            {canViewUserList ? (
                 users && users.length > 0 ? (
                     users.map(user => (
                         <div style={{ color: "red" }} key={user._id}>
-                            <Link to={`/profile/${user._id}`}>{user.firstName} - {user.email}</Link>
+                            <Link to={`/profile/${user._id}`}>
+                                {user.firstName} - {user.auth?.email}
+                            </Link>
                         </div>
                     ))
                 ) : (
@@ -30,10 +35,11 @@ export default function Homepage() {
             )}
 
             {userRole === 'dev' && (
-                <p>Dev content no admin or Hrrrr.</p>
+                <p>Dev content no admin or HR.</p>
             )}
 
             <button onClick={handleLogOut}>Logout</button>
+           {/* <DataTable/> */}
         </>
     );
 }
