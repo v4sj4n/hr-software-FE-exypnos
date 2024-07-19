@@ -1,23 +1,15 @@
 .infoSection h2 {
   color: #2457a3;
-}
-
-.infoSection ul {
-  list-style-type: none;
-  padding: 0;
-  width: 100%;
+  text-align: left;
+  padding: 0%;
 }
 
 .infoSection li {
   display: flex;
-  align-items: center;
-  color: #000000;
+;  color: #000000;
   padding: 10px;
 }
 
-.infoSection li strong {
-  margin-left: 0px;
-}
 
 .infoSection .button {
   text-align: center;
@@ -32,7 +24,6 @@
   
   cursor: pointer;
   transition: background-color 0.3s ease;
-  width: 100%;
 }
 
 .infoSection .button button:hover {

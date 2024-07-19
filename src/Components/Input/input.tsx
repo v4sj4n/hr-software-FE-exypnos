@@ -13,7 +13,7 @@ interface InputProps {
   value?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   label?: string;
-  variant?: 'outlined' | 'filled' | 'standard';
+  variant?: 'outlined' ;
   error?: boolean;
   errortext?: string;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;

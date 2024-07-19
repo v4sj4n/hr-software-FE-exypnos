@@ -8,6 +8,7 @@ import PrivateRoute from './Components/ProtectedRoute'
 import ResetPass from './Pages/Login/Component/ResetPass'
 import Signup from './Pages/Signup'
 import Dashboard from './Pages/dashboard'
+import Assets from './Pages/Assets/assets.tsx'
 
 
 export default function Router() {
@@ -17,7 +18,16 @@ export default function Router() {
       element: <Login />,
       index: false,
     },
+    {
+      path: "profile",
+      element: <Profile />,
+    },
     { path: "/dashboard", element: <Dashboard />, index: false },
+
+    {
+      path: "assets",
+      element: <Assets />,
+    },
 
     {
       path: "/forgot-password",
@@ -41,10 +51,7 @@ export default function Router() {
           path: "user/:id",
           element: <UpdateUser />,
         },
-        {
-          path: "profile",
-          element: <Profile />,
-        },
+       
         {
           path: "Signup",
           element: <Signup />,
