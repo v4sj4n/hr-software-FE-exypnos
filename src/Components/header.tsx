@@ -2,7 +2,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import React from 'react';
-import codeviderLogo from '../Assets/logocodevider.png'
+import codeviderLogo from '../Assets/codevider.png'
 import  style from '../Components/header.module.css'
 
 

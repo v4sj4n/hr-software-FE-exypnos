@@ -1,7 +1,7 @@
 .toggleButton {
   position: absolute;
-  top: 90px;
-  left: 10px;
+  top: 10px;
+  left: 8px;
   background: transparent;
   color: rgba(0, 0, 0, 0.8);
   border: none;
@@ -28,7 +28,7 @@ nav {
 }
 
 .navbar {
-  margin-top: 8rem;
+  margin-top: 1rem;
   width: 100%;
   display: flex;
   flex-direction: column;

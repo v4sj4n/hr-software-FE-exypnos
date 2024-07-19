@@ -3,6 +3,7 @@
   flex-direction: column;
   height: 100vh;
   background-color: #f0f5ff;
+  width: 100%;
 }
 
 .mainContent {
@@ -39,20 +40,20 @@ color: #2457a3;
   border-radius: 15px;
   padding: 20px;
   flex: 1;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  color: white;
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.1);
+  color: #2457a3;
   text-align: center;
 }
 
-.cardGreen {
-  background-image: linear-gradient(180deg, #E0F2F7, #A8E0F0);
+ .cardGreen {
+  border:2px solid rgb(167, 206, 225);
 }.cardBlue {
-  background-image: linear-gradient(180deg, #ede5ef, #C5B3E6);
+  border:2px solid rgb(238, 218, 238);
 }.cardYellow {
-  background-image: linear-gradient(210deg, #D8B4F2, #B68CE6);
+  border:2px solid rgb(197, 182, 232);
 }.cardPurple {
-  background-image: linear-gradient(180deg, #A8C4F2, #7FA1E6);
-}
+  border:2px solid rgb(160, 189, 238);
+} 
 .middleRow {
   display: flex;
   gap: 20px;
@@ -65,6 +66,7 @@ color: #2457a3;
   padding: 20px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   flex: 1;
+  height: 350px;
 }
 
 .employeeProfile {
