@@ -1,67 +1,86 @@
-.dashboard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: Arial, sans-serif;
-    height: 110vh;
-  }
-  
-  .dashboard header{
-    width: 100%;
-  }
-  
-  .layout {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    align-items: flex-start; 
-    background-color: #ebebeb;
+.dashboardContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f0f5ff;
+}
 
-  }
-  
-  .content {
-    flex: 1;
-    padding: 20px;
-    color: #a6a7aa;
-    padding-bottom: 0%;
-   
-  }
-  
-  h4 {
-    color: black;
-      margin-bottom: 20px;
-    padding-left: 15%;
-  }
-  .cardContainer{
-    display: flex;
-    gap: 40px;
-    padding-left: 15%;
-    grid-template-columns: repeat(2, 1fr);
-    width: min-content;
+.mainContent {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
 
+.rightContent {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
 
-  }
+.welcome {
+background-image: url('../src/Assets/blue.jpg');  
+color: #2457a3;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
 
-  .infoSection {
-    width:50vh;
-    height: 99vh;
-    margin-left: 79%; 
-    background: white;
-    padding: 20px; 
-    border-radius: 1px; 
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); 
-  margin-top: -44%;
-    float: right; 
-     padding-bottom: 13%;
+}
 
-  }
+.cardContainer {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
 
-  .newApplications {
-    margin-top: 20px;
-    justify-content: center;
-    display: flex;
-    margin-right: 50%;
-  }
-  
-  
-  
+.cardGreen, .cardBlue, .cardYellow, .cardPurple {
+  background-color: white;
+  border-radius: 15px;
+  padding: 20px;
+  flex: 1;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  color: white;
+  text-align: center;
+}
+
+.cardGreen {
+  background-image: linear-gradient(180deg, #E0F2F7, #A8E0F0);
+}.cardBlue {
+  background-image: linear-gradient(180deg, #ede5ef, #C5B3E6);
+}.cardYellow {
+  background-image: linear-gradient(210deg, #D8B4F2, #B68CE6);
+}.cardPurple {
+  background-image: linear-gradient(180deg, #A8C4F2, #7FA1E6);
+}
+.middleRow {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.calendar, .infoSection, .pieChartDiv {
+  background-color: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  flex: 1;
+}
+
+.employeeProfile {
+  background-color: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  flex-grow: 1;
+  min-height: 300px; 
+}
+
+h2, h3 {
+  color: #2457a3;
+  margin-bottom: 15px;
+}
+
+/* .welcome h2{
+  color: white;
+} */

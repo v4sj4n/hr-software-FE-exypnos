@@ -1,44 +1,21 @@
-.card {
-  margin-bottom: 4px; 
-  text-align: center;
-    overflow: hidden;
-    border-radius: 5px;
-    width: 120px;
-    height: 120px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: pointer;
-    background-color: #ffffff;    
-    color: #3164a2;
 
-
-    
-  }
-  
-  .card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
   
   .card p {
-    color: #3164a2;
-    margin-bottom: 20px; 
-
+    color: #ffffff;
+align-items: center;
   }
   
   .card h2 {
-    color: #3164a2;
+    color: #ffffff;
     font-size: medium;
     font-weight: bold;
-margin-top: 14px;
-
+align-items: center;
   }
   
   
    
   .CardIcon {
     font-size:xx-large; 
-    color: #ffffff;
     margin-bottom: 4%;
 
   }

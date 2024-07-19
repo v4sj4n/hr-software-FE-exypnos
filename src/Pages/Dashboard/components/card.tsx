@@ -11,6 +11,8 @@ interface CardProps {
     title: string;
     content: string;
     icon: IconType;
+    className?: string; 
+
 }
 
 const Card: React.FC<CardProps> = ({ title, content, icon }) => {

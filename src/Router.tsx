@@ -8,6 +8,8 @@ import PrivateRoute from './Components/ProtectedRoute'
 import ResetPass from './Pages/Login/Component/ResetPass'
 import Signup from './Pages/Signup'
 import Dashboard from './Pages/dashboard'
+import Assets from './Pages/Assets/assets.tsx'
+
 
 export default function Router() {
   const router = createBrowserRouter([
@@ -27,11 +29,17 @@ export default function Router() {
     },
 
     {
-      path: '/forgot-password',
-      element: <ResetPass/>,
+      path: "assets",
+      element: <Assets />,
     },
+
     {
-      path: '/',
+      path: "/forgot-password",
+      element: <ResetPass />,
+    },
+
+    {
+      path: "/",
       element: <PrivateRoute />,
       children: [
         {
@@ -44,17 +52,12 @@ export default function Router() {
           index: true,
         },
         {
-          path: '/dashboard',
-          element: <Dashboard />,
-          index: true,
-        },
-        {
           path: 'home',
           element: <Homepage />,
         },
         { path: "/dashboard", element: <Dashboard />, index: false },
         {
-          path: 'user/:id',
+          path: "user/:id",
           element: <UpdateUser />,
         },
         {
@@ -66,12 +69,13 @@ export default function Router() {
           element: <Profile />,
         },
         {
-          path: 'Signup',
+          path: "Signup",
           element: <Signup />,
         },
       ],
     },
-  ])
+  ]);
 
-  return <RouterProvider router={router} />
+
+  return <RouterProvider router={router} />;
 }
