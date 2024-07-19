@@ -7,7 +7,7 @@ import { ButtonTypes } from '../Components/Button/ButtonTypes';
 import { Avatar, IconButton } from "@mui/material";
 import { PhotoCamera } from "@mui/icons-material";
 import AxiosInstance from '../Helpers/Axios';
-import { useAuth } from '../Context/AuthContext';
+import { useAuth } from '../Context/AuthProvider';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from '../firebase/firebase';
 import UploadStatus from '../Components/uploads/uploadStatus';

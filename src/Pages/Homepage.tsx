@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useGetAllUsers } from "../Hooks/Actions";
-import { useAuth } from '../Context/AuthContext';
+import { useAuth } from "../Context/AuthProvider"; 
 import { useNavigate } from "react-router-dom";
 
 export default function Homepage() {
@@ -19,7 +19,7 @@ export default function Homepage() {
                 users && users.length > 0 ? (
                     users.map(user => (
                         <div style={{ color: "red" }} key={user._id}>
-                            <Link to={`/user/${user._id}`}>{user.name} - {user.email}</Link>
+                            <Link to={`/profile/${user._id}`}>{user.firstName} - {user.email}</Link>
                         </div>
                     ))
                 ) : (

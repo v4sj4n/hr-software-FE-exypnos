@@ -9,12 +9,21 @@ import ResetPass from './Pages/Login/Component/ResetPass'
 import Signup from './Pages/Signup'
 import Dashboard from './Pages/dashboard'
 
-
 export default function Router() {
   const router = createBrowserRouter([
     {
+<<<<<<< Updated upstream
       path: '/login',
       element: <Login/>,
+=======
+      path: "/login",
+      element: <Login />,
+      index: false,
+    },
+    {
+      path: "/forgot-password",
+      element: <ResetPass />,
+>>>>>>> Stashed changes
     },
 
     {
@@ -26,7 +35,11 @@ export default function Router() {
       element: <PrivateRoute />,
       children: [
         {
+<<<<<<< Updated upstream
           path: '/',
+=======
+          path: "/app",
+>>>>>>> Stashed changes
           element: <App />,
           index: true,
         },
@@ -39,12 +52,17 @@ export default function Router() {
           path: 'home',
           element: <Homepage />,
         },
+        { path: "/dashboard", element: <Dashboard />, index: false },
         {
           path: 'user/:id',
           element: <UpdateUser />,
         },
         {
+<<<<<<< Updated upstream
           path: 'profile',
+=======
+          path: "profile/:id",
+>>>>>>> Stashed changes
           element: <Profile />,
         },
         {

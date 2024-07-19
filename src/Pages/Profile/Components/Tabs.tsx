@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import Card from '../../../Components/Card/Card';
 import style from "../Profile.module.css"
-import SignUp from './SignUp/SignUp';
+import ProfileForm from './ProfileForm/ProfileForm';
 import Contrat from './Contrat/Contrat';
 
 const MyEvents = () => (
-    <SignUp/>
+    <ProfileForm/>
 );
 
 const Contract = () => (

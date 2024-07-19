@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import useInput, { InputHookReturn } from "../Hooks/use-inpute"
-import { useAuth } from '../Context/AuthContext';
+import { useAuth } from '../Context/AuthProvider';
 import { LoginErrorType, LoginSuccessType } from '../Helpers/AuthMessages';
 import AxiosInstance from '../Helpers/Axios';
 
@@ -17,9 +17,10 @@ interface User {
 }
 
 export const useLogin = () => {
-    const { login } = useAuth()
+    const { login } = useAuth();
     const [userRole, setUserRole] = useState<string | null>(null);
     const navigate = useNavigate();
+    
     const {
         enteredValue: enteredEmail,
         hasError: emailInputHasError,
@@ -44,7 +45,7 @@ export const useLogin = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
  
-    const formIsValid = emailInputIsValid && passwordInputIsValid 
+    const formIsValid = emailInputIsValid && passwordInputIsValid;
 
     const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -64,10 +65,13 @@ export const useLogin = () => {
 
         try {
             const res = await AxiosInstance.post('/auth/signin', formData);
-            const role = res.data.data.user.role;
+            const user = res.data.data.user;
+            const role = user.role;
+            const access_token = res.data.data.access_token;
+
             setUserRole(role);
 
-            login(res.data.data.access_token, role);
+            login(access_token, role, user);
             alert(LoginSuccessType.Success);
             navigate("/home");
         } catch (error) {
@@ -110,6 +114,8 @@ export const useLogin = () => {
         userRole,
     };
 };
+
+
 
 export const useGetAllUsers = () => {
     const [users, setUsers] = useState<User[]>([]);
