@@ -16,14 +16,16 @@ import style from '../../src/Components/sidebar.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-const SideBar: React.FC = () => {
-    const [isOpen, setIsOpen] = useState(true);
+
+const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void; }> = ({ isOpen, toggleSidebar }) => {
+    // const [isOpen, setIsOpen] = useState(true);
     const [employeeDropdownOpen, setEmployeeDropdownOpen] = useState(false);
     const [eventsDropdownOpen, setEventsDropdownOpen] = useState(false);
 
-    const toggleSidebar = () => {
-        setIsOpen(!isOpen);
-    };
+    // const toggleSidebar = () => {
+    //     setIsOpen(!isOpen);
+    // };
+   
 
     const toggleEmployeeDropdown = () => {
         setEmployeeDropdownOpen(!employeeDropdownOpen);

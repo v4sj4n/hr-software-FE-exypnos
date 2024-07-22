@@ -6,13 +6,25 @@ import codeviderLogo from '../Assets/codevider.png'
 import  style from '../Components/header.module.css'
 
 
-const Header: React.FC = () => {
+const Header: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
   return (
     <header className={style.header}>
       <div className={style.headerLeft}>
         <div className={style.logo}>
-          <img alt='logo' src={codeviderLogo} />
+          <img alt='logo' src={codeviderLogo}  /> 
         </div>
+        {isOpen && (
+          <>
+        <div className={style.title}>
+        <h4>Code</h4>
+        </div>
+        <div className={style.title1}>
+        <h4>Vider</h4>
+        </div>
+      
+        </>
+        )}
+
       </div>
       <div className={style.headerRight}>
         <div className={style.icon}>

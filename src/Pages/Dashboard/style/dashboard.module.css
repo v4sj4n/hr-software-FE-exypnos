@@ -29,6 +29,7 @@ color: #2457a3;
 
 }
 
+
 .cardContainer {
   display: flex;
   gap: 20px;
@@ -43,10 +44,15 @@ color: #2457a3;
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.1);
   color: #2457a3;
   text-align: center;
+  transition: background-color 0.3s ease;
+
 }
+
+
 
  .cardGreen {
   border:2px solid rgb(167, 206, 225);
+
 }.cardBlue {
   border:2px solid rgb(238, 218, 238);
 }.cardYellow {

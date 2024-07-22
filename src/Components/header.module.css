@@ -12,14 +12,26 @@
 
 .headerLeft {
   display: flex;
-  align-items: center;
+   align-items: center;
 }
 
 .logo img {
-width:50px;
+width:35px;
 height: 30px;
- padding-left: 15px; 
-  
+  margin-left: 30px;
+  /* margin-bottom: 15px; */
+
+}
+
+.title h4{
+  color: black;
+  font-style: normal;
+  font-weight: bold;
+  padding-left: 10px;
+}
+.title1 h4{
+  color: black;
+  font-style: normal;
 }
 
 .headerRight {
