@@ -50,16 +50,15 @@ color: #2457a3;
 
 
 
- .cardGreen {
-  border:2px solid rgb(167, 206, 225);
-
+.cardGreen {
+  background-image: linear-gradient(180deg, #E0F2F7, #A8E0F0);
 }.cardBlue {
-  border:2px solid rgb(238, 218, 238);
+  background-image: linear-gradient(180deg, #ede5ef, #C5B3E6);
 }.cardYellow {
-  border:2px solid rgb(197, 182, 232);
+  background-image: linear-gradient(210deg, #D8B4F2, #B68CE6);
 }.cardPurple {
-  border:2px solid rgb(160, 189, 238);
-} 
+  background-image: linear-gradient(180deg, #A8C4F2, #7FA1E6);
+}
 .middleRow {
   display: flex;
   gap: 20px;
