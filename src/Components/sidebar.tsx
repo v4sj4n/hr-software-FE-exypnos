@@ -11,7 +11,7 @@ import {
     ExpandLess as ExpandLessIcon
 } from '@mui/icons-material';
 import React ,{ useState } from 'react';
-import style from './sidebar.module.css'
+import style from '../../src/Components/sidebar.module.css'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 

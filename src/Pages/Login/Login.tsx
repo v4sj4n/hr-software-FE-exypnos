@@ -46,6 +46,7 @@ const Login: React.FC = () => {
                     IsUsername
                     onChange={emailChangeHandler}
                     onBlur={emailBlurHandler}
+                    variant="filled"
                     type="email"
                     error={emailInputHasError}
                     helperText={emailInputHasError ? "Email must include '@'" : ""}
@@ -53,6 +54,7 @@ const Login: React.FC = () => {
                 <Input
                     label={"Password"}
                     id="outlined-adornment-password"
+                    variant="filled"
                     name='password'
                     value={enteredPassword}
                     onChange={passwordChangeHandler}
@@ -84,8 +86,7 @@ const Login: React.FC = () => {
                 {error && ( <div className={style.error}> {error} </div> ) }
                 <Link
                     to="/forgot-password"
-                    style={{ textAlign: "center", color: "#000000", marginTop: '10px', 
-                        fontFamily: '"Outfit", sans-serif' }}
+                    style={{ textAlign: "center", color: "#000000", marginTop: '10px' }}
                 >
                     Forgot your password?
                 </Link>

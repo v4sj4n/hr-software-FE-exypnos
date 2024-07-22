@@ -1,35 +1,25 @@
-// import { Link } from "react-router-dom";
-// import { useGetAllUsers } from "../Hooks/Actions";
-// import { useAuth } from "../Context/AuthProvider"; 
-// import { useNavigate } from "react-router-dom";
-import Button from "../Components/Button/Button";
-import { ButtonTypes } from "../Components/Button/ButtonTypes";
-import Header from "../Components/Header/header";
-import SideBar from "../Components/SideBar/sidebar";
-import DataTable from "../Components/Table/Table";
-import style from "../Pages/Profile/Profile.module.css"
+import { Link } from "react-router-dom";
+import { useGetAllUsers } from "../Hooks/Actions";
+import { useAuth } from '../Context/AuthContext';
+import { useNavigate } from "react-router-dom";
 
 export default function Homepage() {
-    // const { users } = useGetAllUsers();
-    // const { logout, userRole } = useAuth();
-    // const navigate = useNavigate();
+    const { users } = useGetAllUsers();
+    const { logout, userRole } = useAuth();
+    const navigate = useNavigate();
 
-    // const handleLogOut = () => {
-    //     logout();  
-    //     navigate("/login"); 
-    // };
-
-    // const canViewUserList = userRole === 'admin' || userRole === 'hr';
+    const handleLogOut = () => {
+        logout();  
+        navigate("/login"); 
+    };
 
     return (
         <>
-            {/* {canViewUserList ? (
+            {(userRole === 'admin' || userRole === 'hr') ? (
                 users && users.length > 0 ? (
                     users.map(user => (
                         <div style={{ color: "red" }} key={user._id}>
-                            <Link to={`/profile/${user._id}`}>
-                                {user.firstName} - {user.auth?.email}
-                            </Link>
+                            <Link to={`/user/${user._id}`}>{user.name} - {user.email}</Link>
                         </div>
                     ))
                 ) : (
@@ -40,21 +30,10 @@ export default function Homepage() {
             )}
 
             {userRole === 'dev' && (
-                <p>Dev content no admin or HR.</p>
+                <p>Dev content no admin or Hrrrr.</p>
             )}
 
-            <button onClick={handleLogOut}>Logout</button> */}
-           <Header />
-      <div className={style.container}>
-        <SideBar />
-        <div style={{display:"flex",width:"100%", flexDirection:"column", padding:"0 16px"}}>
-            <div style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
-            <div className={style.account}>Employe List</div>
-<Button type={ButtonTypes.CreateEmploye} btnText="Create Employe"/>
-            </div>
-          <DataTable />
-        </div>
-      </div>
+            <button onClick={handleLogOut}>Logout</button>
         </>
     );
 }

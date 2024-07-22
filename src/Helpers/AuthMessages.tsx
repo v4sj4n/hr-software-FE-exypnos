@@ -4,3 +4,7 @@ export enum LoginErrorType {
     IncorrectPassword = "Incorrect password.",
     UnexpectedError = "An error occurred. Please try again."
   }
+  
+  export enum LoginSuccessType {
+      Success = "Login successful!",
+  }
