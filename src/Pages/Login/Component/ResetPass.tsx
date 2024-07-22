@@ -105,7 +105,7 @@ const ResetPass: React.FC = () => {
 
                 {error && (<div className={style.error}> {error}</div>)}
                 <Link
-                    to="/login"
+                    to="/"
                     style={{ textAlign: "center", color: "#000000", marginTop: '10px' }}
                 >
                     Back to Login

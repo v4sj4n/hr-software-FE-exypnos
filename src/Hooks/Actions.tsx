@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import useInput, { InputHookReturn } from "../Hooks/use-inpute"
 import { useAuth } from '../Context/AuthProvider';
-import { LoginErrorType, LoginSuccessType } from '../Helpers/AuthMessages';
+import { LoginErrorType } from '../Helpers/AuthMessages';
 import AxiosInstance from '../Helpers/Axios';
 
 
@@ -79,7 +79,6 @@ export const useLogin = () => {
             setUserRole(role);
 
             login(access_token, role, user);
-            alert(LoginSuccessType.Success);
             navigate("/home");
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {

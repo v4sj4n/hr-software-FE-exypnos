@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, FormControlLabel, Checkbox } from "@mui/material";
+import { Avatar} from "@mui/material";
 import Input from "../../../../Components/Input/input";
 import { ButtonTypes } from "../../../../Components/Button/ButtonTypes";
 import Button from "../../../../Components/Button/Button";
 import style from "./ProfileForm.module.css";
-import { chekboxStyles } from '../../../../Components/Input/Styles';
 import Image from '../../../../Components/uploads/uploadImage';
 import AxiosInstance from "../../../../Helpers/Axios";
 import { useAuth } from "../../../../Context/AuthProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import { useFileUpload, UserProfileData } from '../../../../Hooks/Actions';
-
-
 
 const ProfileForm = () => {
     const { id } = useParams<{ id: string }>();
@@ -19,10 +16,12 @@ const ProfileForm = () => {
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const navigate = useNavigate();
-    const { userRole } = useAuth();
-    const {uploadImage, previewImage} = useFileUpload();
+    const { userRole, currentUser } = useAuth();
+    const { uploadImage, previewImage } = useFileUpload();
 
-    const isAdmin = userRole === 'admin';
+    const isCurrentUser = currentUser?._id === id;
+
+    const isAdmin = userRole === 'admin' || userRole === 'hr';
 
     useEffect(() => {
         setIsLoading(true);
@@ -62,10 +61,10 @@ const ProfileForm = () => {
         });
     };
 
-  
+
     const handleUpdate = async (event: React.FormEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        if (!isAdmin || !user) {
+        if ( !user) {
             setError('Only admins can update user information');
             return;
         }
@@ -111,67 +110,64 @@ const ProfileForm = () => {
 
             <div className={style.forms}>
                 <div className={style.profile}>
-                <Avatar 
-    src={previewImage || user.imageUrl} 
-    style={{ width: "50px", height: "50px" }} 
-/>
-<Image  onChange={uploadImage}/>
-                 
+                    <Avatar
+                        src={previewImage || user.imageUrl}
+                        style={{ width: "50px", height: "50px" }}
+                    />
+                    {isCurrentUser && <Image onChange={uploadImage} />}
+
                 </div>
                 <div className={style.inputWidth}>
-                    <Input IsUsername label="firstName" name="firstName" onChange={handleChange} value={user.firstName} />
+                    <Input IsUsername label="firstName" disabled={!isAdmin} name="firstName" onChange={handleChange} value={user.firstName} />
                 </div>
             </div>
 
             <div className={style.forms}>
                 <div className={style.inputWidth}>
-                    <Input IsUsername type="email" label="Email" name="email" onChange={handleChange} value={user.auth.email} />
+                    <Input IsUsername type="email" label="Email" name="email" disabled={!isAdmin} onChange={handleChange} value={user.auth.email} />
                 </div>
                 <div className={style.inputWidth}>
-                    <Input IsUsername name="lastName" label="lastName" onChange={handleChange} value={user.lastName} />
-                </div>
-            </div>
-
-            <div className={style.forms}>
-                <div className={style.inputWidth}>
-                    <Input IsUsername label="BirthDate" name="dob" onChange={handleChange} value={user.dob} />
-                </div>
-                <div className={style.inputWidth}>
-                    <Input IsUsername label="CountryOfBirth" name="pob" onChange={handleChange} value={user.pob} />
+                    <Input IsUsername name="lastName" disabled={!isAdmin} label="lastName" onChange={handleChange} value={user.lastName} />
                 </div>
             </div>
 
             <div className={style.forms}>
                 <div className={style.inputWidth}>
-                    <Input IsUsername label="Gender" name="gender" onChange={handleChange} value={user.gender} />
-                
+                    <Input IsUsername label="BirthDate" disabled={!isAdmin} name="dob" onChange={handleChange} value={user.dob} />
                 </div>
                 <div className={style.inputWidth}>
-     
-                    <Input IsUsername name="phone" label="PhoneNumber" onChange={handleChange} value={user.phone} />
+                    <Input IsUsername disabled={!isAdmin} label="CountryOfBirth" name="pob" onChange={handleChange} value={user.pob} />
+                </div>
+            </div>
+
+            <div className={style.forms}>
+                <div className={style.inputWidth}>
+                    <Input IsUsername label="Gender" disabled={!isAdmin} name="gender" onChange={handleChange} value={user.gender} />
+
+                </div>
+                <div className={style.inputWidth}>
+
+                    <Input IsUsername name="phone" disabled={!isAdmin} label="PhoneNumber" onChange={handleChange} value={user.phone} />
                 </div>
             </div>
 
             <div className={style.checkboxDiv}>
-                <FormControlLabel
-                    control={<Checkbox />}
-                    label="Public Holidays" sx={{ ...chekboxStyles }}
-                />
-                <FormControlLabel
-                    control={<Checkbox />}
-                    label="Remote"
-                    sx={{ ...chekboxStyles }}
-                />
-                <FormControlLabel
-                    control={<Checkbox />}
-                    label="External"
-                    sx={{ ...chekboxStyles }}
-                />
+                <Input isCheckBox label='Public Holidays' name='check'  disabled={!isAdmin}/>
+                <Input isCheckBox label='Remote' name='check'  disabled={!isAdmin}/>
+                <Input isCheckBox label='External' name='check'  disabled={!isAdmin}/>
             </div>
             <div className={style.border}></div>
-            <div className={style.inputWidth}>
-                <Button onClick={handleUpdate} type={ButtonTypes.PRIMARY} btnText='Save Changes' />
-            </div>
+            {isAdmin ? (
+                <div className={style.inputWidth}>
+                    <Button onClick={handleUpdate} type={ButtonTypes.PRIMARY} btnText='Save Changes' />
+                </div>
+            ) : (
+                isCurrentUser && (
+                    <div className={style.inputWidth}>
+                        <Button onClick={handleUpdate} type={ButtonTypes.PRIMARY} btnText='Change Picture' />
+                    </div>
+                )
+            )}
         </div>
     )
 }

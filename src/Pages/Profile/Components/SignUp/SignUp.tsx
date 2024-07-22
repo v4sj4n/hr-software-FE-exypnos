@@ -8,7 +8,6 @@ import img from "../../../../Assets/gerti.jpg"
 import AxiosInstance from "../../../../Helpers/Axios";
 import { useState } from "react";
 
-
 interface User {
     email: string;
     lastName: string;

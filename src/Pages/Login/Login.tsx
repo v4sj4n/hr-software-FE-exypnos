@@ -84,7 +84,8 @@ const Login: React.FC = () => {
                 {error && ( <div className={style.error}> {error} </div> ) }
                 <Link
                     to="/forgot-password"
-                    style={{ textAlign: "center", color: "#000000", marginTop: '10px' }}
+                    style={{ textAlign: "center", color: "#000000", marginTop: '10px', 
+                        fontFamily: '"Outfit", sans-serif' }}
                 >
                     Forgot your password?
                 </Link>
