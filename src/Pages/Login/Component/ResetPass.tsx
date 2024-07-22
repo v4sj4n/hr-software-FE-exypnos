@@ -47,7 +47,6 @@ const ResetPass: React.FC = () => {
                             label="Email"
                             name='email'
                             IsUsername
-                            variant="filled"
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
@@ -73,7 +72,6 @@ const ResetPass: React.FC = () => {
                         <Input
                             label="New Password"
                             name='newPassword'
-                            variant="filled"
                             isPassword
                             type="password"
                             value={newPassword}
@@ -82,7 +80,6 @@ const ResetPass: React.FC = () => {
                         <Input
                             label="Confirm Password"
                             name='confirmPassword'
-                            variant="filled"
                             isPassword
                             type="password"
                             value={confirmPassword}
@@ -108,7 +105,7 @@ const ResetPass: React.FC = () => {
 
                 {error && (<div className={style.error}> {error}</div>)}
                 <Link
-                    to="/login"
+                    to="/"
                     style={{ textAlign: "center", color: "#000000", marginTop: '10px' }}
                 >
                     Back to Login

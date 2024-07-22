@@ -17,7 +17,7 @@ import LaptopIcon from '@mui/icons-material/Laptop';
 
 
 import KeyboardMouseIcon  from '@mui/icons-material/Keyboard'
-import Header from '../../Components/header';
+import Header from '../../Components/Header/header';
 
 const assets = [
   { type: 'Monitor Samsung', status: 'available', icon: ComputerIcon },

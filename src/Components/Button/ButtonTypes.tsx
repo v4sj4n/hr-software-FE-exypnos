@@ -5,5 +5,5 @@ export const ButtonTypes = {
     DISABLED: "DISABLED",
     FOLLOW:"followBtn",
     POST:'POST',
-    Modal:"Modal"
+    CreateEmploye:"CreateEmploye"
   };

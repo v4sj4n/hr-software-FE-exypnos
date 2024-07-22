@@ -2,12 +2,11 @@ import { Avatar, FormControlLabel, Checkbox } from "@mui/material";
 import Input from "../../../../Components/Input/input";
 import { ButtonTypes } from "../../../../Components/Button/ButtonTypes";
 import Button from "../../../../Components/Button/Button";
-import style from "./SignUp.module.css"
+import style from '../ProfileForm/ProfileForm.module.css'
 import {chekboxStyles} from '../../../../Components/Input/Styles'
 import img from "../../../../Assets/gerti.jpg"
 import AxiosInstance from "../../../../Helpers/Axios";
 import { useState } from "react";
-
 
 interface User {
     email: string;

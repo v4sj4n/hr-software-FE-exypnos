@@ -55,3 +55,45 @@ export const chekboxStyles = {
     fontFamily: '"Outfit", sans-serif',
   },
 }
+
+
+
+export const TableStyles = {
+    fontFamily: '"Outfit", sans-serif',
+    borderRadius: '5px',
+    overflow: 'hidden',
+    '& .MuiDataGrid-root': {
+      fontFamily: '"Outfit", sans-serif',
+      borderRadius: '5px',
+    },
+    '& .MuiDataGrid-columnHeaders': {
+      backgroundColor: 'red',
+      fontFamily: '"Outfit", sans-serif',
+      borderTopLeftRadius: '5px',
+      borderTopRightRadius: '5px',
+    },
+    '& .MuiDataGrid-row': {
+      backgroundColor: '#FFFFFF',
+      fontFamily: '"Outfit", sans-serif',
+    },
+    '& .MuiDataGrid-cell': {
+      fontFamily: '"Outfit", sans-serif',
+    },
+    '& .MuiTablePagination-root': {
+      backgroundColor: '#FFFFFF',
+      fontFamily: '"Outfit", sans-serif',
+      borderBottomLeftRadius: '5px',
+      borderBottomRightRadius: '5px',
+    },
+    '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows, & .MuiTablePagination-select, & .MuiTablePagination-actions': {
+      backgroundColor: 'white',
+      fontFamily: '"Outfit", sans-serif',
+    },
+    "& .css-1jlz3st":{
+      backgroundColor:"#FFFFFF",
+    },
+    '& .css-1asbit7-MuiDataGrid-roo.css-955zky-MuiDataGrid-root .MuiDataGrid-withBorderColor': {
+      backgroundColor:"#FFFFFF",
+    }
+  
+}
