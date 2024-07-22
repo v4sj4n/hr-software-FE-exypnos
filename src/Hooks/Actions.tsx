@@ -1,33 +1,25 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useInput, { InputHookReturn } from "../Hooks/use-inpute"
-import { useAuth } from '../Context/AuthProvider';
-import { LoginErrorType } from '../Helpers/AuthMessages';
+import { useAuth } from '../Context/AuthContext';
+import { LoginErrorType, LoginSuccessType } from '../Helpers/AuthMessages';
 import AxiosInstance from '../Helpers/Axios';
 
-
-export interface UserProfileData {
-    auth: {
-        email: string;
-    };
+interface User {
+    email: string;
+    _id: number;
+    name: string;
+    firstName: string;
     lastName: string;
     phone: string;
-    pob: string;
-    dob: string;
-    gender: string;
-    role: string;
-    firstName: string;
-    imageUrl: string;
-    file: string;
-    _id: number;
+    isAdmin: boolean;
 }
 
 export const useLogin = () => {
-    const { login } = useAuth();
+    const { login } = useAuth()
     const [userRole, setUserRole] = useState<string | null>(null);
     const navigate = useNavigate();
-    
     const {
         enteredValue: enteredEmail,
         hasError: emailInputHasError,
@@ -52,7 +44,7 @@ export const useLogin = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
  
-    const formIsValid = emailInputIsValid && passwordInputIsValid;
+    const formIsValid = emailInputIsValid && passwordInputIsValid 
 
     const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -72,13 +64,11 @@ export const useLogin = () => {
 
         try {
             const res = await AxiosInstance.post('/auth/signin', formData);
-            const user = res.data.data.user;
-            const role = user.role;
-            const access_token = res.data.data.access_token;
-
+            const role = res.data.data.user.role;
             setUserRole(role);
 
-            login(access_token, role, user);
+            login(res.data.data.access_token, role);
+            alert(LoginSuccessType.Success);
             navigate("/home");
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -121,15 +111,13 @@ export const useLogin = () => {
     };
 };
 
-
-
 export const useGetAllUsers = () => {
-    const [users, setUsers] = useState<UserProfileData[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
     const [error, setError] = useState<string | null>(null);
     const API_URL = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
-        AxiosInstance.get<UserProfileData[]>('/user')
+        AxiosInstance.get<User[]>('/user')
             .then(response => {
                 setUsers(response.data);
                 console.log(response.data);
@@ -144,57 +132,67 @@ export const useGetAllUsers = () => {
 }
 
 
-export const useFileUpload = () => {
-
-    const [previewImage, setPreviewImage] = useState<string | null>(null);
+export const useUpdateUserByID = () => {
+    const { id } = useParams();
+    const [user, setUser] = useState<User | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [userImage, setUserImage] = useState<UserProfileData | null>(null);
+    const navigate = useNavigate();
+    const { userRole } = useAuth();
+
+    const isAdmin = userRole === 'admin';
 
     useEffect(() => {
-        return () => {
-            if (previewImage) {
-                URL.revokeObjectURL(previewImage);
-            }
-        };
-    }, [previewImage]);
+        AxiosInstance.get<User>(`/user/${id}`)
+            .then(response => {
+                setUser(response.data);
+                setError(null);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                setError('Failed to fetch user data');
+                setUser(null);
+            });
+    }, [id]);
 
-    const uploadImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (!file) {
-            setError('No file selected');
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
+    if (!user) {
+        return <div>Loading...</div>;
+    }
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (!isAdmin) return;
+        const { name, value } = event.target;
+        setUser(prevUser => ({
+            ...prevUser!,
+            [name]: value
+        }));
+    }
+
+    const handleUpdate = (event: React.FormEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        if (!isAdmin) {
+            setError('Only admins can update user information');
             return;
         }
-    
-        const previewURL = URL.createObjectURL(file);
-        setPreviewImage(previewURL);
-    
-        const formData = new FormData();
-        formData.append('file', file);
-    
-        setIsLoading(true);
-        try {
-            const response = await AxiosInstance.post('/user/upload-image', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            console.log('Image uploaded successfully:', response.data);
-            if (response.data.file && userImage) {
-                setUserImage({...userImage, file: response.data.file});
-            }
-            setError(null);
-        } catch (error) {
-            console.error('Error uploading image:', error);
-            setError('Failed to upload image');
-        } finally {
-            setIsLoading(false);
+        const userToUpdate = {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            phone: user.phone,
+            email: user.email,
         }
+        AxiosInstance.patch(`/user/${id}`, userToUpdate)
+            .then(() => {
+                console.log('User updated successfully');
+                navigate('/home')
+            })
+            .catch(error => {
+                console.error('Error updating user:', error);
+                console.log(user)
+                setError('Failed to update user');
+            });
     };
-
-    return {uploadImage, previewImage, error, isLoading, userImage}
+    return { user, handleChange, handleUpdate, error };
 }
-
-
-
-

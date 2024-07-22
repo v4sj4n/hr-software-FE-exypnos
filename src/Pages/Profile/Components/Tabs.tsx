@@ -1,35 +1,36 @@
-import { useState } from 'react';
+import { useState } from 'react'
 import Card from '../../../Components/Card/Card';
-import style from "../Profile.module.css";
-import ProfileForm from './ProfileForm/ProfileForm';
+import style from "../Profile.module.css"
+import SignUp from './SignUp/SignUp';
 import Contrat from './Contrat/Contrat';
-import ChangePass from './ChangePass/ChangePass';
 
-const MyProfile = () => (
-    <ProfileForm/>
+const MyEvents = () => (
+    <SignUp/>
 );
 
 const Contract = () => (
     <Contrat/>
 );
 
-const ChangePassword = () => (
-    <ChangePass/>
+const Settings = () => (
+    <div>
+        <h2>Settings</h2>
+    </div>
 );
 
 export default function Tabs() {
-    const [activeTab, setActiveTab] = useState("MyProfile");
+    const [activeTab, setActiveTab] = useState("myEvents");
 
     const renderActiveComponent = () => {
         switch(activeTab) {
-            case "MyProfile":
-                return <MyProfile />;
+            case "myEvents":
+                return <MyEvents />;
             case "Contract":
                 return <Contract />;
-            case "ChangePassword":
-                return <ChangePassword />;
+            case "Settings":
+                return <Settings />;
             default:
-                return <MyProfile />;
+                return <MyEvents />;
         }
     };
 
@@ -37,10 +38,10 @@ export default function Tabs() {
         <Card>
             <div className={style.tabs}>
                 <button
-                    className={`${style.tab} ${activeTab === "MyProfile" ? style.activetab : ""} actions`}
-                    onClick={() => setActiveTab("MyProfile")}
+                    className={`${style.tab} ${activeTab === "myEvents" ? style.activetab : ""} actions`}
+                    onClick={() => setActiveTab("myEvents")}
                 >
-                    My Profile
+                    My Events
                 </button>
                 <button
                     className={`${style.tab} ${activeTab === "Contract" ? style.activetab : ""} actions`}
@@ -49,13 +50,13 @@ export default function Tabs() {
                     Contract
                 </button>
                 <button
-                    className={`${style.tab} ${activeTab === "ChangePassword" ? style.activetab : ""} actions`}
-                    onClick={() => setActiveTab("ChangePassword")}
+                    className={`${style.tab} ${activeTab === "Settings" ? style.activetab : ""} actions`}
+                    onClick={() => setActiveTab("Settings")}
                 >
-                    Change Password
+                    Settings
                 </button>
             </div>
             {renderActiveComponent()}
         </Card>
-    );
+    )
 }

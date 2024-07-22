@@ -1,7 +1,7 @@
 import Input from "../../../../Components/Input/input";
 import { ButtonTypes } from "../../../../Components/Button/ButtonTypes";
 import Button from "../../../../Components/Button/Button";
-import style from '../ProfileForm/ProfileForm.module.css'
+import style from '../SignUp/SignUp.module.css'
 
 const Contrat = () => {
     
