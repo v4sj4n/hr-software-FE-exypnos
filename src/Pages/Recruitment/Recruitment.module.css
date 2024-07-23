@@ -1,0 +1,26 @@
+.container {
+    display: flex;
+    padding: 50px;
+    height: 100%;
+    gap: 150px;   
+    background-image: url('../../../Public/Images/background\ \(1\).png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+
+.img2 {
+    width: 150px;
+    height: auto;
+}
+
+.title {
+    color: #000000;
+    font-weight: bolder;
+    font-size: 20px;
+    font-family: "Outfit", sans-serif;
+}

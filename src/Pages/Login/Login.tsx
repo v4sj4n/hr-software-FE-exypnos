@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import Card from '../../Components/Card/Card';
-import Input from '../../Components/Input/input';
+import Input from '../../Components/Input/Index';
 import Button from '../../Components/Button/Button';
 import { ButtonTypes } from '../../Components/Button/ButtonTypes';
-import img from '../../Assets/10-Functions-of-Human-Resource-Management-banner2 1 (1).png'
-import logo from "../../Assets/image_1-removebg-preview.png"
-import { useLogin } from '../../Hooks/Actions';
+import img from '../../../Public/Images/HeroImage.png'
+import logo from "../../../Public/Images/image_1-removebg-preview.png"
+import { useLogin } from './Hook';
 import ClipLoader from "react-spinners/ClipLoader";
 import style from './Login.module.css'
 
@@ -34,7 +34,7 @@ const Login: React.FC = () => {
                 <img className={style.img} alt="img" src={img} />
                 <Link style={{ textDecoration: "none", color: "#FFFFFF", fontSize:"18px" }} to='/'>Code With Love</Link>
             </div>
-            <Card>
+            <Card padding='30px' gap='20px'>
                 <div style={{ display: 'flex', justifyContent: 'center' }}><img className={style.img2} alt="img" src={logo} /></div>
                 <div className={style.title}>
                     Login
@@ -44,6 +44,7 @@ const Login: React.FC = () => {
                     name='email'
                     value={enteredEmail}
                     IsUsername
+                    width='350px'
                     onChange={emailChangeHandler}
                     onBlur={emailBlurHandler}
                     type="email"
@@ -60,6 +61,7 @@ const Login: React.FC = () => {
                     onBlur={passwordBlurHandler}
                     errortext="Password must be 8  and contain at least one number or one uppercase letter."
                     type={showPassword}
+                    width='350px'
                     isPassword
                     onClick={handleClickShowPassword}
                     onMouseDown={handleMouseDownPassword}

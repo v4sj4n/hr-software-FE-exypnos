@@ -1,68 +1,40 @@
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { useGetAllUsers } from '../../Hooks/Actions';
-import { Link } from 'react-router-dom';
-import { TableStyles } from '../Input/Styles';
+import { DataGrid, GridColDef, GridValidRowModel } from '@mui/x-data-grid';
+import React from 'react';
 
-export default function DataTable() {
+interface DataTableProps<T extends GridValidRowModel> {
+  data: T[];
+  columns: GridColDef[];
+  getRowId: (row: T) => string | number;
+  height?: number | string;
+  width?: number | string;
+  initialPageSize?: number;
+  pageSizeOptions?: number[];
+  additionalStyles?: React.CSSProperties;
+}
 
-  const {users} = useGetAllUsers();
-
-  const columns: GridColDef[] = [
-    { field: 'id', headerName: 'No', width: 80 },
-    { field: 'firstName', headerName: 'First name', width: 150 },
-    { field: 'lastName', headerName: 'Last name', width: 150 },
-    {
-      field: 'email', 
-      headerName: 'Email',
-      type: 'string',
-      width: 250,
-    },
-    {
-      field: 'role', 
-      headerName: 'Role',
-      type: 'string',
-      width: 150,
-    },
-    { 
-      field: 'fullName', 
-      headerName: 'Full Name', 
-      width: 200,
-      renderCell: (params) => (
-        <Link style={{textDecoration:"none", color:"#4C556B"}} to={`/profile/${params.row.originalId}`}>
-          {params.value}
-        </Link>
-      )
-    },
-  ];
-  
-
-  const rows = users.map((user, index) => ({
-    id: index + 1, 
-    originalId: user._id, 
-    firstName: user.firstName,
-    role: user.role, 
-    lastName: user.lastName,
-    email: user.auth?.email, 
-    fullName: `${user.firstName} ${user.lastName}`,
-  }));
-
-
-
+export default function DataTable<T extends GridValidRowModel>({
+  data,
+  columns,
+  getRowId,
+  height = 400,
+  width = '100%',
+  initialPageSize = 5,
+  pageSizeOptions = [5, 10],
+  additionalStyles = {}
+}: DataTableProps<T>) {
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height, width }}>
       <DataGrid
-        rows={rows}
+        rows={data}
         columns={columns}
-        getRowId={(row) => row.id}
-       sx={{...TableStyles}}
+        getRowId={getRowId}
+        sx={additionalStyles}
         initialState={{
           pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
+            paginationModel: { page: 0, pageSize: initialPageSize },
           },
         }}
-        
-        pageSizeOptions={[5, 10]}
-        
+        pageSizeOptions={pageSizeOptions}
       />
     </div>
   );

@@ -1,11 +1,11 @@
 export const inputStyles = {
-  "& .css-1gctnaj-MuiInputBase-input-MuiFilledInput-input":{
-      padding: "7px 5px", 
-    },
+  "& .css-1gctnaj-MuiInputBase-input-MuiFilledInput-input": {
+    padding: "20px 3px 5px",
+    verticalAlign: "bottom",
+  },
   "& .MuiFormHelperText-root": {
     fontFamily: '"Outfit", sans-serif',
   },
-  maxWidth: "350px",
   "& .MuiFilledInput-root": {
     border: "1px solid #999999",
     overflow: "hidden",
@@ -13,25 +13,21 @@ export const inputStyles = {
     borderRadius: 1,
     fontFamily: '"Outfit", sans-serif',
     color: "#000000",
-    fontSize: "16px",
-    padding: "7px 5px", 
+    fontSize: "14px",
+    padding: "0",
 
     "&.Mui-focused": {
       backgroundColor: "transparent",
-      boxShadow: `none`,
-      fontFamily: '"Outfit", sans-serif',
+      boxShadow: "none",
       borderColor: "#999999",
       color: "#000000",
-      fontSize: "16px",
-      padding: "7px 5px", 
+      fontSize: "14px",
     },
     "&:hover": {
       backgroundColor: "transparent",
       color: "#000000",
       borderColor: "#999999",
-      fontFamily: '"Outfit", sans-serif',
-      fontSize: "16px",
-      padding: "7px 5px", 
+      fontSize: "14px",
     },
     "& input[type=number]::-webkit-outer-spin-button": {
       WebkitAppearance: "none",
@@ -41,12 +37,12 @@ export const inputStyles = {
       WebkitAppearance: "none",
       margin: 0,
     },
-    "& .css-10botns-MuiInputBase-input-MuiFilledInput-input ": {
+    "& .css-10botns-MuiInputBase-input-MuiFilledInput-input": {
       color: "#000000",
-      fontSize: "16px",
-      padding: "7px 5px", 
+      fontSize: "14px",
+      padding: "20px 3px 5px",
+      verticalAlign: "bottom",
     },
-    
   },
 }
 

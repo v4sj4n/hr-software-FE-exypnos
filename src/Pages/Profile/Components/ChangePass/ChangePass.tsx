@@ -1,5 +1,5 @@
 import { useState } from "react"
-import Input from "../../../../Components/Input/input"
+import Input from "../../../../Components/Input/Index"
 import Button from "../../../../Components/Button/Button"
 import { ButtonTypes } from "../../../../Components/Button/ButtonTypes"
 import AxiosInstance from "../../../../Helpers/Axios"
