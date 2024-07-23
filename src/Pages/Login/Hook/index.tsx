@@ -1,27 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import useInput, { InputHookReturn } from "../Hooks/use-inpute"
-import { useAuth } from '../Context/AuthProvider';
-import { LoginErrorType } from '../Helpers/AuthMessages';
-import AxiosInstance from '../Helpers/Axios';
+import useInput, { InputHookReturn } from '../../../Hooks/use-inpute';
+import { useAuth } from '../../../Context/AuthProvider';
+import { LoginErrorType } from '../../../Helpers/AuthMessages';
+import AxiosInstance from '../../../Helpers/Axios';
 
-
-export interface UserProfileData {
-    auth: {
-        email: string;
-    };
-    lastName: string;
-    phone: string;
-    pob: string;
-    dob: string;
-    gender: string;
-    role: string;
-    firstName: string;
-    imageUrl: string;
-    file: string;
-    _id: number;
-}
 
 export const useLogin = () => {
     const { login } = useAuth();
@@ -120,81 +104,3 @@ export const useLogin = () => {
         userRole,
     };
 };
-
-
-
-export const useGetAllUsers = () => {
-    const [users, setUsers] = useState<UserProfileData[]>([]);
-    const [error, setError] = useState<string | null>(null);
-    const API_URL = import.meta.env.VITE_API_URL;
-
-    useEffect(() => {
-        AxiosInstance.get<UserProfileData[]>('/user')
-            .then(response => {
-                setUsers(response.data);
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                setError("Failed to fetch users. Please try again later.");
-            });
-    }, [API_URL]);
-
-    return { users, error };
-}
-
-
-export const useFileUpload = () => {
-
-    const [previewImage, setPreviewImage] = useState<string | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [userImage, setUserImage] = useState<UserProfileData | null>(null);
-
-    useEffect(() => {
-        return () => {
-            if (previewImage) {
-                URL.revokeObjectURL(previewImage);
-            }
-        };
-    }, [previewImage]);
-
-    const uploadImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (!file) {
-            setError('No file selected');
-            return;
-        }
-    
-        const previewURL = URL.createObjectURL(file);
-        setPreviewImage(previewURL);
-    
-        const formData = new FormData();
-        formData.append('file', file);
-    
-        setIsLoading(true);
-        try {
-            const response = await AxiosInstance.post('/user/upload-image', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            console.log('Image uploaded successfully:', response.data);
-            if (response.data.file && userImage) {
-                setUserImage({...userImage, file: response.data.file});
-            }
-            setError(null);
-        } catch (error) {
-            console.error('Error uploading image:', error);
-            setError('Failed to upload image');
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    return {uploadImage, previewImage, error, isLoading, userImage}
-}
-
-
-
-

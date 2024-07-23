@@ -15,16 +15,10 @@ const Button: React.FC<ButtonProps> = ({ type, btnText, disabled, onClick }) => 
     switch (type) {
       case ButtonTypes.PRIMARY:
         return "primaryBtn button";
-      case ButtonTypes.CreateEmploye:
-        return "employ button";
       case ButtonTypes.SECONDARY:
         return "secondaryBtn";
       case ButtonTypes.TERTIARY:
         return "tertiaryBtn";
-      case ButtonTypes.FOLLOW:
-        return "followBtn";
-      case ButtonTypes.POST:
-        return "postBtn";
       case ButtonTypes.DISABLED:
         return "disabled";
       default:
