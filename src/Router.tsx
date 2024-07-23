@@ -1,14 +1,14 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import App from './App'
-import Login from './Pages/Login/Login'
-import Homepage from './Pages/Homepage'
-import Profile from './Pages/Profile/Profile'
-import PrivateRoute from './Context/ProtectedRoute.tsx'
-import ResetPass from './Pages/Login/Component/ResetPass'
-import Signup from './Pages/Signup'
-import Dashboard from './Pages/Dashboard/dashboard.tsx'
-import Assets from './Pages/Assets/assets.tsx'
 
+import App from './App'
+import PrivateRoute from './Context/ProtectedRoute.tsx'
+import Assets from './Pages/Assets/assets.tsx'
+import Dashboard from './Pages/dashboard.tsx'
+import Homepage from './Pages/Homepage'
+import ResetPass from './Pages/Login/Component/ResetPass'
+import Login from './Pages/Login/Login'
+import Profile from './Pages/Profile/Profile'
+import Signup from './Pages/Signup'
 
 export default function Router() {
   const router = createBrowserRouter([

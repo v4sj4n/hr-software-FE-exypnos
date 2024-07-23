@@ -46,7 +46,7 @@ export default function Homepage() {
             <button onClick={handleLogOut}>Logout</button> */}
            <Header />
       <div className={style.container}>
-        <SideBar />
+        <SideBar isOpen />
         <div style={{display:"flex",width:"100%", flexDirection:"column", padding:"0 16px"}}>
             <div style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
             <div className={style.account}>Employe List</div>
@@ -54,6 +54,7 @@ export default function Homepage() {
             </div>
           <DataTable />
         </div>
+        
       </div>
         </>
     );
