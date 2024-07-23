@@ -5,45 +5,42 @@
   padding: 1rem;
     background:#fdfdfe;
     width: 100%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
-
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
-
 .headerLeft {
   display: flex;
    align-items: center;
 }
-
 .logo img {
 width:35px;
 height: 30px;
   margin-left: 30px;
-  /* margin-bottom: 15px; */
 
 }
+
+
 
 .title h4{
   color: black;
   font-style: normal;
   font-weight: bold;
   padding-left: 10px;
+
+  display: flex;
+
 }
 .title1 h4{
   color: black;
   font-style: normal;
 }
-
 .headerRight {
   display: flex;
   align-items: center;
 }
-
 .icon {
   margin-left: 20px;
   position: relative;
 }
-
 .icon .badge {
   position: absolute;
   top: -10px;
@@ -54,7 +51,6 @@ height: 30px;
   padding: 2px 5px;
   font-size: 10px;
 }
-
 .username {
   margin-left: 10px;
 }

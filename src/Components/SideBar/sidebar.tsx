@@ -16,25 +16,17 @@ import style from './sidebar.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-
 const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void; }> = ({ isOpen, toggleSidebar }) => {
     // const [isOpen, setIsOpen] = useState(true);
     const [employeeDropdownOpen, setEmployeeDropdownOpen] = useState(false);
     const [eventsDropdownOpen, setEventsDropdownOpen] = useState(false);
 
-    // const toggleSidebar = () => {
-    //     setIsOpen(!isOpen);
-    // };
-   
-
     const toggleEmployeeDropdown = () => {
         setEmployeeDropdownOpen(!employeeDropdownOpen);
     };
-
     const toggleEventsDropdown = () => {
         setEventsDropdownOpen(!eventsDropdownOpen);
     };
-
     return (
         <div>
             <div className={style.toggleButton} onClick={toggleSidebar}>
@@ -101,5 +93,4 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void; }> = ({ is
         </div>
     );
 };
-
 export default SideBar;

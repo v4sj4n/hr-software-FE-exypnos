@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar} from "@mui/material";
-import Input from "../../../../Components/Input/input";
+import Input from "../../../../Components/Input/Index";
 import { ButtonTypes } from "../../../../Components/Button/ButtonTypes";
 import Button from "../../../../Components/Button/Button";
 import style from "./ProfileForm.module.css";
@@ -8,7 +8,8 @@ import Image from '../../../../Components/uploads/uploadImage';
 import AxiosInstance from "../../../../Helpers/Axios";
 import { useAuth } from "../../../../Context/AuthProvider";
 import { useNavigate, useParams } from "react-router-dom";
-import { useFileUpload, UserProfileData } from '../../../../Hooks/Actions';
+import { useFileUpload } from '../../Hook';
+import { UserProfileData } from '../../../../Interface/Interface';
 
 const ProfileForm = () => {
     const { id } = useParams<{ id: string }>();
@@ -118,36 +119,36 @@ const ProfileForm = () => {
 
                 </div>
                 <div className={style.inputWidth}>
-                    <Input IsUsername label="firstName" disabled={!isAdmin} name="firstName" onChange={handleChange} value={user.firstName} />
+                    <Input IsUsername label="firstName" width='350px' disabled={!isAdmin} name="firstName" onChange={handleChange} value={user.firstName} />
                 </div>
             </div>
 
             <div className={style.forms}>
                 <div className={style.inputWidth}>
-                    <Input IsUsername type="email" label="Email" name="email" disabled={!isAdmin} onChange={handleChange} value={user.auth.email} />
+                    <Input IsUsername type="email" width='350px' label="Email" name="email" disabled={!isAdmin} onChange={handleChange} value={user.auth.email} />
                 </div>
                 <div className={style.inputWidth}>
-                    <Input IsUsername name="lastName" disabled={!isAdmin} label="lastName" onChange={handleChange} value={user.lastName} />
-                </div>
-            </div>
-
-            <div className={style.forms}>
-                <div className={style.inputWidth}>
-                    <Input IsUsername label="BirthDate" disabled={!isAdmin} name="dob" onChange={handleChange} value={user.dob} />
-                </div>
-                <div className={style.inputWidth}>
-                    <Input IsUsername disabled={!isAdmin} label="CountryOfBirth" name="pob" onChange={handleChange} value={user.pob} />
+                    <Input IsUsername name="lastName"width='350px' disabled={!isAdmin} label="lastName" onChange={handleChange} value={user.lastName} />
                 </div>
             </div>
 
             <div className={style.forms}>
                 <div className={style.inputWidth}>
-                    <Input IsUsername label="Gender" disabled={!isAdmin} name="gender" onChange={handleChange} value={user.gender} />
+                    <Input IsUsername label="BirthDate" width='350px' disabled={!isAdmin} name="dob" onChange={handleChange} value={user.dob} />
+                </div>
+                <div className={style.inputWidth}>
+                    <Input IsUsername disabled={!isAdmin} width='350px' label="CountryOfBirth" name="pob" onChange={handleChange} value={user.pob} />
+                </div>
+            </div>
+
+            <div className={style.forms}>
+                <div className={style.inputWidth}>
+                    <Input IsUsername label="Gender"  width='350px'disabled={!isAdmin} name="gender" onChange={handleChange} value={user.gender} />
 
                 </div>
                 <div className={style.inputWidth}>
 
-                    <Input IsUsername name="phone" disabled={!isAdmin} label="PhoneNumber" onChange={handleChange} value={user.phone} />
+                    <Input IsUsername name="phone" width='350px' disabled={!isAdmin} label="PhoneNumber" onChange={handleChange} value={user.phone} />
                 </div>
             </div>
 

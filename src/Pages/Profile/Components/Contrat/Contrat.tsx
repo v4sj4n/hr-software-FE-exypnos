@@ -1,4 +1,4 @@
-import Input from "../../../../Components/Input/input";
+import Input from "../../../../Components/Input/Index";
 import { ButtonTypes } from "../../../../Components/Button/ButtonTypes";
 import Button from "../../../../Components/Button/Button";
 import style from '../ProfileForm/ProfileForm.module.css'

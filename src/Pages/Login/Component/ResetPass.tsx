@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Card from '../../../Components/Card/Card';
-import Input from '../../../Components/Input/input';
+import Input from '../../../Components/Input/Index';
 import Button from '../../../Components/Button/Button';
 import { ButtonTypes } from '../../../Components/Button/ButtonTypes';
-import img from '../../../Assets/10-Functions-of-Human-Resource-Management-banner2 1 (1).png'
-import logo from "../../../Assets/image_1-removebg-preview.png"
-import { useLogin } from '../../../Hooks/Actions';
+import img from '../../../../Public/Images/HeroImage.png'
+import logo from "../../../../Public/Images/image_1-removebg-preview.png"
+import { useLogin } from '../Hook';
 import ClipLoader from "react-spinners/ClipLoader";
 import style from '../Login.module.css'
 

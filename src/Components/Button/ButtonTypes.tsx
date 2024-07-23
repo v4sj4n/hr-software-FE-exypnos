@@ -3,7 +3,4 @@ export const ButtonTypes = {
     SECONDARY: "SECONDARY",
     TERTIARY: "TERTIARY",
     DISABLED: "DISABLED",
-    FOLLOW:"followBtn",
-    POST:'POST',
-    CreateEmploye:"CreateEmploye"
   };
