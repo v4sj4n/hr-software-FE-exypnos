@@ -24,6 +24,15 @@
     padding: 20px;
     margin-bottom: 20px;
   }
+background-image: url('../src/Assets/blue.jpg');  
+color: #2457a3;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+
+}
+
+
 .cardContainer {
   display: flex;
   gap: 20px;
@@ -39,6 +48,11 @@
   text-align: center;
   transition: background-color 0.3s ease;
 }
+  
+
+
+
+
 .cardGreen {
   background-image: linear-gradient(180deg, #E0F2F7, #A8E0F0);
 }.cardBlue {

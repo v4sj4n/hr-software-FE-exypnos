@@ -20,9 +20,7 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void; }> = ({ is
     // const [isOpen, setIsOpen] = useState(true);
     const [employeeDropdownOpen, setEmployeeDropdownOpen] = useState(false);
     const [eventsDropdownOpen, setEventsDropdownOpen] = useState(false);
-    // const toggleSidebar = () => {
-    //     setIsOpen(!isOpen);
-    // };
+
     const toggleEmployeeDropdown = () => {
         setEmployeeDropdownOpen(!employeeDropdownOpen);
     };

@@ -2,8 +2,8 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import React from 'react';
-import codeviderLogo from '../../../Public/Images/codevider.png'
-import style from './header.module.css'
+import codeviderLogo from '../Assets/codevider.png'
+import  style from '../Components/header.module.css'
 
 
 const Header: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
@@ -11,7 +11,7 @@ const Header: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
     <header className={style.header}>
       <div className={style.headerLeft}>
         <div className={style.logo}>
-          <img alt='logo' src={codeviderLogo}  />
+          <img alt='logo' src={codeviderLogo}  /> 
         </div>
         {isOpen && (
           <>
@@ -21,8 +21,10 @@ const Header: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
         <div className={style.title1}>
         <h4>Vider</h4>
         </div>
+      
         </>
         )}
+
       </div>
       <div className={style.headerRight}>
         <div className={style.icon}>
@@ -42,6 +44,3 @@ const Header: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
 }
 
 export default Header;
-
-
-

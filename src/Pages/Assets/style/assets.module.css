@@ -1,0 +1,9 @@
+.container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.title{
+    padding: 20px;
+}
