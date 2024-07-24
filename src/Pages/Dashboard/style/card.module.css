@@ -1,21 +1,21 @@
 
   
   .card p {
-    color: #ffffff;
-align-items: center;
+    color: #2457a3;
+    align-items: center;
+
   }
   
   .card h2 {
-    color: #ffffff;
+    color: #2457a3;
     font-size: medium;
     font-weight: bold;
 align-items: center;
+
   }
   
   
    
-  .CardIcon {
-    font-size:xx-large; 
-    margin-bottom: 4%;
-
-  }
+  .cardIcon {
+font-size: large;
+ }
