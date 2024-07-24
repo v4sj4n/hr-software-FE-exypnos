@@ -10,7 +10,7 @@ interface User {
     [key: string]: string;
 }
 
-const Signup: React.FC = () => {
+const CreateEmplye: React.FC = () => {
 
     const [user, setUser] = useState<User>({
         email: '',
@@ -54,4 +54,4 @@ event.preventDefault();
     );
 };
 
-export default Signup;
+export default CreateEmplye;

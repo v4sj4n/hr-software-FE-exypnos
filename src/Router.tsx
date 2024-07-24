@@ -4,7 +4,7 @@ import Employees from './Pages/Employees/Employees.tsx'
 import Profile from './Pages/Profile/Profile'
 import PrivateRoute from './Context/ProtectedRoute.tsx'
 import ResetPass from './Pages/Login/Component/ResetPass'
-import Signup from './Pages/Signup'
+import CreateEmplye from './Pages/CreateEmploye.tsx'
 import Dashboard from './Pages/Dashboard/Dashboard.tsx'
 import Recruitment from './Pages/Recruitment/Recruitment.tsx'
 import Assets from './Pages/Assets/assets.tsx'
@@ -51,8 +51,8 @@ export default function Router() {
           element: <Payroll />,
         },
         {
-          path: 'signup',
-          element: <Signup />,
+          path: 'createEmplye',
+          element: <CreateEmplye />,
         },
         {
           path: 'structure',
