@@ -1,17 +1,20 @@
 import Card1 from '../../Components/Card/Card.tsx'
-import InfoSection from "./components/infoSection.tsx";
 import style from '../Dashboard/style/dashboard.module.css'
-import PieChartComponent from "./components/piechart.tsx";
 import Calendar from "./components/calendar.tsx";
 import Card from './components/card.tsx';
+import InfoSection from "./components/infoSection.tsx";
+import PieChartComponent from "./components/piechart.tsx";
+import { useDashboardContext,DashboardProvider } from './context/hook.tsx';
 
-const Dashboard: React.FC = () => {
+
+const DashboardContent: React.FC = () => {
+  const { employeeData } = useDashboardContext();
 
   const data = [
-    { name: "Present", value: 20 },
-    { name: "Absent", value: 10 },
-    { name: "On Leave", value: 5 },
-    { name: "Remote", value: 15 },
+    { name: "Present", value: employeeData.present },
+    { name: "Absent", value: employeeData.absent },
+    { name: "On Leave", value: employeeData.onLeave },
+    { name: "Remote", value: employeeData.remote },
   ];
 
   return (
@@ -23,15 +26,15 @@ const Dashboard: React.FC = () => {
             <p>Here's what's happening with your team today</p>
           </div>
           <div className={style.cardContainer}>
-            <div className={style.cardGreen}><Card  title="Present" content="20" icon="Present" /></div>
-            <div className={style.cardBlue}><Card title="Absent" content="8" icon="Absent" /></div>
-            <div className={style.cardYellow}><Card title="On Leave" content="5" icon="On Leave" /></div>
-            <div className={style.cardPurple}><Card title="Remote" content="3" icon="Remote" /></div>
+            <div className={style.cardGreen}><Card title="Present" content={employeeData.present.toString()} icon="Present" /></div>
+            <div className={style.cardBlue}><Card title="Absent" content={employeeData.absent.toString()} icon="Absent" /></div>
+            <div className={style.cardYellow}><Card title="On Leave" content={employeeData.onLeave.toString()} icon="On Leave" /></div>
+            <div className={style.cardPurple}><Card title="Remote" content={employeeData.remote.toString()} icon="Remote" /></div>
           </div>
           <div className={style.middleRow}>
             <Card1 padding='20px' borderRadius='15px' height='350px'>
-            <h3>Calendar</h3>
-            <Calendar />
+              <h3>Calendar</h3>
+              <Calendar />
             </Card1>
             <div className={style.infoSection}>
               <InfoSection />
@@ -49,4 +52,13 @@ const Dashboard: React.FC = () => {
     </div>
   );
 };
+
+const Dashboard: React.FC = () => {
+  return (
+    <DashboardProvider>
+      <DashboardContent />
+    </DashboardProvider>
+  );
+};
+
 export default Dashboard;

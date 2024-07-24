@@ -8,9 +8,10 @@ interface ButtonProps {
   btnText: string | JSX.Element;
   disabled?: boolean;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+
 }
 
-const Button: React.FC<ButtonProps> = ({ type, btnText, disabled, onClick }) => {
+const Button: React.FC<ButtonProps> = ({ type, btnText, disabled, onClick}) => {
   const getButtonClass = (): string => {
     switch (type) {
       case ButtonTypes.PRIMARY:
@@ -24,6 +25,7 @@ const Button: React.FC<ButtonProps> = ({ type, btnText, disabled, onClick }) => 
       default:
         return "primaryBtn";
     }
+
   };
 
   return (
@@ -32,6 +34,7 @@ const Button: React.FC<ButtonProps> = ({ type, btnText, disabled, onClick }) => 
       type={type === ButtonTypes.DISABLED ? "button" : "submit"}
       onClick={onClick}
       className={getButtonClass()}
+
     >
       {btnText}
     </button>

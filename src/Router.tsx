@@ -19,6 +19,10 @@ export default function Router() {
       element: <Login/>,
     },
     {
+      path: "Interview",
+      element: <Interview />,
+    },
+    {
       path: "recruitment",
       element: <Recruitment />,
     },
@@ -52,10 +56,7 @@ export default function Router() {
           path: "Vacation",
           element: <Vacation />,
         },
-        {
-          path: "Interview",
-          element: <Interview />,
-        },
+        
       ],
     },
   ]);

@@ -14,7 +14,7 @@ import React ,{ useState } from 'react';
 import style from './sidebar.module.css'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { Link } from 'react-router-dom';
 
 const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void; }> = ({ isOpen, toggleSidebar }) => {
     // const [isOpen, setIsOpen] = useState(true);
@@ -35,58 +35,58 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void; }> = ({ is
             <nav className={`${style.nav} ${isOpen ? style.navOpen : style.navClosed}`}>
                 <div className={style.navbar}>
                     <div className={style.item}>
-                        <a className={style.link} href="/dashboard">
+                        <Link to= "/dashboard" className={style.link} >
                             <DashboardIcon className={style.icon} />
                             {isOpen && <span className={style.text}>Dashboard</span>}
-                        </a>
+                        </Link>
                     </div>
                     <div className={style.item}>
-                        <a className={style.link} href="/recruiting">
+                        <Link to="/recruitment" className={style.link} >
                             <PeopleIcon className={style.icon} />
                             {isOpen && <span className={style.text}>Recruiting</span>}
-                        </a>
+                        </Link>
                     </div>
                     <div className={style.item} onClick={toggleEmployeeDropdown}>
-                        <a className={style.link} href="#employee">
+                        <Link to="#employee" className={style.link} >
                             <GroupIcon className={style.icon} />
                             {isOpen && <span className={style.text}>Employee</span>}
                             {employeeDropdownOpen ? <ExpandLessIcon className={style.expandIcon} /> : <ExpandMoreIcon className={style.expandIcon} />}
-                        </a>
+                        </Link>
                     </div>
                     <div className={`${style.dropdownMenu} ${employeeDropdownOpen ? style.open : ''}`}>
-                        <a className={style.dropdownItem} href="/employee">Employees</a>
-                        <a className={style.dropdownItem} href="/payroll">Payroll</a>
-                        <a className={style.dropdownItem} href="/noLeave">On Leave</a>
-                        <a className={style.dropdownItem} href="/promotion">Promotion</a>
+                        <Link to="/employees">Employees className={style.dropdownItem} </Link>
+                        <Link to="/payroll">Payroll className={style.dropdownItem} </Link>
+                        <Link  to="/noLeave">On Leave className={style.dropdownItem}</Link>
+                        <Link to="/promotion">Promotion className={style.dropdownItem} </Link>
                     </div>
                     <div className={style.item}>
-                        <a className={style.link} href="/assets">
+                        <Link to="/assets" className={style.link} >
                             <LaptopIcon className={style.icon} />
                             {isOpen && <span className={style.text}>Assets</span>}
-                        </a>
+                        </Link>
                     </div>
                     <div className={style.item}>
-                        <a className={style.link} href="/structure">
+                        <Link  to="/structure" className={style.link}>
                             <BusinessIcon className={style.icon} />
                             {isOpen && <span className={style.text}>Structure</span>}
-                        </a>
+                        </Link>
                     </div>
                     <div className={style.item} onClick={toggleEventsDropdown}>
-                        <a className={style.link} href="#events">
+                        <Link to="#events" className={style.link} >
                             <EventIcon className={style.icon} />
                             {isOpen && <span className={style.text}>Events</span>}
                             {eventsDropdownOpen ? <ExpandLessIcon className={style.expandIcon} /> : <ExpandMoreIcon className={style.expandIcon} />}
-                        </a>
+                        </Link>
                     </div>
                     <div className={`${style.dropdownMenu} ${eventsDropdownOpen ? style.open : ''}`}>
-                        <a className={style.dropdownItem} href="/activities">Activities</a>
-                        <a className={style.dropdownItem} href="/career">Career</a>
+                        <Link  to="/activities">Activities className={style.dropdownItem}</Link>
+                        <Link  to="/career">Career className={style.dropdownItem}</Link>
                     </div>
                     <div className={style.item}>
-                        <a className={style.link} href="/historic">
+                        <Link to="/historic" className={style.link} >
                             <HistoryIcon className={style.icon} />
                             {isOpen && <span className={style.text}>Historic</span>}
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </nav>
