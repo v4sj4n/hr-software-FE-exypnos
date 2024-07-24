@@ -1,6 +1,6 @@
-import { useGetAllUsers } from "./Hook";
-import style from './Employees.module.css'
 import DataTable from "../../Components/Table/Table";
+import style from './Employees.module.css'
+import { useGetAllUsers } from "./Hook";
 
 export default function Employees() {
     const { users } = useGetAllUsers();
@@ -26,7 +26,7 @@ export default function Employees() {
         { field: 'fullName', headerName: 'Full Name', width: 200 },
     ];
 
-    const getRowId = (row ) => row.id;
+    const getRowId = (row) => row.id;
 
     return (
         <>
