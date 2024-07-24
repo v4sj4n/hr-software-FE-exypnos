@@ -18,20 +18,12 @@
   flex-direction: column;
 }
 .welcome {
-  background-image: url('../../../../Public/Images/blue.jpg');
+  background-image: url('/Images/blue.jpg');
   color: #2457A3;
     border-radius: 15px;
     padding: 20px;
     margin-bottom: 20px;
   }
-background-image: url('../src/Assets/blue.jpg');  
-color: #2457a3;
-  border-radius: 15px;
-  padding: 20px;
-  margin-bottom: 20px;
-
-}
-
 
 .cardContainer {
   display: flex;

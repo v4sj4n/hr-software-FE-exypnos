@@ -2,10 +2,10 @@ import Button from "../../Components/Button/Button";
 import { ButtonTypes } from "../../Components/Button/ButtonTypes";
 import Input from "../../Components/Input/Index";
 import style from './Recruitment.module.css'
-import logo from '../../../public/Images/image_1-removebg-preview.png'
+import logo from '/Images/image_1-removebg-preview.png'
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import { MuiSelect } from "../../Components/Input/components/Select/autocomplete";
-import image from "../../../public/Images/image.png"
+import image from "/Images/image.png"
 
 export default function Recruitment() {
     return (
