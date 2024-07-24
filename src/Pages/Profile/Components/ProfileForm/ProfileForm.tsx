@@ -1,97 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Avatar} from "@mui/material";
+import { Avatar } from "@mui/material";
 import Input from "../../../../Components/Input/Index";
 import { ButtonTypes } from "../../../../Components/Button/ButtonTypes";
 import Button from "../../../../Components/Button/Button";
 import style from "./ProfileForm.module.css";
 import Image from '../../../../Components/uploads/uploadImage';
-import AxiosInstance from "../../../../Helpers/Axios";
-import { useAuth } from "../../../../Context/AuthProvider";
-import { useNavigate, useParams } from "react-router-dom";
-import { useFileUpload } from '../../Hook';
-import { UserProfileData } from '../../../../Interface/Interface';
+import { useFileUpload } from "../../Context/Hook";
+import { useProfile } from "./Context/Hook";
 
 const ProfileForm = () => {
-    const { id } = useParams<{ id: string }>();
-    const [user, setUser] = useState<UserProfileData | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const navigate = useNavigate();
-    const { userRole, currentUser } = useAuth();
     const { uploadImage, previewImage } = useFileUpload();
-
-    const isCurrentUser = currentUser?._id === id;
-
-    const isAdmin = userRole === 'admin' || userRole === 'hr';
-
-    useEffect(() => {
-        setIsLoading(true);
-        AxiosInstance.get<UserProfileData>(`/user/${id}`)
-            .then(response => {
-                setUser(response.data);
-                console.log('User fetched:', response.data);
-                setError(null);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                setError('Failed to fetch user data');
-                setUser(null);
-            })
-            .finally(() => setIsLoading(false));
-    }, [id]);
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (!isAdmin) return;
-        const { name, value } = event.target;
-        setUser(prevUser => {
-            if (!prevUser) return null;
-            if (name === 'email') {
-                return {
-                    ...prevUser,
-                    auth: {
-                        ...prevUser.auth,
-                        email: value
-                    }
-                };
-            } else {
-                return {
-                    ...prevUser,
-                    [name]: value
-                };
-            }
-        });
-    };
-
-
-    const handleUpdate = async (event: React.FormEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-        if ( !user) {
-            setError('Only admins can update user information');
-            return;
-        }
-
-        const userToUpdate = {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            phone: user.phone,
-            email: user.auth.email,
-            pob: user.pob,
-            dob: user.dob,
-            gender: user.gender,
-        };
-
-        setIsLoading(true);
-        try {
-            const response = await AxiosInstance.patch(`/user/${id}`, userToUpdate);
-            console.log('User updated successfully:', response.data);
-            navigate('/home');
-        } catch (error) {
-            console.error('Error updating user:', error);
-            setError('Failed to update user');
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    const { user, error, isLoading, isCurrentUser, isAdmin, handleChange, handleUpdate } = useProfile();
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -128,7 +46,7 @@ const ProfileForm = () => {
                     <Input IsUsername type="email" width='350px' label="Email" name="email" disabled={!isAdmin} onChange={handleChange} value={user.auth.email} />
                 </div>
                 <div className={style.inputWidth}>
-                    <Input IsUsername name="lastName"width='350px' disabled={!isAdmin} label="lastName" onChange={handleChange} value={user.lastName} />
+                    <Input IsUsername name="lastName" width='350px' disabled={!isAdmin} label="lastName" onChange={handleChange} value={user.lastName} />
                 </div>
             </div>
 
@@ -143,7 +61,7 @@ const ProfileForm = () => {
 
             <div className={style.forms}>
                 <div className={style.inputWidth}>
-                    <Input IsUsername label="Gender"  width='350px'disabled={!isAdmin} name="gender" onChange={handleChange} value={user.gender} />
+                    <Input IsUsername label="Gender" width='350px' disabled={!isAdmin} name="gender" onChange={handleChange} value={user.gender} />
 
                 </div>
                 <div className={style.inputWidth}>
@@ -153,9 +71,9 @@ const ProfileForm = () => {
             </div>
 
             <div className={style.checkboxDiv}>
-                <Input isCheckBox label='Public Holidays' name='check'  disabled={!isAdmin}/>
-                <Input isCheckBox label='Remote' name='check'  disabled={!isAdmin}/>
-                <Input isCheckBox label='External' name='check'  disabled={!isAdmin}/>
+                <Input isCheckBox label='Public Holidays' name='check' disabled={!isAdmin} />
+                <Input isCheckBox label='Remote' name='check' disabled={!isAdmin} />
+                <Input isCheckBox label='External' name='check' disabled={!isAdmin} />
             </div>
             <div className={style.border}></div>
             {isAdmin ? (

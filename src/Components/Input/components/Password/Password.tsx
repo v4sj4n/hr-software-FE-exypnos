@@ -19,6 +19,7 @@ const PasswordInput: React.FC<InputProps> = (props) => {
         label={props.label}
         onBlur={props.onBlur}
         variant="filled"
+        size="small"
         id={props.id}
         type={props.type === true ? "text" : "password"}
         InputLabelProps={{
@@ -37,7 +38,7 @@ const PasswordInput: React.FC<InputProps> = (props) => {
               aria-label="toggle password visibility"
               onClick={props.onClick}
             >
-              {props.type === true ? <VisibilityOff sx={{ color: "#1B5FF4" }} /> : <Visibility />}
+              {props.type === true ? <VisibilityOff  /> : <Visibility />}
             </InputAdornment>
           ),
         }}

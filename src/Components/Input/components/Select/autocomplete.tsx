@@ -1,92 +1,104 @@
-import * as React from 'react';
-import { Theme, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Chip from '@mui/material/Chip';
+import  { useState } from "react";
+import { Box, TextField, Chip, MenuItem } from "@mui/material";
+import { SelectChangeEvent } from '@mui/material/Select';
+import { autoCompleteStyles } from "../../Styles";
+import { InputProps } from "../Interface";
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
-
-function getStyles(name: string, personName: readonly string[], theme: Theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
+interface ChipData {
+  key: number;
+  label: string;
 }
 
-export default function MultipleSelectChip() {
-  const theme = useTheme();
-  const [personName, setPersonName] = React.useState<string[]>([]);
+export const MuiSelect: React.FC<InputProps> = () => {
+    const [chipData, setChipData] = useState<ChipData[]>([]);
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
-  };
+    const handleDelete = (chipToDelete: ChipData) => () => {
+      setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
+    };
 
-  return (
-    <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
-        <Select
-          labelId="demo-multiple-chip-label"
-          id="demo-multiple-chip"
-          variant='filled'
-          multiple
-          value={personName}
-          onChange={handleChange}
-          input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-          renderValue={(selected) => (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} />
-              ))}
-            </Box>
-          )}
-          MenuProps={MenuProps}
-        >
-          {names.map((name) => (
-            <MenuItem
-              key={name}
-              value={name}
-              style={getStyles(name, personName, theme)}
-            >
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
-  );
+    const handleChange = (event: SelectChangeEvent<string[]>) => {
+      const value = event.target.value;
+      const newValue = typeof value === 'string' ? value.split(',') : value;
+      
+      setChipData((prevChips) => {
+        const newChips = newValue
+          .filter((label) => !prevChips.some((chip) => chip.label === label))
+          .map((label) => ({ key: Date.now() + Math.random(), label }));
+        
+        return [...prevChips, ...newChips];
+      });
+    };
+
+    const technologies = ['Angular', 'jQuery', 'Polymer', 'React', 'Vue.js'];
+
+    return (
+        <Box width='620px'>
+            <TextField 
+                sx={{
+                    ...autoCompleteStyles
+                }} 
+                variant="filled" 
+                SelectProps={{ 
+                  multiple: true,
+                  renderValue: (selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {chipData.map((data) => (
+                        <Chip
+                        sx={{fontFamily: '"Outfit", sans-serif', fontSize:"14px"}}
+                          key={data.key}
+                          label={data.label}
+                          onDelete={handleDelete(data)}
+                          onMouseDown={(event) => {
+                            event.stopPropagation();
+                          }}
+                        />
+                      ))}
+                    </Box>
+                  ),
+                }}
+                fullWidth 
+                label='Used technologies' 
+                size="small" 
+                select 
+                value={chipData.map(chip => chip.label)}
+                onChange={handleChange}
+                InputLabelProps={{
+                    style: { 
+                      color: "#4C556B", 
+                      fontFamily: '"Outfit", sans-serif',
+                      fontSize: "12px", 
+                    },
+                }}
+            > 
+                {technologies.map((tech) => (
+                  <MenuItem sx={{fontFamily: '"Outfit", sans-serif'}} key={tech} value={tech}>
+                    {tech}
+                  </MenuItem>
+                ))}
+            </TextField>
+        </Box>
+    )
 }
+
+
+// import { Stack, Autocomplete, TextField } from "@mui/material";
+// import React, { useState } from "react";
+
+// const skills = ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js']
+
+//  export const MuiSelect = () => {
+//     const [value, setValue] = useState<string | null>(null);
+
+
+//     return (
+//         <Stack spacing={2} width='300px'>
+//             <Autocomplete
+//                 options={skills}
+//                 renderInput={(params) => <TextField {...params} label="Skills" variant="filled" />}
+//                 value={value}
+//                 onChange={(event: any, newValue:string | null) => setValue(newValue)}
+//                 freeSolo
+//             />
+//         </Stack>
+//     )
+// }

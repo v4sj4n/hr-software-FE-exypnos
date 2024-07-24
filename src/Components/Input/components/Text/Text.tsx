@@ -19,6 +19,7 @@ const UsernameInput: React.FC<InputProps> = (props) => {
       error={props.error}
       defaultValue={initialValue}
       disabled={props.disabled}
+      size="small"
       name={props.name}
       variant="filled"
       fullWidth
@@ -32,9 +33,6 @@ const UsernameInput: React.FC<InputProps> = (props) => {
           color: "#4C556B", 
           fontFamily: '"Outfit", sans-serif', 
           fontSize: "12px", 
-          left: '3px',
-          top: '5px',
-          transformOrigin: 'left top'
         },
       }}
       InputProps={{

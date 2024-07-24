@@ -2,8 +2,9 @@
     display: flex;
     padding: 50px;
     height: 100%;
-    gap: 150px;   
-    background-image: url('../../../Public/Images/background\ \(1\).png');
+    gap: 50px;   
+    background-image: url();
+    align-items: center;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
