@@ -6,7 +6,7 @@ import { InputProps } from "../Interface";
 const CheckboxInput: React.FC<InputProps> = (props) => {
   return (
     <FormControlLabel
-      control={<Checkbox />}
+      control={<Checkbox size="small" />}
       label={props.label}
       sx={{ ...chekboxStyles }}
       disabled={props.disabled}

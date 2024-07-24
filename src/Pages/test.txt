@@ -9,7 +9,7 @@
 
 4. Buttons 
 
-5.  Pagination - component me vete
+5. Pagination - component me vete
 
 6. config per api
 

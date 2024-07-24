@@ -4,8 +4,8 @@ import Card from '../../../Components/Card/Card';
 import Input from '../../../Components/Input/Index';
 import Button from '../../../Components/Button/Button';
 import { ButtonTypes } from '../../../Components/Button/ButtonTypes';
-import img from '../../../../Public/Images/HeroImage.png'
-import logo from "../../../../Public/Images/image_1-removebg-preview.png"
+import img from '../../../../public/Images/HeroImage.png'
+import logo from "../../../../public/Images/image_1-removebg-preview.png"
 import { useLogin } from '../Hook';
 import ClipLoader from "react-spinners/ClipLoader";
 import style from '../Login.module.css'

@@ -4,24 +4,33 @@ import style from "../Profile.module.css";
 import ProfileForm from './ProfileForm/ProfileForm';
 import Contrat from './Contrat/Contrat';
 import ChangePass from './ChangePass/ChangePass';
+import { FileUploadProvider } from '../Context/FileUpoadProvider';
+import { ProfileProvider } from './ProfileForm/Context/ProfileProvider';
+import { PasswordProvider } from './ChangePass/Context/PasswordProvider';
 
 const MyProfile = () => (
-    <ProfileForm/>
+    <FileUploadProvider>
+        <ProfileProvider>
+            <ProfileForm />
+        </ProfileProvider>
+    </FileUploadProvider>
 );
 
 const Contract = () => (
-    <Contrat/>
+    <Contrat />
 );
 
 const ChangePassword = () => (
-    <ChangePass/>
+    <PasswordProvider>
+        <ChangePass />
+    </PasswordProvider>
 );
 
 export default function Tabs() {
     const [activeTab, setActiveTab] = useState("MyProfile");
 
     const renderActiveComponent = () => {
-        switch(activeTab) {
+        switch (activeTab) {
             case "MyProfile":
                 return <MyProfile />;
             case "Contract":

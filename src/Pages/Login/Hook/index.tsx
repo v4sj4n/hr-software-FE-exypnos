@@ -63,7 +63,7 @@ export const useLogin = () => {
             setUserRole(role);
 
             login(access_token, role, user);
-            navigate("/home");
+            navigate("/dashboard");
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 if (error.response.status === 404) {

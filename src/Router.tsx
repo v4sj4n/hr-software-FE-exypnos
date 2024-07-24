@@ -7,10 +7,10 @@ import ResetPass from './Pages/Login/Component/ResetPass'
 import Signup from './Pages/Signup'
 import Dashboard from './Pages/Dashboard/dashboard.tsx'
 import Recruitment from './Pages/Recruitment/Recruitment.tsx'
-import Assets from './Pages/Assets/Assets.tsx'
+import Assets from './Pages/Assets/assets.tsx'
 import Interview from './Pages/Interview/Interview.tsx'
 import Vacation from './Pages/Vacation/Vacation.tsx'
-
+import Candidates from './Pages/Candidates/Candidates.tsx'
 export default function Router() {
   const router = createBrowserRouter([
     {
@@ -46,6 +46,10 @@ export default function Router() {
         {
           path: "Signup",
           element: <Signup />,
+        },
+        {
+          path: "Candidates",
+          element: <Candidates />,
         },
         {
           path: "Vacation",
