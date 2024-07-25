@@ -50,13 +50,7 @@ export default function Employees() {
         },
     ];
 
-    // const headerIcons = {
-    //     email: Email,
-    //     phone: Monitor,
-    //     role: Work,
-    //     fullName: Person,
-    // };
-
+ 
     const getRowId = (row: EmployeeRow) => row.id;
 
     return (

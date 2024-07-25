@@ -60,12 +60,9 @@
   margin-bottom: 20px;
 }
 .calendar, .infoSection, .pieChartDiv {
-  background-color: white;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   flex: 1;
-  height: 350px;
+  width: 360px;
+
 }
 .employeeProfile {
   background-color: white;

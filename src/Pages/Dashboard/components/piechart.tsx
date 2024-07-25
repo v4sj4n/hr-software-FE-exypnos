@@ -17,8 +17,8 @@ const PieChartComponent: React.FC<PieChartComponentProps> = ({ data }) => {
     <PieChart width={350} height={270} >
       <Pie
         data={data}
-        cx={130}
-        cy={110}
+        cx={140}
+        cy={100}
         innerRadius={36}
         outerRadius={90}
         fill="#8884d8"
