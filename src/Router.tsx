@@ -14,6 +14,7 @@ import Candidates from './Pages/Candidates/Candidates.tsx'
 import Structure from './Pages/Structure/Structure.tsx'
 import Events from './Pages/Events/Events.tsx'
 import Payroll from './Pages/Payroll/Payroll.tsx'
+import { EmployeeProvider } from './Pages/Employees/Context/EmployeTableProvider.tsx'
 export default function Router() {
   const router = createBrowserRouter([
     {
@@ -35,7 +36,11 @@ export default function Router() {
       children: [
         {
           path: 'employees',
-          element: <Employees />,
+          element: (
+            <EmployeeProvider>
+              <Employees />
+            </EmployeeProvider>
+          ),
         },
         { path: '/dashboard', element: <Dashboard />, index: false },
         {
