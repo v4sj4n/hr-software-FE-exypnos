@@ -5,12 +5,11 @@ import {
   Event as EventIcon,
   History as HistoryIcon,
   Business as BusinessIcon,
-  People as PeopleIcon,
   Menu as MenuIcon,
   ExpandMore as ExpandMoreIcon,
   ExpandLess as ExpandLessIcon,
 } from '@mui/icons-material'
-import React, { useState } from 'react'
+import GroupAddIcon from '@mui/icons-material/GroupAdd';import React, { useState } from 'react'
 import style from './sidebar.module.css'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -47,7 +46,7 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
           </div>
           <div className={style.item}>
             <Link to="/recruitment" className={style.link}>
-              <PeopleIcon className={style.icon} />
+              <GroupAddIcon className={style.icon} />
               {isOpen && <span className={style.text}>Recruiting</span>}
             </Link>
           </div>
