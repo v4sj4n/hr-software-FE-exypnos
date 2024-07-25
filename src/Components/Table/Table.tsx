@@ -2,25 +2,21 @@ import { DataGrid, GridColDef, GridValidRowModel, GridRowParams } from '@mui/x-d
 import React from 'react';
 import { TableStyles } from '../Input/Styles';
 import { SvgIconProps } from '@mui/material';
-
 interface DataTableProps<T extends GridValidRowModel> {
   rows: T[];
   columns: GridColDef[];
   getRowId?: (row: T) => string | number;
   height?: number | string;
-  width?: number | string;
   initialPageSize?: number;
   pageSizeOptions?: number[];
   additionalStyles?: React.CSSProperties;
   headerIcons?: { [key: string]: React.ComponentType<SvgIconProps> };
 }
-
 export default function DataTable<T extends GridValidRowModel>({
   rows,
   columns,
   getRowId = (row: T) => (row).id,
   height = "auto",
-  width = '100%',
   initialPageSize = 5,
   pageSizeOptions = [5, 10],
   headerIcons,
@@ -28,7 +24,6 @@ export default function DataTable<T extends GridValidRowModel>({
   const getRowClassName = (params: GridRowParams) => {
     return Number(params.id) % 2 === 0 ? 'colored-row' : '';
   };
-
   const columnsWithIcons = columns.map(column => {
     if (headerIcons && headerIcons[column.field]) {
       const Icon = headerIcons[column.field];
@@ -44,9 +39,8 @@ export default function DataTable<T extends GridValidRowModel>({
     }
     return column;
   });
-
   return (
-    <div style={{ height, width }}>
+    <div style={{ height, width: '100%' }}>
       <DataGrid
         rows={rows}
         columns={columnsWithIcons}
@@ -55,8 +49,9 @@ export default function DataTable<T extends GridValidRowModel>({
         sx={{
           ...TableStyles,
           '& .colored-row': {
-            backgroundColor: '#f0f0f0', 
+            backgroundColor: '#F0F0F0',
           },
+          width: '100%',
         }}
         initialState={{
           pagination: {

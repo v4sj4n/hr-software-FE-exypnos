@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import AxiosInstance from '../../../Helpers/Axios';
 
-
 export interface UserProfileData {
     auth: {
         email: string;
@@ -37,3 +36,5 @@ export const useGetAllUsers = () => {
 
     return { users, error };
 }
+
+

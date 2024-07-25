@@ -11,11 +11,12 @@ import Interview from './Pages/Interview/Interview.tsx'
 import ResetPass from './Pages/Login/Component/ResetPass'
 import Login from './Pages/Login/Login'
 import Payroll from './Pages/Payroll/Payroll.tsx'
+import { EmployeeProvider } from './Pages/Employees/Context/EmployeTableProvider.tsx'
 import Profile from './Pages/Profile/Profile'
 import Recruitment from './Pages/Recruitment/Recruitment.tsx'
 import Structure from './Pages/Structure/Structure.tsx'
 import Vacation from './Pages/Vacation/Vacation.tsx'
-
+        
 export default function Router() {
   const router = createBrowserRouter([
     {
@@ -37,7 +38,11 @@ export default function Router() {
       children: [
         {
           path: 'employees',
-          element: <Employees />,
+          element: (
+            <EmployeeProvider>
+              <Employees />
+            </EmployeeProvider>
+          ),
         },
         { path: '/dashboard', element: <Dashboard />, index: false },
         {

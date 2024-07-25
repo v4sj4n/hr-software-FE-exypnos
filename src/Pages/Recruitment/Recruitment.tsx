@@ -1,7 +1,7 @@
 import Button from "../../Components/Button/Button";
 import { ButtonTypes } from "../../Components/Button/ButtonTypes";
 import Input from "../../Components/Input/Index";
-import style from './Recruitment.module.css'
+import style from './style/Recruitment.module.css'
 import logo from '/Images/image_1-removebg-preview.png'
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import { MuiSelect } from "../../Components/Input/components/Select/autocomplete";

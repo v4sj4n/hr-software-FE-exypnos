@@ -1,22 +1,9 @@
-import { useGetAllUsers } from "./Hook";
-import style from './Employees.module.css'
+import style from './style/Employees.module.css'
 import DataTable from "../../Components/Table/Table";
-import { GridRenderCellParams } from '@mui/x-data-grid'
-import { Link } from "react-router-dom";
-import { Monitor, Email, Person, Work } from "@mui/icons-material";
-
-interface EmployeeRow {
-    id: number;
-    originalId: number;
-    firstName: string;
-    role: string;
-    phone: string;
-    lastName: string;
-    email: string | undefined;
-    fullName: string;
-}
+import { useEmployeeContext } from './Context/EmployeTableContext';
 
 export default function Employees() {
+    const { rows, columns, headerIcons,  getRowId } = useEmployeeContext();
     const { users } = useGetAllUsers();
 
     const rows = users.map((user, index) => ({
@@ -57,18 +44,12 @@ export default function Employees() {
         <>
             <div style={{ display: "flex", width: "100%", flexDirection: "column", padding: "0 16px", backgroundColor: "#f0f5ff" }}>
                 <div className={style.account}>Employee List</div>
-                <DataTable 
-                    rows={rows} 
-                    columns={columns} 
-                    getRowId={getRowId} 
-                    headerIcons={
-                        {
-                            email: Email,
-                            phone: Monitor,
-                            role: Work,
-                            fullName: Person,
-                        }
-                    }
+                <DataTable
+                    rows={rows}
+                    columns={columns}
+                    getRowId={getRowId}
+                    headerIcons={headerIcons}
+                    // headerTextColors={headerTextColors}
                 />
             </div>
         </>
