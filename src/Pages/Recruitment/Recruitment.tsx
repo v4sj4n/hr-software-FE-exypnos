@@ -6,8 +6,12 @@ import logo from '/Images/image_1-removebg-preview.png'
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import { MuiSelect } from "../../Components/Input/components/Select/autocomplete";
 import image from "/Images/image.png"
+import { useCreateAplicant } from "./Context/Recruitment.Provider";
 
 export default function Recruitment() {
+
+    const { handleChange, aplicantFormData, handleTechnologiesChange, handleFileChange, handleCreateAplicant } = useCreateAplicant();
+
     return (
 <>
         <div className={style.container}>
@@ -20,29 +24,37 @@ export default function Recruitment() {
                 <div style={{ display: "flex", gap: "20px" }}>
                     <Input
                         label="First Name"
-                        name='First Name'
+                        name='firstName'
                         IsUsername
                         width="300px"
+                        value={aplicantFormData.firstName}
+                        onChange={handleChange}
                     />
                     <Input
                         label="Last Name"
-                        name='Last Name'
+                        name='lastName'
                         IsUsername
                         width="300px"
+                        value={aplicantFormData.lastName}
+                        onChange={handleChange}
                     />
                 </div>
                 <div style={{ display: "flex", gap: "20px" }}>
                     <Input
                         label="Age"
-                        name='Age'
+                        name='age'
                         IsUsername
                         width="300px"
+                        onChange={handleChange}
+                        value={aplicantFormData.age}
                     />
                     <Input
                         label="Phone Number"
-                        name='Phone Number'
+                        name='phone'
                         IsUsername
                         width="300px"
+                        onChange={handleChange}
+                        value={aplicantFormData.phone}
                     />
                 </div>
                 <div style={{ display: "flex", gap: "20px" }}>       
@@ -51,62 +63,76 @@ export default function Recruitment() {
                     name='email'
                     IsUsername
                     width="300px"
+                    onChange={handleChange}
+                    value={aplicantFormData.email}
                 />
                     <Input
                         label="Applying method"
-                        name='Applying method'
+                        name='applicationMethod'
                         IsUsername
                         width="300px"
+                        onChange={handleChange}
+                    value={aplicantFormData.applicationMethod}
                     />
                 </div>
                 <div style={{ display: "flex", gap:'20px' }}>
                     <Input
                         label="Work position"
-                        name='Work position'
+                        name='positionApplied'
                         IsUsername
                         width="300px"
+                        onChange={handleChange}
+                        value={aplicantFormData.positionApplied}
                     />
                     <Input
                         label="Wage expectation"
-                        name='Wage expectation'
+                        name='salaryExpectations'
                         IsUsername
                         width="300px"
+                        onChange={handleChange}
+                        value={aplicantFormData.salaryExpectations}
                     />
                 </div>
                 <div style={{ display: "flex" }}>
                     <Input
                         label="Previous working experience"
-                        name='Previous working experience'
+                        name='experience'
                         IsUsername
                         width="620px"
+                        onChange={handleChange}
+                        value={aplicantFormData.experience}
                     />
                 </div>
                 <div style={{ display: "flex" }}>
-                    <MuiSelect name="selecter"/>
+                    <MuiSelect value={aplicantFormData.technologiesUsed} onChange={handleTechnologiesChange} name="technologiesUsed"/>
                 </div>
                 <div style={{ display: "flex" }}>
                     <Input
                         label="Individual projects"
-                        name='Individual projects'
+                        name='individualProjects'
                         IsUsername
                         width="620px"
+                        onChange={handleChange}
+                        value={aplicantFormData.individualProjects}
                     />
                 </div>
               
 
 
                 <div style={{ display: "flex" }}>
-                    <Input
-                        label="CV"
-                        name='CV'
-                        IsUsername
-                        width="620px"
-                        icon={<DriveFolderUploadIcon />}
-                    />
+                <Input
+                    label="CV"
+                    name='cv'
+                    type="file" // Change input type to file
+                    IsUsername
+                    width="620px"
+                    icon={<DriveFolderUploadIcon />}
+                    onChange={handleFileChange} // Use handleFileChange here
+                />
                 </div>
                 <div style={{ display: "flex", gap: "20px" }}>
-                    <Button type={ButtonTypes.SECONDARY} btnText="Reset" />
-                    <Button type={ButtonTypes.TERTIARY} btnText="Apply" />
+                    <Button type={ButtonTypes.SECONDARY} btnText="Reset" width="100%"/>
+                    <Button type={ButtonTypes.TERTIARY} btnText="Apply" onClick={handleCreateAplicant} />
                 </div></div>
        <img alt="image" src={image} style={{width:"600px", height:"auto", }}/>
        <div style={{backgroundColor:"#1B5FF4", width:"120px", height:"100%",  zIndex:"-1",position:"absolute", top:0, right:0}}></div>
