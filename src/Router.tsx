@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import PrivateRoute from './Context/ProtectedRoute.tsx'
-import Assets from './Pages/Assets/assets.tsx'
+import Assets from './Pages/Assets/Assets.tsx'
 import Candidates from './Pages/Candidates/Candidates.tsx'
 import CreateEmplye from './Pages/CreateEmploye.tsx'
 import Dashboard from './Pages/Dashboard/Dashboard.tsx'
@@ -15,6 +15,7 @@ import Profile from './Pages/Profile/Profile'
 import Recruitment from './Pages/Recruitment/Recruitment.tsx'
 import Structure from './Pages/Structure/Structure.tsx'
 import Vacation from './Pages/Vacation/Vacation.tsx'
+import AssetProvider from './Pages/Assets/AssetContext.tsx'
 
 export default function Router() {
   const router = createBrowserRouter([
@@ -46,7 +47,11 @@ export default function Router() {
         },
         {
           path: 'assets',
-          element: <Assets />,
+          element: (
+            <AssetProvider>
+              <Assets />
+            </AssetProvider>
+          ),
         },
         {
           path: 'payroll',
