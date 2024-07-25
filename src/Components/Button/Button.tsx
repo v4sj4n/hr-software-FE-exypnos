@@ -94,7 +94,16 @@ import React, { CSSProperties } from 'react';
 type ButtonType = typeof ButtonTypes[keyof typeof ButtonTypes];
 
 interface ButtonStyles extends CSSProperties {
-  // Mund të shtoni më shumë stile specifike këtu nëse nevojitet
+  backgroundColor?: string;
+  color?: string;
+  borderColor?: string;
+  width?: string | number;
+  height?: string | number;
+  fontSize?: string | number;
+  padding?: string;
+  margin?: string;
+  borderRadius?: string | number;
+
 }
 
 interface ButtonProps extends ButtonStyles {
@@ -102,6 +111,8 @@ interface ButtonProps extends ButtonStyles {
   btnText: string | JSX.Element;
   disabled?: boolean;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  color?: string;
+
 }
 
 const Button: React.FC<ButtonProps> = ({ 
