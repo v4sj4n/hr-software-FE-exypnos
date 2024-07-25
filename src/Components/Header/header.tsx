@@ -16,10 +16,10 @@ const Header: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
         {isOpen && (
           <>
         <div className={style.title}>
-        <h4>Code</h4>
+        <h4>code</h4>
         </div>
         <div className={style.title1}>
-        <h4>Vider</h4>
+        <h4>vider</h4>
         </div>
         </>
         )}
