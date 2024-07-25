@@ -15,8 +15,10 @@
     "@emotion/styled": "^11.11.5",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@hookform/resolvers": "^3.9.0",
     "@mui/icons-material": "^5.16.4",
     "@mui/material": "^5.16.4",
+    "@mui/x-data-grid": "^7.11.0",
     "@mui/x-date-pickers": "^7.10.0",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
@@ -30,11 +32,14 @@
     "react-bootstrap": "^2.10.4",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.52.1",
     "react-router-dom": "^6.24.1",
     "react-spinners": "^0.14.1",
-    "recharts": "^2.12.7"
+    "recharts": "^2.12.7",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@hookform/devtools": "^4.3.1",
     "@types/node": "^20.14.10",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

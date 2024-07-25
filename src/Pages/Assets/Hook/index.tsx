@@ -1,14 +1,17 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { useFetch } from '../../../Hooks/useFetch'
 import { Asset } from '../TAsset'
-import { AssetContext } from '../AssetContext'
+import { AssetsContext } from '../AssetContext'
 
-export const useData = () => {
+export const useData = async () => {
   const { data, error, loading } = useFetch<Asset[]>('/asset', 10)
-  const { setAssets } = useContext(AssetContext)
-  if (data) {
-    setAssets(data)
-  }
+  const { setAssets } = useContext(AssetsContext)
+
+  useEffect(() => {
+    if (data) {
+      setAssets(data)
+    }
+  }, [data, setAssets])
 
   return {
     error,

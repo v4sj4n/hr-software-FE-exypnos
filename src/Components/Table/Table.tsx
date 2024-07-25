@@ -8,7 +8,6 @@ interface DataTableProps<T extends GridValidRowModel> {
   columns: GridColDef[];
   getRowId?: (row: T) => string | number;
   height?: number | string;
-  width?: number | string;
   initialPageSize?: number;
   pageSizeOptions?: number[];
   additionalStyles?: React.CSSProperties;
@@ -20,7 +19,6 @@ export default function DataTable<T extends GridValidRowModel>({
   columns,
   getRowId = (row: T) => (row).id,
   height = "auto",
-  width = '100%',
   initialPageSize = 5,
   pageSizeOptions = [5, 10],
   headerIcons,
@@ -46,7 +44,7 @@ export default function DataTable<T extends GridValidRowModel>({
   });
 
   return (
-    <div style={{ height, width }}>
+    <div style={{ height, width: '100%' }}>
       <DataGrid
         rows={rows}
         columns={columnsWithIcons}
@@ -57,6 +55,7 @@ export default function DataTable<T extends GridValidRowModel>({
           '& .colored-row': {
             backgroundColor: '#f0f0f0', 
           },
+          width: '100%',
         }}
         initialState={{
           pagination: {

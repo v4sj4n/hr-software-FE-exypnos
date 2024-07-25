@@ -2,9 +2,10 @@ import { CircularProgress } from '@mui/material'
 import { Asset } from './TAsset'
 import { useData } from './Hook'
 import { useContext } from 'react'
-import { AssetContext } from './AssetContext'
+import { AssetsContext } from './AssetContext'
 import DataTable from '../../Components/Table/Table'
 import { GridRenderCellParams } from '@mui/x-data-grid'
+import style from './style/assetsTable.module.css'
 
 // Icons
 import { Laptop, Monitor } from '@mui/icons-material'
@@ -16,7 +17,7 @@ import CircleIcon from '@mui/icons-material/Circle'
 
 export default function AssetsTable() {
   const { error, loading } = useData()
-  const { assets } = useContext(AssetContext)
+  const { assets } = useContext(AssetsContext)
   if (error) return <div>Error: {error}</div>
   if (loading) return <CircularProgress />
 
@@ -24,9 +25,7 @@ export default function AssetsTable() {
     id: index + 1,
     type: asset.type[0].toUpperCase() + asset.type.slice(1),
     status: asset.status,
-    fullName: asset.userId
-      ? asset.userId.firstName + ' ' + asset.userId.lastName
-      : 'N/A',
+    fullName: asset.userId,
     serialNumber: asset.serialNumber,
   }))
 
@@ -69,7 +68,26 @@ export default function AssetsTable() {
         </span>
       ),
     },
-    { field: 'fullName', headerName: 'Full Name', flex: 1 },
+    {
+      field: 'fullName',
+      headerName: 'Full Name',
+      flex: 1,
+      renderCell: (param: GridRenderCellParams) => {
+        console.log(param.value)
+
+        return (
+          <div className={style.divStyle}>
+            {param.value === null ? (
+              <span className={style.spanStyleNA}>N/A</span>
+            ) : (
+              <span className={style.spanStyleA}>
+                {param.value.firstName} {param.value.lastName}
+              </span>
+            )}
+          </div>
+        )
+      },
+    },
     { field: 'serialNumber', headerName: 'Serial Number', flex: 1 },
   ]
 

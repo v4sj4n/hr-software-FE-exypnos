@@ -24,7 +24,7 @@ const defaultContextValue: AssetContextType = {
   handleOpenModal: () => {},
 }
 
-export const AssetContext = createContext<AssetContextType>(defaultContextValue)
+export const AssetsContext = createContext<AssetContextType>(defaultContextValue)
 
 const AssetProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [assets, setAssets] = useState<Asset[]>([])
@@ -33,7 +33,7 @@ const AssetProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const handleOpenModal = () => setModalOpen(true)
 
   return (
-    <AssetContext.Provider
+    <AssetsContext.Provider
       value={{
         assets,
         setAssets,
@@ -43,7 +43,7 @@ const AssetProvider: FC<{ children: ReactNode }> = ({ children }) => {
       }}
     >
       {children}
-    </AssetContext.Provider>
+    </AssetsContext.Provider>
   )
 }
 
