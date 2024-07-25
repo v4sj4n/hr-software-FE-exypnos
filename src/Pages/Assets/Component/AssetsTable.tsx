@@ -1,11 +1,10 @@
 import { CircularProgress } from '@mui/material'
-import { Asset } from './TAsset'
-import { useData } from './Hook'
+import { Asset } from '../TAsset'
+import { useData } from '../Hook'
 import { useContext } from 'react'
-import { AssetsContext } from './AssetContext'
-import DataTable from '../../Components/Table/Table'
+import { AssetsContext } from '../AssetsContext'
 import { GridRenderCellParams } from '@mui/x-data-grid'
-import style from './style/assetsTable.module.css'
+import style from '../style/assetsTable.module.css'
 
 // Icons
 import { Laptop, Monitor } from '@mui/icons-material'
@@ -14,6 +13,7 @@ import TypeSpecimenIcon from '@mui/icons-material/TypeSpecimen'
 import PersonIcon from '@mui/icons-material/Person'
 import FingerprintIcon from '@mui/icons-material/Fingerprint'
 import CircleIcon from '@mui/icons-material/Circle'
+import DataTable from '@/Components/Table/Table'
 
 export default function AssetsTable() {
   const { error, loading } = useData()
@@ -104,10 +104,12 @@ export default function AssetsTable() {
   console.log(assets)
   return (
     <DataTable
+      height={'62.75vh'}
       rows={rows}
       columns={columns}
       getRowId={getRowId}
       headerIcons={headerIcons}
+      pageSizeOptions={[5, 10, 20, 50]}
     />
   )
 }

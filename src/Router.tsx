@@ -15,8 +15,9 @@ import Profile from './Pages/Profile/Profile'
 import Recruitment from './Pages/Recruitment/Recruitment.tsx'
 import Structure from './Pages/Structure/Structure.tsx'
 import Vacation from './Pages/Vacation/Vacation.tsx'
-import AssetProvider from './Pages/Assets/AssetContext.tsx'
+import AssetProvider from './Pages/Assets/AssetsContext.tsx'
 import { EmployeeProvider } from './Pages/Employees/Context/EmployeTableProvider.tsx'
+import VacationProvider from './Pages/Vacation/VacationContext.tsx'
 
 export default function Router() {
   const router = createBrowserRouter([
@@ -77,7 +78,11 @@ export default function Router() {
         },
         {
           path: 'vacation',
-          element: <Vacation />,
+          element: (
+            <VacationProvider>
+              <Vacation />
+            </VacationProvider>
+          ),
         },
         {
           path: 'events',

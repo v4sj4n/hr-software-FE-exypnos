@@ -1,11 +1,11 @@
 import { useContext } from 'react'
-import AssetsTable from './Component/AssetsTable'
-import { AssetsContext } from './AssetsContext'
-import { CreateAssetForm } from './Component/Form/CreateAssetForm'
+import Button from '../../Components/Button/Button'
+import { ButtonTypes } from '../../Components/Button/ButtonTypes'
+import AssetsTable from './Component/VacationsTable'
+import { AssetsContext } from './VacationContext'
+import { ModalComponent } from '../../Components/Modal/Modal'
+import { CreateAssetForm } from './Component/Form/CreateVacationForm'
 import style from './style/assets.module.css'
-import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-import Button from '@/Components/Button/Button'
-import { ModalComponent } from '@/Components/Modal/Modal'
 
 export default function Assets() {
   const { modalOpen, handleOpenModal, handleCloseModal } =
