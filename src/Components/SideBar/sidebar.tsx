@@ -9,9 +9,9 @@ import {
   ExpandMore as ExpandMoreIcon,
   ExpandLess as ExpandLessIcon,
 } from '@mui/icons-material'
-import GroupAddIcon from '@mui/icons-material/GroupAdd';import React, { useState } from 'react'
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import React, { useState } from 'react'
 import style from './sidebar.module.css'
-
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Link } from 'react-router-dom'
 
@@ -29,6 +29,9 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
   const toggleEventsDropdown = () => {
     setEventsDropdownOpen(!eventsDropdownOpen)
   }
+
+
+
   return (
     <div>
       <div className={style.toggleButton} onClick={toggleSidebar}>
@@ -68,10 +71,13 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
           >
             <Link to="/employees" className={style.dropdownItem}>
               Employees
+
             </Link>
+ 
             <Link to="/payroll" className={style.dropdownItem}>
-              Payroll{' '}
+              Payroll{' '} 
             </Link>
+           
             <Link to="/vacation" className={style.dropdownItem}>
               Vacation{' '}
             </Link>

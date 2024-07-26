@@ -8,6 +8,8 @@ interface CardProps {
   gap?: string;
   className?: string;
   height?: string;
+  flex? :string;
+  width?: string;
 }
 
 const Card: React.FC<CardProps> = ({ 
