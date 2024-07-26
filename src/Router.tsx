@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-
+import ViewCandidats from './Pages/VIewCandidats/ViewCandidats.tsx'
 import PrivateRoute from './Context/ProtectedRoute.tsx'
 import Assets from './Pages/Assets/Assets.tsx'
 import Candidates from './Pages/Candidates/Candidates.tsx'
@@ -17,6 +17,7 @@ import Structure from './Pages/Structure/Structure.tsx'
 import Vacation from './Pages/Vacation/Vacation.tsx'
 import AssetProvider from './Pages/Assets/AssetContext.tsx'
 import { EmployeeProvider } from './Pages/Employees/Context/EmployeTableProvider.tsx'
+import { CandidateProvider } from './Pages/Candidates/Context/CandidateTableProvider.tsx'
 
 export default function Router() {
   const router = createBrowserRouter([
@@ -52,6 +53,10 @@ export default function Router() {
           element: <Profile />,
         },
         {
+          path: 'view/:id',
+          element: <ViewCandidats />,
+        },
+        {
           path: 'assets',
           element: (
             <AssetProvider>
@@ -73,7 +78,11 @@ export default function Router() {
         },
         {
           path: 'candidates',
-          element: <Candidates />,
+          element: (
+            <CandidateProvider>
+              <Candidates />
+            </CandidateProvider>
+          ),
         },
         {
           path: 'vacation',
