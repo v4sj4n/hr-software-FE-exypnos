@@ -17,7 +17,7 @@ export default function DataTable<T extends GridValidRowModel>({
   columns,
   getRowId = (row: T) => (row).id,
   height = "auto",
-  initialPageSize = 5,
+  initialPageSize = 10,
   pageSizeOptions = [5, 10],
   headerIcons,
 }: DataTableProps<T>) {
