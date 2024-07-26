@@ -123,11 +123,11 @@ export default function Recruitment() {
                 <Input
                     label="CV"
                     name='cv'
-                    type="file" // Change input type to file
+                    type="file" 
                     IsUsername
                     width="620px"
                     icon={<DriveFolderUploadIcon />}
-                    onChange={handleFileChange} // Use handleFileChange here
+                    onChange={handleFileChange} 
                 />
                 </div>
                 <div style={{ display: "flex", gap: "20px" }}>

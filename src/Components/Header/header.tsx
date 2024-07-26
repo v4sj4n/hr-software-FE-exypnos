@@ -6,13 +6,22 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import codeviderLogo from '/Images/codevider.png';
 import style from './header.module.css';
+import { useAuth } from '../../Context/AuthProvider';
+import { useNavigate } from 'react-router-dom';
 
 const Header: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
   const [showDropdown, setShowDropdown] = useState(false);
-
+const navigate = useNavigate();
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
+
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  }
 
   return (
     <header className={style.header}>
@@ -42,7 +51,7 @@ const Header: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
           {showDropdown && (
             <div className={style.dropdown}>
               <div className={style.dropdownItem} onClick={() => console.log('View Profile')}>Profile <PermIdentityIcon/></div>
-              <div className={style.dropdownItem} onClick={() => console.log('Logout')}>Logout <LogoutIcon/></div>
+              <div className={style.dropdownItem} onClick={handleLogout}>Logout <LogoutIcon onClick={handleLogout}/></div>
               <div className={style.dropdownItem} onClick={() => console.log('Settings')}>Settings <SettingsIcon />
               </div>
 

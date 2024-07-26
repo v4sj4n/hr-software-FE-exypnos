@@ -7,9 +7,6 @@ import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import ComputerIcon from '@mui/icons-material/Computer';
-import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
-import CircleIcon from '@mui/icons-material/Circle';
-
 export interface CandidateRow {
   id: number;
   originalId: string;
@@ -23,8 +20,9 @@ export interface CandidateRow {
 }
 
 const columns = [
-  { field: '_id', headerName: 'ID', width: 70 },
-  { field: 'fullName', headerName: 'FullName', width: 130 },
+  { field: '_id', headerName: 'ID', width: 70, flex: 1 },
+  { field: 'fullName', headerName: 'FullName', width: 130,  flex: 1 },
+  { field: 'email', headerName: 'Email', width: 230 , flex: 1},
   {
     field: 'status',
     headerName: 'Status',
@@ -39,7 +37,6 @@ const columns = [
       );
     }
   },
-  { field: 'email', headerName: 'Email', width: 230 , flex: 1},
   { field: 'phone', headerName: 'Phone', width: 200, flex: 1 },
   { field: 'position', headerName: 'Position', width: 270, flex: 1 },
   { field: 'date', headerName: 'Date', width: 120, flex: 1 },
@@ -146,8 +143,6 @@ const headerIcons = {
   phone: PhoneIcon,
   date: DateRangeIcon,
   position: ComputerIcon,
-  _id: FormatListNumberedIcon,
-  status: CircleIcon,
 };
 
 

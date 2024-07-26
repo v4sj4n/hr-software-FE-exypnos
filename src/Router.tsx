@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-
+import ViewCandidats from './Pages/VIewCandidats/ViewCandidats.tsx'
 import PrivateRoute from './Context/ProtectedRoute.tsx'
 import Assets from './Pages/Assets/Assets.tsx'
 import Candidates from './Pages/Candidates/Candidates.tsx'
@@ -50,6 +50,10 @@ export default function Router() {
         {
           path: 'profile/:id',
           element: <Profile />,
+        },
+        {
+          path: 'view',
+          element: <ViewCandidats />,
         },
         {
           path: 'assets',

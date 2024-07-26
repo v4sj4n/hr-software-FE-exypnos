@@ -8,6 +8,7 @@ interface CardProps {
   gap?: string;
   className?: string;
   height?: string;
+  width?: string;
 }
 
 const Card: React.FC<CardProps> = ({ 
@@ -15,6 +16,7 @@ const Card: React.FC<CardProps> = ({
   padding, 
   borderRadius,
   height,
+  width,
   gap, 
   className 
 }) => {
@@ -23,6 +25,7 @@ const Card: React.FC<CardProps> = ({
     borderRadius: borderRadius || '4px',  
     gap: gap || '0',
     height:height || 'auto',  
+    width: width || '100%',   
   };
 
   return (
