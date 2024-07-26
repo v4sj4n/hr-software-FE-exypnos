@@ -12,9 +12,7 @@ export interface InterviewData {
     cvAttachment: string;
     _id: number;
     date: string;
-    notes: string;
     time: string;
-schedule: string;
 }
 
 export const useGetAllInterviews = () => {

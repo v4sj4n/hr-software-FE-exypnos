@@ -22,6 +22,7 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
   // const [isOpen, setIsOpen] = useState(true);
   const [employeeDropdownOpen, setEmployeeDropdownOpen] = useState(false)
   const [eventsDropdownOpen, setEventsDropdownOpen] = useState(false)
+  const [recruitingDropdownOpen, setRecruitingDropdownOpen] = useState(false)
 
   const toggleEmployeeDropdown = () => {
     setEmployeeDropdownOpen(!employeeDropdownOpen)
@@ -29,8 +30,9 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
   const toggleEventsDropdown = () => {
     setEventsDropdownOpen(!eventsDropdownOpen)
   }
-
-
+  const toggleRecruitingDropdown = () => {
+    setRecruitingDropdownOpen(!recruitingDropdownOpen)
+  }
 
   return (
     <div>
@@ -47,10 +49,30 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
               {isOpen && <span className={style.text}>Dashboard</span>}
             </Link>
           </div>
-          <div className={style.item}>
-            <Link to="/recruitment" className={style.link}>
+          <div className={style.item} onClick={toggleRecruitingDropdown}>
+            <Link to="#recruiting" className={style.link}>
               <GroupAddIcon className={style.icon} />
               {isOpen && <span className={style.text}>Recruiting</span>}
+              {recruitingDropdownOpen ? (
+                <ExpandLessIcon className={style.expandIcon} />
+              ) : (
+                <ExpandMoreIcon className={style.expandIcon} />
+              )}
+            </Link>
+          </div>
+          <div
+            className={`${style.dropdownMenu} ${
+              recruitingDropdownOpen ? style.open : ''
+            }`}
+          >
+            <Link to="/recruitment" className={style.dropdownItem}>
+              Recruitment
+            </Link>
+            <Link to="/candidates" className={style.dropdownItem}>
+              Candidates{' '} 
+            </Link>
+            <Link to="/interview" className={style.dropdownItem}>
+              Interviews{' '}
             </Link>
           </div>
           <div className={style.item} onClick={toggleEmployeeDropdown}>
@@ -71,13 +93,10 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
           >
             <Link to="/employees" className={style.dropdownItem}>
               Employees
-
             </Link>
- 
             <Link to="/payroll" className={style.dropdownItem}>
               Payroll{' '} 
             </Link>
-           
             <Link to="/vacation" className={style.dropdownItem}>
               Vacation{' '}
             </Link>
@@ -131,4 +150,5 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
     </div>
   )
 }
+
 export default SideBar
