@@ -4,7 +4,8 @@ import { useData } from '../Hook'
 import { useContext } from 'react'
 import { AssetsContext } from '../AssetsContext'
 import { GridRenderCellParams } from '@mui/x-data-grid'
-import style from '../style/assetsTable.module.css'
+import DataTable from '@/Components/Table/Table'
+import { tableUserPresenceFormatter } from '@/Helpers/tableUserPresenceFormatter'
 
 // Icons
 import { Laptop, Monitor } from '@mui/icons-material'
@@ -13,7 +14,7 @@ import TypeSpecimenIcon from '@mui/icons-material/TypeSpecimen'
 import PersonIcon from '@mui/icons-material/Person'
 import FingerprintIcon from '@mui/icons-material/Fingerprint'
 import CircleIcon from '@mui/icons-material/Circle'
-import DataTable from '@/Components/Table/Table'
+
 
 export default function AssetsTable() {
   const { error, loading } = useData()
@@ -72,23 +73,10 @@ export default function AssetsTable() {
       field: 'fullName',
       headerName: 'Full Name',
       flex: 1,
-      renderCell: (param: GridRenderCellParams) => {
-        console.log(param.value)
-
-        return (
-          <div className={style.divStyle}>
-            {param.value === null ? (
-              <span className={style.spanStyleNA}>N/A</span>
-            ) : (
-              <span className={style.spanStyleA}>
-                {param.value.firstName} {param.value.lastName}
-              </span>
-            )}
-          </div>
-        )
-      },
+      renderCell: (param: GridRenderCellParams) =>
+        tableUserPresenceFormatter(param.value),
     },
-    { field: 'serialNumber', headerName: 'Serial Number', flex: 1 },
+    { field: 'serialNumber', headerName: 'Serial Number', width: 200 },
   ]
 
   const getRowId = (row: { id: number | string }) => row.id
@@ -101,7 +89,7 @@ export default function AssetsTable() {
     serialNumber: FingerprintIcon,
   }
 
-  console.log(assets)
+  // console.log(assets)
   return (
     <DataTable
       height={'62.75vh'}

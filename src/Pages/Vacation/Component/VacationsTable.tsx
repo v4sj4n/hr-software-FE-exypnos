@@ -1,9 +1,12 @@
 import { CircularProgress } from '@mui/material'
 import { useData } from '../Hook'
 import { useContext } from 'react'
-import DataTable from '../../../Components/Table/Table'
+import DataTable from '@/Components/Table/Table'
 import { GridRenderCellParams } from '@mui/x-data-grid'
-import style from '../style/vacationTable.module.css'
+import { dateFormatter } from '@/Helpers/dateFormater'
+import { tableUserPresenceFormatter } from '@/Helpers/tableUserPresenceFormatter'
+import { VacationContext } from '../VacationContext'
+import { Vacation } from '../TVacation'
 
 // Icons
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered'
@@ -12,8 +15,6 @@ import PersonIcon from '@mui/icons-material/Person'
 import CircleIcon from '@mui/icons-material/Circle'
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline'
 import DoneAllIcon from '@mui/icons-material/DoneAll'
-import { VacationContext } from '../VacationContext'
-import { Vacation } from '../TVacation'
 
 export default function VacationsTable() {
   const { error, loading } = useData()
@@ -63,45 +64,20 @@ export default function VacationsTable() {
       field: 'fullName',
       headerName: 'Full Name',
       flex: 1,
-      renderCell: (param: GridRenderCellParams) => (
-        <div className={style.divStyle}>
-          {param.value === null ? (
-            <span className={style.spanStyleNA}>N/A</span>
-          ) : (
-            <span className={style.spanStyleA}>
-              {param.value.firstName} {param.value.lastName}
-            </span>
-          )}
-        </div>
-      ),
+      renderCell: (param: GridRenderCellParams) =>
+        tableUserPresenceFormatter(param.value),
     },
     {
       field: 'startDate',
       headerName: 'Start Date',
       flex: 1,
-      renderCell: (param: GridRenderCellParams) => (
-        <span>
-          {new Date(param.value).toLocaleDateString(undefined, {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-          })}
-        </span>
-      ),
+      renderCell: (param: GridRenderCellParams) => dateFormatter(param.value),
     },
     {
       field: 'endDate',
       headerName: 'End Date',
       flex: 1,
-      renderCell: (param: GridRenderCellParams) => (
-        <span>
-          {new Date(param.value).toLocaleDateString(undefined, {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-          })}
-        </span>
-      ),
+      renderCell: (param: GridRenderCellParams) => dateFormatter(param.value),
     },
   ]
 

@@ -98,6 +98,12 @@ export const TableStyles = {
       backgroundColor:"#FFFFFF !important",
       alignItems: 'center',
     },
+    "& .css-rtrcn9-MuiTablePagination-root .MuiTablePagination-selectLabel":{
+      margin:"0"
+    },
+    "& .css-levciy-MuiTablePagination-displayedRows":{
+      margin:"0"
+    }
 }
 
 export const autoCompleteStyles = {

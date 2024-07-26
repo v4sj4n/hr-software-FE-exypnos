@@ -1,33 +1,27 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { useContext } from 'react'
+import { RefObject, useContext, useRef, useState } from 'react'
 import { AxiosError } from 'axios'
 import { VacationContext } from '../../VacationContext'
-import AxiosInstance from '../../../../Helpers/Axios'
-import { ButtonTypes } from '../../../../Components/Button/ButtonTypes'
-import Input from '../../../../Components/Input/Index'
-import Button from '../../../../Components/Button/Button'
+import AxiosInstance from '@/Helpers/Axios'
+import { ButtonTypes } from '@/Components/Button/ButtonTypes'
+import Input from '@/Components/Input/Index'
+import Button from '@/Components/Button/Button'
 import { ErrorText } from '../ErrorText'
 
+// ICONS
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 
-// TO FIX
-const vacationSchema = z
-  .object({
-    type: z.enum(['vacation', 'sick', 'personal', 'maternity'], {
-      message: `Vacations should be one of 'vacation', 'sick', 'personal', 'maternity'`,
-    }),
-    description: z.string().optional(),
-    startDate: z
-      .string()
-      .min(Date.parse(new Date().toISOString().split('T')[0]), { message: 'Start date should be in the future' }),
-    endDate: z.coerce.date(),
-  })
-  .refine((data) => new Date(data.endDate) > new Date(data.startDate), {
-    message: 'End date should be after start date',
-    path: ['endDate'],
-  })
-
+const vacationSchema = z.object({
+  type: z.enum(['vacation', 'sick', 'personal', 'maternity'], {
+    message: `Vacations should be one of 'vacation', 'sick', 'personal', 'maternity'`,
+  }),
+  description: z.string().optional(),
+  startDate: z.string(),
+  endDate: z.string(),
+  userId: z.string(),
+})
 
 type FormFields = z.infer<typeof vacationSchema>
 
@@ -44,8 +38,8 @@ export const CreateVacationForm = () => {
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      const res = await AxiosInstance.post('/asset', data)
-      console.log('Asset created successfully:', res.data)
+      const res = await AxiosInstance.post('/vacation', data)
+      console.log('Vacation created successfully:', res.data)
       if (res.status === 201) {
         setVacations((prevVacations) => [...prevVacations, res.data])
         handleCloseModal()
@@ -57,10 +51,19 @@ export const CreateVacationForm = () => {
         })
       } else {
         setError('root', {
-          message: 'An error occurred while creating the asset',
+          message: 'An error occurred while creating the vacation',
         })
       }
     }
+  }
+
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  const startDateRef = useRef<HTMLInputElement>(null)
+  const endDateRef = useRef<HTMLInputElement>(null)
+
+  const handleClick = (element: RefObject<HTMLInputElement>) => {
+    element.current?.showPicker()
   }
 
   return (
@@ -109,15 +112,88 @@ export const CreateVacationForm = () => {
         </div>
 
         <div>
-        <div style={{ display: 'flex', gap: '0.3rem', justifyContent: "space-between" }}>
-            <input type="date" {...register('startDate')} />
-            <input type="date" {...register('endDate')} />
+          <div
+            style={{
+              display: 'flex',
+              gap: '0.3rem',
+              justifyContent: 'space-between',
+            }}
+          >
+            <div
+              style={{
+                border: '1px #999999 solid',
+                borderRadius: '5px',
+                width: '100%',
+              }}
+            >
+              <input
+                type="date"
+                {...register('startDate')}
+                style={{ display: 'none' }}
+                onChange={(e) => setStartDate(e.target.value)}
+                ref={startDateRef}
+              />
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  padding: ' 0.5rem 1rem',
+                }}
+              >
+                <label htmlFor="startDate">
+                  {startDateRef.current?.value ? startDate : 'Start Date:'}
+                </label>
+                <span onClick={() => handleClick(startDateRef)}>
+                  <CalendarTodayIcon />
+                </span>
+              </div>
+              {errors.startDate && (
+                <ErrorText>{errors.startDate.message}</ErrorText>
+              )}
+            </div>
+            <div
+              style={{
+                border: '1px #999999 solid',
+                borderRadius: '5px',
+                width: '100%',
+              }}
+            >
+              <input
+                type="date"
+                {...register('endDate')}
+                style={{ display: 'none' }}
+                ref={endDateRef}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  padding: ' 0.5rem 1rem',
+                }}
+              >
+                <label htmlFor="endDate">
+                  {endDateRef.current?.value ? endDate : 'End Date:'}
+                </label>
+                <span onClick={() => handleClick(endDateRef)}>
+                  <CalendarTodayIcon />
+                </span>
+              </div>
+              {errors.endDate && (
+                <ErrorText>{errors.endDate.message}</ErrorText>
+              )}
+            </div>
           </div>
-
-          {errors.startDate && (
-            <ErrorText>{errors.startDate.message}</ErrorText>
-          )}
-          {errors.endDate && <ErrorText>{errors.endDate.message}</ErrorText>}
+        </div>
+        <div>
+          <Input
+            IsUsername
+            name="userId"
+            width={'100%'}
+            label="User ID"
+            register={register('userId')}
+          />
+          {errors.userId && <ErrorText>{errors.userId.message}</ErrorText>}
         </div>
 
         <div style={{ display: 'flex', gap: '0.3rem' }}>
