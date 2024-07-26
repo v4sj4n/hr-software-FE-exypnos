@@ -22,7 +22,7 @@ const Card: React.FC<CardProps> = ({
     padding: padding || '1rem',  
     borderRadius: borderRadius || '4px',  
     gap: gap || '0',
-    height:height || 'auto',  
+    height:height || 'auto',   
   };
 
   return (

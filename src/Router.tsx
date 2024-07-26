@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-
+import ViewCandidats from './Pages/VIewCandidats/ViewCandidats.tsx'
 import PrivateRoute from './Context/ProtectedRoute.tsx'
 import Assets from './Pages/Assets/Assets.tsx'
 import Candidates from './Pages/Candidates/Candidates.tsx'
@@ -15,9 +15,12 @@ import Profile from './Pages/Profile/Profile'
 import Recruitment from './Pages/Recruitment/Recruitment.tsx'
 import Structure from './Pages/Structure/Structure.tsx'
 import Vacation from './Pages/Vacation/Vacation.tsx'
-import AssetProvider from './Pages/Assets/AssetsContext.tsx'
+import AssetProvider from './Pages/Assets/AssetContext.tsx'
 import { EmployeeProvider } from './Pages/Employees/Context/EmployeTableProvider.tsx'
+import { CandidateProvider } from './Pages/Candidates/Context/CandidateTableProvider.tsx'
 import VacationProvider from './Pages/Vacation/VacationContext.tsx'
+
+
 
 export default function Router() {
   const router = createBrowserRouter([
@@ -33,14 +36,12 @@ export default function Router() {
       path: '/forgot-password',
       element: <ResetPass />,
     },
-
     {
       path: '/',
       element: <PrivateRoute />,
       children: [
         {
           path: 'employees',
-
           element: (
             <EmployeeProvider>
               <Employees />
@@ -51,6 +52,10 @@ export default function Router() {
         {
           path: 'profile/:id',
           element: <Profile />,
+        },
+        {
+          path: 'view/:id',
+          element: <ViewCandidats />,
         },
         {
           path: 'assets',
@@ -74,7 +79,11 @@ export default function Router() {
         },
         {
           path: 'candidates',
-          element: <Candidates />,
+          element: (
+            <CandidateProvider>
+              <Candidates />
+            </CandidateProvider>
+          ),
         },
         {
           path: 'vacation',
@@ -95,6 +104,5 @@ export default function Router() {
       ],
     },
   ])
-
   return <RouterProvider router={router} />
 }

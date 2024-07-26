@@ -8,7 +8,6 @@ import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import ComputerIcon from '@mui/icons-material/Computer';
-import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 
 
 export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -24,11 +23,11 @@ export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }));
 
     const columns = [
-        { field: 'id', headerName: 'No', width: 80 },
-        { field: 'fullName', headerName: 'Full Name',  width: 150 },
-        { field: 'email', headerName: 'Email', width: 150 },
-        { field: 'phone', headerName: 'Phone', width: 150 },
-        { field: 'role', headerName: 'Role', width: 100 },
+        { field: 'id', headerName: 'No', maxWidth: 70, flex: 1 },
+        { field: 'fullName', headerName: 'Full Name',  width: 150,  flex: 1 },
+        { field: 'email', headerName: 'Email', width: 150,  flex: 1 },
+        { field: 'phone', headerName: 'Phone', width: 150,  flex: 1 },
+        { field: 'role', headerName: 'Role', width: 100,  flex: 1 },
         {
             field: 'actions',
             headerName: 'Actions',
@@ -47,7 +46,6 @@ export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         phone: PhoneIcon,
         date: DateRangeIcon,
         position: ComputerIcon,
-        id: FormatListNumberedIcon,
     };
 
     const headerTextColors = {

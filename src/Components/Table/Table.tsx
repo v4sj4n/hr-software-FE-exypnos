@@ -49,7 +49,7 @@ export default function DataTable<T extends GridValidRowModel>({
         sx={{
           ...TableStyles,
           '& .colored-row': {
-            backgroundColor: '#F0F0F0',
+            backgroundColor: '#f4f4f4',
           },
           width: '100%',
         }}

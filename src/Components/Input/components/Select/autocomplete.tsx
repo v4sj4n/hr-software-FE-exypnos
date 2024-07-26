@@ -1,32 +1,22 @@
-import  { useState } from "react";
+import React from "react";
 import { Box, TextField, Chip, MenuItem } from "@mui/material";
 import { SelectChangeEvent } from '@mui/material/Select';
 import { autoCompleteStyles } from "../../Styles";
-import { InputProps } from "../Interface";
 
-interface ChipData {
-  key: number;
-  label: string;
+interface MuiSelectProps {
+  value: string[];
+  onChange: (value: string[]) => void;
+  name: string;
 }
 
-export const MuiSelect: React.FC<InputProps> = () => {
-    const [chipData, setChipData] = useState<ChipData[]>([]);
-
-    const handleDelete = (chipToDelete: ChipData) => () => {
-      setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
+export const MuiSelect: React.FC<MuiSelectProps> = ({ value, onChange, name }) => {
+    const handleDelete = (chipToDelete: string) => () => {
+      onChange(value.filter((item) => item !== chipToDelete));
     };
 
-    const handleChange = (event: SelectChangeEvent<string[]>) => {
-      const value = event.target.value;
-      const newValue = typeof value === 'string' ? value.split(',') : value;
-      
-      setChipData((prevChips) => {
-        const newChips = newValue
-          .filter((label) => !prevChips.some((chip) => chip.label === label))
-          .map((label) => ({ key: Date.now() + Math.random(), label }));
-        
-        return [...prevChips, ...newChips];
-      });
+    const handleChange = (event: SelectChangeEvent<typeof value>) => {
+      const newValue = event.target.value;
+      onChange(typeof newValue === 'string' ? newValue.split(',') : newValue);
     };
 
     const technologies = ['Angular', 'jQuery', 'Polymer', 'React', 'Vue.js'];
@@ -42,11 +32,11 @@ export const MuiSelect: React.FC<InputProps> = () => {
                   multiple: true,
                   renderValue: (selected) => (
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {chipData.map((data) => (
+                      {(selected as string[]).map((data) => (
                         <Chip
-                        sx={{fontFamily: '"Outfit", sans-serif', fontSize:"14px"}}
-                          key={data.key}
-                          label={data.label}
+                          sx={{fontFamily: '"Outfit", sans-serif', fontSize:"14px"}}
+                          key={data}
+                          label={data}
                           onDelete={handleDelete(data)}
                           onMouseDown={(event) => {
                             event.stopPropagation();
@@ -55,13 +45,14 @@ export const MuiSelect: React.FC<InputProps> = () => {
                       ))}
                     </Box>
                   ),
+                  onChange: handleChange as any, 
                 }}
                 fullWidth 
                 label='Used technologies' 
                 size="small" 
                 select 
-                value={chipData.map(chip => chip.label)}
-                onChange={handleChange}
+                value={value}
+                name={name}
                 InputLabelProps={{
                     style: { 
                       color: "#4C556B", 
@@ -79,26 +70,3 @@ export const MuiSelect: React.FC<InputProps> = () => {
         </Box>
     )
 }
-
-
-// import { Stack, Autocomplete, TextField } from "@mui/material";
-// import React, { useState } from "react";
-
-// const skills = ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js']
-
-//  export const MuiSelect = () => {
-//     const [value, setValue] = useState<string | null>(null);
-
-
-//     return (
-//         <Stack spacing={2} width='300px'>
-//             <Autocomplete
-//                 options={skills}
-//                 renderInput={(params) => <TextField {...params} label="Skills" variant="filled" />}
-//                 value={value}
-//                 onChange={(event: any, newValue:string | null) => setValue(newValue)}
-//                 freeSolo
-//             />
-//         </Stack>
-//     )
-// }
