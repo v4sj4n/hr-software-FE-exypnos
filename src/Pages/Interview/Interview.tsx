@@ -81,16 +81,16 @@ export default function Interview() {
 
   }));
   const columns = [
-    { field: 'id', headerName: 'No', width: 50 },
-    { field: 'firstName', headerName: 'First name', width: 120 },
-    { field: 'lastName', headerName: 'Last name', width: 120 },
-    { field: 'email', headerName: 'Email', width: 220 },
-    { field: 'phone', headerName: 'Phone', width: 150 },
-    { field: 'position', headerName: 'Position', width: 150 },
-    { field: 'date', headerName: 'Date', width: 150 },
-    { field: 'time', headerName: 'Time', width: 100 },
-    { field: 'notes', headerName: 'Notes', width: 150 },
-    { field: 'cvAttachment', headerName: 'CV', width: 150 },
+    { field: 'id', maxWidth:40, headerName: 'No', flex:1 },
+    { field: 'firstName', headerName: 'First name', flex:1 },
+    { field: 'lastName', headerName: 'Last name', flex:1 },
+    { field: 'email', headerName: 'Email', flex:1 },
+    { field: 'phone', headerName: 'Phone', flex:1 },
+    { field: 'position', headerName: 'Position', flex:1 },
+    { field: 'date', headerName: 'Date', flex:1 },
+    { field: 'time', headerName: 'Time', flex:1 },
+    { field: 'notes', headerName: 'Notes', flex:1 },
+    { field: 'cvAttachment', headerName: 'CV', flex:1 },
 
 
 ];

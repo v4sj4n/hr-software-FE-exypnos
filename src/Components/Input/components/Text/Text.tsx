@@ -16,9 +16,12 @@ const UsernameInput: React.FC<InputProps> = (props) => {
       onBlur={props.onBlur}
       value={props.value}
       onChange={props.onChange}
+      inputRef={props.inputRef}
       error={props.error}
       defaultValue={initialValue}
       disabled={props.disabled}
+      style={props.style}
+      className={props.className}
       size="small"
       name={name}
       variant="filled"

@@ -10,7 +10,7 @@ import { useCreateAplicant } from "./Context/Recruitment.Provider";
 
 export default function Recruitment() {
 
-    const { handleChange, aplicantFormData, handleTechnologiesChange, handleFileChange, handleCreateAplicant } = useCreateAplicant();
+    const { handleChange, aplicantFormData,  handleTechnologiesChange, handleFileChange, handleCreateAplicant } = useCreateAplicant();
 
     return (
 <>
@@ -50,11 +50,11 @@ export default function Recruitment() {
                     />
                     <Input
                         label="Phone Number"
-                        name='phone'
+                        name='phoneNumber'
                         IsUsername
                         width="300px"
                         onChange={handleChange}
-                        value={aplicantFormData.phone}
+                        value={aplicantFormData.phoneNumber}
                     />
                 </div>
                 <div style={{ display: "flex", gap: "20px" }}>       
@@ -99,14 +99,14 @@ export default function Recruitment() {
                         name='experience'
                         IsUsername
                         width="620px"
-                        onChange={handleChange}
+                        onChange={handleChange} 
                         value={aplicantFormData.experience}
                     />
                 </div>
                 <div style={{ display: "flex" }}>
                     <MuiSelect value={aplicantFormData.technologiesUsed} onChange={handleTechnologiesChange} name="technologiesUsed"/>
                 </div>
-                <div style={{ display: "flex" }}>
+                {/* <div style={{ display: "flex" }}>
                     <Input
                         label="Individual projects"
                         name='individualProjects'
@@ -115,14 +115,12 @@ export default function Recruitment() {
                         onChange={handleChange}
                         value={aplicantFormData.individualProjects}
                     />
-                </div>
+                </div> */}
               
-
-
                 <div style={{ display: "flex" }}>
                 <Input
                     label="CV"
-                    name='cv'
+                    name='file'
                     type="file" 
                     IsUsername
                     width="620px"

@@ -1,35 +1,40 @@
-import { useState } from "react"
+import { useRef, useState } from "react";
 import AxiosInstance from "../../../Helpers/Axios";
 
 export const useCreateAplicant = () => {
-    const [aplicantFormData, setAplicatFormData] = useState({
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const handleFileIconClick = () => {
+        fileInputRef.current?.click();
+    };
+    const [aplicantFormData, setAplicantFormData] = useState({
         firstName: "",
         lastName: "",
         email: "",
-        phone: "",
+        phoneNumber: "",
         experience: "",
         applicationMethod: "",
         age: '',
         positionApplied: '',
         technologiesUsed: [] as string[],
-        individualProjects: '',
         salaryExpectations: '',
-        cv: null as File | null, // Add this line for CV file
+        file: null as File | null, 
+        status: 'pending',
     });
 
+    const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setAplicatFormData({...aplicantFormData, [event.target.name]: event.target.value });
-        console.log(aplicantFormData);
+        setAplicantFormData({...aplicantFormData, [event.target.name]: event.target.value });
     };
 
     const handleTechnologiesChange = (newTechnologies: string[]) => {
-        setAplicatFormData({...aplicantFormData, technologiesUsed: newTechnologies });
-        console.log(aplicantFormData);
+        setAplicantFormData({...aplicantFormData, technologiesUsed: newTechnologies });
     };
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
-            setAplicatFormData({...aplicantFormData, cv: event.target.files[0]});
+            setAplicantFormData({...aplicantFormData, file: event.target.files[0]});
         }
     };
 
@@ -38,8 +43,8 @@ export const useCreateAplicant = () => {
         
         const formData = new FormData();
         Object.keys(aplicantFormData).forEach(key => {
-            if (key === 'cv' && aplicantFormData.cv) {
-                formData.append('cv', aplicantFormData.cv);
+            if (key === 'file' && aplicantFormData.file) {
+                formData.append('file', aplicantFormData.file);
             } else if (key === 'technologiesUsed') {
                 formData.append('technologiesUsed', JSON.stringify(aplicantFormData.technologiesUsed));
             } else {
@@ -47,34 +52,48 @@ export const useCreateAplicant = () => {
             }
         });
 
-        try {
-            await AxiosInstance.post("/applicants", formData);
-            console.log("Applicant created successfully!");
+        setIsLoading(true);
+        setError(null);
 
-            setAplicatFormData({
+        try {
+            const response = await AxiosInstance.post("/applicants", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            console.log("Applicant created successfully!", response.data);
+
+            setAplicantFormData({
                 firstName: "",
                 lastName: "",
                 email: "",
-                phone: "",
+                phoneNumber: "",
                 experience: "",
                 applicationMethod: "",
                 age: '',
                 positionApplied: '',
                 technologiesUsed: [],
-                individualProjects: '',
                 salaryExpectations: '',
-                cv: null,
+                file: null,
+                status: 'pending',
             });
         } catch (error) {
             console.error("Error creating applicant:", error);
+            setError('Failed to create applicant');
+        } finally {
+            setIsLoading(false);
         }
-    }
+    };
 
     return {
         handleChange, 
         handleTechnologiesChange, 
         handleFileChange, 
         aplicantFormData, 
-        handleCreateAplicant
-    }
-}
+        handleCreateAplicant,
+        error,
+        isLoading,
+        fileInputRef,
+        handleFileIconClick 
+    };
+};
