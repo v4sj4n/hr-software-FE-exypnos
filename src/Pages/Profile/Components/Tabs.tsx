@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Card from '../../../Components/Card/Card';
-import style from "../Profile.module.css";
+import style from '../style/Profile.module.css'
 import ProfileForm from './ProfileForm/ProfileForm';
 import Contrat from './Contrat/Contrat';
 import ChangePass from './ChangePass/ChangePass';
