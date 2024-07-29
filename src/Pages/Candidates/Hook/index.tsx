@@ -1,20 +1,6 @@
 import { useState, useEffect } from 'react';
 import AxiosInstance from '../../../Helpers/Axios';
-
-export interface applicantsData {
-    firstName: string;
-    lastName: string;
-    phoneNumber: string;
-    email: string;
-    experience: string;
-    applicationMethod: string;
-    age: string;
-    positionApplied: string;
-    technologiesUsed: string[];
-    salaryExpectations: string;
-    status: string;
-    _id: number;
-}
+import { applicantsData } from '../Interfaces/Candidate';
 
 export const useGetAllApplicants = () => {
     const [applicants, setApplicants] = useState<applicantsData[]>([]);

@@ -56,11 +56,7 @@ export const useCreateAplicant = () => {
         setError(null);
 
         try {
-            const response = await AxiosInstance.post("/applicants", formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
+            const response = await AxiosInstance.post("/applicants", formData )
             console.log("Applicant created successfully!", response.data);
 
             setAplicantFormData({

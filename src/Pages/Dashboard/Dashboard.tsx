@@ -32,17 +32,17 @@ const DashboardContent: React.FC = () => {
             <div className={style.cardPurple}><Card title="Remote" content={employeeData.remote.toString()} icon="Remote" /></div>
           </div>
           <div className={style.middleRow}>
-            <Card1 padding='20px' borderRadius='15px' height='350px' >
-              <h3>Calendar</h3>
+            <Card1 padding='20px' borderRadius='15px'  flex='1'>
+              <h3 >Calendar</h3>
               <Calendar />
             </Card1>
-            <Card1 padding='20px' borderRadius='15px' height='350px'>
+            <Card1 padding='20px' borderRadius='15px'  flex='1'>
 
             <div className={style.infoSection}>
               <InfoSection />
             </div>
             </Card1>
-            <Card1 padding='20px' borderRadius='15px' height='350px' >
+            <Card1 padding='20px' borderRadius='15px' flex='1' >
 
             <div className={style.pieChartDiv}>
               <h3>Employee Status</h3>

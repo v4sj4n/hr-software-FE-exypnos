@@ -1,5 +1,4 @@
 import React from 'react';
-import { EmployeeContext, EmployeeRow } from './EmployeTableContext';
 import { useGetAllUsers } from '../Hook';
 import { GridRenderCellParams } from '@mui/x-data-grid';
 import { Link } from "react-router-dom";
@@ -8,7 +7,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import ComputerIcon from '@mui/icons-material/Computer';
-
+import { EmployeeContext, EmployeeRow } from '../interfaces/Employe';
 
 export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { users } = useGetAllUsers();

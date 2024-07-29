@@ -7,7 +7,7 @@ import img from '/Images/HeroImage.png'
 import logo from '/Images/image_1-removebg-preview.png'
 import { useLogin } from './Hook'
 import ClipLoader from 'react-spinners/ClipLoader'
-import style from './Login.module.css'
+import style from './styles/Login.module.css'
 
 const Login: React.FC = () => {
   const {
@@ -74,6 +74,7 @@ const Login: React.FC = () => {
         <Button
           type={formIsValid ? ButtonTypes.PRIMARY : ButtonTypes.DISABLED}
           onClick={handleSubmit}
+          width="350px"
           btnText={
             isLoading ? (
               <ClipLoader

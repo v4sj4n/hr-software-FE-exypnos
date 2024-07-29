@@ -19,12 +19,12 @@ export default function Assets() {
       }}
     >
       <div className={style.titleHeading}>
-        <h1>Assets</h1>
+        <div className={style.title}>Assets</div>
         <Button
           type={ButtonTypes.PRIMARY}
           btnText="Create Asset"
           onClick={handleOpenModal}
-          width="15rem"
+          width="12rem"
         />
       </div>
       <ModalComponent open={modalOpen} handleClose={handleCloseModal}>
