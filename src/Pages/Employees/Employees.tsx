@@ -1,5 +1,5 @@
 import style from './style/Employees.module.css'
-import DataTable from "../../Components/Table/Table";
+import DataTable from "@/Components/Table/Table";
 import { useEmployeeContext } from './Context/EmployeTableContext';
 export default function Employees() {
     const { rows, columns, headerIcons,  getRowId } = useEmployeeContext();

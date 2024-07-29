@@ -1,4 +1,4 @@
-import Card1 from '../../Components/Card/Card.tsx'
+import Card1 from '@/Components/Card/Card.tsx'
 import style from '../Dashboard/style/dashboard.module.css'
 import Calendar from "./components/calendar.tsx";
 import Card from './components/card.tsx';

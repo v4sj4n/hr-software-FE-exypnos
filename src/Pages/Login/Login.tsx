@@ -1,13 +1,20 @@
-import { Link } from 'react-router-dom'
-import Card from '../../Components/Card/Card'
-import Input from '../../Components/Input/Index'
-import Button from '../../Components/Button/Button'
-import { ButtonTypes } from '../../Components/Button/ButtonTypes'
+import { Link, useNavigate } from 'react-router-dom'
+import Card from '@/Components/Card/Card'
+import Input from '@/Components/Input/Index'
+import Button from '@/Components/Button/Button'
+import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import img from '/Images/HeroImage.png'
 import logo from '/Images/image_1-removebg-preview.png'
 import { useLogin } from './Hook'
 import ClipLoader from 'react-spinners/ClipLoader'
 import style from './Login.module.css'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { LoginFormFields, loginSchema } from '@/Schemas/Login/Login.schema'
+import AxiosInstance from '@/Helpers/Axios'
+import { AxiosError } from 'axios'
+import { useAuth } from '@/Context/AuthProvider'
+import { ErrorText } from '@/Components/Error/ErrorTextForm'
 
 const Login: React.FC = () => {
   const {
@@ -22,11 +29,46 @@ const Login: React.FC = () => {
     enteredPassword,
     handleClickShowPassword,
     handleMouseDownPassword,
-    handleSubmit,
+    // handleSubmit,
     enteredEmail,
     formIsValid,
     error,
   } = useLogin()
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormFields>({
+    resolver: zodResolver(loginSchema),
+  })
+
+  const onSubmit: SubmitHandler<LoginFormFields> = async (data) => {
+    try {
+        const res = await AxiosInstance.post('/auth/signin', data);
+        const user = res.data.data.user;
+        const role = user.role;
+        const access_token = res.data.data.access_token;
+        login(access_token, role, user);
+        navigate("/dashboard")
+      
+    } catch (err: unknown) {
+      if (err instanceof AxiosError) {
+        setError('root', {
+          message: err?.response?.data?.message,
+        })
+      } else {
+        setError('root', {
+          message: 'An error occurred while creating the asset',
+        })
+      }
+    }
+  }
 
   return (
     <div className={style.container}>
@@ -44,10 +86,20 @@ const Login: React.FC = () => {
           <img className={style.img2} alt="img" src={logo} />
         </div>
         <div className={style.title}>Login</div>
-        <Input
+        <form style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px',
+        }} 
+        onSubmit={handleSubmit(onSubmit)}
+        >
+
+       <div>
+       <Input
           label="Email"
           name="email"
           value={enteredEmail}
+          register={register("email")}
           IsUsername
           width="350px"
           onChange={emailChangeHandler}
@@ -56,8 +108,11 @@ const Login: React.FC = () => {
           error={emailInputHasError}
           helperText={emailInputHasError ? "Email must include '@'" : ''}
         />
+        {errors.email && <ErrorText>{errors.email.message}</ErrorText>}
+       </div>
         <Input
           label={'Password'}
+          register={register("password")}
           id="outlined-adornment-password"
           name="password"
           value={enteredPassword}
@@ -71,9 +126,12 @@ const Login: React.FC = () => {
           onClick={handleClickShowPassword}
           onMouseDown={handleMouseDownPassword}
         />
+        {errors.password && <ErrorText>{errors.password.message}</ErrorText>}
         <Button
           type={formIsValid ? ButtonTypes.PRIMARY : ButtonTypes.DISABLED}
-          onClick={handleSubmit}
+          // onClick={handleSubmit}
+          
+          disabled={isSubmitting}
           btnText={
             isLoading ? (
               <ClipLoader
@@ -88,6 +146,8 @@ const Login: React.FC = () => {
           }
         />
         {error && <div className={style.error}> {error} </div>}
+        </form>
+
         <Link
           to="/forgot-password"
           style={{
