@@ -1,10 +1,11 @@
-import DataTable from '../../Components/Table/Table'
-import style from './styles/Interview.module.css'
-import Button from '../../Components/Button/Button';
-import { GridRenderCellParams } from '@mui/x-data-grid'; 
-import RescheduleModal from './component/scheduleForm';
+import { GridRenderCellParams } from '@mui/x-data-grid';
 import { useState } from 'react';
+import ClearIcon from '@mui/icons-material/Clear';
+import Button from '../../Components/Button/Button';
 import { ButtonTypes } from '../../Components/Button/ButtonTypes';
+import DataTable from '../../Components/Table/Table'
+import RescheduleModal from './component/scheduleForm';
+import style from './styles/Interview.module.css'
 
 interface Interview {
   fullName: string;
@@ -14,6 +15,8 @@ interface Interview {
   date: string;
   time: string;
   cvAttachment: string;
+  notes: string;
+  
 }
 
 const dummyInterviews: Interview[] = [
@@ -25,6 +28,7 @@ const dummyInterviews: Interview[] = [
     date: "2024-07-25",
     time: "14:00",
     cvAttachment: "artemisa_nuri_cv.pdf",
+    notes: "interview scheduled"
   },
   {
     fullName: "Gerti Kadiu",
@@ -34,6 +38,7 @@ const dummyInterviews: Interview[] = [
     date: "2024-07-26",
     time: "10:30",
     cvAttachment: "gerti_kadiu_cv.pdf",
+    notes: "interview scheduled"
   },
   {
     fullName: "Redi Balla",
@@ -43,6 +48,7 @@ const dummyInterviews: Interview[] = [
     date: "2024-07-27",
     time: "11:00",
     cvAttachment: "redi_balla_cv.pdf",
+    notes: "interview scheduled"
   },
   {
     fullName: "Vasjan Cupri",
@@ -52,6 +58,7 @@ const dummyInterviews: Interview[] = [
     date: "2024-07-28",
     time: "15:30",
     cvAttachment: "vasjan_cupri_cv.pdf",
+    notes: "interview scheduled"
   },
   {
     fullName: "Selma Bakiu",
@@ -61,6 +68,17 @@ const dummyInterviews: Interview[] = [
     date: "2024-07-29",
     time: "13:00",
     cvAttachment: "selma_bakiu_cv.pdf",
+    notes: "interview scheduled"
+  },
+  {
+    fullName: "Gerald Bane",
+    auth: { email: "bane.gerald@example.com" },
+    phone: "234-567-8901",
+    position: " Fullstack Developer",
+    date: "2024-07-29",
+    time: "13:00",
+    cvAttachment: "gerald_bane_cv.pdf",
+    notes: " Great skills "
   },
 ];
 
@@ -79,6 +97,7 @@ export default function Interview() {
     date: interview.date,
     time: interview.time,
     cvAttachment: interview.cvAttachment,
+    notes: interview.notes,
   }));
 
   const handleOpenModal = (interview: Interview) => {
@@ -112,22 +131,37 @@ export default function Interview() {
     { field: 'date', headerName: 'Date', flex:1 },
     { field: 'time', headerName: 'Time', flex:1  },
     { field: 'cvAttachment', headerName: 'CV', flex:1 },
+    {field: 'notes', headerName: 'Notes', flex:1  },
     {
       field: 'reschedule',
       headerName: 'Reschedule',
       width: 120,
       renderCell: (params: GridRenderCellParams) => (
-        <Button type={ButtonTypes.PRIMARY}
+        <div style={{ display: 'flex', gap: '10px' }}>
+        <Button 
+          type={ButtonTypes.PRIMARY}
           btnText="Reschedule"
-          marginTop='10px'
-          width="90px"
-          height="35px" 
-          padding='1opx' 
+          width="40px"
+          height="35px"
+          padding='10px'
           display='flex'
-          justifyContent= 'center'
+          justifyContent='center'
           alignItems='center'      
-          onClick={() => handleOpenModal(params.row as Interview)}>
-        </Button>
+          onClick={() => handleOpenModal(params.row as Interview)}
+        />
+        <Button 
+          type={ButtonTypes.SECONDARY}
+          width="40px"
+          height="35px"
+          padding='10px'
+          display='flex'
+          justifyContent='center'
+          alignItems='center'   
+          background='#cc0000'   
+          icon={<ClearIcon  sx={{color:'white',height:15, width:15}} />}
+          onClick={() => handleCancel(params.row as Interview)}
+        />
+      </div>
       ),
     },
   ];
