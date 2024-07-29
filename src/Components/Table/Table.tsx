@@ -1,68 +1,71 @@
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { useGetAllUsers } from '../../Hooks/Actions';
-import { Link } from 'react-router-dom';
+import { DataGrid, GridColDef, GridValidRowModel, GridRowParams } from '@mui/x-data-grid';
+import React from 'react';
 import { TableStyles } from '../Input/Styles';
-
-export default function DataTable() {
-
-  const {users} = useGetAllUsers();
-
-  const columns: GridColDef[] = [
-    { field: 'id', headerName: 'No', width: 80 },
-    { field: 'firstName', headerName: 'First name', width: 150 },
-    { field: 'lastName', headerName: 'Last name', width: 150 },
-    {
-      field: 'email', 
-      headerName: 'Email',
-      type: 'string',
-      width: 250,
-    },
-    {
-      field: 'role', 
-      headerName: 'Role',
-      type: 'string',
-      width: 150,
-    },
-    { 
-      field: 'fullName', 
-      headerName: 'Full Name', 
-      width: 200,
-      renderCell: (params) => (
-        <Link style={{textDecoration:"none", color:"#4C556B"}} to={`/profile/${params.row.originalId}`}>
-          {params.value}
-        </Link>
-      )
-    },
-  ];
-  
-
-  const rows = users.map((user, index) => ({
-    id: index + 1, 
-    originalId: user._id, 
-    firstName: user.firstName,
-    role: user.role, 
-    lastName: user.lastName,
-    email: user.auth?.email, 
-    fullName: `${user.firstName} ${user.lastName}`,
-  }));
-
-
-
+import { SvgIconProps } from '@mui/material';
+interface DataTableProps<T extends GridValidRowModel> {
+  rows: T[];
+  columns: GridColDef[];
+  getRowId?: (row: T) => string | number;
+  height?: number | string;
+  initialPageSize?: number;
+  pageSizeOptions?: number[];
+  additionalStyles?: React.CSSProperties;
+  headerIcons?: { [key: string]: React.ComponentType<SvgIconProps> };
+  handleRowClick?: (params: GridRowParams) => void;
+}
+export default function DataTable<T extends GridValidRowModel>({
+  rows,
+  columns,
+  getRowId = (row: T) => (row).id,
+  height = "auto",
+  initialPageSize = 5,
+  pageSizeOptions = [5, 10, 20, 30],
+  headerIcons,
+  handleRowClick,
+}: DataTableProps<T>) {
+  const getRowClassName = (params: GridRowParams) => {
+    return Number(params.id) % 2 === 0 ? 'colored-row' : '';
+  };
+  const columnsWithIcons = columns.map(column => {
+    if (headerIcons && headerIcons[column.field]) {
+      const Icon = headerIcons[column.field];
+      return {
+        ...column,
+        renderHeader: () => (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Icon style={{ marginRight: '8px' }} />
+            {column.headerName}
+          </div>
+        ),
+      };
+    }
+    return column;
+  });
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height, width: '100%' }}>
       <DataGrid
         rows={rows}
-        columns={columns}
-        getRowId={(row) => row.id}
-       sx={{...TableStyles}}
+        columns={columnsWithIcons}
+        getRowId={getRowId}
+        getRowClassName={getRowClassName}
+        onRowClick={handleRowClick}
+        sx={{
+          ...TableStyles,
+          '& .colored-row': {
+            backgroundColor: '#f4f4f4',
+          },
+          '& .MuiDataGrid-row': {
+            cursor: 'pointer',
+          },
+          width: '100%',
+        }}
         initialState={{
           pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
+            paginationModel: { page: 0, pageSize: initialPageSize },
           },
         }}
-        
-        pageSizeOptions={[5, 10]}
-        
+        pageSizeOptions={pageSizeOptions}
+        checkboxSelection
       />
     </div>
   );

@@ -1,0 +1,56 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    gap: 150px;
+    min-height: 100%;
+    background-image: url('Images/background\ \(1\).png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.img {
+    width: 510px;
+    height: auto;
+}
+
+.img2 {
+    width: 150px;
+    height: auto;
+}
+
+.title {
+    color: #000000;
+    font-weight: bolder;
+    font-size: 20px;
+    font-family: "Outfit", sans-serif;
+}
+
+.error{
+    color: #d32f2f;
+    font-Size: 13px;
+    padding: 0;
+    margin: 0;
+    top: 0;
+}

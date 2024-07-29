@@ -2,16 +2,14 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #f0f5ff;
+  background-color: #F0F5FF;
   width: 100%;
 }
-
 .mainContent {
   display: flex;
   flex: 1;
   overflow: hidden;
 }
-
 .rightContent {
   flex: 1;
   padding: 20px;
@@ -19,41 +17,38 @@
   display: flex;
   flex-direction: column;
 }
-
 .welcome {
-background-image: url('../src/Assets/blue.jpg');  
-color: #2457a3;
-  border-radius: 15px;
-  padding: 20px;
-  margin-bottom: 20px;
-
-}
-
+  background-image: url('/Images/blue.jpg');
+  color: #2457A3;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
 
 .cardContainer {
   display: flex;
   gap: 20px;
   margin-bottom: 20px;
 }
-
 .cardGreen, .cardBlue, .cardYellow, .cardPurple {
   background-color: white;
   border-radius: 15px;
   padding: 20px;
   flex: 1;
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.1);
-  color: #2457a3;
+  color: #2457A3;
   text-align: center;
   transition: background-color 0.3s ease;
-
 }
+  
+
 
 
 
 .cardGreen {
   background-image: linear-gradient(180deg, #E0F2F7, #A8E0F0);
 }.cardBlue {
-  background-image: linear-gradient(180deg, #ede5ef, #C5B3E6);
+  background-image: linear-gradient(180deg, #EDE5EF, #C5B3E6);
 }.cardYellow {
   background-image: linear-gradient(210deg, #D8B4F2, #B68CE6);
 }.cardPurple {
@@ -64,30 +59,20 @@ color: #2457a3;
   gap: 20px;
   margin-bottom: 20px;
 }
-
 .calendar, .infoSection, .pieChartDiv {
-  background-color: white;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   flex: 1;
-  height: 350px;
-}
+  width: 360px;
 
+}
 .employeeProfile {
   background-color: white;
   border-radius: 15px;
   padding: 20px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   flex-grow: 1;
-  min-height: 300px; 
+  min-height: 300px;
 }
-
 h2, h3 {
-  color: #2457a3;
+  color: #2457A3;
   margin-bottom: 15px;
 }
-
-/* .welcome h2{
-  color: white;
-} */

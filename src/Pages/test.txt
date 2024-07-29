@@ -1,0 +1,28 @@
+1. Tabele tamam - component me props dinamike
+    kolona -> text, checkbox, button, tag, input tjeter
+    config -> kur e therret tabelen si komponent i kalon file config i cili krijon header dhe kolonat.
+
+2. Lista e inputs
+   text, number -> 23,234,345 , checkbox, select -> (static , async, autocomplete), radio, file
+
+3. Forma -> required fields ( formik ose react hook form dhe yup)
+
+4. Buttons 
+
+5. Pagination - component me vete
+
+6. config per api
+
+7. utils / helpers
+
+8. Historiku i nje punonjesi
+
+9. duhet te krijohet nje reminder per punonjesit qe i shkon elisabetes
+ cdo 6 muaj ose 1 vit per rritje rroge ose angazhimi ne projekte te reja
+
+
+
+
+
+
+
