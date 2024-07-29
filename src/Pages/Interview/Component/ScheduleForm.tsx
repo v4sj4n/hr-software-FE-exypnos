@@ -1,24 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextField, Button, Box } from '@mui/material';
 import { ModalComponent } from '../../../Components/Modal/Modal';
+
+interface Interview {
+  date: string;
+  time: string;
+}
 
 interface RescheduleModalProps {
   open: boolean;
   handleClose: () => void;
   handleReschedule: (date: string, time: string) => void;
+  selectedInterview: Interview | null;
 }
 
 const RescheduleModal: React.FC<RescheduleModalProps> = ({
   open,
   handleClose,
-  handleReschedule,
+  handleReschedule, 
+  selectedInterview,
 }) => {
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
+  const [date, setDate] = useState(selectedInterview ? selectedInterview.date : '');
+  const [time, setTime] = useState(selectedInterview ? selectedInterview.time : '');
+
+  useEffect(() => {
+    if (selectedInterview) {
+      setDate(selectedInterview.date);
+      setTime(selectedInterview.time);
+    }
+  }, [selectedInterview]);
 
   const handleSubmit = () => {
-    handleReschedule(date, time);
-    handleClose();
+    if (date && time) {
+      handleReschedule(date, time);
+    }
   };
 
   return (

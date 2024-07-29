@@ -18,13 +18,15 @@ const Card: React.FC<CardProps> = ({
   borderRadius,
   height,
   gap, 
-  className 
+  className ,
+  flex
 }) => {
   const cardStyle = {
     padding: padding || '1rem',  
     borderRadius: borderRadius || '4px',  
     gap: gap || '0',
     height:height || 'auto',  
+    flex: flex || '1 1 0%'  
   };
 
   return (

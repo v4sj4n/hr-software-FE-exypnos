@@ -4,8 +4,7 @@ import Calendar from "./components/calendar.tsx";
 import Card from './components/card.tsx';
 import InfoSection from "./components/infoSection.tsx";
 import PieChartComponent from "./components/piechart.tsx";
-import { useDashboardContext,DashboardProvider } from './context/hook.tsx';
-
+import { DashboardProvider, useDashboardContext } from './context/hook.tsx';
 
 const DashboardContent: React.FC = () => {
   const { employeeData } = useDashboardContext();
@@ -32,18 +31,18 @@ const DashboardContent: React.FC = () => {
             <div className={style.cardPurple}><Card title="Remote" content={employeeData.remote.toString()} icon="Remote" /></div>
           </div>
           <div className={style.middleRow}>
-            <Card1 padding='20px' borderRadius='15px' height='350px' flex ='2'  >
+            <Card1 padding='20px' borderRadius='15px' height='380px'   >
               <div className={style.calendar}></div>
               <h3>Calendar</h3>
               <Calendar />
             </Card1>
-            <Card1 padding='20px' borderRadius='15px' height='350px' flex ='2' >
+            <Card1 padding='20px' borderRadius='15px' height='380px'  >
 
             <div className={style.infoSection}>
               <InfoSection />
             </div>
             </Card1>
-            <Card1 padding='20px' borderRadius='15px' height='350px' flex ='2' >
+            <Card1 padding='20px' borderRadius='15px' height='380px'  >
 
             <div className={style.pieChartDiv}>
               <h3>Employee Status</h3>
