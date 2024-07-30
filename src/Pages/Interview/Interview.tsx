@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import DataTable from '../../Components/Table/Table'
 import style from './styles/Interview.module.css'
 import Button from '../../Components/Button/Button';
@@ -15,6 +17,11 @@ interface Interview {
   time: string;
   cvAttachment: string;
 }
+// import { InterviewData } from './Hook/index.tsx';
+// import { Link } from "react-router-dom";
+import RescheduleModal from './Component/ScheduleForm'
+import { useState } from 'react';
+import { ButtonTypes } from '../../Components/Button/ButtonTypes';
 
 const dummyInterviews: Interview[] = [
   {
@@ -73,13 +80,25 @@ export default function Interview() {
   const rows = interviews.map((interview, index) => ({
     id: index + 1,
     fullName: interview.fullName,
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedInterview, setSelectedInterview] = useState(null);
+ 
+  
+  // const {interviews} = useGetAllInterviews();
+  const interviews= dummyInterviews;
+  const rows = interviews.map((interview, index) => ({
+    id: index + 1,
+    fullName: interview.fullName ,
+
     email: interview.auth?.email,
     phone: interview.phone,
     position: interview.position,
     date: interview.date,
     time: interview.time,
     cvAttachment: interview.cvAttachment,
+
   }));
+
 
   const handleOpenModal = (interview: Interview) => {
     setSelectedInterview(interview);
@@ -103,8 +122,27 @@ export default function Interview() {
     handleCloseModal();
   };
 
+
   const columns = [
     { field: 'id', headerName: 'No', Maxwidth: '20px' },
+  }));
+
+  const handleOpenModal = (interview: string) => {
+    setSelectedInterview(interview);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedInterview(null);
+  };
+
+
+  const handleReschedule = (date: any, time: any) => {
+   };
+
+  const columns = [
+    { field: 'id', headerName: 'No', Maxwidth: '20px', flex:1 },
     { field: 'fullName', headerName: ' Name', flex:1 },
     { field: 'email', headerName: 'Email', flex:1 },
     { field: 'phone', headerName: 'Phone', flex:1 },
@@ -131,6 +169,29 @@ export default function Interview() {
       ),
     },
   ];
+
+    {
+      field: 'reschedule',
+      headerName: 'Reschedule',
+      width: 120,
+      renderCell: (params: GridRenderCellParams) => (
+        <Button type={ButtonTypes.PRIMARY}
+        btnText="Reschedule"
+        marginTop='10px'
+        width="90px"
+        height="35px" 
+        padding='1opx' 
+        display='flex'
+        justifyContent= 'center'
+        alignItems='center'      
+ onClick={() => handleOpenModal(params.row)}>
+        </Button>
+      ),
+    },
+  ];
+
+
+    
 
   const getRowId = (row: any) => row.id;
 

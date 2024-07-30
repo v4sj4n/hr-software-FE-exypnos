@@ -37,12 +37,19 @@ const DashboardContent: React.FC = () => {
               <Calendar />
             </Card1>
             <Card1 padding='20px' borderRadius='15px'  flex='1'>
+            <Card1 padding='20px' borderRadius='15px' height='350px' flex ='2'  >
+              <div className={style.calendar}></div>
+              <h3>Calendar</h3>
+              <Calendar />
+            </Card1>
+            <Card1 padding='20px' borderRadius='15px' height='350px' flex ='2' >
 
             <div className={style.infoSection}>
               <InfoSection />
             </div>
             </Card1>
             <Card1 padding='20px' borderRadius='15px' flex='1' >
+            <Card1 padding='20px' borderRadius='15px' height='350px' flex ='2' >
 
             <div className={style.pieChartDiv}>
               <h3>Employee Status</h3>

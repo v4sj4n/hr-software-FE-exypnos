@@ -3,6 +3,10 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+
+    > h1{
+        font-weight: bold;
+    }
 }
 
 .title{
@@ -16,5 +20,4 @@
 .mainPage {
     padding: 1rem 2rem;
     width: fit-content;
-
 }

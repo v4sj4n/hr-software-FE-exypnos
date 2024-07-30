@@ -15,7 +15,7 @@ import Profile from './Pages/Profile/Profile'
 import Recruitment from './Pages/Recruitment/Recruitment.tsx'
 import Structure from './Pages/Structure/Structure.tsx'
 import Vacation from './Pages/Vacation/Vacation.tsx'
-import AssetProvider from './Pages/Assets/AssetContext.tsx'
+import AssetProvider from './Pages/Assets/AssetsContext.tsx'
 import { EmployeeProvider } from './Pages/Employees/Context/EmployeTableProvider.tsx'
 import { CandidateProvider } from './Pages/Candidates/Context/CandidateTableProvider.tsx'
 import VacationProvider from './Pages/Vacation/VacationContext.tsx'
@@ -34,14 +34,12 @@ export default function Router() {
       path: '/forgot-password',
       element: <ResetPass />,
     },
-
     {
       path: '/',
       element: <PrivateRoute />,
       children: [
         {
           path: 'employees',
-
           element: (
             <EmployeeProvider>
               <Employees />
@@ -101,9 +99,9 @@ export default function Router() {
           path: 'interview',
           element: <Interview />,
         },
+       
       ],
     },
   ])
-
   return <RouterProvider router={router} />
 }

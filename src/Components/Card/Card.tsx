@@ -15,6 +15,8 @@ interface CardProps {
   backgroundColor?: string; 
   position?: CSSProperties['position'];
   alignSelf?: CSSProperties['alignSelf'];  
+  flex? :string;
+  width?: string;
 }
 
 const Card: React.FC<CardProps> = ({ 

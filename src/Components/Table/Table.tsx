@@ -20,6 +20,8 @@ export default function DataTable<T extends GridValidRowModel>({
   height = "auto",
   initialPageSize = 5,
   pageSizeOptions = [5, 10, 20, 30],
+  initialPageSize = 10,
+  pageSizeOptions = [5, 10],
   headerIcons,
   handleRowClick,
 }: DataTableProps<T>) {
