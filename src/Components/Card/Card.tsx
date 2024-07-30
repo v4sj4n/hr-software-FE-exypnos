@@ -13,6 +13,9 @@ interface CardProps {
   style?: React.CSSProperties; 
   width?: string;  
   border?: string;  
+  backgroundColor?: string; 
+  position?: CSSProperties['position'] | undefined;
+  alignSelf?: string;
 }
 
 const Card: React.FC<CardProps> = ({ 
@@ -26,6 +29,9 @@ const Card: React.FC<CardProps> = ({
   style,
   width,
   border,
+  backgroundColor,
+  position,
+  alignSelf,
  
 }) => {
   const cardStyle: CSSProperties = {
