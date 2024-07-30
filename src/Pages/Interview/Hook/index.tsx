@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 
 import AxiosInstance from '../../../Helpers/Axios';
@@ -34,3 +35,4 @@ export const useGetAllInterviews = () => {
 
     return { interviews, error };
 }
+
