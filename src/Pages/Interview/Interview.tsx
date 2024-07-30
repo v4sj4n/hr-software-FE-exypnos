@@ -1,11 +1,13 @@
 import { GridRenderCellParams } from '@mui/x-data-grid';
-import { useState } from 'react';
-import ClearIcon from '@mui/icons-material/Clear';
+import { useEffect, useState } from 'react';
 import Button from '../../Components/Button/Button';
 import { ButtonTypes } from '../../Components/Button/ButtonTypes';
 import DataTable from '../../Components/Table/Table'
 import RescheduleModal from './component/scheduleForm';
 import style from './styles/Interview.module.css'
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import HistoryIcon from '@mui/icons-material/History';
 
 interface Interview {
   fullName: string;
@@ -16,7 +18,20 @@ interface Interview {
   time: string;
   cvAttachment: string;
   notes: string;
-  
+  phase:string;
+}
+
+interface RowData {
+  id: number;
+  fullName: string;
+  email: string;
+  phone: string;
+  position: string;
+  date: string;
+  time: string;
+  cvAttachment: string;
+  notes: string;
+  phase: string;
 }
 
 const dummyInterviews: Interview[] = [
@@ -28,7 +43,9 @@ const dummyInterviews: Interview[] = [
     date: "2024-07-25",
     time: "14:00",
     cvAttachment: "artemisa_nuri_cv.pdf",
-    notes: "interview scheduled"
+    notes: "interview scheduled",
+
+    phase: "First Interview",
   },
   {
     fullName: "Gerti Kadiu",
@@ -38,7 +55,9 @@ const dummyInterviews: Interview[] = [
     date: "2024-07-26",
     time: "10:30",
     cvAttachment: "gerti_kadiu_cv.pdf",
-    notes: "interview scheduled"
+    notes: "interview scheduled",
+    phase: "First Interview",
+
   },
   {
     fullName: "Redi Balla",
@@ -48,7 +67,9 @@ const dummyInterviews: Interview[] = [
     date: "2024-07-27",
     time: "11:00",
     cvAttachment: "redi_balla_cv.pdf",
-    notes: "interview scheduled"
+    notes: "interview scheduled",
+    phase: "First Interview",
+
   },
   {
     fullName: "Vasjan Cupri",
@@ -58,7 +79,9 @@ const dummyInterviews: Interview[] = [
     date: "2024-07-28",
     time: "15:30",
     cvAttachment: "vasjan_cupri_cv.pdf",
-    notes: "interview scheduled"
+    notes: "interview scheduled",
+    phase: "First Interview",
+
   },
   {
     fullName: "Selma Bakiu",
@@ -68,7 +91,9 @@ const dummyInterviews: Interview[] = [
     date: "2024-07-29",
     time: "13:00",
     cvAttachment: "selma_bakiu_cv.pdf",
-    notes: "interview scheduled"
+    notes: "interview scheduled",
+    phase: "First Interview",
+
   },
   {
     fullName: "Gerald Bane",
@@ -78,7 +103,9 @@ const dummyInterviews: Interview[] = [
     date: "2024-07-29",
     time: "13:00",
     cvAttachment: "gerald_bane_cv.pdf",
-    notes: " Great skills "
+    notes: " Great skills ",
+    phase: "First Interview",
+
   },
 ];
 
@@ -87,8 +114,9 @@ export default function Interview() {
   const [selectedInterview, setSelectedInterview] = useState<Interview | null>(null);
 
   const [interviews, setInterviews] = useState<Interview[]>(dummyInterviews);
+  const [isReschedule, setIsReschedule] = useState(false);
 
-  const rows = interviews.map((interview, index) => ({
+  const [rows, setRows] = useState<RowData[]>(interviews.map((interview, index) => ({
     id: index + 1,
     fullName: interview.fullName,
     email: interview.auth?.email,
@@ -98,11 +126,29 @@ export default function Interview() {
     time: interview.time,
     cvAttachment: interview.cvAttachment,
     notes: interview.notes,
-  }));
+    phase: interview.phase,
+  })));
+  useEffect(() => {
+    setRows(interviews.map((interview, index) => ({
+      id: index + 1,
+      fullName: interview.fullName,
+      email: interview.auth?.email,
+      phone: interview.phone,
+      position: interview.position,
+      date: interview.date,
+      time: interview.time,
+      cvAttachment: interview.cvAttachment,
+      notes: interview.notes,
+      phase: interview.phase,
 
-  const handleOpenModal = (interview: Interview) => {
+    })));
+  }, [interviews]);
+
+  const handleOpenModal = (interview: Interview, isReschedule: boolean = false) => {
     setSelectedInterview(interview);
     setIsModalOpen(true);
+    setIsReschedule(isReschedule);
+
   };
 
   const handleCloseModal = () => {
@@ -114,48 +160,94 @@ export default function Interview() {
     if (selectedInterview) {
       const updatedInterviews = interviews.map(interview => 
         interview.fullName === selectedInterview.fullName
-          ? { ...interview, date, time }
-          : interview
+        ? { ...interview, date, time, phase: isReschedule ? interview.phase : 'Second Interview' }
+        : interview
       );
       setInterviews(updatedInterviews);
     }
     handleCloseModal();
   };
+  const handleCancel = (interview: Interview) => {
+    const isConfirmed = window.confirm(`Are you sure you want to cancel the interview with ${interview.fullName}?`);
+    if (isConfirmed) {
+      const updatedInterviews = interviews.filter(i => i.fullName !== interview.fullName);
+      setInterviews(updatedInterviews);
+      handleCloseModal();
+    }
+  };
+
+  const handleAccept = (interview: Interview) => {
+    handleOpenModal(interview, false);
+  };
+  
 
   const columns = [
-    { field: 'id', headerName: 'No', Maxwidth: '20px' },
+    { field: 'id', headerName: 'No', width: 20 },
     { field: 'fullName', headerName: ' Name', flex:1 },
     { field: 'email', headerName: 'Email', flex:1 },
     { field: 'phone', headerName: 'Phone', flex:1 },
     { field: 'position', headerName: 'Position', flex:1 },
-    { field: 'date', headerName: 'Date', flex:1 },
-    { field: 'time', headerName: 'Time', flex:1  },
+    { field: 'date', headerName: 'Date' ,flex:1},
+    { field: 'time', headerName: 'Time', width:60  },
     { field: 'cvAttachment', headerName: 'CV', flex:1 },
+    { field: 'phase', headerName: 'Phase', flex:1  },
     {field: 'notes', headerName: 'Notes', flex:1  },
     {
       field: 'reschedule',
       headerName: 'Reschedule',
       width: 120,
       renderCell: (params: GridRenderCellParams) => (
-        <div style={{ display: 'flex', gap: '10px' }}>
+        <div style={{ display: "flex", justifyContent: "center" , gap:"5px", paddingTop:"10px"}}>
+
         <Button 
           type={ButtonTypes.PRIMARY}
-          btnText="Reschedule"
-          width="40px"
-          height="35px"
-          padding='10px'
+          btnText=""
+          width="60px"
+          height="30px"
           display='flex'
           justifyContent='center'
-          alignItems='center'      
+          alignItems='center'
+          icon={<HistoryIcon />}
+      
           onClick={() => handleOpenModal(params.row as Interview)}
         />
-      
-      </div>
+</div>
       ),
     },
+    {field : 'manage', headerName: 'Manage', width: 120, renderCell: (params: GridRenderCellParams)=>(
+     <div style={{ display: "flex", justifyContent: "center" , gap:"5px", paddingTop:"10px"}}>
+      <Button
+      btnText=''
+        type={ButtonTypes.PRIMARY}
+        width="60px"
+        height="30px"
+        backgroundColor='#40a829'
+        borderColor='#40a829'
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        icon={<CheckIcon />}
+        onClick={() => handleAccept(params.row as Interview)}
+></Button>
+<Button
+      btnText=''
+        type={ButtonTypes.PRIMARY}
+        width="60px"
+        height="30px"
+        backgroundColor='#C70039'
+        borderColor='#C70039'
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        icon={<CloseIcon />}
+        onClick={() => handleCancel(params.row as Interview)}>
+</Button>
+
+</div>
+    )}
   ];
 
-  const getRowId = (row: any) => row.id;
+  const getRowId = (row: RowData) => row.id;
 
   return (
     <div style={{ display: "flex", width: "100%", flexDirection: "column", padding: "0 16px", backgroundColor: "#f0f5ff" }}>
@@ -167,7 +259,8 @@ export default function Interview() {
           handleClose={handleCloseModal}
           handleReschedule={handleReschedule}
           selectedInterview={selectedInterview}
-        />
+          handleCancel={() => selectedInterview && handleCancel(selectedInterview)}
+          />
       )}
     </div>
   );
