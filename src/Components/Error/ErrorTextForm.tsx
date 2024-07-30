@@ -1,16 +1,6 @@
 import { ReactNode } from 'react'
+import style from '@/Pages/Assets/style/errorText.module.css'
 
 export const ErrorText: React.FC<{ children: ReactNode }> = ({ children }) => {
-  return (
-    <p
-      style={{
-        fontSize: '0.8rem',
-        color: '#d32f2f',
-        marginTop: '.25rem',
-        marginBottom: 0,
-      }}
-    >
-      {children}
-    </p>
-  )
+  return <p className={style.errorText}>{children}</p>
 }

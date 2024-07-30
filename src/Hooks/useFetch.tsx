@@ -10,7 +10,6 @@ export const useFetch = <T,>(url: string, intervalInSeconds: number = 0) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1000))
         const res = await AxiosInstance.get(url)
         if (res.status === 200) {
           setData(res.data)
