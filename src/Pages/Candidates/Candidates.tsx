@@ -1,4 +1,4 @@
-import DataTable from "../../Components/Table/Table";
+import DataTable from "@/Components/Table/Table";
 import style from "./styles/Candidates.module.css"
 import { useCandidateContext } from "./Context/CandidateTableContext";
 

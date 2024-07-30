@@ -89,6 +89,10 @@ export const CreateVacationForm = () => {
                 </option>
               )
             })}
+            <option value="vacation">Vacation</option>
+            <option value="sick">Sick</option>
+            <option value="personal">Personal</option>
+            <option value="maternity">Maternity</option>
           </select>
           {errors.type && <ErrorText>{errors.type.message}</ErrorText>}
         </div>

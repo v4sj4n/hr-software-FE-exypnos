@@ -1,25 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { z } from 'zod'
 import { useContext } from 'react'
 import { AxiosError } from 'axios'
-import { AssetsContext } from '../AssetContext'
-import AxiosInstance from '../../../Helpers/Axios'
-import { ButtonTypes } from '../../../Components/Button/ButtonTypes'
-import Input from '../../../Components/Input/Index'
-import Button from '../../../Components/Button/Button'
-import { ErrorText } from '../Component/ErrorText'
-
-const assetSchema = z.object({
-  type: z.enum(['laptop', 'monitor'], {
-    message: 'Asset should be either a laptop or a monitor',
-  }),
-  serialNumber: z.string().min(10, {
-    message: 'Serial Number should be at least 10 characters long',
-  }),
-})
-
-type FormFields = z.infer<typeof assetSchema>
+import { AssetsContext } from '../../AssetsContext'
+import AxiosInstance from '@/Helpers/Axios'
+import Button from '@/Components/Button/Button'
+import { ButtonTypes } from '@/Components/Button/ButtonTypes'
+import Input from '@/Components/Input/Index'
+import {
+  CreateAssetFormFields,
+  createAssetSchema,
+} from '@/Schemas/Assets/CreateAsset.schema'
+import { ErrorText } from '@/Components/Error/ErrorTextForm'
 
 export const CreateAssetForm = () => {
   const { setAssets, handleCloseModal } = useContext(AssetsContext)
@@ -28,11 +20,11 @@ export const CreateAssetForm = () => {
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
-  } = useForm<FormFields>({
-    resolver: zodResolver(assetSchema),
+  } = useForm<CreateAssetFormFields>({
+    resolver: zodResolver(createAssetSchema),
   })
 
-  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+  const onSubmit: SubmitHandler<CreateAssetFormFields> = async (data) => {
     try {
       const res = await AxiosInstance.post('/asset', data)
       console.log('Asset created successfully:', res.data)
@@ -101,6 +93,7 @@ export const CreateAssetForm = () => {
             type={ButtonTypes.PRIMARY}
             btnText={isSubmitting ? 'Submitting' : 'Submit'}
             width={'100%'}
+            isSubmit
           />
           <Button
             type={ButtonTypes.SECONDARY}

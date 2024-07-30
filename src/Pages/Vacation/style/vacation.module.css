@@ -12,6 +12,14 @@
     font-weight: bolder;
     font-family: "Outfit", sans-serif;
   }
+    overflow: hidden;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    > h1{
+        font-weight: bold;
+    }
+}
 
 .mainPage {
     padding: 1rem 2rem;

@@ -1,11 +1,11 @@
 import { CircularProgress } from '@mui/material'
-import { Asset } from './TAsset'
-import { useData } from './Hook'
+import { Asset } from '../TAsset'
+import { useData } from '../Hook'
 import { useContext, useState } from 'react'
-import { AssetsContext } from './AssetContext'
-import DataTable from '../../Components/Table/Table'
+import { AssetsContext } from '../AssetsContext'
 import { GridRenderCellParams } from '@mui/x-data-grid'
-import style from './style/assetsTable.module.css'
+import style from '../style/assetsTable.module.css'
+import DataTable from '@/Components/Table/Table'
 
 // Icons
 import { Laptop, Monitor } from '@mui/icons-material'
@@ -131,7 +131,7 @@ export default function AssetsTable() {
     serialNumber: FingerprintIcon,
   }
 
-  console.log(assets)
+  // console.log(assets)
   return (
     <>
       <DataTable

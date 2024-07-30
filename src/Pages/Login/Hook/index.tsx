@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import useInput, { InputHookReturn } from '../../../Hooks/use-inpute';
 import { useAuth } from '../../../Context/AuthProvider';
 import { LoginErrorType } from '../../../Helpers/AuthMessages';
-import AxiosInstance from '../../../Helpers/Axios';
+import AxiosInstance from '@/Helpers/Axios';
 
 
 export const useLogin = () => {

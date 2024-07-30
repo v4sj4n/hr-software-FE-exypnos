@@ -93,7 +93,7 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
               Employees
             </Link>
             <Link to="/payroll" className={style.dropdownItem}>
-              Payroll{' '}
+              Payroll{' '} 
             </Link>
             <Link to="/vacation" className={style.dropdownItem}>
               Vacation{' '}

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Card from '../../../Components/Card/Card';
-import Input from '../../../Components/Input/Index';
-import Button from '../../../Components/Button/Button';
-import { ButtonTypes } from '../../../Components/Button/ButtonTypes';
+import Card from '@/Components/Card/Card';
+import Input from '@/Components/Input/Index';
+import Button from '@/Components/Button/Button';
+import { ButtonTypes } from '@/Components/Button/ButtonTypes';
 import img from '../../../../public/Images/HeroImage.png'
 import logo from "/Images/image_1-removebg-preview.png"
 import { useLogin } from '../Hook';
