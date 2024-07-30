@@ -1,18 +1,17 @@
 import React from 'react';
-import { CandidateContext, CandidateRow } from './CandidateTableContext';
+import { CandidateContext, CandidateRow } from '../Interfaces/Candidate';
 import { useGetAllApplicants } from '../Hook';
-import { GridRenderCellParams } from '@mui/x-data-grid';
-import { Link } from "react-router-dom";
+import { GridRenderCellParams, GridRowParams } from '@mui/x-data-grid';
+import { Link, useNavigate } from "react-router-dom";
 import EmailIcon from '@mui/icons-material/Email';
 import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import ComputerIcon from '@mui/icons-material/Computer';
 
-
-
 export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { applicants } = useGetAllApplicants();
+  const navigate = useNavigate();
 
   const rows: CandidateRow[] = applicants.map((applicant, index) => ({
     id: index + 1,
@@ -30,7 +29,7 @@ export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   }));
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 10, },
+    { field: 'id', headerName: 'ID', width: 10 },
     { field: 'fullName', headerName: 'FullName', width: 130, flex: 1 },
     { field: 'email', headerName: 'Email', width: 230, flex: 1 },
     {
@@ -40,9 +39,9 @@ export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       renderCell: (params: GridRenderCellParams) => {
         const color =
           params.value === 'accepted' ? '#02a700' :
-            params.value === 'pending' ? 'black' :
-              params.value === 'rejected' ? '#d32f2f' :
-                'black';
+          params.value === 'pending' ? 'orange' :
+          params.value === 'rejected' ? '#d32f2f' :
+          '';
         return (
           <div style={{ color: color }}>
             {params.value}
@@ -56,9 +55,14 @@ export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     {
       field: 'actions',
       headerName: 'Actions',
-      width: 120, flex: 1,
+      width: 120,
+      flex: 1,
       renderCell: (params: GridRenderCellParams) => (
-        <Link style={{ textDecoration: "none", color: "#4C556B" }} to={`/view/${params.row.originalId}`}>
+        <Link
+          style={{ textDecoration: "none", color: "#4C556B" }}
+          to={`/view/${params.row.originalId}`}
+          onClick={(e) => e.stopPropagation()}
+        >
           View More
         </Link>
       ),
@@ -73,12 +77,15 @@ export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     position: ComputerIcon,
   };
 
-
   const headerTextColors = {
     firstName: '#0000FF',
   };
 
   const getRowId = (row: CandidateRow) => row.id;
+
+  const handleRowClick = (params: GridRowParams) => { 
+    navigate(`/view/${params.row.originalId}`);
+  };
 
   const contextValue = {
     rows,
@@ -86,6 +93,7 @@ export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     headerIcons,
     headerTextColors,
     getRowId,
+    handleRowClick,
   };
 
   return (

@@ -111,6 +111,7 @@ interface ButtonProps extends ButtonStyles {
   disabled?: boolean
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
   color?: string
+  icon?: React.ReactNode
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -118,6 +119,7 @@ const Button: React.FC<ButtonProps> = ({
   type,
   btnText,
   disabled,
+  icon,
   onClick,
   ...restProps
 }) => {
@@ -149,6 +151,7 @@ const Button: React.FC<ButtonProps> = ({
       style={buttonStyle}
     >
       {btnText}
+      {icon}
     </button>
   )
 }

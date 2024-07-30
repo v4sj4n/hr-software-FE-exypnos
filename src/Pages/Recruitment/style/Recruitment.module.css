@@ -1,8 +1,6 @@
 .container {
     display: flex;
-    padding: 50px;
-    height: 100%;
-    gap: 50px;   
+    height: 100%; 
     background-image: url();
     align-items: center;
     background-size: cover;
@@ -13,6 +11,24 @@
     left: 0;
 }
 
+
+.background{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    min-height: 100%;
+    background-image: url('Images/background\ \(1\).png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
 
 .img2 {
     width: 150px;
@@ -26,43 +42,3 @@
     font-family: "Outfit", sans-serif;
 }
 
-/* .customFileInput input[type="file"] {
-    color: transparent;
-}
-
-.customFileInput input[type="file"]::-webkit-file-upload-button {
-    visibility: hidden;
-}
-
-.customFileInput input[type="file"]::before {
-    content: '';
-    display: inline-block;
-} */
-
-
-
-
-
-/* <div style={{ display: "flex", alignItems: "center" }}>
-<Input
-    label="CV"
-    name='file'
-    type="file" 
-    IsUsername
-    width="620px"
-    icon={
-        <DriveFolderUploadIcon 
-            onClick={handleFileIconClick}
-            style={{ cursor: 'pointer' }}
-        />
-    }
-    inputRef={fileInputRef}
-    onChange={handleFileChange}
-    className={style.customFileInput}
-/>
-{aplicantFormData.file && (
-    <span style={{ marginLeft: '10px' }}>
-        {aplicantFormData.file.name}
-    </span>
-)}
-</div> */

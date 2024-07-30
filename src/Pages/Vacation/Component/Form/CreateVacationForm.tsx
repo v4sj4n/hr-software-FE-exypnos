@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { z } from 'zod'
 import { RefObject, useContext, useRef, useState } from 'react'
 import { AxiosError } from 'axios'
 import { VacationContext } from '../../VacationContext'
@@ -8,22 +7,14 @@ import AxiosInstance from '@/Helpers/Axios'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Input from '@/Components/Input/Index'
 import Button from '@/Components/Button/Button'
-import { ErrorText } from '../ErrorText'
 
 // ICONS
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
-
-const vacationSchema = z.object({
-  type: z.enum(['vacation', 'sick', 'personal', 'maternity'], {
-    message: `Vacations should be one of 'vacation', 'sick', 'personal', 'maternity'`,
-  }),
-  description: z.string().optional(),
-  startDate: z.string(),
-  endDate: z.string(),
-  userId: z.string(),
-})
-
-type FormFields = z.infer<typeof vacationSchema>
+import {
+  CreateVacationFormFields,
+  createVacationSchema,
+} from '@/Schemas/Vacations/CreateVacation.schema'
+import { ErrorText } from '@/Components/Error/ErrorTextForm'
 
 export const CreateVacationForm = () => {
   const { setVacations, handleCloseModal } = useContext(VacationContext)
@@ -32,11 +23,11 @@ export const CreateVacationForm = () => {
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
-  } = useForm<FormFields>({
-    resolver: zodResolver(vacationSchema),
+  } = useForm<CreateVacationFormFields>({
+    resolver: zodResolver(createVacationSchema),
   })
 
-  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+  const onSubmit: SubmitHandler<CreateVacationFormFields> = async (data) => {
     try {
       const res = await AxiosInstance.post('/vacation', data)
       console.log('Vacation created successfully:', res.data)
@@ -65,6 +56,7 @@ export const CreateVacationForm = () => {
   const handleClick = (element: RefObject<HTMLInputElement>) => {
     element.current?.showPicker()
   }
+  const leaveOptions = ['vacation', 'sick', 'personal', 'maternity']
 
   return (
     <>
@@ -90,10 +82,13 @@ export const CreateVacationForm = () => {
             <option value="" disabled selected>
               Select a vacation type
             </option>
-            <option value="vacation">Vacation</option>
-            <option value="sick">Sick</option>
-            <option value="personal">Personal</option>
-            <option value="maternity">Maternity</option>
+            {leaveOptions.map((option) => {
+              return (
+                <option value={option}>
+                  {option[0].toUpperCase() + option.slice(1)}
+                </option>
+              )
+            })}
           </select>
           {errors.type && <ErrorText>{errors.type.message}</ErrorText>}
         </div>

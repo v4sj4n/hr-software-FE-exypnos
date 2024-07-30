@@ -13,9 +13,15 @@ export default function Vacation() {
   const { handleOpenModal, modalOpen, handleCloseModal } =
     useContext(VacationContext)
   return (
-    <>
+    <main
+    className={style.mainPage}
+    style={{
+      width: '100%',
+      backgroundColor: 'f5f8fc',
+    }}
+  >
       <div className={style.titleHeading}>
-        <h1>Vacations</h1>
+        <div className={style.title}>Vacations</div>
         <Button
           type={ButtonTypes.PRIMARY}
           btnText="Create Vacation"
@@ -27,7 +33,7 @@ export default function Vacation() {
         <CreateVacationForm />
       </ModalComponent>
       <VacationsTable />
-    </>
+    </main>
   )
 }
 
