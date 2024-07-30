@@ -32,6 +32,11 @@ const DashboardContent: React.FC = () => {
             <div className={style.cardPurple}><Card title="Remote" content={employeeData.remote.toString()} icon="Remote" /></div>
           </div>
           <div className={style.middleRow}>
+            <Card1 padding='20px' borderRadius='15px'  flex='1'>
+              <h3 >Calendar</h3>
+              <Calendar />
+            </Card1>
+            <Card1 padding='20px' borderRadius='15px'  flex='1'>
             <Card1 padding='20px' borderRadius='15px' height='350px' flex ='2'  >
               <div className={style.calendar}></div>
               <h3>Calendar</h3>
@@ -43,6 +48,7 @@ const DashboardContent: React.FC = () => {
               <InfoSection />
             </div>
             </Card1>
+            <Card1 padding='20px' borderRadius='15px' flex='1' >
             <Card1 padding='20px' borderRadius='15px' height='350px' flex ='2' >
 
             <div className={style.pieChartDiv}>

@@ -1,17 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import DataTable from '../../Components/Table/Table'
-//import { useGetAllInterviews } from './Hook';
 import style from './styles/Interview.module.css'
 import Button from '../../Components/Button/Button';
 import { GridRenderCellParams } from '@mui/x-data-grid'; 
+import RescheduleModal from './component/scheduleForm';
+import { useState } from 'react';
+import { ButtonTypes } from '../../Components/Button/ButtonTypes';
+
+interface Interview {
+  fullName: string;
+  auth: { email: string };
+  phone: string;
+  position: string;
+  date: string;
+  time: string;
+  cvAttachment: string;
+}
 // import { InterviewData } from './Hook/index.tsx';
 // import { Link } from "react-router-dom";
 import RescheduleModal from './Component/ScheduleForm'
 import { useState } from 'react';
 import { ButtonTypes } from '../../Components/Button/ButtonTypes';
 
-const dummyInterviews = [
+const dummyInterviews: Interview[] = [
   {
     fullName: "Artemisa Nuri",
     auth: { email: "artemisa.nuri@example.com" },
@@ -59,9 +71,15 @@ const dummyInterviews = [
   },
 ];
 
-
 export default function Interview() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedInterview, setSelectedInterview] = useState<Interview | null>(null);
 
+  const [interviews, setInterviews] = useState<Interview[]>(dummyInterviews);
+
+  const rows = interviews.map((interview, index) => ({
+    id: index + 1,
+    fullName: interview.fullName,
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedInterview, setSelectedInterview] = useState(null);
  
@@ -71,15 +89,42 @@ export default function Interview() {
   const rows = interviews.map((interview, index) => ({
     id: index + 1,
     fullName: interview.fullName ,
+
     email: interview.auth?.email,
     phone: interview.phone,
     position: interview.position,
     date: interview.date,
     time: interview.time,
     cvAttachment: interview.cvAttachment,
-  
+
+  }));
 
 
+  const handleOpenModal = (interview: Interview) => {
+    setSelectedInterview(interview);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedInterview(null);
+  };
+
+  const handleReschedule = (date: string, time: string) => {
+    if (selectedInterview) {
+      const updatedInterviews = interviews.map(interview => 
+        interview.fullName === selectedInterview.fullName
+          ? { ...interview, date, time }
+          : interview
+      );
+      setInterviews(updatedInterviews);
+    }
+    handleCloseModal();
+  };
+
+
+  const columns = [
+    { field: 'id', headerName: 'No', Maxwidth: '20px' },
   }));
 
   const handleOpenModal = (interview: string) => {
@@ -105,6 +150,25 @@ export default function Interview() {
     { field: 'date', headerName: 'Date', flex:1 },
     { field: 'time', headerName: 'Time', flex:1  },
     { field: 'cvAttachment', headerName: 'CV', flex:1 },
+    {
+      field: 'reschedule',
+      headerName: 'Reschedule',
+      width: 120,
+      renderCell: (params: GridRenderCellParams) => (
+        <Button type={ButtonTypes.PRIMARY}
+          btnText="Reschedule"
+          marginTop='10px'
+          width="90px"
+          height="35px" 
+          padding='1opx' 
+          display='flex'
+          justifyContent= 'center'
+          alignItems='center'      
+          onClick={() => handleOpenModal(params.row as Interview)}>
+        </Button>
+      ),
+    },
+  ];
 
     {
       field: 'reschedule',
@@ -128,8 +192,6 @@ export default function Interview() {
 
 
     
-    
-  
 
   const getRowId = (row: any) => row.id;
 
@@ -142,6 +204,7 @@ export default function Interview() {
           open={isModalOpen}
           handleClose={handleCloseModal}
           handleReschedule={handleReschedule}
+          selectedInterview={selectedInterview}
         />
       )}
     </div>

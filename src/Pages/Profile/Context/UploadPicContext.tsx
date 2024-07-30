@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { UserProfileData } from '../../Employees/Hook';
+import { UserProfileData } from '../../Employees/interfaces/Employe';
 
 export interface FileUploadContextType {
   uploadImage: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>;

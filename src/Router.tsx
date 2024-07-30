@@ -20,8 +20,6 @@ import { EmployeeProvider } from './Pages/Employees/Context/EmployeTableProvider
 import { CandidateProvider } from './Pages/Candidates/Context/CandidateTableProvider.tsx'
 import VacationProvider from './Pages/Vacation/VacationContext.tsx'
 
-
-
 export default function Router() {
   const router = createBrowserRouter([
     {

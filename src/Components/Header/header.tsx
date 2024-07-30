@@ -16,12 +16,17 @@ const navigate = useNavigate();
     setShowDropdown(!showDropdown);
   };
 
-  const { logout } = useAuth();
+
+  const { logout, currentUser } = useAuth();
 
   const handleLogout = () => {
     logout();
     navigate('/');
   }
+
+  const handleProfileClick = () => {
+    navigate(`/profile/${currentUser?._id}`);
+  };
 
   return (
     <header className={style.header}>
@@ -42,25 +47,21 @@ const navigate = useNavigate();
       </div>
       <div className={style.headerRight}>
         <div className={style.icon}>
-          <EmailIcon />
+          <EmailIcon style={{cursor:"pointer"}}/>
           <span className={style.badge}>3</span>
         </div>
         <div className={style.icon} onClick={toggleDropdown}>
-          <PersonIcon />
+          <PersonIcon style={{cursor:"pointer"}}/>
           <div className={style.username}></div>
           {showDropdown && (
             <div className={style.dropdown}>
-              <div className={style.dropdownItem} onClick={() => console.log('View Profile')}>Profile <PermIdentityIcon/></div>
-              <div className={style.dropdownItem} onClick={handleLogout}>Logout <LogoutIcon onClick={handleLogout}/></div>
+              <div className={style.dropdownItem} onClick={handleProfileClick}>Profile <PermIdentityIcon/></div>
+              <div className={style.dropdownItem} onClick={handleLogout}>Logout <LogoutIcon /></div>
               <div className={style.dropdownItem} onClick={() => console.log('Settings')}>Settings <SettingsIcon />
               </div>
-
             </div>
           )}
         </div>
-        {/* <div className={style.icon}>
-          <SettingsIcon />
-        </div> */}
       </div>
     </header>
   );

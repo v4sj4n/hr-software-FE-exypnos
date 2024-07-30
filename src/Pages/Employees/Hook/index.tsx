@@ -1,21 +1,6 @@
 import { useState, useEffect } from 'react';
 import AxiosInstance from '../../../Helpers/Axios';
-
-export interface UserProfileData {
-    auth: {
-        email: string;
-    };
-    lastName: string;
-    phone: string;
-    pob: string;
-    dob: string;
-    gender: string;
-    role: string;
-    firstName: string;
-    imageUrl: string;
-    file: string;
-    _id: number;
-}
+import { UserProfileData } from '../interfaces/Employe';
 
 export const useGetAllUsers = () => {
     const [users, setUsers] = useState<UserProfileData[]>([]);

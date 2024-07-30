@@ -8,6 +8,13 @@ import AxiosInstance from '@/Helpers/Axios'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Input from '@/Components/Input/Index'
 import Button from '@/Components/Button/Button'
+
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
+import {
+  CreateVacationFormFields,
+  createVacationSchema,
+} from '@/Schemas/Vacations/CreateVacation.schema'
+import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import { ErrorText } from '../ErrorText'
 
 // ICONS
@@ -24,7 +31,7 @@ const vacationSchema = z.object({
 })
 
 type FormFields = z.infer<typeof vacationSchema>
-
+  
 export const CreateVacationForm = () => {
   const { setVacations, handleCloseModal } = useContext(VacationContext)
   const {
@@ -32,6 +39,11 @@ export const CreateVacationForm = () => {
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
+  } = useForm<CreateVacationFormFields>({
+    resolver: zodResolver(createVacationSchema),
+  })
+
+  const onSubmit: SubmitHandler<CreateVacationFormFields> = async (data) => {
   } = useForm<FormFields>({
     resolver: zodResolver(vacationSchema),
   })
@@ -65,6 +77,7 @@ export const CreateVacationForm = () => {
   const handleClick = (element: RefObject<HTMLInputElement>) => {
     element.current?.showPicker()
   }
+  const leaveOptions = ['vacation', 'sick', 'personal', 'maternity']
 
   return (
     <>
@@ -90,6 +103,13 @@ export const CreateVacationForm = () => {
             <option value="" disabled selected>
               Select a vacation type
             </option>
+            {leaveOptions.map((option) => {
+              return (
+                <option value={option}>
+                  {option[0].toUpperCase() + option.slice(1)}
+                </option>
+              )
+            })}
             <option value="vacation">Vacation</option>
             <option value="sick">Sick</option>
             <option value="personal">Personal</option>
