@@ -149,18 +149,7 @@ export default function Interview() {
           alignItems='center'      
           onClick={() => handleOpenModal(params.row as Interview)}
         />
-        <Button 
-          type={ButtonTypes.SECONDARY}
-          width="40px"
-          height="35px"
-          padding='10px'
-          display='flex'
-          justifyContent='center'
-          alignItems='center'   
-          background='#cc0000'   
-          icon={<ClearIcon  sx={{color:'white',height:15, width:15}} />}
-          onClick={() => handleCancel(params.row as Interview)}
-        />
+      
       </div>
       ),
     },
