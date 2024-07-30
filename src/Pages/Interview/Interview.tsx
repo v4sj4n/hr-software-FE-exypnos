@@ -1,13 +1,14 @@
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import HistoryIcon from '@mui/icons-material/History';
 import { GridRenderCellParams } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
+
 import Button from '../../Components/Button/Button';
 import { ButtonTypes } from '../../Components/Button/ButtonTypes';
 import DataTable from '../../Components/Table/Table'
 import RescheduleModal from './Component/scheduleForm';
 import style from './styles/Interview.module.css'
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
-import HistoryIcon from '@mui/icons-material/History';
 
 interface Interview {
   fullName: string;

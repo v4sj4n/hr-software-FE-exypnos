@@ -4,8 +4,7 @@ import Calendar from "./components/calendar.tsx";
 import Card from './components/card.tsx';
 import InfoSection from "./components/infoSection.tsx";
 import PieChartComponent from "./components/piechart.tsx";
-import { useDashboardContext,DashboardProvider } from './context/hook.tsx';
-
+import { DashboardProvider, useDashboardContext } from './context/hook.tsx';
 
 const DashboardContent: React.FC = () => {
   const { employeeData } = useDashboardContext();

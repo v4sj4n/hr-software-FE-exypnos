@@ -4,8 +4,6 @@ import { useApplicantById } from './Hook';
 import Button from '../../Components/Button/Button';
 import { ButtonTypes } from '../../Components/Button/ButtonTypes';
 import { ModalComponent } from '../../Components/Modal/Modal';
-
-
 export default function ViewCandidats() {
 
     const { applicant, showModal, handleCloseModal, handleOpenModal, modalAction } = useApplicantById()
@@ -74,7 +72,7 @@ export default function ViewCandidats() {
                     </div>
                 </div>
             </Card>
-            <Card flex='1' borderRadius='5px' padding='32px'  border="1px solid #ebebeb">
+            <Card flex='1' borderRadius='5px' padding='32px' border="1px solid #ebebeb">
 
                 <div className={style.section}>
                     <div className={style.centerStatus}>
@@ -92,7 +90,7 @@ export default function ViewCandidats() {
                     <div className={style.border}></div> <div className={style.section}>
                         <div className={style.label}>CV</div>
                         <div className={style.value}>
-            { applicant?.cvAttachment && <a href={applicant.cvAttachment} target="_blank"> View CV</a> }
+                            {applicant?.cvAttachment && <a href={applicant.cvAttachment} target="_blank"> View CV</a>}
                         </div>
                     </div>
                     <div className={style.border}></div>
@@ -126,7 +124,7 @@ export default function ViewCandidats() {
                             type={ButtonTypes.PRIMARY}
                             btnText='Confirm'
                             width='100%'
-                            onClick={() => {handleCloseModal()}}
+                            onClick={() => { handleCloseModal() }}
                         />
                         <Button
                             type={ButtonTypes.SECONDARY}

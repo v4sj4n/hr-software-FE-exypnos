@@ -1,12 +1,12 @@
-import Button from '@/Components/Button/Button'
-import style from './style/vacation.module.css'
-import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-import { useContext } from 'react'
-import { VacationContext } from './VacationContext'
-import VacationsTable from './Component/VacationsTable'
-import { ModalComponent } from '@/Components/Modal/Modal'
-import { CreateVacationForm } from './Component/Form/CreateVacationForm'
+\import { useContext } from 'react'
 
+import Button from '../../Components/Button/Button'
+import { ButtonTypes } from '../../Components/Button/ButtonTypes'
+import { ModalComponent } from '../../Components/Modal/Modal'
+import { CreateVacationForm } from './Component/Form/CreateVacationForm'
+import VacationsTable from './Component/VacationsTable'
+import style from './style/vacation.module.css'
+import { VacationContext } from './VacationContext'
 
 // TODO ( NOT FINISHED)
 export default function Vacation() {
@@ -22,6 +22,9 @@ export default function Vacation() {
   >
       <div className={style.titleHeading}>
         <div className={style.title}>Vacations</div>
+    <>
+      <div className={style.titleHeading}>
+        <h1>Vacations</h1>
         <Button
           type={ButtonTypes.PRIMARY}
           btnText="Create Vacation"
@@ -34,6 +37,8 @@ export default function Vacation() {
       </ModalComponent>
       <VacationsTable />
     </main>
+=======
+    </>
   )
 }
 

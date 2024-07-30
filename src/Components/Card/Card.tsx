@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode , CSSProperties} from "react";
 import styles from './Card.module.css'
 
 interface CardProps {
@@ -8,6 +8,7 @@ interface CardProps {
   gap?: string;
   className?: string;
   height?: string;
+
   flex?: string;
   style?: React.CSSProperties; 
   width?: string;  
@@ -25,9 +26,10 @@ const Card: React.FC<CardProps> = ({
   style,
   width,
   border,
+ 
 }) => {
-  const cardStyle = {
-    style: style || {},  
+  const cardStyle: CSSProperties = {
+    ...style,  
     width: width || '100%', 
     flex: flex || '0',  
     padding: padding || '1rem',  
@@ -35,6 +37,9 @@ const Card: React.FC<CardProps> = ({
     gap: gap || '0',
     height:height || 'auto',   
     border: border || 'none',
+    backgroundColor: backgroundColor || '#ffffff',
+    position: position || 'static',
+    alignContent: alignSelf || 'flex-start',
   };
 
   return (

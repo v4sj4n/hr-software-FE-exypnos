@@ -1,7 +1,9 @@
-import { DataGrid, GridColDef, GridValidRowModel, GridRowParams } from '@mui/x-data-grid';
-import React from 'react';
-import { TableStyles } from '../Input/Styles';
 import { SvgIconProps } from '@mui/material';
+import { DataGrid, GridColDef, GridRowParams, GridValidRowModel } from '@mui/x-data-grid';
+import React from 'react';
+
+import { TableStyles } from '../Input/Styles';
+
 interface DataTableProps<T extends GridValidRowModel> {
   rows: T[];
   columns: GridColDef[];
