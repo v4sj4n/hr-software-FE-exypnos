@@ -6,12 +6,26 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import codeviderLogo from '/Images/codevider.png';
 import style from './header.module.css';
+import { useAuth } from '../../Context/AuthProvider';
+import { useNavigate } from 'react-router-dom';
 
 const Header: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
   const [showDropdown, setShowDropdown] = useState(false);
-
+const navigate = useNavigate();
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
+  };
+
+
+  const { logout, currentUser } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  }
+
+  const handleProfileClick = () => {
+    navigate(`/profile/${currentUser?._id}`);
   };
 
   return (
@@ -33,25 +47,21 @@ const Header: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
       </div>
       <div className={style.headerRight}>
         <div className={style.icon}>
-          <EmailIcon />
+          <EmailIcon style={{cursor:"pointer"}}/>
           <span className={style.badge}>3</span>
         </div>
         <div className={style.icon} onClick={toggleDropdown}>
-          <PersonIcon />
+          <PersonIcon style={{cursor:"pointer"}}/>
           <div className={style.username}></div>
           {showDropdown && (
             <div className={style.dropdown}>
-              <div className={style.dropdownItem} onClick={() => console.log('View Profile')}>Profile <PermIdentityIcon/></div>
-              <div className={style.dropdownItem} onClick={() => console.log('Logout')}>Logout <LogoutIcon/></div>
+              <div className={style.dropdownItem} onClick={handleProfileClick}>Profile <PermIdentityIcon/></div>
+              <div className={style.dropdownItem} onClick={handleLogout}>Logout <LogoutIcon /></div>
               <div className={style.dropdownItem} onClick={() => console.log('Settings')}>Settings <SettingsIcon />
               </div>
-
             </div>
           )}
         </div>
-        {/* <div className={style.icon}>
-          <SettingsIcon />
-        </div> */}
       </div>
     </header>
   );

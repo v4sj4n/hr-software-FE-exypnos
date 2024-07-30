@@ -2,8 +2,8 @@ import React, { useState, useEffect, ReactNode } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import AxiosInstance from '../../../../../Helpers/Axios';
 import { useAuth } from '../../../../../Context/AuthProvider';
-import { UserProfileData } from '../../../../Employees/Hook';
 import { ProfileContext } from './ProfileContext';
+import { UserProfileData } from '../../../../Employees/interfaces/Employe';
 
 interface ProfileProviderProps {
   children: ReactNode;

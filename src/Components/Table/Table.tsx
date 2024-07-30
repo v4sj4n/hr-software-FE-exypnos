@@ -11,6 +11,7 @@ interface DataTableProps<T extends GridValidRowModel> {
   pageSizeOptions?: number[];
   additionalStyles?: React.CSSProperties;
   headerIcons?: { [key: string]: React.ComponentType<SvgIconProps> };
+  handleRowClick?: (params: GridRowParams) => void;
 }
 export default function DataTable<T extends GridValidRowModel>({
   rows,
@@ -18,8 +19,11 @@ export default function DataTable<T extends GridValidRowModel>({
   getRowId = (row: T) => (row).id,
   height = "auto",
   initialPageSize = 5,
+  pageSizeOptions = [5, 10, 20, 30],
+  initialPageSize = 10,
   pageSizeOptions = [5, 10],
   headerIcons,
+  handleRowClick,
 }: DataTableProps<T>) {
   const getRowClassName = (params: GridRowParams) => {
     return Number(params.id) % 2 === 0 ? 'colored-row' : '';
@@ -46,10 +50,14 @@ export default function DataTable<T extends GridValidRowModel>({
         columns={columnsWithIcons}
         getRowId={getRowId}
         getRowClassName={getRowClassName}
+        onRowClick={handleRowClick}
         sx={{
           ...TableStyles,
           '& .colored-row': {
-            backgroundColor: '#F0F0F0',
+            backgroundColor: '#f4f4f4',
+          },
+          '& .MuiDataGrid-row': {
+            cursor: 'pointer',
           },
           width: '100%',
         }}

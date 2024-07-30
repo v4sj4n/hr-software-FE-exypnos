@@ -1,0 +1,13 @@
+.spanStyleA {
+    font-weight: 700
+}
+
+.spanStyleNA {
+    color: 'gray',
+}
+
+.divStyle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}

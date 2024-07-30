@@ -1,5 +1,5 @@
-import React, { ReactNode } from "react";
-import style from './Card.module.css'
+import React, { ReactNode , CSSProperties} from "react";
+import styles from './Card.module.css'
 
 interface CardProps {
   children: ReactNode;
@@ -8,6 +8,15 @@ interface CardProps {
   gap?: string;
   className?: string;
   height?: string;
+  flex?: string;
+  style?: React.CSSProperties; 
+  width?: string;  
+  border?: string;  
+  backgroundColor?: string; 
+  position?: CSSProperties['position'];
+  alignSelf?: CSSProperties['alignSelf'];  
+  flex? :string;
+  width?: string;
 }
 
 const Card: React.FC<CardProps> = ({ 
@@ -16,18 +25,32 @@ const Card: React.FC<CardProps> = ({
   borderRadius,
   height,
   gap, 
-  className 
+  flex,
+  className ,
+  style,
+  width,
+  border,
+  backgroundColor,
+  position,
+  alignSelf
 }) => {
-  const cardStyle = {
+  const cardStyle: CSSProperties = {
+    ...style,  
+    width: width || '100%', 
+    flex: flex || '0',  
     padding: padding || '1rem',  
     borderRadius: borderRadius || '4px',  
     gap: gap || '0',
-    height:height || 'auto',  
+    height:height || 'auto',   
+    border: border || 'none',
+    backgroundColor: backgroundColor || '#ffffff',
+    position: position || 'static',
+    alignContent: alignSelf || 'flex-start',
   };
 
   return (
     <div 
-      className={`${style.card} ${className || ''}`} 
+      className={`${styles.card} ${className || ''}`} 
       style={cardStyle}
     >
       {children}

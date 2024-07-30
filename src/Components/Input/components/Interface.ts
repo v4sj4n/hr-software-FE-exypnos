@@ -11,6 +11,7 @@ export interface InputProps {
   errortext?: string
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void
   IsUsername?: boolean
+  inputRef?: React.RefObject<HTMLInputElement>
   isCheckBox?: boolean
   type?: boolean | string
   isPassword?: boolean
@@ -22,4 +23,7 @@ export interface InputProps {
   onMouseDown?: (event: React.MouseEvent<HTMLButtonElement>) => void
   width?: string | number
   register?: UseFormRegisterReturn
+  style?: React.CSSProperties
+  className?: string
+  placeholder?: string
 }

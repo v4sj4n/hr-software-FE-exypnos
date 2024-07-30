@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ReactNode } from 'react';
 import AxiosInstance from '../../../Helpers/Axios';
-import { UserProfileData } from '../../Employees/Hook';
 import { FileUploadContext } from './UploadPicContext';
+import { UserProfileData } from '../../Employees/interfaces/Employe';
 
 interface FileUploadProviderProps {
   children: ReactNode;

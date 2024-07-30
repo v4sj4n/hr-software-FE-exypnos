@@ -8,7 +8,7 @@ import img from '../../../../public/Images/HeroImage.png'
 import logo from "/Images/image_1-removebg-preview.png"
 import { useLogin } from '../Hook';
 import ClipLoader from "react-spinners/ClipLoader";
-import style from '../Login.module.css'
+import style from '../styles/Login.module.css'
 
 const ResetPass: React.FC = () => {
     const [step, setStep] = useState<'email' | 'reset'>('email');
@@ -35,7 +35,7 @@ const ResetPass: React.FC = () => {
                 <img className={style.img} alt="img" src={img} />
                 <Link style={{ textDecoration: "none", color: "#FFFFFF" }} to='/'>System tagline here</Link>
             </div>
-            <Card>
+            <Card padding='20px' gap='20px'>
                 <div style={{ display: 'flex', justifyContent: 'center' }}><img className={style.img2} alt="img" src={logo} /></div>
                 <div className={style.title}>
                     {step === 'email' ? 'Forgot Password' : 'Reset Password'}
@@ -50,6 +50,7 @@ const ResetPass: React.FC = () => {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            width="350px"
                         />
                         <Button
                             type={ButtonTypes.PRIMARY}

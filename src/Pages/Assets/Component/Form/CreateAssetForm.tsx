@@ -3,12 +3,12 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useContext } from 'react'
 import { AxiosError } from 'axios'
-import { AssetsContext } from '../AssetContext'
-import AxiosInstance from '../../../Helpers/Axios'
-import { ButtonTypes } from '../../../Components/Button/ButtonTypes'
-import Input from '../../../Components/Input/Index'
-import Button from '../../../Components/Button/Button'
-import { ErrorText } from '../Component/ErrorText'
+import { AssetsContext } from '../../AssetsContext'
+import { ErrorText } from '../ErrorText'
+import AxiosInstance from '@/Helpers/Axios'
+import Button from '@/Components/Button/Button'
+import { ButtonTypes } from '@/Components/Button/ButtonTypes'
+import Input from '@/Components/Input/Index'
 
 const assetSchema = z.object({
   type: z.enum(['laptop', 'monitor'], {
@@ -101,6 +101,7 @@ export const CreateAssetForm = () => {
             type={ButtonTypes.PRIMARY}
             btnText={isSubmitting ? 'Submitting' : 'Submit'}
             width={'100%'}
+            isSubmit
           />
           <Button
             type={ButtonTypes.SECONDARY}

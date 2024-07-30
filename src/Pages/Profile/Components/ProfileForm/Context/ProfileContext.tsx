@@ -1,5 +1,6 @@
 import React, { createContext } from 'react';
-import { UserProfileData } from '../../../../Employees/Hook';
+import { UserProfileData } from '../../../../Employees/interfaces/Employe';
+
 
 export interface ProfileContextType {
   user: UserProfileData | null;
