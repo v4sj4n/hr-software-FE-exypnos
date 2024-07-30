@@ -1,7 +1,7 @@
 import { CircularProgress } from '@mui/material'
 import { Asset } from './TAsset'
 import { useData } from './Hook'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { AssetsContext } from './AssetContext'
 import DataTable from '../../Components/Table/Table'
 import { GridRenderCellParams } from '@mui/x-data-grid'
@@ -14,10 +14,24 @@ import TypeSpecimenIcon from '@mui/icons-material/TypeSpecimen'
 import PersonIcon from '@mui/icons-material/Person'
 import FingerprintIcon from '@mui/icons-material/Fingerprint'
 import CircleIcon from '@mui/icons-material/Circle'
+import { UpdateAssetModalForm } from './Form/UpdateAssetForm'
 
 export default function AssetsTable() {
   const { error, loading } = useData()
   const { assets } = useContext(AssetsContext)
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
+  const [selectedAssetId, setSelectedAssetId] = useState<string | null>(null)
+
+  const handleOpenModal = (assetId: string) => {
+    setSelectedAssetId(assetId)
+    setIsUpdateModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsUpdateModalOpen(false)
+    setSelectedAssetId(null)
+  }
+
   if (error) return <div>Error: {error}</div>
   if (loading) return <CircularProgress />
 
@@ -73,8 +87,6 @@ export default function AssetsTable() {
       headerName: 'Full Name',
       flex: 1,
       renderCell: (param: GridRenderCellParams) => {
-        console.log(param.value)
-
         return (
           <div className={style.divStyle}>
             {param.value === null ? (
@@ -88,7 +100,25 @@ export default function AssetsTable() {
         )
       },
     },
-    { field: 'serialNumber', headerName: 'Serial Number', flex: 1 },
+    {
+      field: 'serialNumber',
+      headerName: 'Serial Number',
+      flex: 1,
+
+      renderCell: (param: GridRenderCellParams) => {
+        return (
+          <button
+            onClick={() => handleOpenModal(param.value)}
+            style={{
+              border: 'none',
+              backgroundColor: 'transparent',
+            }}
+          >
+            {param.value}
+          </button>
+        )
+      },
+    },
   ]
 
   const getRowId = (row: { id: number | string }) => row.id
@@ -103,11 +133,20 @@ export default function AssetsTable() {
 
   console.log(assets)
   return (
-    <DataTable
-      rows={rows}
-      columns={columns}
-      getRowId={getRowId}
-      headerIcons={headerIcons}
-    />
+    <>
+      <DataTable
+        rows={rows}
+        columns={columns}
+        getRowId={getRowId}
+        headerIcons={headerIcons}
+      />
+      {selectedAssetId && (
+        <UpdateAssetModalForm
+          handleClose={handleCloseModal}
+          open={isUpdateModalOpen}
+          assetId={selectedAssetId}
+        />
+      )}
+    </>
   )
 }
