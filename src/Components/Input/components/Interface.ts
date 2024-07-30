@@ -26,4 +26,6 @@ export interface InputProps {
   style?: React.CSSProperties
   className?: string
   placeholder?: string
+  multiline?: boolean
+  rows?: number
 }

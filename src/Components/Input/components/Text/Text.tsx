@@ -30,14 +30,14 @@ const UsernameInput: React.FC<InputProps> = (props) => {
       {...register}
       sx={{
         ...inputStyles,
-        width: width || 'auto',
+        width: width || '100%',
       }}
       InputLabelProps={{
         style: {
           color: '#4C556B',
           fontFamily: '"Outfit", sans-serif',
-          fontSize: '12px',
         },
+        shrink: true,
       }}
       InputProps={{
         disableUnderline: true,

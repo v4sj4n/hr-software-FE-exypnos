@@ -62,7 +62,7 @@ export default function Events() {
         {showForm && (
           <Card padding='20px 20px 80px 20px' alignSelf='flex-end' gap='30px' borderRadius='8px' flex='2' border='1px solid #B8CDE1' height='550px' position='sticky' className={style.formCard} >
             <div className={style.create}>{editingEvent ? 'Edit Event' : 'Create New Event'}</div>
-            <Input IsUsername width={"100%"} label='Event Title' name='title' onChange={editingEvent ? handleEditChange : handleChange}
+            <Input IsUsername  label='Event Title' name='title' onChange={editingEvent ? handleEditChange : handleChange}
               value={editingEvent ? editingEvent.title : event.title} />
             <div style={{ display: "flex", width: "100%", gap: "10px" }}>
               <TextField
@@ -85,6 +85,8 @@ export default function Events() {
                 onChange={editingEvent ? handleEditChange : handleChange}
                 value={editingEvent ? editingEvent.date : event.date}
               />
+              {/* <Input IsUsername  label='New Date' name='date' type="date" onChange={editingEvent? handleEditChange : handleChange}
+                value={editingEvent? editingEvent.date : event.date}/> */}
               <TextField
                 label="New Time"
                 type="time"
@@ -105,6 +107,8 @@ export default function Events() {
                   disableUnderline: true,
                 }}
               />
+            {/* <Input IsUsername  label='New Time' name='time' type="time" onChange={editingEvent ? handleEditChange : handleChange}
+                value={editingEvent ? editingTime : event.time}/> */}
             </div>
             <Input IsUsername width={"100%"} label='Location' name='Location' />
             <TextField
@@ -125,6 +129,7 @@ export default function Events() {
                   color: '#4C556B',
                   fontFamily: '"Outfit", sans-serif',
                 },
+                shrink: true,
               }}
               sx={{
                 ...inputStyles,
