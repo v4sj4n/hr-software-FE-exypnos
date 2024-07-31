@@ -1,31 +1,17 @@
-import CheckIcon from "@mui/icons-material/Check";
-import CloseIcon from "@mui/icons-material/Close";
-import HistoryIcon from "@mui/icons-material/History";
-import { GridRenderCellParams } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
-
-import Button from "../../Components/Button/Button";
-import { ButtonTypes } from "../../Components/Button/ButtonTypes";
-import DataTable from "../../Components/Table/Table";
-import RescheduleModal from "./Component/ScheduleForm";
-import style from "./styles/Interview.module.css";
-
+import  { useState } from 'react';
+import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+import Button from '../../Components/Button/Button';
+import { ButtonTypes } from '../../Components/Button/ButtonTypes';
+import RescheduleModal from './Component/scheduleForm';
+import style from './styles/Interview.module.css';
+import CheckIcon from '@mui/icons-material/Check';
+// import HistoryIcon from '@mui/icons-material/History';
+import { useNavigate } from 'react-router-dom';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
 interface Interview {
   fullName: string;
   auth: { email: string };
-  phone: string;
-  position: string;
-  date: string;
-  time: string;
-  cvAttachment: string;
-  notes: string;
-  phase: string;
-}
-
-interface RowData {
-  id: number;
-  fullName: string;
-  email: string;
   phone: string;
   position: string;
   date: string;
@@ -45,8 +31,7 @@ const dummyInterviews: Interview[] = [
     time: "14:00",
     cvAttachment: "artemisa_nuri_cv.pdf",
     notes: "interview scheduled",
-
-    phase: "First Interview",
+    phase: "Employeed",
   },
   {
     fullName: "Gerti Kadiu",
@@ -101,49 +86,37 @@ const dummyInterviews: Interview[] = [
     time: "13:00",
     cvAttachment: "gerald_bane_cv.pdf",
     notes: " Great skills ",
-    phase: "First Interview",
+    phase: "Second Interview",
   },
 ];
 
-export default function Interview() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedInterview, setSelectedInterview] = useState<Interview | null>(
-    null,
-  );
+const phases = [
+  'First Interview',
+  'Second Interview',
+  'Employed'
+];
 
+export default function InterviewKanban() {
   const [interviews, setInterviews] = useState<Interview[]>(dummyInterviews);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedInterview, setSelectedInterview] = useState<Interview | null>(null);
   const [isReschedule, setIsReschedule] = useState(false);
+  const navigate = useNavigate();
 
-  const [rows, setRows] = useState<RowData[]>(
-    interviews.map((interview, index) => ({
-      id: index + 1,
-      fullName: interview.fullName,
-      email: interview.auth?.email,
-      phone: interview.phone,
-      position: interview.position,
-      date: interview.date,
-      time: interview.time,
-      cvAttachment: interview.cvAttachment,
-      notes: interview.notes,
-      phase: interview.phase,
-    })),
-  );
-  useEffect(() => {
-    setRows(
-      interviews.map((interview, index) => ({
-        id: index + 1,
-        fullName: interview.fullName,
-        email: interview.auth?.email,
-        phone: interview.phone,
-        position: interview.position,
-        date: interview.date,
-        time: interview.time,
-        cvAttachment: interview.cvAttachment,
-        notes: interview.notes,
-        phase: interview.phase,
-      })),
-    );
-  }, [interviews]);
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+
+    const newInterviews = Array.from(interviews);
+    const [reorderedItem] = newInterviews.splice(result.source.index, 1);
+    reorderedItem.phase = result.destination.droppableId;
+    newInterviews.splice(result.destination.index, 0, reorderedItem);
+
+    setInterviews(newInterviews);
+  };
+
+  const getInterviewsByPhase = (phase: string) => {
+    return interviews.filter(interview => interview.phase === phase);
+  };
 
   const handleOpenModal = (
     interview: Interview,
@@ -161,20 +134,17 @@ export default function Interview() {
 
   const handleReschedule = (date: string, time: string) => {
     if (selectedInterview) {
-      const updatedInterviews = interviews.map((interview) =>
+      const updatedInterviews = interviews.map(interview =>
         interview.fullName === selectedInterview.fullName
-          ? {
-              ...interview,
-              date,
-              time,
-              phase: isReschedule ? interview.phase : "Second Interview",
-            }
-          : interview,
+          ? { ...interview, date, time, phase: isReschedule ? interview.phase : 'Second Interview' }
+          : interview
       );
+
       setInterviews(updatedInterviews);
     }
     handleCloseModal();
   };
+
   const handleCancel = (interview: Interview) => {
     const isConfirmed = window.confirm(
       `Are you sure you want to cancel the interview with ${interview.fullName}?`,
@@ -190,113 +160,120 @@ export default function Interview() {
 
   const handleAccept = (interview: Interview) => {
     handleOpenModal(interview, false);
+
+    const nextPhase = interview.phase === 'First Interview' ? 'Second Interview' : 'Employed';
+    const updatedInterviews = interviews.map(i =>
+      i.fullName === interview.fullName ? { ...i, phase: 
+        nextPhase } : i
+    );
+    setInterviews(updatedInterviews);
+    // if (nextPhase === 'Employed'){
+    //   setInterviews(updatedInterviews);
+    // }
   };
 
-  const columns = [
-    { field: "id", headerName: "No", width: 20 },
-    { field: "fullName", headerName: " Name", flex: 1 },
-    { field: "email", headerName: "Email", flex: 1 },
-    { field: "phone", headerName: "Phone", flex: 1 },
-    { field: "position", headerName: "Position", flex: 1 },
-    { field: "date", headerName: "Date", flex: 1 },
-    { field: "time", headerName: "Time", width: 60 },
-    { field: "cvAttachment", headerName: "CV", flex: 1 },
-    { field: "phase", headerName: "Phase", flex: 1 },
-    { field: "notes", headerName: "Notes", flex: 1 },
-    {
-      field: "reschedule",
-      headerName: "Reschedule",
-      width: 120,
-      renderCell: (params: GridRenderCellParams) => (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "5px",
-            paddingTop: "10px",
-          }}
-        >
-          <Button
-            type={ButtonTypes.PRIMARY}
-            btnText=""
-            width="60px"
-            height="30px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            icon={<HistoryIcon />}
-            onClick={() => handleOpenModal(params.row as Interview)}
-          />
-        </div>
-      ),
-    },
-    {
-      field: "manage",
-      headerName: "Manage",
-      width: 120,
-      renderCell: (params: GridRenderCellParams) => (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "5px",
-            paddingTop: "10px",
-          }}
-        >
-          <Button
-            btnText=""
-            type={ButtonTypes.PRIMARY}
-            width="60px"
-            height="30px"
-            backgroundColor="#40a829"
-            borderColor="#40a829"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            icon={<CheckIcon />}
-            onClick={() => handleAccept(params.row as Interview)}
-          ></Button>
-          <Button
-            btnText=""
-            type={ButtonTypes.PRIMARY}
-            width="60px"
-            height="30px"
-            backgroundColor="#C70039"
-            borderColor="#C70039"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            icon={<CloseIcon />}
-            onClick={() => handleCancel(params.row as Interview)}
-          ></Button>
-        </div>
-      ),
-    },
-  ];
-
-  const getRowId = (row: RowData) => row.id;
+  const handleNavigateToProfile = (candidateId: string) => {
+    navigate(`/candidate/${candidateId}`);
+  };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        width: "100%",
-        flexDirection: "column",
-        padding: "0 16px",
-        backgroundColor: "#f0f5ff",
-      }}
-    >
-      <div className={style.title}>Interviews</div>
-      <DataTable rows={rows} columns={columns} getRowId={getRowId} />
+    <div className={style.kanbanBoard}>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div className={style.kanbanColumns}>
+          {phases.map(phase => (
+            <div key={phase} className={style.kanbanColumn}>
+              <h2>{phase}</h2>
+              <Droppable droppableId={phase}>
+                {(provided) => (
+                  <div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className={style.kanbanList}
+                  >
+                    {getInterviewsByPhase(phase).map((interview, index) => (
+                      <Draggable key={interview.fullName} draggableId={interview.fullName} index={index}>
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className={style.kanbanItem}
+                          >
+                            <h4
+                              onClick={() => handleNavigateToProfile(interview.fullName)}
+                              className={style.candidateName}
+                            >
+                              {interview.fullName}
+                            </h4>
+                            <p>{interview.position}</p>
+                            <p>{interview.date} at {interview.time}</p>
+                            <p>Email: {interview.auth.email}</p>
+                            <p>Phone: {interview.phone}</p>
+                            <p>Notes: {interview.notes}</p>
+                            <div className={style.buttonContainer}>
+
+                              <Button
+                                type={ButtonTypes.PRIMARY}
+                                btnText=""
+                                width="40px"
+                                height="30px"
+                                display='flex'
+                                justifyContent='center'
+                                alignItems='center'
+                                icon={<EditIcon />}
+                                onClick={() => handleOpenModal(interview, true)}
+                              />
+                              <div style={{display:"flex", justifyContent:"flex-end", gap:'10px'}}>                             
+
+                               <Button
+                                btnText=""
+                                type={ButtonTypes.PRIMARY}
+                                width="40px"
+                                height="30px"
+                                backgroundColor="#C70039"
+                                borderColor="#C70039"
+                                display="flex"
+                                justifyContent="center"
+                                alignItems="center"
+                                icon={<DeleteForeverIcon />}
+                                onClick={() => handleCancel(interview)}                              />
+                              {phase !== 'Employed' && (
+                                <Button
+                                  btnText=''
+                                  type={ButtonTypes.PRIMARY}
+                                  width="40px"
+                                  height="30px"
+                                  backgroundColor='rgb(2, 167, 0)'
+                                  borderColor='rgb(2, 167, 0)'
+                                  display='flex'
+                                  justifyContent='center'
+                                  alignItems='center'
+                                  icon={<CheckIcon />}
+                                  onClick={() => handleAccept(interview)}
+                                />
+                               
+                              )}
+                               </div>
+                            </div>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </div>
+          ))}
+        </div>
+      </DragDropContext>
       {selectedInterview && (
         <RescheduleModal
           open={isModalOpen}
           handleClose={handleCloseModal}
           handleReschedule={handleReschedule}
           selectedInterview={selectedInterview}
-          handleCancel={() =>
-            selectedInterview && handleCancel(selectedInterview)
-          }
+          // handleCancel={() => selectedInterview && handleCancel(selectedInterview)}
         />
       )}
     </div>
