@@ -7,7 +7,7 @@ import CreateEmplye from './Pages/CreateEmploye.tsx'
 import Dashboard from './Pages/Dashboard/Dashboard.tsx'
 import Employees from './Pages/Employees/Employees.tsx'
 import Events from './Pages/Events/Events.tsx'
-import Interview from './Pages/Interview/Interview.tsx'
+// import Interview from './Pages/Interview/Interview.tsx'
 import ResetPass from './Pages/Login/Component/ResetPass'
 import Login from './Pages/Login/Login'
 import Payroll from './Pages/Payroll/Payroll.tsx'
@@ -97,10 +97,10 @@ export default function Router() {
           path: 'events',
           element: <Events />,
         },
-        {
-          path: 'interview',
-          element: <Interview />,
-        },
+        // {
+        //   path: 'interview',
+        //   element: <Interview />,
+        // },
       ],
     },
   ])

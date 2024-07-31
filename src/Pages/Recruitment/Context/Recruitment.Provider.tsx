@@ -17,7 +17,7 @@ export const useCreateAplicant = () => {
         positionApplied: '',
         technologiesUsed: [] as string[],
         salaryExpectations: '',
-        file: null as File | null, 
+        cvAttachment: null as File | null, 
         status: 'pending',
     });
 
@@ -34,7 +34,7 @@ export const useCreateAplicant = () => {
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
-            setAplicantFormData({...aplicantFormData, file: event.target.files[0]});
+            setAplicantFormData({...aplicantFormData, cvAttachment: event.target.files[0]});
         }
     };
 
@@ -43,8 +43,8 @@ export const useCreateAplicant = () => {
         
         const formData = new FormData();
         Object.keys(aplicantFormData).forEach(key => {
-            if (key === 'file' && aplicantFormData.file) {
-                formData.append('file', aplicantFormData.file);
+            if (key === 'file' && aplicantFormData.cvAttachment) {
+                formData.append('file', aplicantFormData.cvAttachment);
             } else if (key === 'technologiesUsed') {
                 formData.append('technologiesUsed', JSON.stringify(aplicantFormData.technologiesUsed));
             } else {
@@ -70,7 +70,7 @@ export const useCreateAplicant = () => {
                 positionApplied: '',
                 technologiesUsed: [],
                 salaryExpectations: '',
-                file: null,
+                cvAttachment: null,
                 status: 'pending',
             });
         } catch (error) {

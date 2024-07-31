@@ -7,10 +7,23 @@ export const useApplicantById = () => {
     const [applicant, setApplicant] = useState<CandidateView | null>(null)
     const [showModal, setShowModal] = useState(false);
     const [modalAction, setModalAction] = useState<ModalAction | ''>('');
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    
 
-    const handleCloseModal = () => {
-        setShowModal(false);
+    const handleAccept = () => {
+      if (modalAction === 'accept') {
+        setShowConfirmationModal(true);
+      }
+      setShowModal(false);
+    };
+
+    const handleCloseModal = async () => {
+      setShowModal(false)
     }
+
+    const handleCloseConfirmationModal = () => {
+      setShowConfirmationModal(false);
+    };
 
     const handleOpenModal = (action: ModalAction) => {
         setModalAction(action);
@@ -31,5 +44,5 @@ export const useApplicantById = () => {
           })
     }, [id]);
 
-    return { applicant,  showModal, handleCloseModal, handleOpenModal, modalAction };
+    return { applicant,  showModal, handleCloseModal, handleOpenModal, modalAction, handleCloseConfirmationModal, showConfirmationModal, handleAccept };
 }

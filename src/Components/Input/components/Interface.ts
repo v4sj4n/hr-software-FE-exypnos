@@ -28,4 +28,5 @@ export interface InputProps {
   placeholder?: string
   multiline?: boolean
   rows?: number
+  flex?: number | string;
 }
