@@ -118,7 +118,10 @@ export default function InterviewKanban() {
     return interviews.filter(interview => interview.phase === phase);
   };
 
-  const handleOpenModal = (interview: Interview, isReschedule: boolean = false) => {
+  const handleOpenModal = (
+    interview: Interview,
+    isReschedule: boolean = false,
+  ) => {
     setSelectedInterview(interview);
     setIsModalOpen(true);
     setIsReschedule(isReschedule);
