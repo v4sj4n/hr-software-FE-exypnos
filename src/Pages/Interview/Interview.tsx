@@ -1,14 +1,16 @@
-import  { useState } from 'react';
-import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import Button from '../../Components/Button/Button';
-import { ButtonTypes } from '../../Components/Button/ButtonTypes';
-import RescheduleModal from './Component/scheduleForm';
-import style from './styles/Interview.module.css';
 import CheckIcon from '@mui/icons-material/Check';
-// import HistoryIcon from '@mui/icons-material/History';
-import { useNavigate } from 'react-router-dom';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
+import  { useState } from 'react';
+import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+// import HistoryIcon from '@mui/icons-material/History';
+import { useNavigate } from 'react-router-dom';
+
+import Button from '../../Components/Button/Button';
+import { ButtonTypes } from '../../Components/Button/ButtonTypes';
+import RescheduleModal from './Component/ScheduleForm';
+import style from './styles/Interview.module.css';
+
 interface Interview {
   fullName: string;
   auth: { email: string };
@@ -273,7 +275,7 @@ export default function InterviewKanban() {
           handleClose={handleCloseModal}
           handleReschedule={handleReschedule}
           selectedInterview={selectedInterview}
-          handleCancel={() => selectedInterview && handleCancel(selectedInterview)}
+          // handleCancel={() => selectedInterview && handleCancel(selectedInterview)}
         />
       )}
     </div>
