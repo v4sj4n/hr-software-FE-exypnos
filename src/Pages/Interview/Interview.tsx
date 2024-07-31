@@ -273,7 +273,7 @@ export default function InterviewKanban() {
           handleClose={handleCloseModal}
           handleReschedule={handleReschedule}
           selectedInterview={selectedInterview}
-          // handleCancel={() => selectedInterview && handleCancel(selectedInterview)}
+          handleCancel={() => selectedInterview && handleCancel(selectedInterview)}
         />
       )}
     </div>
