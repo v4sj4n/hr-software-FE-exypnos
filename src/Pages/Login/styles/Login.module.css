@@ -6,7 +6,7 @@
     height: 100vh;
     gap: 150px;
     min-height: 100%;
-    background-image: url('Images/background\ \(1\).png');
+    background-image: url("Images/background\ \(1\).png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -24,7 +24,7 @@
     align-items: center;
 }
 
-.form{
+.form {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -47,10 +47,38 @@
     font-family: "Outfit", sans-serif;
 }
 
-.error{
+.error {
     color: #d32f2f;
-    font-Size: 13px;
+    font-size: 13px;
     padding: 0;
     margin: 0;
     top: 0;
+}
+
+.forgotPassword {
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    margin-top: "10px";
+    font-family: "Outfit", sans-serif;
+}
+.forgotPassword:hover {
+    text-decoration: underline;
+}
+
+.slogan {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+}
+
+.cardLogoStyle {
+    display: flex;
+    justify-content: center;
+}
+
+.formStyle {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }

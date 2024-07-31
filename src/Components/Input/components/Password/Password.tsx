@@ -4,10 +4,11 @@ import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { inputStyles } from '../../Styles';
+import { inputStyles } from "../../Styles";
 import { InputProps } from "../Interface";
 
 const PasswordInput: React.FC<InputProps> = (props) => {
+  const { register } = props;
   return (
     <FormControl fullWidth>
       <TextField
@@ -21,24 +22,29 @@ const PasswordInput: React.FC<InputProps> = (props) => {
         variant="filled"
         size="small"
         id={props.id}
+        {...register}
         type={props.type === true ? "text" : "password"}
         InputLabelProps={{
-          style: { color: "#4C556B", fontFamily: '"Outfit", sans-serif', fontSize: "12px" },
+          style: {
+            color: "#4C556B",
+            fontFamily: '"Outfit", sans-serif',
+            fontSize: "12px",
+          },
         }}
-        sx={{ width: props.width || 'auto', ...inputStyles }}
+        sx={{ width: props.width || "auto", ...inputStyles }}
         InputProps={{
           disableUnderline: true,
           endAdornment: (
             <InputAdornment
               sx={{
                 width: 40,
-                cursor: "pointer"
+                cursor: "pointer",
               }}
               position="end"
               aria-label="toggle password visibility"
               onClick={props.onClick}
             >
-              {props.type === true ? <VisibilityOff  /> : <Visibility />}
+              {props.type === true ? <VisibilityOff /> : <Visibility />}
             </InputAdornment>
           ),
         }}
