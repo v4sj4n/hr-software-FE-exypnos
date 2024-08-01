@@ -1,14 +1,16 @@
-import  { useState } from 'react';
-import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import Button from '../../Components/Button/Button';
-import { ButtonTypes } from '../../Components/Button/ButtonTypes';
-import RescheduleModal from './Component/scheduleForm';
-import style from './styles/Interview.module.css';
 import CheckIcon from '@mui/icons-material/Check';
-// import HistoryIcon from '@mui/icons-material/History';
-import { useNavigate } from 'react-router-dom';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
+import  { useState } from 'react';
+import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+// import HistoryIcon from '@mui/icons-material/History';
+import { useNavigate } from 'react-router-dom';
+
+import Button from '../../Components/Button/Button';
+import { ButtonTypes } from '../../Components/Button/ButtonTypes';
+import RescheduleModal from './Component/ScheduleForm';
+import style from './styles/Interview.module.css';
+
 interface Interview {
   fullName: string;
   auth: { email: string };
@@ -31,7 +33,7 @@ const dummyInterviews: Interview[] = [
     time: "14:00",
     cvAttachment: "artemisa_nuri_cv.pdf",
     notes: "interview scheduled",
-    phase: "Employeed",
+    phase: "Employed",
   },
   {
     fullName: "Gerti Kadiu",
@@ -99,9 +101,12 @@ const phases = [
 export default function InterviewKanban() {
   const [interviews, setInterviews] = useState<Interview[]>(dummyInterviews);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedInterview, setSelectedInterview] = useState<Interview | null>(null);
+  const [selectedInterview, setSelectedInterview] = useState<Interview | null>(null); 
   const [isReschedule, setIsReschedule] = useState(false);
   const navigate = useNavigate();
+  const [allPhasesPassed, setAllPhasesPassed] = useState(false);
+
+
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -125,6 +130,8 @@ export default function InterviewKanban() {
     setSelectedInterview(interview);
     setIsModalOpen(true);
     setIsReschedule(isReschedule);
+    const allPhasesPassed = interview.phase === 'Second Interview';
+    setAllPhasesPassed(allPhasesPassed);
   };
 
   const handleCloseModal = () => {
@@ -132,14 +139,20 @@ export default function InterviewKanban() {
     setSelectedInterview(null);
   };
 
-  const handleReschedule = (date: string, time: string) => {
+  const handleReschedule = (date: string, time: string, notes: string) => {
     if (selectedInterview) {
       const updatedInterviews = interviews.map(interview =>
         interview.fullName === selectedInterview.fullName
-          ? { ...interview, date, time, phase: isReschedule ? interview.phase : 'Second Interview' }
+          ? {
+              ...interview,
+              date: allPhasesPassed ? interview.date : date,
+              time: allPhasesPassed ? interview.time : time,
+              notes,
+              phase: isReschedule ? interview.phase : 'Second Interview'
+            }
           : interview
       );
-
+  
       setInterviews(updatedInterviews);
     }
     handleCloseModal();
@@ -159,17 +172,21 @@ export default function InterviewKanban() {
   };
 
   const handleAccept = (interview: Interview) => {
-    handleOpenModal(interview, false);
-
     const nextPhase = interview.phase === 'First Interview' ? 'Second Interview' : 'Employed';
+    
     const updatedInterviews = interviews.map(i =>
-      i.fullName === interview.fullName ? { ...i, phase: 
-        nextPhase } : i
+      i.fullName === interview.fullName ? { ...i, phase: nextPhase } : i
     );
+  
     setInterviews(updatedInterviews);
-    // if (nextPhase === 'Employed'){
-    //   setInterviews(updatedInterviews);
-    // }
+  
+    if (nextPhase === 'Employed') {
+     // api per candidates 
+      handleOpenModal(interview, false);
+      setAllPhasesPassed(true);
+    } else {
+      handleOpenModal(interview, false);
+    }
   };
 
   const handleNavigateToProfile = (candidateId: string) => {
@@ -228,7 +245,7 @@ export default function InterviewKanban() {
                                <Button
                                 btnText=""
                                 type={ButtonTypes.PRIMARY}
-                                width="40px"
+                                width="35px"
                                 height="30px"
                                 backgroundColor="#C70039"
                                 borderColor="#C70039"
@@ -273,6 +290,7 @@ export default function InterviewKanban() {
           handleClose={handleCloseModal}
           handleReschedule={handleReschedule}
           selectedInterview={selectedInterview}
+          allPhasesPassed={allPhasesPassed}
           // handleCancel={() => selectedInterview && handleCancel(selectedInterview)}
         />
       )}
