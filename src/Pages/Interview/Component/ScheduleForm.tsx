@@ -1,21 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { Box } from '@mui/material';
-import { ModalComponent } from '../../../Components/Modal/Modal';
 import Button from '@/Components/Button/Button';
 import { ButtonTypes } from '@/Components/Button/ButtonTypes';
-import UsernameInput from '@/Components/Input/components/Text/Text';
+import Input from '@/Components/Input/Index';
+import { Box } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+
+import { ModalComponent } from '../../../Components/Modal/Modal';
 
 interface Interview {
   date: string;
   time: string;
+  notes: string;
 }
 
 interface RescheduleModalProps {
   open: boolean;
   handleClose: () => void;
-  handleReschedule: (date: string, time: string) => void;
+  handleReschedule: (date: string, time: string, notes:string) => void;
   selectedInterview: Interview | null;
   // handleCancel: () => void;
+  allPhasesPassed: boolean;
+
 }
 
 const RescheduleModal: React.FC<RescheduleModalProps> = ({
@@ -23,70 +27,80 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
   handleClose,
   handleReschedule, 
   selectedInterview,
+  allPhasesPassed,
+
   // handleCancel,
+
 }) => {
   const [date, setDate] = useState(selectedInterview ? selectedInterview.date : '');
   const [time, setTime] = useState(selectedInterview ? selectedInterview.time : '');
+  const[notes,setNotes]=useState(selectedInterview?selectedInterview.notes : '');
 
   useEffect(() => {
     if (selectedInterview) {
       setDate(selectedInterview.date);
       setTime(selectedInterview.time);
+      setNotes(selectedInterview.notes);
     }
   }, [selectedInterview]);
 
   const handleSubmit = () => {
-    if (date && time) {
-      handleReschedule(date, time);
-    // } else {
-    //   handleCancel();
-    // }
+    if (allPhasesPassed) {
+      handleReschedule(date, time, notes);
+    } else if (date && time) {
+      handleReschedule(date, time, notes);
     }
   };
 
   return (
     <ModalComponent open={open} handleClose={handleClose}>
       <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <UsernameInput
-          label="New Date"
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          name="date"
+        <h2>{allPhasesPassed ? 'Update Interview Notes' : 'Edit your interview'}</h2>
+        {!allPhasesPassed && (
+          <>
+            <Input
+              IsUsername
+              label="New Date"
+              type="date"
+              value={date}
+              width="100%"
+              onChange={(e) => setDate(e.target.value)}
+              name="date"
+            />
+            <Input
+              IsUsername
+              width="100%"
+              label="New Time"
+              type="time"
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              name="time"
+            />
+          </>
+        )}
+        <Input
+          IsUsername
+          width="100%"
+          label="Add Notes"
+          type="text"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          name="notes"
         />
-        <UsernameInput
-          label="New Time"
-          type="time"
-          value={time}
-          onChange={(e) => setTime(e.target.value)}
-          name="time"
 
-        />
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-          <Button 
+          <Button
             type={ButtonTypes.PRIMARY}
-            btnText="Reschedule"
+            btnText={allPhasesPassed ? 'Update' : 'Save'}
             width="90px"
             height="35px"
             padding='10px'
             display='flex'
             justifyContent='center'
-            alignItems='center'      
+            alignItems='center'
             onClick={handleSubmit}
+            fontFamily='Outfit'
           />
-          {/* <Button 
-            type={ButtonTypes.PRIMARY}
-            btnText="Cancel"
-            width="90px"
-            height="35px"
-            padding='10px'
-            display='flex'
-            justifyContent='center'
-            alignItems='center' 
-            backgroundColor='rgb(211, 47, 47)'
-            borderColor='rgb(211, 47, 47)' 
-            onClick={handleCancel}
-          /> */}
         </div>
       </Box>
     </ModalComponent>
