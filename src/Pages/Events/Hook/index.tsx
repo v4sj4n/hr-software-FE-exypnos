@@ -30,6 +30,8 @@ export interface EventsCreationData {
 }
 
 export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>) => {
+    const [creatingTime, setCreatingTime] = useState<string>('');
+
     const [event, setEvent] = useState<EventsCreationData>({
         title: '',
         description: '',
@@ -39,19 +41,30 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setEvent(prevEvent => ({
-            ...prevEvent,
-            [name]: value
-        }));
+        if (name === 'time') {
+            setCreatingTime(value);
+        } else if (name === 'date') {
+            setEvent(prevEvent => ({
+                ...prevEvent!,
+                date: value
+            }));
+        } else {
+            setEvent(prevEvent => ({
+                ...prevEvent!,
+                [name]: value
+            }));
+        }
     };
 
     const createEvent = (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        const combinedDateTime = new Date(`${event.date}T${event.time}`);
+        const combinedDateTime = new Date(`${event.date}T${creatingTime}`);
+
         const newEvent = {
-            ...event,
-            date: combinedDateTime.toISOString(),
+            title: event.title,
+            description: event.description,
+            date: combinedDateTime,
         };
 
         AxiosInstance.post('/event', newEvent)
@@ -65,7 +78,7 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
             });
     }
 
-    return { createEvent, handleChange, event };
+    return { createEvent, handleChange, event, creatingTime };
 }
 
 export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>) => {

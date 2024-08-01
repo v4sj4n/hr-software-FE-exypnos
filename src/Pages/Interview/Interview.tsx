@@ -5,7 +5,6 @@ import { ButtonTypes } from '../../Components/Button/ButtonTypes';
 import RescheduleModal from './Component/scheduleForm';
 import style from './styles/Interview.module.css';
 import CheckIcon from '@mui/icons-material/Check';
-// import HistoryIcon from '@mui/icons-material/History';
 import { useNavigate } from 'react-router-dom';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
@@ -127,11 +126,6 @@ export default function InterviewKanban() {
     setIsReschedule(isReschedule);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedInterview(null);
-  };
-
   const handleReschedule = (date: string, time: string) => {
     if (selectedInterview) {
       const updatedInterviews = interviews.map(interview =>
@@ -167,9 +161,6 @@ export default function InterviewKanban() {
         nextPhase } : i
     );
     setInterviews(updatedInterviews);
-    // if (nextPhase === 'Employed'){
-    //   setInterviews(updatedInterviews);
-    // }
   };
 
   const handleNavigateToProfile = (candidateId: string) => {
@@ -273,7 +264,6 @@ export default function InterviewKanban() {
           handleClose={handleCloseModal}
           handleReschedule={handleReschedule}
           selectedInterview={selectedInterview}
-          // handleCancel={() => selectedInterview && handleCancel(selectedInterview)}
         />
       )}
     </div>

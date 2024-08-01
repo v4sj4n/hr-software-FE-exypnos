@@ -8,7 +8,7 @@ export const useGetAllApplicants = () => {
     const API_URL = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
-        AxiosInstance.get<applicantsData[]>('/applicants')
+        AxiosInstance.get<applicantsData[]>('/applicant')
             .then(response => {
                 setApplicants(response.data);
                 console.log(response.data);

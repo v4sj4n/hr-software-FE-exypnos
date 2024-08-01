@@ -4,9 +4,24 @@ import { useApplicantById } from './Hook';
 import Button from '../../Components/Button/Button';
 import { ButtonTypes } from '../../Components/Button/ButtonTypes';
 import { ModalComponent } from '../../Components/Modal/Modal';
+import Input from '@/Components/Input/Index';
 export default function ViewCandidats() {
 
-    const { applicant, showModal, handleCloseModal, handleOpenModal, modalAction } = useApplicantById()
+    const {      
+        applicant, 
+        showModal, 
+        handleCloseModal, 
+        handleOpenModal, 
+        handleConfirm, 
+        modalAction, 
+        showConfirmationModal, 
+        interviewDate,
+        setInterviewDate,
+        message,
+        setMessage,
+        handleSend, 
+        handleCloseConfirmationModal  
+    } = useApplicantById()
 
     return (
         <div className={style.container}>
@@ -118,20 +133,63 @@ export default function ViewCandidats() {
             </Card>
             {showModal && (
                 <ModalComponent open={showModal} handleClose={handleCloseModal}>
-                    <div> Are you sure you want to {modalAction} this candidate? </div>
-                    <div style={{ display: 'flex', gap: "10px", marginTop: "20px" }}>
-                        <Button
-                            type={ButtonTypes.PRIMARY}
-                            btnText='Confirm'
-                            width='100%'
-                            onClick={() => { handleCloseModal() }}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: "15px" }}>
+                        <div className={style.title}>Confirm Action.</div>
+                        <div> Are you sure you want to {modalAction} this candidate? </div>
+                        <div style={{ display: 'flex', gap: "10px", marginTop: "20px" }}>
+                            <Button
+                                type={ButtonTypes.PRIMARY}
+                                btnText='Confirm'
+                                width='100%'
+                                onClick={handleConfirm}
+                            />
+                            <Button
+                                type={ButtonTypes.SECONDARY}
+                                btnText='Cancel'
+                                width='100%'
+                                onClick={handleCloseModal}
+                            />
+                        </div>
+                    </div>
+                </ModalComponent>
+            )}
+
+            {showConfirmationModal && (
+                <ModalComponent open={showConfirmationModal} handleClose={handleCloseConfirmationModal}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: "20px" }}>
+                        <div className={style.title}>Notify Applicant.</div>
+                        <Input 
+                            IsUsername 
+                            type="datetime-local" 
+                            name='interviewDate' 
+                            label='Date'
+                            value={interviewDate}
+                            onChange={(e) => setInterviewDate(e.target.value)}
                         />
-                        <Button
-                            type={ButtonTypes.SECONDARY}
-                            btnText='Cancel'
-                            width='100%'
-                            onClick={handleCloseModal}
+                        <Input 
+                            IsUsername 
+                            type="textarea" 
+                            name='message' 
+                            label='Message' 
+                            multiline 
+                            rows={3} 
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
                         />
+                        <div style={{ display: 'flex', gap: "10px", marginTop: "20px" }}>
+                            <Button
+                                type={ButtonTypes.PRIMARY}
+                                btnText='Send'
+                                width='100%'
+                                onClick={handleSend}
+                            />
+                            <Button
+                                type={ButtonTypes.SECONDARY}
+                                btnText='Close'
+                                width='100%'
+                                onClick={handleCloseConfirmationModal}
+                            />
+                        </div>
                     </div>
                 </ModalComponent>
             )}
