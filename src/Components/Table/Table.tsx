@@ -1,7 +1,9 @@
-import { DataGrid, GridColDef, GridValidRowModel, GridRowParams } from '@mui/x-data-grid';
-import React from 'react';
-import { TableStyles } from '../Input/Styles';
 import { SvgIconProps } from '@mui/material';
+import { DataGrid, GridColDef, GridRowParams, GridValidRowModel } from '@mui/x-data-grid';
+import React from 'react';
+
+import { TableStyles } from '../Input/Styles';
+
 interface DataTableProps<T extends GridValidRowModel> {
   rows: T[];
   columns: GridColDef[];
@@ -20,8 +22,6 @@ export default function DataTable<T extends GridValidRowModel>({
   height = "auto",
   initialPageSize = 5,
   pageSizeOptions = [5, 10, 20, 30],
-  initialPageSize = 10,
-  pageSizeOptions = [5, 10],
   headerIcons,
   handleRowClick,
 }: DataTableProps<T>) {

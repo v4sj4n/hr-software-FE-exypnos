@@ -1,37 +1,17 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { RefObject, useContext, useRef, useState } from 'react'
-import { AxiosError } from 'axios'
-import { VacationContext } from '../../VacationContext'
-import AxiosInstance from '@/Helpers/Axios'
-import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-import Input from '@/Components/Input/Index'
 import Button from '@/Components/Button/Button'
-
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
-import {
-  CreateVacationFormFields,
-  createVacationSchema,
-} from '@/Schemas/Vacations/CreateVacation.schema'
+import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
-import { ErrorText } from '../ErrorText'
-
-// ICONS
+import Input from '@/Components/Input/Index'
+import AxiosInstance from '@/Helpers/Axios'
+import { CreateVacationFormFields, createVacationSchema } from '@/Schemas/Vacations/CreateVacation.schema'
+import { zodResolver } from '@hookform/resolvers/zod'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
+import { AxiosError } from 'axios'
+import { RefObject, useContext, useRef, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
-const vacationSchema = z.object({
-  type: z.enum(['vacation', 'sick', 'personal', 'maternity'], {
-    message: `Vacations should be one of 'vacation', 'sick', 'personal', 'maternity'`,
-  }),
-  description: z.string().optional(),
-  startDate: z.string(),
-  endDate: z.string(),
-  userId: z.string(),
-})
+import { VacationContext } from '../../VacationContext'
 
-type FormFields = z.infer<typeof vacationSchema>
-  
 export const CreateVacationForm = () => {
   const { setVacations, handleCloseModal } = useContext(VacationContext)
   const {
@@ -44,11 +24,6 @@ export const CreateVacationForm = () => {
   })
 
   const onSubmit: SubmitHandler<CreateVacationFormFields> = async (data) => {
-  } = useForm<FormFields>({
-    resolver: zodResolver(vacationSchema),
-  })
-
-  const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       const res = await AxiosInstance.post('/vacation', data)
       console.log('Vacation created successfully:', res.data)
@@ -103,17 +78,11 @@ export const CreateVacationForm = () => {
             <option value="" disabled selected>
               Select a vacation type
             </option>
-            {leaveOptions.map((option) => {
-              return (
-                <option value={option}>
-                  {option[0].toUpperCase() + option.slice(1)}
-                </option>
-              )
-            })}
-            <option value="vacation">Vacation</option>
-            <option value="sick">Sick</option>
-            <option value="personal">Personal</option>
-            <option value="maternity">Maternity</option>
+            {leaveOptions.map((option) => (
+              <option key={option} value={option}>
+                {option[0].toUpperCase() + option.slice(1)}
+              </option>
+            ))}
           </select>
           {errors.type && <ErrorText>{errors.type.message}</ErrorText>}
         </div>

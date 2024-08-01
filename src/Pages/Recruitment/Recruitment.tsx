@@ -10,6 +10,7 @@ import Card from "../../Components/Card/Card";
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { ModalComponent } from "@/Components/Modal/Modal";
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -26,7 +27,7 @@ const VisuallyHiddenInput = styled('input')({
 
 export default function Recruitment() {
 
-    const { handleChange, aplicantFormData, handleTechnologiesChange, handleFileChange, handleCreateAplicant } = useCreateAplicant();
+    const { handleChange, aplicantFormData, handleTechnologiesChange, handleFileChange, handleCreateAplicant, showModal, closeModal, resetForm } = useCreateAplicant();
 
     return (
         <div className={style.background}>
@@ -121,40 +122,34 @@ export default function Recruitment() {
                     <div style={{ display: "flex" }}>
                         <MuiSelect value={aplicantFormData.technologiesUsed} onChange={handleTechnologiesChange} name="technologiesUsed" />
                     </div>
-                    {/* <div style={{ display: "flex" }}>
-                    <Input
-                        label="Individual projects"
-                        name='individualProjects'
-                        IsUsername
-                        width="620px"
-                        onChange={handleChange}
-                        value={aplicantFormData.individualProjects}
-                    />
-                </div> */}
-
                     <div style={{ display: "flex" }}>
                         <Button
                             component="label"
                             variant="contained"
                             startIcon={<CloudUploadIcon />}
-                            style={{ width: "620px", backgroundColor: "#2469FF", color: "#FFFFFF", boxShadow: "none", fontFamily: "Outfit, sans-serif",  }}
+                            style={{ width: "620px", backgroundColor: "#2469FF", color: "#FFFFFF", boxShadow: "none", fontFamily: "Outfit, sans-serif", }}
                         >
                             Upload CV
                             <VisuallyHiddenInput
                                 type="file"
                                 onChange={handleFileChange}
                                 accept=".pdf,.doc,.docx"
+                                name="file"
                             />
                         </Button>
                     </div>
                     <div style={{ display: "flex", gap: "20px" }}>
-                        <Button1 type={ButtonTypes.SECONDARY} btnText="Reset" width="100%" />
+                        <Button1 type={ButtonTypes.SECONDARY} btnText="Reset" width="100%" onClick={resetForm} />
                         <Button1 type={ButtonTypes.TERTIARY} btnText="Apply" onClick={handleCreateAplicant} />
                     </div>
                 </Card>
             </div>
             <img alt="image" src={image} style={{ width: "600px", height: "auto", }} />
-            {/* <div style={{ backgroundColor: "#1B5FF4", width: "120px", height: "100%", zIndex: "-1", position: "absolute", top: 0, right: 0 }}></div> */}
+            {showModal && (
+                <ModalComponent open={showModal} handleClose={closeModal}>
+                    <div>Your email was sent successfully</div>
+                </ModalComponent>
+            )}
         </div>
 
 

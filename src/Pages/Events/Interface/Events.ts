@@ -4,4 +4,5 @@ export interface EventsData {
     description: string;
     date: string;
     time: string;
+    creatingTime: string;
 }

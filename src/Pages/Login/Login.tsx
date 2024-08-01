@@ -1,108 +1,123 @@
-import { Link } from 'react-router-dom'
-import Card from '../../Components/Card/Card'
-import Input from '../../Components/Input/Index'
-import Button from '../../Components/Button/Button'
-import { ButtonTypes } from '../../Components/Button/ButtonTypes'
-import img from '/Images/HeroImage.png'
-import logo from '/Images/image_1-removebg-preview.png'
-import { useLogin } from './Hook'
-import ClipLoader from 'react-spinners/ClipLoader'
-import style from './styles/Login.module.css'
+import { Link, useNavigate } from "react-router-dom";
+import Card from "../../Components/Card/Card";
+import Input from "../../Components/Input/Index";
+import Button from "../../Components/Button/Button";
+import { ButtonTypes } from "../../Components/Button/ButtonTypes";
+import img from "/Images/HeroImage.png";
+import logo from "/Images/image_1-removebg-preview.png";
+import { useLogin } from "./Hook";
+import style from "./styles/Login.module.css";
+import { LoginFormFields, loginSchema } from "@/Schemas/Login/Login.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import AxiosInstance from "@/Helpers/Axios";
+import { useAuth } from "@/Context/AuthProvider";
+import { AxiosError } from "axios";
+import { ErrorText } from "@/Components/Error/ErrorTextForm";
 
 const Login: React.FC = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const { showPassword, handleClickShowPassword } = useLogin();
   const {
-    isLoading,
-    showPassword,
-    emailInputHasError,
-    emailChangeHandler,
-    emailBlurHandler,
-    passwordInputHasError,
-    passwordChangeHandler,
-    passwordBlurHandler,
-    enteredPassword,
-    handleClickShowPassword,
-    handleMouseDownPassword,
+    register,
     handleSubmit,
-    enteredEmail,
-    formIsValid,
-    error,
-  } = useLogin()
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormFields>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit: SubmitHandler<LoginFormFields> = async (
+    data: LoginFormFields,
+  ) => {
+    try {
+      const res = await AxiosInstance.post("/auth/signin", data);
+      const user = res.data.data.user;
+      const role = user.role;
+      const access_token = res.data.data.access_token;
+      login(access_token, role, user);
+      navigate("/dashboard");
+    } catch (err: unknown) {
+      console.log(err);
+      if (err instanceof AxiosError) {
+        if (err?.response?.data?.message) {
+          setError("root", {
+            message: err?.response?.data?.message,
+          });
+          return;
+        }
+        if (err.code === "ERR_NETWORK") {
+          setError("root", {
+            message: "No internet connection. Please try again later.",
+          });
+          return;
+        }
+        setError("root", {
+          message: "An error occurred while logging in",
+        });
+      } else {
+        setError("root", {
+          message: "An error occurred while creating the asset",
+        });
+      }
+    }
+  };
 
   return (
     <div className={style.container}>
       <div className={style.content}>
         <img className={style.img} alt="img" src={img} />
-        <Link
-          style={{ textDecoration: 'none', color: '#FFFFFF', fontSize: '18px' }}
-          to="/"
-        >
+        <Link className={style.slogan} to="/">
           Code With Love
         </Link>
       </div>
       <Card padding="30px" gap="20px">
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div className={style.cardLogoStyle}>
           <img className={style.img2} alt="img" src={logo} />
         </div>
         <div className={style.title}>Login</div>
-        <Input
-          label="Email"
-          name="email"
-          value={enteredEmail}
-          IsUsername
-          width="350px"
-          onChange={emailChangeHandler}
-          onBlur={emailBlurHandler}
-          type="email"
-          error={emailInputHasError}
-          helperText={emailInputHasError ? "Email must include '@'" : ''}
-        />
-        <Input
-          label={'Password'}
-          id="outlined-adornment-password"
-          name="password"
-          value={enteredPassword}
-          onChange={passwordChangeHandler}
-          error={passwordInputHasError}
-          onBlur={passwordBlurHandler}
-          errortext="Password must be 8  and contain at least one number or one uppercase letter."
-          type={showPassword}
-          width="350px"
-          isPassword
-          onClick={handleClickShowPassword}
-          onMouseDown={handleMouseDownPassword}
-        />
-        <Button
-          type={formIsValid ? ButtonTypes.PRIMARY : ButtonTypes.DISABLED}
-          onClick={handleSubmit}
-          width="350px"
-          btnText={
-            isLoading ? (
-              <ClipLoader
-                color={'white'}
-                size={15}
-                aria-label="Loading Spinner"
-                data-testid="loader"
-              />
-            ) : (
-              'Login'
-            )
-          }
-        />
-        {error && <div className={style.error}> {error} </div>}
-        <Link
-          to="/forgot-password"
-          style={{
-            textAlign: 'center',
-            color: '#000000',
-            marginTop: '10px',
-            fontFamily: '"Outfit", sans-serif',
-          }}
-        >
+        <form className={style.formStyle} onSubmit={handleSubmit(onSubmit)}>
+          <div>
+            <Input
+              label="Email"
+              name="email"
+              register={register("email")}
+              IsUsername
+              width="350px"
+              type="email"
+            />
+            {errors.email && <ErrorText>{errors.email.message}</ErrorText>}
+          </div>
+          <div>
+            <Input
+              label={"Password"}
+              register={register("password")}
+              id="outlined-adornment-password"
+              name="password"
+              type={showPassword}
+              onClick={handleClickShowPassword}
+              width="350px"
+              isPassword
+            />
+            {errors.password && (
+              <ErrorText>{errors.password.message}</ErrorText>
+            )}
+          </div>
+          <Button
+            type={!isSubmitting ? ButtonTypes.PRIMARY : ButtonTypes.DISABLED}
+            isSubmit
+            btnText={!isSubmitting ? "Submit" : "Submitting..."}
+          />
+          {errors.root && <ErrorText>{errors.root.message}</ErrorText>}
+        </form>
+
+        <Link to="/forgot-password" className={style.forgotPassword}>
           Forgot your password?
         </Link>
       </Card>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

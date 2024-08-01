@@ -5,36 +5,44 @@ import {
   Dispatch,
   SetStateAction,
   FC,
-} from 'react'
-import { Asset } from './TAsset'
+} from "react";
+import { Asset, UserWithAsset } from "./TAsset";
 
 interface AssetContextType {
-  assets: Asset[]
-  setAssets: Dispatch<SetStateAction<Asset[]>>
-  modalOpen: boolean
-  handleCloseModal: () => void
-  handleOpenModal: () => void
+  usersWithAssets: UserWithAsset[];
+  setUsersWithAssets: Dispatch<SetStateAction<UserWithAsset[]>>;
+  assets: Asset[];
+  setAssets: Dispatch<SetStateAction<Asset[]>>;
+  modalOpen: boolean;
+  handleCloseModal: () => void;
+  handleOpenModal: () => void;
 }
 
 const defaultContextValue: AssetContextType = {
   assets: [],
   setAssets: () => {},
+  usersWithAssets: [],
+  setUsersWithAssets: () => {},
   modalOpen: false,
   handleCloseModal: () => {},
   handleOpenModal: () => {},
-}
+};
 
-export const AssetsContext = createContext<AssetContextType>(defaultContextValue)
+export const AssetsContext =
+  createContext<AssetContextType>(defaultContextValue);
 
 const AssetProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [assets, setAssets] = useState<Asset[]>([])
-  const [modalOpen, setModalOpen] = useState<boolean>(false)
-  const handleCloseModal = () => setModalOpen(false)
-  const handleOpenModal = () => setModalOpen(true)
+  const [assets, setAssets] = useState<Asset[]>([]);
+  const [usersWithAssets, setUsersWithAssets] = useState<UserWithAsset[]>([]);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const handleCloseModal = () => setModalOpen(false);
+  const handleOpenModal = () => setModalOpen(true);
 
   return (
     <AssetsContext.Provider
       value={{
+        usersWithAssets,
+        setUsersWithAssets,
         assets,
         setAssets,
         modalOpen,
@@ -44,7 +52,7 @@ const AssetProvider: FC<{ children: ReactNode }> = ({ children }) => {
     >
       {children}
     </AssetsContext.Provider>
-  )
-}
+  );
+};
 
-export default AssetProvider
+export default AssetProvider;

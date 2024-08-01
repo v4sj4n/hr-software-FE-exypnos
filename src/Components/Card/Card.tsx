@@ -8,15 +8,14 @@ interface CardProps {
   gap?: string;
   className?: string;
   height?: string;
+
   flex?: string;
   style?: React.CSSProperties; 
   width?: string;  
   border?: string;  
   backgroundColor?: string; 
-  position?: CSSProperties['position'];
-  alignSelf?: CSSProperties['alignSelf'];  
-  flex? :string;
-  width?: string;
+  position?: CSSProperties['position'] | undefined;
+  alignSelf?: string;
 }
 
 const Card: React.FC<CardProps> = ({ 
@@ -32,7 +31,8 @@ const Card: React.FC<CardProps> = ({
   border,
   backgroundColor,
   position,
-  alignSelf
+  alignSelf,
+ 
 }) => {
   const cardStyle: CSSProperties = {
     ...style,  
