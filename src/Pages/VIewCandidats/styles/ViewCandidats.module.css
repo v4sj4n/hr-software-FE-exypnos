@@ -72,3 +72,8 @@ a {
     border-radius: 60px;
   }
 
+.title{
+    font-weight: bold;
+    color: #333;
+    font-size: 18px;
+}

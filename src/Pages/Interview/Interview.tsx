@@ -130,13 +130,6 @@ export default function InterviewKanban() {
     setSelectedInterview(interview);
     setIsModalOpen(true);
     setIsReschedule(isReschedule);
-    const allPhasesPassed = interview.phase === 'Second Interview';
-    setAllPhasesPassed(allPhasesPassed);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedInterview(null);
   };
 
   const handleReschedule = (date: string, time: string, notes: string) => {
