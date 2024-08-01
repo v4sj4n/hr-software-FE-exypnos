@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import AxiosInstance from "../../../Helpers/Axios";
 import { useParams } from "react-router-dom";
 import { CandidateView, ModalAction } from "../interfaces/ViewCandidate";
@@ -8,21 +8,52 @@ export const useApplicantById = () => {
     const [showModal, setShowModal] = useState(false);
     const [modalAction, setModalAction] = useState<ModalAction | ''>('');
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-    
+    const [interviewDate, setInterviewDate] = useState('');
+    const [message, setMessage] = useState('');
 
-    const handleAccept = () => {
-      if (modalAction === 'accept') {
-        setShowConfirmationModal(true);
-      }
-      setShowModal(false);
+    const { id } = useParams<{ id: string }>();
+
+    const fetchApplicant = useCallback(async () => {
+        try {
+            const response = await AxiosInstance.get<CandidateView>(`/applicant/${id}`);
+            setApplicant(response.data);
+            console.log('Applicant fetched:', response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            setApplicant(null);
+        }
+    }, [id]);
+
+    useEffect(() => {
+        fetchApplicant();
+    }, [fetchApplicant]);
+
+    const handleConfirm = () => {
+        if (modalAction === 'accept') {
+            setShowConfirmationModal(true);
+        } else if (modalAction === 'reject') {
+            handleReject();
+        }
+        setShowModal(false);
     };
 
-    const handleCloseModal = async () => {
-      setShowModal(false)
+    const handleReject = async () => {
+        try {
+            await AxiosInstance.patch(`/applicant/${id}`, {
+                status: 'rejected'
+            });
+            fetchApplicant();
+        } catch (error) {
+            console.error('Error rejecting applicant:', error);
+        }
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
     }
 
     const handleCloseConfirmationModal = () => {
-      setShowConfirmationModal(false);
+        setShowConfirmationModal(false);
     };
 
     const handleOpenModal = (action: ModalAction) => {
@@ -30,19 +61,35 @@ export const useApplicantById = () => {
         setShowModal(true);
     }
 
-    const { id } = useParams<{ id: string }>();
+    const handleSend = async () => {
+        if (!applicant) return;
 
-    useEffect(() => {
-        AxiosInstance.get<CandidateView>(`/applicants/${id}`)
-          .then(response => {
-            setApplicant(response.data);
-            console.log('Applicant fetched:', response.data);
-          })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-            setApplicant(null);
-          })
-    }, [id]);
+        try {
+            await AxiosInstance.patch(`/applicant/${id}`, {
+                status: 'accepted',
+                interviewDate: interviewDate,
+                message: message
+            });
+            fetchApplicant();
+            setShowConfirmationModal(false);
+        } catch (error) {
+            console.error('Error updating applicant:', error);
+        }
+    };
 
-    return { applicant,  showModal, handleCloseModal, handleOpenModal, modalAction, handleCloseConfirmationModal, showConfirmationModal, handleAccept };
+    return { 
+        applicant,  
+        showModal, 
+        handleCloseModal, 
+        handleOpenModal, 
+        modalAction, 
+        handleCloseConfirmationModal, 
+        showConfirmationModal, 
+        handleConfirm,
+        interviewDate,
+        setInterviewDate,
+        message,
+        setMessage,
+        handleSend
+    };
 }

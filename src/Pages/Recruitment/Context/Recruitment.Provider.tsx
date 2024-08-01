@@ -6,6 +6,7 @@ export const useCreateAplicant = () => {
     const handleFileIconClick = () => {
         fileInputRef.current?.click();
     };
+    const [showModal, setShowModal] = useState<boolean>(false);
     const [aplicantFormData, setAplicantFormData] = useState({
         firstName: "",
         lastName: "",
@@ -17,8 +18,7 @@ export const useCreateAplicant = () => {
         positionApplied: '',
         technologiesUsed: [] as string[],
         salaryExpectations: '',
-        cvAttachment: null as File | null, 
-        status: 'pending',
+        file: null as File | null, 
     });
 
     const [error, setError] = useState<string | null>(null);
@@ -33,52 +33,67 @@ export const useCreateAplicant = () => {
     };
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        // console.log("File uploaded:", event.target.files[0]);
         if (event.target.files && event.target.files[0]) {
-            setAplicantFormData({...aplicantFormData, cvAttachment: event.target.files[0]});
+            setAplicantFormData({...aplicantFormData, file: event.target.files[0]});
+        }
+    };
+
+    const resetForm = () => {
+        setAplicantFormData({
+            firstName: "",
+            lastName: "",
+            email: "",
+            phoneNumber: "",
+            experience: "",
+            applicationMethod: "",
+            age: '',
+            positionApplied: '',
+            technologiesUsed: [],
+            salaryExpectations: '',
+            file: null,
+        });
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
         }
     };
 
     const handleCreateAplicant = async (event: React.FormEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-        
+        event.preventDefault(); 
+        console.log("Creating new applicant with data:", aplicantFormData);
         const formData = new FormData();
         Object.keys(aplicantFormData).forEach(key => {
-            if (key === 'file' && aplicantFormData.cvAttachment) {
-                formData.append('file', aplicantFormData.cvAttachment);
+            if (key === 'file' && aplicantFormData.file) {
+                formData.append('file', aplicantFormData.file);
+                console.log('Appending file:', aplicantFormData.file);
             } else if (key === 'technologiesUsed') {
                 formData.append('technologiesUsed', JSON.stringify(aplicantFormData.technologiesUsed));
             } else {
                 formData.append(key, aplicantFormData[key as keyof typeof aplicantFormData] as string);
             }
         });
-
         setIsLoading(true);
         setError(null);
-
         try {
-            const response = await AxiosInstance.post("/applicants", formData )
-            console.log("Applicant created successfully!", response.data);
-
-            setAplicantFormData({
-                firstName: "",
-                lastName: "",
-                email: "",
-                phoneNumber: "",
-                experience: "",
-                applicationMethod: "",
-                age: '',
-                positionApplied: '',
-                technologiesUsed: [],
-                salaryExpectations: '',
-                cvAttachment: null,
-                status: 'pending',
+            const response = await AxiosInstance.post("/applicant", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             });
+            console.log("Applicant created successfully!", response.data);
+            resetForm();
+            setShowModal(true);
         } catch (error) {
             console.error("Error creating applicant:", error);
             setError('Failed to create applicant');
         } finally {
             setIsLoading(false);
         }
+    };
+
+
+    const closeModal = () => {
+        setShowModal(false);
     };
 
     return {
@@ -90,6 +105,9 @@ export const useCreateAplicant = () => {
         error,
         isLoading,
         fileInputRef,
-        handleFileIconClick 
+        handleFileIconClick,
+        showModal,
+        closeModal ,
+        resetForm
     };
 };

@@ -7,7 +7,21 @@ import { ModalComponent } from '../../Components/Modal/Modal';
 import Input from '@/Components/Input/Index';
 export default function ViewCandidats() {
 
-    const { applicant, showModal, handleCloseModal, handleOpenModal, handleAccept, modalAction, showConfirmationModal, handleCloseConfirmationModal } = useApplicantById()
+    const {      
+        applicant, 
+        showModal, 
+        handleCloseModal, 
+        handleOpenModal, 
+        handleConfirm, 
+        modalAction, 
+        showConfirmationModal, 
+        interviewDate,
+        setInterviewDate,
+        message,
+        setMessage,
+        handleSend, 
+        handleCloseConfirmationModal  
+    } = useApplicantById()
 
     return (
         <div className={style.container}>
@@ -127,7 +141,7 @@ export default function ViewCandidats() {
                                 type={ButtonTypes.PRIMARY}
                                 btnText='Confirm'
                                 width='100%'
-                                onClick={() => { handleAccept() }}
+                                onClick={handleConfirm}
                             />
                             <Button
                                 type={ButtonTypes.SECONDARY}
@@ -139,21 +153,35 @@ export default function ViewCandidats() {
                     </div>
                 </ModalComponent>
             )}
+
             {showConfirmationModal && (
                 <ModalComponent open={showConfirmationModal} handleClose={handleCloseConfirmationModal}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: "20px" }}>
                         <div className={style.title}>Notify Applicant.</div>
-                        {/* <Input IsUsername type="datetime-local" name='date' label='Date'/> */}
-                        <Input IsUsername type="date" name='date' label='Date' />
-                        <Input IsUsername type="time" name='time' label='Date' />
-                        <Input IsUsername type="textarea" name='message' label='Message' multiline rows={3} />
+                        <Input 
+                            IsUsername 
+                            type="datetime-local" 
+                            name='interviewDate' 
+                            label='Date'
+                            value={interviewDate}
+                            onChange={(e) => setInterviewDate(e.target.value)}
+                        />
+                        <Input 
+                            IsUsername 
+                            type="textarea" 
+                            name='message' 
+                            label='Message' 
+                            multiline 
+                            rows={3} 
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                        />
                         <div style={{ display: 'flex', gap: "10px", marginTop: "20px" }}>
-
                             <Button
                                 type={ButtonTypes.PRIMARY}
                                 btnText='Send'
                                 width='100%'
-
+                                onClick={handleSend}
                             />
                             <Button
                                 type={ButtonTypes.SECONDARY}
@@ -163,7 +191,6 @@ export default function ViewCandidats() {
                             />
                         </div>
                     </div>
-
                 </ModalComponent>
             )}
         </div>
