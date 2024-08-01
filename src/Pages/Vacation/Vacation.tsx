@@ -1,27 +1,27 @@
-import Button from '../../Components/Button/Button'
-import style from './style/vacation.module.css'
-import { ButtonTypes } from '../../Components/Button/ButtonTypes'
 import { useContext } from 'react'
-import { VacationContext } from './VacationContext'
-import VacationsTable from './Component/VacationsTable'
+
+import Button from '../../Components/Button/Button'
+import { ButtonTypes } from '../../Components/Button/ButtonTypes'
 import { ModalComponent } from '../../Components/Modal/Modal'
 import { CreateVacationForm } from './Component/Form/CreateVacationForm'
+import VacationsTable from './Component/VacationsTable'
+import style from './style/vacation.module.css'
+import { VacationContext } from './VacationContext'
 
-
-// TODO ( NOT FINISHED)
 export default function Vacation() {
   const { handleOpenModal, modalOpen, handleCloseModal } =
     useContext(VacationContext)
+
   return (
     <main
-    className={style.mainPage}
-    style={{
-      width: '100%',
-      backgroundColor: 'f5f8fc',
-    }}
-  >
+      className={style.mainPage}
+      style={{
+        width: '100%',
+        backgroundColor: 'f5f8fc',
+      }}
+    >
       <div className={style.titleHeading}>
-        <div className={style.title}>Vacations</div>
+        <h1 className={style.title}>Vacations</h1>
         <Button
           type={ButtonTypes.PRIMARY}
           btnText="Create Vacation"

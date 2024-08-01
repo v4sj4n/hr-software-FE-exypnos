@@ -6,16 +6,13 @@ export interface InterviewData {
     auth: {
         email: string;
     };
-    lastName: string;
+    fullName: string;
     phone: string;
     position: string;
-    firstName: string;
     cvAttachment: string;
     _id: number;
     date: string;
-    notes: string;
     time: string;
-
 }
 
 export const useGetAllInterviews = () => {

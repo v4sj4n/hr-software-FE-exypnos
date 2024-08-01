@@ -1,20 +1,16 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { RefObject, useContext, useRef, useState } from 'react'
-import { AxiosError } from 'axios'
-import { VacationContext } from '../../VacationContext'
-import AxiosInstance from '@/Helpers/Axios'
-import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-import Input from '@/Components/Input/Index'
 import Button from '@/Components/Button/Button'
-
-// ICONS
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
-import {
-  CreateVacationFormFields,
-  createVacationSchema,
-} from '@/Schemas/Vacations/CreateVacation.schema'
+import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
+import Input from '@/Components/Input/Index'
+import AxiosInstance from '@/Helpers/Axios'
+import { CreateVacationFormFields, createVacationSchema } from '@/Schemas/Vacations/CreateVacation.schema'
+import { zodResolver } from '@hookform/resolvers/zod'
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
+import { AxiosError } from 'axios'
+import { RefObject, useContext, useRef, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+
+import { VacationContext } from '../../VacationContext'
 
 export const CreateVacationForm = () => {
   const { setVacations, handleCloseModal } = useContext(VacationContext)
@@ -82,13 +78,11 @@ export const CreateVacationForm = () => {
             <option value="" disabled selected>
               Select a vacation type
             </option>
-            {leaveOptions.map((option) => {
-              return (
-                <option value={option}>
-                  {option[0].toUpperCase() + option.slice(1)}
-                </option>
-              )
-            })}
+            {leaveOptions.map((option) => (
+              <option key={option} value={option}>
+                {option[0].toUpperCase() + option.slice(1)}
+              </option>
+            ))}
           </select>
           {errors.type && <ErrorText>{errors.type.message}</ErrorText>}
         </div>
