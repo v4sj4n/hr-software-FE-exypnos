@@ -123,6 +123,13 @@ export default function InterviewKanban() {
     return interviews.filter(interview => interview.phase === phase);
   };
 
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedInterview(null);
+  };
+
+
   const handleOpenModal = (
     interview: Interview,
     isReschedule: boolean = false,
