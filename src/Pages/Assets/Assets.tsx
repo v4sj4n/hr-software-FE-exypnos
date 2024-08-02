@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { AssetsTable } from "./Component/AssetsTable";
 import { AssetsContext } from "./AssetsContext";
 import { CreateAssetForm } from "./Component/Form/CreateAssetForm";
 import style from "./style/assets.module.css";
@@ -8,6 +7,7 @@ import Button from "@/Components/Button/Button";
 import { ModalComponent } from "@/Components/Modal/Modal";
 import { EmployeesWithAssets } from "./Component/EmployeesWithAssets";
 import AssetProvider from "./AssetsContext.tsx";
+import AssetsTable from "./Component/AssetsTable.tsx";
 
 function AssetsComponent() {
   const { modalOpen, handleOpenModal, handleCloseModal } =
