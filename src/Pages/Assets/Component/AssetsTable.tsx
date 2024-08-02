@@ -1,11 +1,11 @@
 import { CircularProgress } from "@mui/material";
 import { Asset } from "../TAsset";
-import { useAllAssets as useData } from "../Hook";
-import { useContext } from "react";
+
+import { useContext, useState } from "react";
 import { AssetsContext } from "../AssetsContext";
 import { GridRenderCellParams } from "@mui/x-data-grid";
+import style from "../style/assetsTable.module.css";
 import DataTable from "@/Components/Table/Table";
-import { tableUserPresenceFormatter } from "@/Helpers/tableUserPresenceFormatter";
 
 // Icons
 import { Laptop, Monitor } from "@mui/icons-material";
@@ -14,10 +14,25 @@ import TypeSpecimenIcon from "@mui/icons-material/TypeSpecimen";
 import PersonIcon from "@mui/icons-material/Person";
 import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import CircleIcon from "@mui/icons-material/Circle";
+import { SingleAsset } from "./SingleAsset";
+import { useAllAssets } from "../Hook";
 
-export const AssetsTable = () => {
-  const { error, loading } = useData();
+export default function AssetsTable() {
+  const { error, loading } = useAllAssets();
   const { assets } = useContext(AssetsContext);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [selectedAssetId, setSelectedAssetId] = useState<string | null>(null);
+
+  const handleOpenModal = (assetId: string) => {
+    setSelectedAssetId(assetId);
+    setIsUpdateModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsUpdateModalOpen(false);
+    setSelectedAssetId(null);
+  };
+
   if (error) return <div>Error: {error}</div>;
   if (loading) return <CircularProgress />;
 
@@ -72,10 +87,39 @@ export const AssetsTable = () => {
       field: "fullName",
       headerName: "Full Name",
       flex: 1,
-      renderCell: (param: GridRenderCellParams) =>
-        tableUserPresenceFormatter(param.value),
+      renderCell: (param: GridRenderCellParams) => {
+        return (
+          <div className={style.divStyle}>
+            {param.value === null ? (
+              <span className={style.spanStyleNA}>N/A</span>
+            ) : (
+              <span className={style.spanStyleA}>
+                {param.value.firstName} {param.value.lastName}
+              </span>
+            )}
+          </div>
+        );
+      },
     },
-    { field: "serialNumber", headerName: "Serial Number", width: 200 },
+    {
+      field: "serialNumber",
+      headerName: "Serial Number",
+      flex: 1,
+
+      renderCell: (param: GridRenderCellParams) => {
+        return (
+          <button
+            onClick={() => handleOpenModal(param.value)}
+            style={{
+              border: "none",
+              backgroundColor: "transparent",
+            }}
+          >
+            {param.value}
+          </button>
+        );
+      },
+    },
   ];
 
   const getRowId = (row: { id: number | string }) => row.id;
@@ -90,13 +134,20 @@ export const AssetsTable = () => {
 
   // console.log(assets)
   return (
-    <DataTable
-      height={"62.75vh"}
-      rows={rows}
-      columns={columns}
-      getRowId={getRowId}
-      headerIcons={headerIcons}
-      pageSizeOptions={[5, 10, 20, 50]}
-    />
+    <>
+      <DataTable
+        rows={rows}
+        columns={columns}
+        getRowId={getRowId}
+        headerIcons={headerIcons}
+      />
+      {selectedAssetId && (
+        <SingleAsset
+          handleClose={handleCloseModal}
+          open={isUpdateModalOpen}
+          assetId={selectedAssetId}
+        />
+      )}
+    </>
   );
-};
+}

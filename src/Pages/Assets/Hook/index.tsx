@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { Asset, UserWithAsset } from "../TAsset";
 import { AssetsContext } from "../AssetsContext";
 import { useFetch } from "@/Hooks/useFetch";
+import { User } from "@/Context/AuthProvider";
 
 export const useAllAssets = () => {
   const { data, error, loading } = useFetch<Asset[]>("/asset", 10);
@@ -30,6 +31,26 @@ export const useGetUsersWithAssets = () => {
   }, [data, setUsersWithAssets]);
 
   return {
+    error,
+    loading,
+  };
+};
+
+export const useOneAsset = <T,>(serial: string) => {
+  const { data, error, loading } = useFetch<T>(`/asset/serial/${serial}`);
+
+  return {
+    data,
+    error,
+    loading,
+  };
+};
+
+export const useGetUsers = () => {
+  const { data, error, loading } = useFetch<User[]>("/user", 30);
+
+  return {
+    data,
     error,
     loading,
   };
