@@ -53,8 +53,13 @@
 }.cardYellow {
   background-image: linear-gradient(210deg, #D8B4F2, #B68CE6);
 }.cardPurple {
-  background-image: linear-gradient(180deg, #A8C4F2, #7FA1E6);
+  background-image: linear-gradient(180deg, #A8C4F2, #ece4f1);
 }
+
+
+
+
+
 .middleRow {
   display: flex;
   gap: 20px;
