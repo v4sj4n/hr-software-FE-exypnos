@@ -37,7 +37,7 @@ export const useGetUsersWithAssets = () => {
 };
 
 export const useOneAsset = <T,>(serial: string) => {
-  const { data, error, loading } = useFetch<T>(`/asset/serial/${serial}`);
+  const { data, error, loading } = useFetch<T>(`/asset/sn/${serial}`);
 
   return {
     data,

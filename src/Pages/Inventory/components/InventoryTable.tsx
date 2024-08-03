@@ -1,42 +1,31 @@
 import { CircularProgress } from "@mui/material";
-import { Asset } from "../TAsset";
 
-import { useContext, useState } from "react";
-import { AssetsContext } from "../AssetsContext";
+import { useContext } from "react";
+import { InventoryContext } from "./InventoryContext";
 import { GridRenderCellParams } from "@mui/x-data-grid";
-import style from "../style/assetsTable.module.css";
+import style from "../style/inventoryTable.module.scss";
 import DataTable from "@/Components/Table/Table";
 
 // Icons
 import { Laptop, Monitor } from "@mui/icons-material";
-import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
-import TypeSpecimenIcon from "@mui/icons-material/TypeSpecimen";
-import PersonIcon from "@mui/icons-material/Person";
-import FingerprintIcon from "@mui/icons-material/Fingerprint";
-import CircleIcon from "@mui/icons-material/Circle";
-import { SingleAsset } from "./SingleAsset";
-import { useAllAssets } from "../Hook/index";
+import { useAllAssets } from "../hook";
+import { SingleInventoryItem } from "./SingleInventoryItem";
+import { InventoryItem } from "../InventoryType";
 
-export default function AssetsTable() {
+export const InventoryTable = () => {
   const { error, loading } = useAllAssets();
-  const { assets } = useContext(AssetsContext);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  const [selectedAssetId, setSelectedAssetId] = useState<string | null>(null);
 
-  const handleOpenModal = (assetId: string) => {
-    setSelectedAssetId(assetId);
-    setIsUpdateModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsUpdateModalOpen(false);
-    setSelectedAssetId(null);
-  };
+  const {
+    assets,
+    handleOpenViewAssetModalOpen,
+    setSingleAssetID,
+    singleAssetID,
+  } = useContext(InventoryContext);
 
   if (error) return <div>Error: {error}</div>;
   if (loading) return <CircularProgress />;
 
-  const rows = assets!.map((asset: Asset, index: number) => ({
+  const rows = assets!.map((asset: InventoryItem, index: number) => ({
     id: index + 1,
     type: asset.type[0].toUpperCase() + asset.type.slice(1),
     status: asset.status,
@@ -71,12 +60,12 @@ export default function AssetsTable() {
       flex: 1,
       renderCell: (param: GridRenderCellParams) => (
         <span
-          style={
-            param.value === "assigned"
-              ? { color: "#d32f2f" }
-              : param.value === "available"
-                ? { color: "#02A700" }
-                : { color: "gray" }
+          className={
+            param.value === "available"
+              ? style.available
+              : param.value === "assigned"
+                ? style.assigned
+                : style.notAvailable
           }
         >
           {param.value}
@@ -109,7 +98,10 @@ export default function AssetsTable() {
       renderCell: (param: GridRenderCellParams) => {
         return (
           <button
-            onClick={() => handleOpenModal(param.value)}
+            onClick={() => {
+              handleOpenViewAssetModalOpen(true);
+              setSingleAssetID(param.value);
+            }}
             style={{
               border: "none",
               backgroundColor: "transparent",
@@ -124,24 +116,11 @@ export default function AssetsTable() {
 
   const getRowId = (row: { id: number | string }) => row.id;
 
-  const headerIcons = {
-    id: FormatListNumberedIcon,
-    type: TypeSpecimenIcon,
-    fullName: PersonIcon,
-    status: CircleIcon,
-    serialNumber: FingerprintIcon,
-  };
-
-  // console.log(assets)
+  console.log(assets);
   return (
     <>
-      <DataTable
-        rows={rows}
-        columns={columns}
-        getRowId={getRowId}
-        headerIcons={headerIcons}
-      />
-      {selectedAssetId && <SingleAsset />}
+      <DataTable rows={rows} columns={columns} getRowId={getRowId} />
+      {singleAssetID && <SingleInventoryItem />}
     </>
   );
-}
+};

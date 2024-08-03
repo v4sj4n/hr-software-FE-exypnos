@@ -1,0 +1,23 @@
+.titleContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    h3 {
+        color: #333;
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 0;
+    }
+
+    p {
+        display: flex;
+        gap: 0.25rem;
+        font-size: 1.25rem;
+        font-family: monospace;
+        margin-bottom: 0;
+        justify-items: center;
+        align-items: center;
+    }
+}
