@@ -20,7 +20,7 @@
 
     &::before {
         content: attr(data-tooltip);
-        background-color: rgba(32, 32, 32, 0.8);
+        background-color: #1f1f1fbe;
         color: #fff;
         padding: 0.25rem 0.75rem;
         border-radius: 999px;

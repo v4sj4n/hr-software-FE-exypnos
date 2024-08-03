@@ -15,20 +15,20 @@ import { debounce } from "lodash";
 function AssetsComponent() {
   const { setSearchParams } = useContext(AssetsContext);
 
-  const handleChange = (e: React.ChangeEvent<HTMLElement>) => {
-    setSearchParams((prev) => {
-      const value = e.target.value;
-      const newParams = new URLSearchParams(prev);
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setSearchParams((prev) => {
+    const value = e.target.value;
+    const newParams = new URLSearchParams(prev);
 
-      if (value === "all") {
-        newParams.delete("users");
-      } else {
-        newParams.set("users", value);
-      }
+    if (value === "all") {
+      newParams.delete("users");
+    } else {
+      newParams.set("users", value);
+    }
 
-      return newParams;
-    });
-  };
+    return newParams;
+  });
+};
 
   const debouncedSetSearchParams = debounce((value: string) => {
     setSearchParams((prev) => {
@@ -76,7 +76,7 @@ function AssetsComponent() {
             sx={{ gap: 1, mb: 2, flexWrap: "wrap", flexDirection: "row" }}
             onChange={handleChange}
           >
-            {userFilterChoices.map((usersFilter, index) => (
+            {userFilterChoices.map((usersFilter) => (
               <Sheet
                 key={usersFilter}
                 sx={{
