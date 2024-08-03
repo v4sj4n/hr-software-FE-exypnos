@@ -14,7 +14,7 @@ export const SingleInventoryItem = () => {
     singleAssetID,
   } = useContext(InventoryContext);
   const { data, error, loading } = useOneAsset<InventoryItem>(singleAssetID!);
-
+  console.log(data);
   return (
     <ModalComponent handleClose={handleClose} open={open}>
       {error ? (
@@ -25,12 +25,14 @@ export const SingleInventoryItem = () => {
         <>
           <div className={style.titleContainer}>
             <h3>{data?.type && TitleCaser(data?.type)}</h3>
-            <p className={style.sn}>
-              {data?.serialNumber}
-              <QrCodeIcon />
-            </p>
+            <div>
+              <p className={style.sn}>
+                {data?.serialNumber}
+                <QrCodeIcon />
+              </p>
+              {data && renderStatus(data.status, data.userId)}
+            </div>
           </div>
-          {data && renderStatus(data.status, data.userId)}
         </>
       )}
     </ModalComponent>
@@ -42,27 +44,22 @@ const renderStatus = (
   user: { firstName: string; lastName: string } | null = null,
 ) => {
   return (
-    <span
-      style={{
-        marginTop: 0,
-        marginBottom: 0,
-      }}
-    >
-      {user && (
-        <strong>
-          {user.firstName} {user.lastName}
-          {" -"}
-        </strong>
-      )}{" "}
+    <span>
       <span
         style={{
           color: status === "assigned" ? "rgb(211, 47, 47)" : "rgb(2, 167, 0)",
-          marginTop: "0.25rem",
-          marginBottom: "1rem",
         }}
       >
         {status}
       </span>
+      {user && (
+        <>
+          <span>to</span>
+          <strong>
+            {user.firstName} {user.lastName}
+          </strong>
+        </>
+      )}
     </span>
   );
 };

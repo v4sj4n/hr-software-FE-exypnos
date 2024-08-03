@@ -6,6 +6,12 @@ export type InventoryItem = {
   serialNumber: string;
 };
 
+export type ItemHistory = {
+  takenDate: null | Date | string;
+  returnedDate: null | Date | string;
+  userId: { _id: string; firstName: string; lastName: string };
+};
+
 export type UserWithInventoryItem = {
   _id: string;
   firstName: string;

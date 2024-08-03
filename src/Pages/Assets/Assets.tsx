@@ -1,36 +1,37 @@
-import { useContext } from "react";
-import { AssetsContext } from "./AssetsContext";
-import { CreateAssetForm } from "./Component/Form/CreateAssetForm";
-import style from "./style/assets.module.css";
-import { ButtonTypes } from "@/Components/Button/ButtonTypes";
-import Button from "@/Components/Button/Button";
-import { ModalComponent } from "@/Components/Modal/Modal";
+import style from "./style/assets.module.scss";
 import { EmployeesWithAssets } from "./Component/EmployeesWithAssets";
 import AssetProvider from "./AssetsContext.tsx";
-import AssetsTable from "./Component/AssetsTable.tsx";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { useState } from "react";
+import Input from "@/Components/Input/Index.tsx";
 
 function AssetsComponent() {
-  const { modalOpen, handleOpenModal, handleCloseModal } =
-    useContext(AssetsContext);
+  const [alignment, setAlignment] = useState("web");
+
+  const handleChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newAlignment: string,
+  ) => {
+    setAlignment(newAlignment);
+  };
   return (
     <>
       <div className={style.titleHeading}>
         <div className={style.title}>Employees with Assets</div>
+        <Input IsUsername label="Search" name="search" />
+        <ToggleButtonGroup
+          color="primary"
+          value={alignment}
+          exclusive
+          onChange={handleChange}
+          aria-label="Platform"
+        >
+          <ToggleButton value="All">ALL</ToggleButton>
+          <ToggleButton value="android">W Assets</ToggleButton>
+          <ToggleButton value="ios">W/O Assets</ToggleButton>
+        </ToggleButtonGroup>
       </div>
       <EmployeesWithAssets />
-      <div className={style.titleHeading}>
-        <div className={style.title}>Assets</div>
-        <Button
-          type={ButtonTypes.PRIMARY}
-          btnText="Create Asset"
-          onClick={handleOpenModal}
-          width="12rem"
-        />
-      </div>
-      <ModalComponent open={modalOpen} handleClose={handleCloseModal}>
-        <CreateAssetForm />
-      </ModalComponent>
-      <AssetsTable />
     </>
   );
 }
