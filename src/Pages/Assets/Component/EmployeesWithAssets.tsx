@@ -7,8 +7,9 @@ import Card from "@/Components/Card/Card";
 import style from "../style/employeesWithAssets.module.scss";
 
 export const EmployeesWithAssets = () => {
-  const { error, loading } = useData();
-  const { usersWithAssets } = useContext(AssetsContext);
+  const { usersWithAssets, searchParams } = useContext(AssetsContext);
+
+  const { error, loading } = useData(searchParams);
 
   if (error) return <div>Error: {error}</div>;
   if (loading) return <CircularProgress />;
@@ -24,56 +25,5 @@ export const EmployeesWithAssets = () => {
       </div>
     </Card>
   ));
-  return (
-    <div className={style.mainContainer}>
-      {[
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-        ...users,
-      ]}
-    </div>
-  );
+  return <div className={style.mainContainer}>{users}</div>;
 };

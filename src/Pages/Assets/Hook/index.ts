@@ -20,8 +20,14 @@ export const useAllAssets = () => {
   };
 };
 
-export const useGetUsersWithAssets = () => {
-  const { data, error, loading } = useFetch<UserWithAsset[]>("/asset/user", 30);
+export const useGetUsersWithAssets = (searchParams: URLSearchParams) => {
+  const users = searchParams.get("users") || "all";
+  const search = searchParams.get("search") || "";
+
+  const { data, error, loading } = useFetch<UserWithAsset[]>(
+    `/asset/user?users=${users}&search=${search}`,
+    30,
+  );
   const { setUsersWithAssets } = useContext(AssetsContext);
 
   useEffect(() => {
@@ -36,7 +42,7 @@ export const useGetUsersWithAssets = () => {
   };
 };
 
-export const useOneAsset = <T,>(serial: string) => {
+export const useOneAsset = <T>(serial: string) => {
   const { data, error, loading } = useFetch<T>(`/asset/sn/${serial}`);
 
   return {
