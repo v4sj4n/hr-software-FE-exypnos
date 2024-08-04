@@ -107,7 +107,7 @@ const Login: React.FC = () => {
           <Button
             type={!isSubmitting ? ButtonTypes.PRIMARY : ButtonTypes.DISABLED}
             isSubmit
-            btnText={!isSubmitting ? "Submit" : "Submitting..."}
+            btnText={!isSubmitting ? "Login" : "Logging in..."}
           />
           {errors.root && <ErrorText>{errors.root.message}</ErrorText>}
         </form>
