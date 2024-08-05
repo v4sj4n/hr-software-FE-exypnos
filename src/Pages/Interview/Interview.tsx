@@ -1,105 +1,48 @@
 import CheckIcon from '@mui/icons-material/Check';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import EditIcon from '@mui/icons-material/Edit';
-import  { useState } from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';import EditIcon from '@mui/icons-material/Edit';
+import { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
-// import HistoryIcon from '@mui/icons-material/History';
 import { useNavigate } from 'react-router-dom';
-
+import { Tooltip } from '@mui/material';
 import Button from '../../Components/Button/Button';
 import { ButtonTypes } from '../../Components/Button/ButtonTypes';
-import RescheduleModal from './component/ScheduleForm';
+import RescheduleModal from './Component/ScheduleForm';
+import { applicantsData, useGetAllInterviews } from './Hook';
 import style from './styles/Interview.module.css';
 
-interface Interview {
+interface Interview extends applicantsData {
   fullName: string;
   auth: { email: string };
-  phone: string;
-  position: string;
-  date: string;
-  time: string;
-  cvAttachment: string;
+  interviewDate: string;
   notes: string;
   phase: string;
+  message:string,
 }
-
-const dummyInterviews: Interview[] = [
-  {
-    fullName: "Artemisa Nuri",
-    auth: { email: "artemisa.nuri@example.com" },
-    phone: "123-456-7890",
-    position: "Software Engineer",
-    date: "2024-07-25",
-    time: "14:00",
-    cvAttachment: "artemisa_nuri_cv.pdf",
-    notes: "interview scheduled",
-    phase: "Employed",
-  },
-  {
-    fullName: "Gerti Kadiu",
-    auth: { email: "gerti.kadiu@example.com" },
-    phone: "987-654-3210",
-    position: "Project Manager",
-    date: "2024-07-26",
-    time: "10:30",
-    cvAttachment: "gerti_kadiu_cv.pdf",
-    notes: "interview scheduled",
-    phase: "First Interview",
-  },
-  {
-    fullName: "Redi Balla",
-    auth: { email: "redi.balla@example.com" },
-    phone: "456-789-0123",
-    position: "UX Designer",
-    date: "2024-07-27",
-    time: "11:00",
-    cvAttachment: "redi_balla_cv.pdf",
-    notes: "interview scheduled",
-    phase: "First Interview",
-  },
-  {
-    fullName: "Vasjan Cupri",
-    auth: { email: "vasjan.cupri@example.com" },
-    phone: "789-012-3456",
-    position: "Data Scientist",
-    date: "2024-07-28",
-    time: "15:30",
-    cvAttachment: "vasjan_cupri_cv.pdf",
-    notes: "interview scheduled",
-    phase: "First Interview",
-  },
-  {
-    fullName: "Selma Bakiu",
-    auth: { email: "selma.bakiu@example.com" },
-    phone: "234-567-8901",
-    position: "Game Developer",
-    date: "2024-07-29",
-    time: "13:00",
-    cvAttachment: "selma_bakiu_cv.pdf",
-    notes: "interview scheduled",
-    phase: "First Interview",
-  },
-  {
-    fullName: "Gerald Bane",
-    auth: { email: "bane.gerald@example.com" },
-    phone: "234-567-8901",
-    position: " Fullstack Developer",
-    date: "2024-07-29",
-    time: "13:00",
-    cvAttachment: "gerald_bane_cv.pdf",
-    notes: " Great skills ",
-    phase: "Second Interview",
-  },
-];
 
 const phases = [
   'First Interview',
   'Second Interview',
   'Employed'
 ];
+const formatDate = (dateString: string | number | Date) => {
+  if (!dateString) {
+    return "No Date Provided";
+  }
+
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) {
+    return "Invalid Date";
+  }
+  const formattedDate = date.toLocaleDateString('en-GB'); 
+  const formattedTime = date.toLocaleTimeString('en-GB'); 
+  return `${formattedDate} ${formattedTime}`;
+};
+
+
 
 export default function InterviewKanban() {
-  const [interviews, setInterviews] = useState<Interview[]>(dummyInterviews);
+  const { data: interviewsData, error, loading } = useGetAllInterviews();
+  const [interviews, setInterviews] = useState<Interview[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedInterview, setSelectedInterview] = useState<Interview | null>(null); 
   const [isReschedule, setIsReschedule] = useState(false);
@@ -107,6 +50,23 @@ export default function InterviewKanban() {
   const [allPhasesPassed, setAllPhasesPassed] = useState(false);
 
 
+  useEffect(() => {
+    if (interviewsData && Array.isArray(interviewsData)) {
+      const mappedInterviews: Interview[] = interviewsData
+        .filter(applicant => applicant.status === 'accepted')
+        .map((applicant) => ({
+          fullName: `${applicant.firstName} ${applicant.lastName}`,
+          auth: { email: applicant.email },
+          phone: applicant.phoneNumber,
+          position: applicant.positionApplied,
+          interviewDate: applicant.interviewDate || '', 
+          notes: applicant.notes || '',
+          phase: 'First Interview', 
+          ...applicant,
+        }))
+        .sort((a, b) => new Date(a.interviewDate).getTime() - new Date(b.interviewDate).getTime());
+        setInterviews(mappedInterviews);    }
+  }, [interviewsData]);
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -120,33 +80,35 @@ export default function InterviewKanban() {
   };
 
   const getInterviewsByPhase = (phase: string) => {
-    return interviews.filter(interview => interview.phase === phase);
-  };
+    return interviews.filter(interview => interview.phase === phase)
+    .sort((a, b) => new Date(a.interviewDate).getTime() - new Date(b.interviewDate).getTime());
 
+  };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedInterview(null);
   };
 
-
   const handleOpenModal = (
     interview: Interview,
     isReschedule: boolean = false,
   ) => {
-    setSelectedInterview(interview);
+    setSelectedInterview({
+      ...interview,
+      interviewDate: interview.interviewDate || '', 
+    });
     setIsModalOpen(true);
     setIsReschedule(isReschedule);
   };
 
-  const handleReschedule = (date: string, time: string, notes: string) => {
+  const handleReschedule = (interviewDate: string, notes: string) => {
     if (selectedInterview) {
       const updatedInterviews = interviews.map(interview =>
-        interview.fullName === selectedInterview.fullName
+        interview._id === selectedInterview._id
           ? {
               ...interview,
-              date: allPhasesPassed ? interview.date : date,
-              time: allPhasesPassed ? interview.time : time,
+              interviewDate: allPhasesPassed ? interview.interviewDate : interviewDate,
               notes,
               phase: isReschedule ? interview.phase : 'Second Interview'
             }
@@ -164,7 +126,7 @@ export default function InterviewKanban() {
     );
     if (isConfirmed) {
       const updatedInterviews = interviews.filter(
-        (i) => i.fullName !== interview.fullName,
+        (i) => i._id !== interview._id,
       );
       setInterviews(updatedInterviews);
       handleCloseModal();
@@ -175,23 +137,31 @@ export default function InterviewKanban() {
     const nextPhase = interview.phase === 'First Interview' ? 'Second Interview' : 'Employed';
     
     const updatedInterviews = interviews.map(i =>
-      i.fullName === interview.fullName ? { ...i, phase: nextPhase } : i
+      i._id === interview._id ? { ...i, phase: nextPhase } : i
     );
   
     setInterviews(updatedInterviews);
   
     if (nextPhase === 'Employed') {
-     // api per candidates 
-      handleOpenModal(interview, false);
+      // handleOpenModal(interview, false);
       setAllPhasesPassed(true);
+    
     } else {
       handleOpenModal(interview, false);
     }
   };
 
-  const handleNavigateToProfile = (candidateId: string) => {
-    navigate(`/candidate/${candidateId}`);
+  const handleNavigateToProfile = (CandidateViewId: string) => {
+    navigate(`/view/${CandidateViewId}`);
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading interviews: {error || 'Unknown error'}</div>;
+  }
 
   return (
     <div className={style.kanbanBoard}>
@@ -199,16 +169,22 @@ export default function InterviewKanban() {
         <div className={style.kanbanColumns}>
           {phases.map(phase => (
             <div key={phase} className={style.kanbanColumn}>
-              <h2>{phase}</h2>
+              <h2>{phase}
+              <span className={style.applicantCount}>
+                ({getInterviewsByPhase(phase).length})
+              </span>
+              </h2>
               <Droppable droppableId={phase}>
+                
                 {(provided) => (
+                  
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                     className={style.kanbanList}
                   >
                     {getInterviewsByPhase(phase).map((interview, index) => (
-                      <Draggable key={interview.fullName} draggableId={interview.fullName} index={index}>
+                      <Draggable key={interview._id.toString()} draggableId={interview._id.toString()} index={index}>
                         {(provided) => (
                           <div
                             ref={provided.innerRef}
@@ -216,60 +192,77 @@ export default function InterviewKanban() {
                             {...provided.dragHandleProps}
                             className={style.kanbanItem}
                           >
-                            <h4
-                              onClick={() => handleNavigateToProfile(interview.fullName)}
+                            <h6
+                              onClick={() => handleNavigateToProfile(interview._id.toString())}
                               className={style.candidateName}
                             >
                               {interview.fullName}
-                            </h4>
-                            <p>{interview.position}</p>
-                            <p>{interview.date} at {interview.time}</p>
-                            <p>Email: {interview.auth.email}</p>
-                            <p>Phone: {interview.phone}</p>
+                            </h6>
+                            <p>{interview.positionApplied}</p>
+                            {phase !== 'Employed' && (
+  <p>Interview Date: {formatDate(interview.interviewDate)}</p>
+)}
+                             <p>Email: {interview.email}</p>
+                            <p>Phone: {interview.phoneNumber}</p>
                             <p>Notes: {interview.notes}</p>
                             <div className={style.buttonContainer}>
+                            <Tooltip title="Edit" placement="top">
+    <span> 
+      <Button
+        type={ButtonTypes.SECONDARY}
+        btnText=""
+        width="40px"
+        height="30px"
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        color='#2457A3'
+        borderColor='#2457A3'
+        icon={<EditIcon />}
+        onClick={() => handleOpenModal(interview, true)}
+      />
+    </span>
+  </Tooltip>
 
-                              <Button
-                                type={ButtonTypes.PRIMARY}
-                                btnText=""
-                                width="40px"
-                                height="30px"
-                                display='flex'
-                                justifyContent='center'
-                                alignItems='center'
-                                icon={<EditIcon />}
-                                onClick={() => handleOpenModal(interview, true)}
-                              />
-                              <div style={{display:"flex", justifyContent:"flex-end", gap:'10px'}}>                             
-
-                               <Button
-                                btnText=""
-                                type={ButtonTypes.PRIMARY}
-                                width="35px"
-                                height="30px"
-                                backgroundColor="#C70039"
-                                borderColor="#C70039"
-                                display="flex"
-                                justifyContent="center"
-                                alignItems="center"
-                                icon={<DeleteForeverIcon />}
-                                onClick={() => handleCancel(interview)}                              />
-                              {phase !== 'Employed' && (
-                                <Button
-                                  btnText=''
-                                  type={ButtonTypes.PRIMARY}
-                                  width="40px"
-                                  height="30px"
-                                  backgroundColor='rgb(2, 167, 0)'
-                                  borderColor='rgb(2, 167, 0)'
-                                  display='flex'
-                                  justifyContent='center'
-                                  alignItems='center'
-                                  icon={<CheckIcon />}
-                                  onClick={() => handleAccept(interview)}
-                                />
-                               
-                              )}
+  <div style={{display:"flex", justifyContent:"flex-end", gap:'10px'}}>    
+    <Tooltip title="Delete" placement="top">
+      <span>
+        <Button
+          btnText=" " 
+          type={ButtonTypes.SECONDARY}
+          width="35px"
+          height="30px"
+          color="#C70039"
+          borderColor="#C70039"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          icon={<DeleteIcon />}
+          onClick={() => handleCancel(interview)}
+        />
+      </span>
+    </Tooltip>
+    
+    {phase !== 'Employed' && (
+      
+      <Tooltip title="Accept" placement="top">
+        <span>
+          <Button
+            btnText=''
+            type={ButtonTypes.SECONDARY}
+            width="35px"
+            height="30px"
+            color='rgb(2, 167, 0)'
+            borderColor='rgb(2, 167, 0)'
+            display='flex'
+            justifyContent='center'
+            alignItems='center'
+            icon={<CheckIcon />}
+            onClick={() => handleAccept(interview)}
+          />
+        </span>
+      </Tooltip>
+    )}
                                </div>
                             </div>
                           </div>
@@ -284,16 +277,14 @@ export default function InterviewKanban() {
           ))}
         </div>
       </DragDropContext>
-      {selectedInterview && (
-        <RescheduleModal
+   {isModalOpen && selectedInterview && (
+  <RescheduleModal
           open={isModalOpen}
           handleClose={handleCloseModal}
           handleReschedule={handleReschedule}
           selectedInterview={selectedInterview}
-          allPhasesPassed={allPhasesPassed}
-          // handleCancel={() => selectedInterview && handleCancel(selectedInterview)}
-        />
-      )}
+          allPhasesPassed={allPhasesPassed} message={''}  />
+)}
     </div>
   );
 }

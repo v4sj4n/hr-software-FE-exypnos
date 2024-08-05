@@ -1,7 +1,6 @@
 import {
   Dashboard as DashboardIcon,
   Group as GroupIcon,
-  Laptop as LaptopIcon,
   Event as EventIcon,
   History as HistoryIcon,
   Business as BusinessIcon,
@@ -9,7 +8,9 @@ import {
   ExpandMore as ExpandMoreIcon,
   ExpandLess as ExpandLessIcon,
 } from '@mui/icons-material'
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import CategoryIcon from '@mui/icons-material/Category'
+
+import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import React, { useState } from 'react'
 import style from './sidebar.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -23,6 +24,7 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
   const [employeeDropdownOpen, setEmployeeDropdownOpen] = useState(false)
   const [eventsDropdownOpen, setEventsDropdownOpen] = useState(false)
   const [recruitingDropdownOpen, setRecruitingDropdownOpen] = useState(false)
+  const [assetsDropdownOpen, setAssetsDropdownOpen] = useState(false)
 
   const toggleEmployeeDropdown = () => {
     setEmployeeDropdownOpen(!employeeDropdownOpen)
@@ -32,6 +34,9 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
   }
   const toggleRecruitingDropdown = () => {
     setRecruitingDropdownOpen(!recruitingDropdownOpen)
+  }
+  const toggleAssetsDropdown = () => {
+    setAssetsDropdownOpen(!assetsDropdownOpen)
   }
 
   return (
@@ -61,8 +66,9 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
             </Link>
           </div>
           <div
-            className={`${style.dropdownMenu} ${recruitingDropdownOpen ? style.open : ''
-              }`}
+            className={`${style.dropdownMenu} ${
+              recruitingDropdownOpen ? style.open : ''
+            }`}
           >
             <Link to="/recruitment" className={style.dropdownItem}>
               Recruitment
@@ -86,14 +92,15 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
             </Link>
           </div>
           <div
-            className={`${style.dropdownMenu} ${employeeDropdownOpen ? style.open : ''
-              }`}
+            className={`${style.dropdownMenu} ${
+              employeeDropdownOpen ? style.open : ''
+            }`}
           >
             <Link to="/employees" className={style.dropdownItem}>
               Employees
             </Link>
             <Link to="/payroll" className={style.dropdownItem}>
-              Payroll{' '} 
+              Payroll{' '}
             </Link>
             <Link to="/vacation" className={style.dropdownItem}>
               Vacation{' '}
@@ -102,10 +109,27 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
               Promotion{' '}
             </Link>
           </div>
-          <div className={style.item}>
-            <Link to="/assets" className={style.link}>
-              <LaptopIcon className={style.icon} />
+          <div className={style.item} onClick={toggleAssetsDropdown}>
+            <Link to="#assets" className={style.link}>
+              <CategoryIcon className={style.icon} />
               {isOpen && <span className={style.text}>Assets</span>}
+              {assetsDropdownOpen ? (
+                <ExpandLessIcon className={style.expandIcon} />
+              ) : (
+                <ExpandMoreIcon className={style.expandIcon} />
+              )}
+            </Link>
+          </div>
+          <div
+            className={`${style.dropdownMenu} ${
+              assetsDropdownOpen ? style.open : ''
+            }`}
+          >
+            <Link to="/assets" className={style.dropdownItem}>
+              Holdings
+            </Link>
+            <Link to="/inventory" className={style.dropdownItem}>
+              Inventory
             </Link>
           </div>
           <div className={style.item}>
@@ -126,8 +150,9 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
             </Link>
           </div>
           <div
-            className={`${style.dropdownMenu} ${eventsDropdownOpen ? style.open : ''
-              }`}
+            className={`${style.dropdownMenu} ${
+              eventsDropdownOpen ? style.open : ''
+            }`}
           >
             <Link to="/activities" className={style.dropdownItem}>
               Activities
