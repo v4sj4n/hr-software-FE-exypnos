@@ -1,39 +1,55 @@
 import React from 'react';
 import styles from './EventsPoll.module.css';
+import AxiosInstance from '@/Helpers/Axios';
+import { Tooltip } from '@mui/material';
 
-interface PollOption {
-  id: string;
-  text: string;
-  votes: number;
-}
 
 interface EventPollProps {
-  question: string;
-  options: PollOption[];
-  onVote: (id: string) => void;
+  poll: {
+    question: string;
+    options: Array<{ option: string, votes: number }>;
+  };
+  onVote: (option: string) => void;
+  eventId: number;
+  userId: number | undefined;
 }
 
-const EventPoll: React.FC<EventPollProps> = ({ question, options, onVote }) => {
-  const totalVotes = options.reduce((sum, option) => sum + option.votes, 0);
+const EventPoll: React.FC<EventPollProps> = ({ poll, onVote, eventId, userId }) => {
+
+  const handleVote = (option: string) => {
+    AxiosInstance.post(`/event/${eventId}/vote`, { option, userId })
+      .then(response => {
+        console.log(response, 'Vote updated successfully');
+        onVote(option);
+      })
+      .catch(error => {
+        console.error('Error updating vote:', error);
+      });
+  };
 
   return (
     <div className={styles.eventPoll}>
-      <h3>{question}</h3>
-      {options.map(option => {
-        const percent = totalVotes > 0 ? Math.round((option.votes / totalVotes) * 100) : 0;
+      <h3>{poll.question}</h3>
+      {poll.options.map((option, index) => {
         return (
-          <div 
-            key={option.id} 
+          <div
+            key={index}
             className={styles.option}
-            onClick={() => onVote(option.id)}
+            onClick={() => handleVote(option.option)}
           >
-            <input 
-              type="radio" 
+            <input
+              type="radio"
               checked={false}
               readOnly
             />
-            <span>{option.text}</span>
-            <span className={styles.percent}>{percent}%</span>
+            <div className={styles.optionContent}>
+              <span>{option.option}</span>
+              <div className={styles.optionStats}>
+                <Tooltip title={`${option.votes} `}>
+                  <span>{option.votes}</span>
+                </Tooltip>
+              </div>
+            </div>
           </div>
         );
       })}

@@ -8,7 +8,7 @@ import { ButtonTypes } from '@/Components/Button/ButtonTypes';
 import { useInterviewContext, InterviewProvider } from './Hook/InterviewContext';
 import style from './styles/Interview.module.css';
 import Button from '@/Components/Button/Button';
-import RescheduleModal from './Component/ScheduleForm';
+import RescheduleModal from './component/ScheduleForm';
 
 function InterviewKanbanContent() {
   const {

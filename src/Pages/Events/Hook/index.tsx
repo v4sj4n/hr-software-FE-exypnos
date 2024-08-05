@@ -10,9 +10,10 @@ export const useGetAllEvents = () => {
         setIsLoading(true);
         AxiosInstance.get<EventsData[]>('/event')
             .then(response => {
-              setTimeout(() => {
-                setIsLoading(false);
-              }, 500)
+                console.log('Fetched events:', response.data);
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 500)
                 setEvents(response.data);
             })
             .catch(error => {
@@ -31,14 +32,23 @@ export const useGetAllEvents = () => {
 
 export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>) => {
     const [creatingTime, setCreatingTime] = useState<string>('');
-    
 
     const [event, setEvent] = useState<EventsCreationData>({
         title: '',
         description: '',
         date: '',
         time: '',
+        location: '',
+        poll: {
+            question: '',
+            options: [],
+            isMultipleVote: false
+        }
     });
+
+    const [pollQuestion, setPollQuestion] = useState('');
+    const [pollOptions, setPollOptions] = useState<string[]>(['', '']);
+    const [isMultipleChoice, setIsMultipleChoice] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -46,15 +56,29 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
             setCreatingTime(value);
         } else if (name === 'date') {
             setEvent(prevEvent => ({
-                ...prevEvent!,
+                ...prevEvent,
                 date: value
             }));
+        } else if (name === 'pollQuestion') {
+            setPollQuestion(value);
+        } else if (name === 'isMultipleChoice') {
+            setIsMultipleChoice(e.target.checked);
         } else {
             setEvent(prevEvent => ({
-                ...prevEvent!,
+                ...prevEvent,
                 [name]: value
             }));
         }
+    };
+
+    const handleOptionChange = (index: number, value: string) => {
+        const newOptions = [...pollOptions];
+        newOptions[index] = value;
+        setPollOptions(newOptions);
+    };
+
+    const handleAddOption = () => {
+        setPollOptions([...pollOptions, '']);
     };
 
     const createEvent = (e: React.FormEvent<HTMLButtonElement>) => {
@@ -66,20 +90,39 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
             title: event.title,
             description: event.description,
             date: combinedDateTime,
+            location: event.location,
+            poll: {
+                question: pollQuestion,
+                options: pollOptions.filter(option => option.trim() !== '').map(option => ({ option })),
+                isMultipleVote: isMultipleChoice
+            }
         };
 
         AxiosInstance.post('/event', newEvent)
             .then((response) => {
                 console.log('Event created successfully');
                 setEvents(prevEvents => [...prevEvents, response.data]);
-                setEvent({ title: '', description: '', date: '', time: '' });
+                setEvent({ title: '', description: '', date: '', time: '', location: '', poll: { question: '', options: [], isMultipleVote: false } });
+                setPollQuestion('');
+                setPollOptions(['', '']);
+                setIsMultipleChoice(false);
             })
             .catch(error => {
                 console.error('Error creating event:', error);
             });
     }
 
-    return { createEvent, handleChange, event, creatingTime };
+    return {
+        createEvent,
+        handleChange,
+        event,
+        creatingTime,
+        pollQuestion,
+        pollOptions,
+        isMultipleChoice,
+        handleOptionChange,
+        handleAddOption
+    };
 }
 
 export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>) => {
@@ -88,14 +131,15 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
     const [showForm, setShowForm] = useState(false);
 
     const toggleForm = () => {
-      setShowForm(!showForm);
-      setEditingEvent(null);
+        setShowForm(!showForm);
+        setEditingEvent(null);
     };
 
     const handleEditClick = (eventToEdit: EventsData) => {
         setEventForEditing(eventToEdit);
         setShowForm(true);
-      };
+    };
+
 
     const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -140,8 +184,8 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
         AxiosInstance.patch(`/event/${editingEvent._id}`, fieldsToUpdate)
             .then((response) => {
                 console.log('Event updated successfully');
-                setEvents(prevEvents => 
-                    prevEvents.map(event => 
+                setEvents(prevEvents =>
+                    prevEvents.map(event =>
                         event._id === editingEvent._id ? response.data : event
                     )
                 );
@@ -153,7 +197,7 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
             });
     }
 
-    return { editingEvent, editingTime, setEditingEvent, handleEditChange, updateEvent, setEventForEditing, showForm, toggleForm,handleEditClick };
+    return { editingEvent, editingTime, setEditingEvent, handleEditChange, updateEvent, setEventForEditing, showForm, toggleForm, handleEditClick };
 }
 
 
@@ -162,16 +206,16 @@ export const useDeleteEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
     const [showModal, setShowModal] = useState(false);
     const [eventToDeleteId, setEventToDeleteId] = useState<string | number>('');
     const handleDeleteEventModal = (eventToDeleteId: string | number) => {
-      setEventToDeleteId(eventToDeleteId);
-      setShowModal(true);
+        setEventToDeleteId(eventToDeleteId);
+        setShowModal(true);
     };
-  
+
     const closeModal = () => {
-      setShowModal(false);
-      setEventToDeleteId('');
+        setShowModal(false);
+        setEventToDeleteId('');
     };
-   
-    const handleDelete = (id: string | number)  => {
+
+    const handleDelete = (id: string | number) => {
         AxiosInstance.delete(`/event/${id}`)
             .then(() => {
                 console.log('Event deleted successfully');
