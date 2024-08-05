@@ -1,3 +1,6 @@
+import { styled } from '@mui/material/styles';
+
+
 export const inputStyles = {
   "& .css-1gctnaj-MuiInputBase-input-MuiFilledInput-input": {
     verticalAlign: "bottom",
@@ -149,3 +152,16 @@ export const autoCompleteStyles = {
     },
 },
 }
+
+export const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+  color: "#2469FF",
+});

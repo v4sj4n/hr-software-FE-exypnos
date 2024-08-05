@@ -7,23 +7,10 @@ import { MuiSelect } from "../../Components/Input/components/Select/autocomplete
 import image from "/Images/Vector-illustration-of-communication-Graphics-69695603-1-removebg-preview.png"
 import { useCreateAplicant } from "./Context/Recruitment.Provider";
 import Card from "../../Components/Card/Card";
-import { styled } from '@mui/material/styles';
+import { VisuallyHiddenInput } from "@/Components/Input/Styles";
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { ModalComponent } from "@/Components/Modal/Modal";
-
-const VisuallyHiddenInput = styled('input')({
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-    width: 1,
-    color: "#2469FF",
-});
 
 export default function Recruitment() {
 
