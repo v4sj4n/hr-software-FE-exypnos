@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useNavigate } from 'react-router-dom';
 import { Tooltip } from '@mui/material';
-
 import Button from '../../Components/Button/Button';
 import { ButtonTypes } from '../../Components/Button/ButtonTypes';
 import RescheduleModal from './Component/ScheduleForm';
@@ -49,9 +48,6 @@ export default function InterviewKanban() {
   const [isReschedule, setIsReschedule] = useState(false);
   const navigate = useNavigate();
   const [allPhasesPassed, setAllPhasesPassed] = useState(false);
-
-
-
 
 
   useEffect(() => {

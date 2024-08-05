@@ -1,13 +1,18 @@
 import { useState, useEffect } from 'react';
 import AxiosInstance from '@/Helpers/Axios';
-import { EventsData } from '../Interface/Events';
+import { EventsCreationData, EventsData } from '../Interface/Events';
 
 export const useGetAllEvents = () => {
     const [events, setEvents] = useState<EventsData[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const fetchEvents = () => {
+        setIsLoading(true);
         AxiosInstance.get<EventsData[]>('/event')
             .then(response => {
+              setTimeout(() => {
+                setIsLoading(false);
+              }, 500)
                 setEvents(response.data);
             })
             .catch(error => {
@@ -19,18 +24,14 @@ export const useGetAllEvents = () => {
         fetchEvents();
     }, []);
 
-    return { events, setEvents, fetchEvents };
+    return { events, setEvents, fetchEvents, isLoading };
 }
 
-export interface EventsCreationData {
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-}
+
 
 export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>) => {
     const [creatingTime, setCreatingTime] = useState<string>('');
+    
 
     const [event, setEvent] = useState<EventsCreationData>({
         title: '',
@@ -84,6 +85,17 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
 export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>) => {
     const [editingEvent, setEditingEvent] = useState<EventsData | null>(null);
     const [editingTime, setEditingTime] = useState<string>('');
+    const [showForm, setShowForm] = useState(false);
+
+    const toggleForm = () => {
+      setShowForm(!showForm);
+      setEditingEvent(null);
+    };
+
+    const handleEditClick = (eventToEdit: EventsData) => {
+        setEventForEditing(eventToEdit);
+        setShowForm(true);
+      };
 
     const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -141,5 +153,36 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
             });
     }
 
-    return { editingEvent, editingTime, setEditingEvent, handleEditChange, updateEvent, setEventForEditing };
+    return { editingEvent, editingTime, setEditingEvent, handleEditChange, updateEvent, setEventForEditing, showForm, toggleForm,handleEditClick };
 }
+
+
+export const useDeleteEvent = (setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>) => {
+
+    const [showModal, setShowModal] = useState(false);
+    const [eventToDeleteId, setEventToDeleteId] = useState<string | number>('');
+    const handleDeleteEventModal = (eventToDeleteId: string | number) => {
+      setEventToDeleteId(eventToDeleteId);
+      setShowModal(true);
+    };
+  
+    const closeModal = () => {
+      setShowModal(false);
+      setEventToDeleteId('');
+    };
+   
+    const handleDelete = (id: string | number)  => {
+        AxiosInstance.delete(`/event/${id}`)
+            .then(() => {
+                console.log('Event deleted successfully');
+                setEvents(prevEvents => prevEvents.filter(event => event._id !== id));
+            })
+            .catch(error => {
+                console.error('Error deleting event:', error);
+            });
+    };
+
+    return { handleDelete, closeModal, showModal, handleDeleteEventModal, eventToDeleteId };
+};
+
+

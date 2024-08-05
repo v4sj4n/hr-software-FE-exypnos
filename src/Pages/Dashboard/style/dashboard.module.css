@@ -14,7 +14,7 @@
 .rightContent {
   flex: 1;
   padding: 20px;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   display: flex;
   flex-direction: column;
 }
@@ -42,9 +42,6 @@
   transition: background-color 0.3s ease;
 }
   
-
-
-
 
 .cardGreen {
   background-image: linear-gradient(180deg, #E0F2F7, #A8E0F0);
