@@ -1,7 +1,6 @@
 .mainContainer {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    grid-template-rows: repeat(auto-fit, min(6rem));
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
     row-gap: 1rem;
     column-gap: 0.5rem;
     justify-content: center;
@@ -14,8 +13,13 @@
     padding-left: 1.5rem !important;
     padding-right: 1.5rem !important;
     align-items: center;
-    border-radius: 5rem !important;
+    border-radius: 0.75rem !important;
     border: gray 0.5px solid !important;
+
+
+    &:hover {
+        background-color: rgb(241, 241, 241) !important;
+    }
 
     img {
         min-width: 3rem;
@@ -28,6 +32,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
+        
 
         h2 {
             font-size: 1.25rem;
@@ -39,6 +44,13 @@
                 color: lighten(#333, 17.5%);
                 cursor: pointer;
             }
+        }
+
+        p{
+            font-size: 1rem;
+            color: #474747;
+            margin: 0;
+            align-self: end;
         }
     }
 }

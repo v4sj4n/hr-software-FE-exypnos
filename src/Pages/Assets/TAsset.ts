@@ -4,6 +4,16 @@ export type Asset = {
   status: string
   userId?: { _id: string; firstName: string; lastName: string }
   serialNumber: string
+  receive: string
+  returnDate: Date | null
+  history: history[]
+}
+
+type history = {
+  receivedDate: Date
+  returnDate: Date
+  status: string
+  userId: string | null
 }
 
 export type UserWithAsset = {
@@ -11,5 +21,8 @@ export type UserWithAsset = {
   firstName: string
   lastName: string
   imageUrl: string
+  email: string
+  phone: string
   assets: Asset[]
+  role: string
 }

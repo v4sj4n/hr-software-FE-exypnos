@@ -32,9 +32,11 @@ export const EmployeesWithAssets = () => {
             })
             handleOpenModal()
           }}
+
         >
           {user.firstName} {user.lastName}
         </h2>
+        <p>{user.role}</p>
       </div>
     </Card>
   ))

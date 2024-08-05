@@ -1,0 +1,122 @@
+.mainContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: "100%";
+
+    hr {
+        fill: #1f1f1f;
+        width: 80%;
+        margin-bottom: 2rem;
+    }
+
+    img {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 0.5rem;
+    }
+
+    > h3:first-of-type {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 0;
+        color: #1f1f1f;
+    }
+
+    h3:first-of-type + p {
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+    }
+
+    .simpleBio {
+        margin-top: 0.7rem;
+        display: flex;
+        gap: 1rem;
+        color: #3d3d3d;
+        * {
+            margin: 0;
+        }
+    }
+}
+
+.assetsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    width: 100%;
+
+    > div {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+    button {
+        color: red;
+        background-color: transparent;
+        border: transparent;
+        padding-right: 0;
+        &:hover {
+            background-color: transparent;
+            color: lighten($color: red, $amount: 20);
+        }
+    }
+}
+
+.itemDetails {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    > h4 {
+        margin-top: 0;
+        margin-bottom: 0.2rem;
+        font-size: 1.75rem;
+    }
+    > p {
+        font-family: monospace;
+        font-size: 0.75rem;
+        font-weight: 400;
+        margin-bottom: 0;
+    }
+}
+
+.dateContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: center;
+    p {
+        font-size: 0.8rem;
+    }
+}
+
+.formInput {
+    margin-top: 2rem;
+    display: flex;
+    width: 100%;
+    gap: 0.5rem;
+
+    > div:first-of-type {
+        height: 3rem;
+    }
+
+    button[type="submit"] {
+        height: 3rem;
+        width: 7.5rem;
+        background-color: #1f1f1f;
+        border-color: #1f1f1f;
+
+        &:hover {
+            background-color: lighten($color: #1f1f1f, $amount: 20%);
+            border-color: lighten($color: #1f1f1f, $amount: 20%);
+        }
+    }
+}

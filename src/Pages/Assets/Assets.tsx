@@ -81,7 +81,7 @@ function AssetsComponent() {
           </FormLabel>
           <RadioGroup
             aria-labelledby="product-size-attribute"
-            defaultValue={'all'}
+            defaultValue={ searchParams.get("users") ? searchParams.get("users") : 'all'}
             sx={{ gap: 1, mb: 2, flexWrap: 'wrap', flexDirection: 'row' }}
             onChange={handleChange}
           >
@@ -95,7 +95,7 @@ function AssetsComponent() {
                   padding: '1rem 2rem',
                   display: 'flex',
                   alignItems: 'center',
-                  borderRadius: 20,
+                  borderRadius: 7.5,
                   justifyContent: 'center',
                   '--joy-focus-outlineOffset': '4px',
                   '--joy-palette-focusVisible': (theme) =>
