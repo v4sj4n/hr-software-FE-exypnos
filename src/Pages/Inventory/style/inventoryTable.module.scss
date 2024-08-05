@@ -1,0 +1,26 @@
+@import "@/Helpers/_base.scss";
+.spanStyleA {
+    font-weight: 700;
+}
+
+.assigned {
+    color: $red-color;
+}
+
+.available {
+    color: $green-color;
+}
+
+.notAvailable {
+    color: $gray-color;
+}
+
+.spanStyleNA {
+    color: "gray";
+}
+
+.divStyle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
