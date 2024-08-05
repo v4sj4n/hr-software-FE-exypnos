@@ -10,13 +10,13 @@ interface FloatingActionButtonProps {
   const StyledFab = styled(Fab)(({ theme }) => ({
     width: "68px",
     height: "68px",
-    backgroundColor: "#000000",
+    backgroundColor: "#2469FF",
     position: "fixed",
     right: "5%",
     top: "89%",
     color: "#FFFFFF",
     "&:hover": {
-      backgroundColor: "#000000",
+      backgroundColor: "#2469FF",
     },
 
     [theme.breakpoints.only("xs")]: {

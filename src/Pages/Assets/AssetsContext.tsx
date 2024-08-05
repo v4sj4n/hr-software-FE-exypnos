@@ -6,21 +6,22 @@ import {
   SetStateAction,
   FC,
 } from "react";
-import { Asset, UserWithAsset } from "./TAsset";
+import { UserWithAsset } from "./TAsset";
+import { useSearchParams } from "react-router-dom";
 
 interface AssetContextType {
+  searchParams: URLSearchParams;
+  setSearchParams: Dispatch<SetStateAction<URLSearchParams>>;
   usersWithAssets: UserWithAsset[];
   setUsersWithAssets: Dispatch<SetStateAction<UserWithAsset[]>>;
-  assets: Asset[];
-  setAssets: Dispatch<SetStateAction<Asset[]>>;
   modalOpen: boolean;
   handleCloseModal: () => void;
   handleOpenModal: () => void;
 }
 
 const defaultContextValue: AssetContextType = {
-  assets: [],
-  setAssets: () => {},
+  searchParams: new URLSearchParams(),
+  setSearchParams: () => {},
   usersWithAssets: [],
   setUsersWithAssets: () => {},
   modalOpen: false,
@@ -32,7 +33,7 @@ export const AssetsContext =
   createContext<AssetContextType>(defaultContextValue);
 
 const AssetProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [assets, setAssets] = useState<Asset[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [usersWithAssets, setUsersWithAssets] = useState<UserWithAsset[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const handleCloseModal = () => setModalOpen(false);
@@ -41,10 +42,10 @@ const AssetProvider: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <AssetsContext.Provider
       value={{
+        searchParams,
+        setSearchParams,
         usersWithAssets,
         setUsersWithAssets,
-        assets,
-        setAssets,
         modalOpen,
         handleCloseModal,
         handleOpenModal,

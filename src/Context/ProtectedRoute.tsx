@@ -24,7 +24,6 @@ const PrivateRoute = () => {
       <main style={{backgroundColor:"#f0f5ff", width:"100%"}}>
           <Outlet/>
       </main>
-    
       </div>
     
     </>
