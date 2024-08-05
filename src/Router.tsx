@@ -19,6 +19,7 @@ import { EmployeeProvider } from "./Pages/Employees/Context/EmployeTableProvider
 import { CandidateProvider } from "./Pages/Candidates/Context/CandidateTableProvider.tsx";
 import VacationProvider from "./Pages/Vacation/VacationContext.tsx";
 import Inventory from "./Pages/Inventory/Inventory.tsx";
+import Career from "./Pages/Career/Career.tsx";
 
 export default function Router() {
   const router = createBrowserRouter([
@@ -33,6 +34,10 @@ export default function Router() {
     {
       path: "/forgot-password",
       element: <ResetPass />,
+    },
+    {
+      path: "career",
+      element: <Career />,
     },
     {
       path: "/",

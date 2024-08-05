@@ -102,6 +102,7 @@ interface ButtonStyles extends CSSProperties {
   padding?: string
   margin?: string
   borderRadius?: string | number
+  
 }
 
 interface ButtonProps extends ButtonStyles {
