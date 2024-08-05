@@ -20,10 +20,9 @@ const PrivateRoute = () => {
       <Header isOpen={isOpen}/>
       <div style={{display:'flex'}}>
       <SideBar isOpen={isOpen} toggleSidebar={toggleSidebar}/>
-      <main style={{backgroundColor:"#f0f5ff", width:"100%", padding: "2rem"}}>
+      <main style={{backgroundColor:"#f0f5ff", width:"100%"}}>
           <Outlet/>
       </main>
-    
       </div>
     
     </>

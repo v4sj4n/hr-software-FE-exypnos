@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Button from '../../Components/Button/Button';
 import { ButtonTypes } from '../../Components/Button/ButtonTypes';
-import RescheduleModal from './Component/ScheduleForm';
+import RescheduleModal from './component/ScheduleForm';
 import style from './styles/Interview.module.css';
 
 interface Interview {
