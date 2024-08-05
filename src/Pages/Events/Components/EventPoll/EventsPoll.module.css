@@ -1,0 +1,28 @@
+.eventPoll {
+    font-family: Arial, sans-serif;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .option {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .option.selected {
+    background-color: #333;
+    color: white;
+  }
+  
+  .option input {
+    margin-right: 10px;
+  }
+  
+  .percent {
+    margin-left: auto;
+  }

@@ -1,7 +1,8 @@
 import style from './style/Employees.module.css'
 import DataTable from "../../Components/Table/Table";
 import { useEmployeeContext } from './Context/EmployeTableContext';
-export default function Employees() {
+import { EmployeeProvider } from './Context/EmployeTableProvider';
+ function EmployeesContent() {
     const { rows, columns, headerIcons,  getRowId } = useEmployeeContext();
     return (
         <>
@@ -17,3 +18,15 @@ export default function Employees() {
         </>
     );
 }
+
+
+const Employees: React.FC = () => {
+    return (
+      <EmployeeProvider>
+        <EmployeesContent />
+      </EmployeeProvider>
+    );
+  };
+
+
+export default Employees;

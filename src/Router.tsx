@@ -15,8 +15,6 @@ import Profile from "./Pages/Profile/Profile";
 import Recruitment from "./Pages/Recruitment/Recruitment.tsx";
 import Structure from "./Pages/Structure/Structure.tsx";
 import Vacation from "./Pages/Vacation/Vacation.tsx";
-import { EmployeeProvider } from "./Pages/Employees/Context/EmployeTableProvider.tsx";
-import { CandidateProvider } from "./Pages/Candidates/Context/CandidateTableProvider.tsx";
 import VacationProvider from "./Pages/Vacation/VacationContext.tsx";
 import Inventory from "./Pages/Inventory/Inventory.tsx";
 
@@ -41,9 +39,7 @@ export default function Router() {
         {
           path: "employees",
           element: (
-            <EmployeeProvider>
-              <Employees />
-            </EmployeeProvider>
+            <Employees />
           ),
         },
         { path: "/dashboard", element: <Dashboard />, index: false },
@@ -74,9 +70,7 @@ export default function Router() {
         {
           path: "candidates",
           element: (
-            <CandidateProvider>
               <Candidates />
-            </CandidateProvider>
           ),
         },
         {
