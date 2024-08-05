@@ -1,17 +1,29 @@
 .eventPoll {
     font-family: Arial, sans-serif;
     max-width: 300px;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
   }
   
   .option {
     display: flex;
     align-items: center;
-    padding: 10px;
-    margin: 5px 0;
-    background-color: #f0f0f0;
-    border-radius: 5px;
     cursor: pointer;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .optionContent {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .optionStats {
+    display: flex;
+    gap: 10px;
   }
   
   .option.selected {

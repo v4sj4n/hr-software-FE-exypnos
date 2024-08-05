@@ -15,29 +15,23 @@ import { ModalComponent } from '@/Components/Modal/Modal';
 import LongMenu from '@/Components/Menu/Menu';
 import Switch from '@mui/material/Switch';
 import { useState } from 'react';
+import EventPoll from './Components/EventPoll/EventsPoll';
+import { useAuth } from '@/Context/AuthProvider';
 
 export default function Events() {
   const { events, setEvents, isLoading } = useGetAllEvents();
-  const { handleChange, event, creatingTime, createEvent } = useCreateEvent(setEvents);
+  const { handleChange, event, creatingTime, createEvent, pollQuestion, pollOptions, isMultipleChoice, handleOptionChange, handleAddOption } = useCreateEvent(setEvents);
   const { editingEvent, editingTime, handleEditChange, updateEvent, showForm, toggleForm, handleEditClick } = useUpdateEvent(setEvents);
   const { handleDelete, closeModal, showModal, handleDeleteEventModal, eventToDeleteId } = useDeleteEvent(setEvents);
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
   const [showCreatePoll, setShowCreatePoll] = useState<boolean>(false);
-  const [pollOptions, setPollOptions] = useState<string[]>(['', '']);
+  const {currentUser} = useAuth()
 
   const handleCreatePollToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setShowCreatePoll(event.target.checked);
   };
 
-  const handleAddOption = () => {
-    setPollOptions([...pollOptions, '']); 
-  };
-
-  const handleOptionChange = (index: number, value: string) => {
-    const newOptions = [...pollOptions];
-    newOptions[index] = value;
-    setPollOptions(newOptions);
-  };
+  console.log(currentUser?._id)
 
   return (
     <>
@@ -46,7 +40,7 @@ export default function Events() {
         <div className={`${style.grid} ${showForm ? style.twoColumn : ''}`}>
           {isLoading ? events.map((event) => <EventsContent key={event._id} />) :
             events.map((event) => (
-              <Card key={event._id} backgroundColor='#FFFFFF' borderRadius='8px' border='1px solid #ebebeb' padding='20px' flex='1' position='relative' width='100%' height='280px'>
+              <Card key={event._id} backgroundColor='#FFFFFF' borderRadius='8px' border='1px solid #ebebeb' padding='20px' flex='1' position='relative' width='100%' >
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: 'center' }}>
                   <div className={style.title}>{event.title}</div>
                   <LongMenu
@@ -71,8 +65,18 @@ export default function Events() {
                   </div>
                   <div className={style.data}>
                     <LocationSearchingIcon sx={{ height: 20, width: 20, color: "#6b7280" }} />
-                    <div>Tirane,  Albania</div>
+                    <div>{event.location}</div>
                   </div>
+                  {event.poll && (
+                    <EventPoll
+                      poll={event.poll}
+                      eventId={event._id}
+                      userId={currentUser?._id}
+                      onVote={(optionIndex) => {
+                        console.log(`Voted for option ${optionIndex} in event ${event._id}`);
+                      }}
+                    />
+                  )}
                 </div>
               </Card>
             ))}
@@ -95,40 +99,47 @@ export default function Events() {
                 />
               </div>
             </div>
-            <Input IsUsername width="100%" label='Location' name='Location' />
+            <Input IsUsername width="100%" label='Location' name='location' onChange={editingEvent ? handleEditChange : handleChange} value={editingEvent ? editingEvent.location : event.location} />
             <Input IsUsername label="Description" type="textarea" name='description' multiline rows={4}
               onChange={editingEvent ? handleEditChange : handleChange}
               value={editingEvent ? editingEvent.description : event.description}
             />
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Switch   checked={showCreatePoll}
-      onChange={handleCreatePollToggle} 
-      sx={{ color: "#2469FF" }} {...label} />
-              <div>{editingEvent ? 'Edit poll event' : 'Add poll to event'}</div>
-            </div>
-            {showCreatePoll && (
-              <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-                <Input label='Question' name='question' IsUsername />
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
-                  Options
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Switch {...label} />
-                    <div>Multiple choice</div>
-                  </div>
+
+            {!editingEvent && (
+              <>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <Switch checked={showCreatePoll}
+                    onChange={handleCreatePollToggle}
+                    sx={{ color: "#2469FF" }} {...label} />
+                  <div>Add poll to event</div>
                 </div>
-                {pollOptions.map((option, index) => (
-                <Input 
-                  key={index}
-                  IsUsername 
-                  label={`Option ${index + 1}`} 
-                  name={`option${index + 1}`}
-                  value={option}
-                  onChange={(e) => handleOptionChange(index, e.target.value)}
-                />
-              ))}
-                <Button  onClick={handleAddOption} btnText='Add new option' type={ButtonTypes.SECONDARY} color='#2469FF' borderColor='#2469FF' />
-              </div>
+
+                {showCreatePoll && (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                    <Input label='Poll Question' name='pollQuestion' IsUsername value={pollQuestion} onChange={handleChange} />
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
+                      Options
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Switch checked={isMultipleChoice} onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)} name="isMultipleChoice" {...label} />
+                        <div>Multiple choice</div>
+                      </div>
+                    </div>
+                    {pollOptions.map((option, index) => (
+                      <Input
+                        key={index}
+                        IsUsername
+                        label={`Option ${index + 1}`}
+                        name={`option${index + 1}`}
+                        value={option}
+                        onChange={(e) => handleOptionChange(index, e.target.value)}
+                      />
+                    ))}
+                    <Button onClick={handleAddOption} btnText='Add new option' type={ButtonTypes.SECONDARY} color='#2469FF' borderColor='#2469FF' />
+                  </div>
+                )}
+              </>
             )}
+
             <div className={style.border}></div>
             <Button btnText={editingEvent ? 'Edit' : 'Save event'} type={ButtonTypes.PRIMARY} backgroundColor='#2469FF' border='none' onClick={editingEvent ? updateEvent : createEvent} />
           </Card>
