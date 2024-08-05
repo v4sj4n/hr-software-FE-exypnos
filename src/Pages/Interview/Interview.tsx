@@ -1,12 +1,13 @@
 import CheckIcon from '@mui/icons-material/Check';
-import DeleteIcon from '@mui/icons-material/Delete';import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useNavigate } from 'react-router-dom';
 import { Tooltip } from '@mui/material';
 import Button from '../../Components/Button/Button';
 import { ButtonTypes } from '../../Components/Button/ButtonTypes';
-import RescheduleModal from './Component/ScheduleForm';
+import RescheduleModal from './component/ScheduleForm';
 import { applicantsData, useGetAllInterviews } from './Hook';
 import style from './styles/Interview.module.css';
 
