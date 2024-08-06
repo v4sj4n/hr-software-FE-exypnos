@@ -1,6 +1,9 @@
 
 import { Interview } from './InterviewContext';
 
+export type DateFilterType = 'custom' | 'monthly' | 'yearly';
+
+
 export const formatDate = (dateString: string | number | Date) => {
   if (!dateString) {
     return "No Date Provided";

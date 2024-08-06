@@ -8,7 +8,11 @@ import { ButtonTypes } from '@/Components/Button/ButtonTypes';
 import { useInterviewContext, InterviewProvider } from './Hook/InterviewContext';
 import style from './styles/Interview.module.css';
 import Button from '@/Components/Button/Button';
-import RescheduleModal from './component/ScheduleForm';
+import RescheduleModal from './Component/ScheduleForm';
+// import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import DatePicker from 'react-datepicker'; 
+import 'react-datepicker/dist/react-datepicker.css';
+import { DateFilterType } from './Hook/utils';
 
 function InterviewKanbanContent() {
   const {
@@ -27,6 +31,13 @@ function InterviewKanbanContent() {
     getInterviewsByPhase,
     formatDate,
     phases,
+    filter,
+    handleFilterChange,
+    startDate,
+    endDate,
+    handleDateChange,
+    dateFilterType,
+
   } = useInterviewContext();
 
   if (loading) return <div>Loading...</div>;
@@ -34,6 +45,56 @@ function InterviewKanbanContent() {
 
   return (
     <div className={style.kanbanBoard}>
+      
+      <div className={style.filterContainer}>
+        <input
+          type="text"
+          placeholder="Filter interviews..."
+          value={filter}
+          onChange={handleFilterChange}
+          className={style.filterInput}
+        />
+        <select
+          value={dateFilterType}
+          onChange={(e) => handleDateChange(null, e.target.value as DateFilterType)}
+          className={style.dateFilterSelect}
+        >
+          <option value="custom">Custom Range</option>
+          <option value="monthly">Monthly</option>
+          <option value="yearly">Yearly</option>
+        </select>
+        {dateFilterType === 'custom' && (
+          <DatePicker
+            selectsRange={true}
+            startDate={startDate || undefined}
+            endDate={endDate || undefined}
+            onChange={(dates) => handleDateChange(dates, 'custom')}
+            placeholderText="Select date range"
+            className={style.datePicker}
+          />
+        )}
+        {dateFilterType === 'monthly' && (
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => handleDateChange(date, 'monthly')}
+            dateFormat="MM/yyyy"
+            showMonthYearPicker
+            placeholderText="Select month"
+            className={style.datePicker}
+          />
+        )}
+        {dateFilterType === 'yearly' && (
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => handleDateChange(date, 'yearly')}
+            dateFormat="yyyy"
+            showYearPicker
+            placeholderText="Select year"
+            className={style.datePicker}
+          />
+        )}
+      </div>
+
       <DragDropContext onDragEnd={onDragEnd}>
         <div className={style.kanbanColumns}>
           {phases.map(phase => (
@@ -63,22 +124,22 @@ function InterviewKanbanContent() {
                               onClick={() => handleNavigateToProfile(interview._id.toString())}
                               className={style.candidateName}
                             >
-                              {interview.fullName}
+                            <b>    {interview.fullName}  </b>{interview.positionApplied}
+
                             </h6>
-                            <p>{interview.positionApplied}</p>
                             {phase !== 'Employed' && (
-                              <p>Interview Date: {formatDate(interview.interviewDate)}</p>
+                              <p> <b>Interview Date: </b> {formatDate(interview.interviewDate)} </p>
                             )}
-                            <p>Email: {interview.email}</p>
-                            <p>Phone: {interview.phoneNumber}</p>
-                            <p>Notes: {interview.notes}</p>
+                            <p> <b>Email</b>: {interview.email}</p>
+                            <p><b> Phone</b>: {interview.phoneNumber}</p>
+                            <p><b>Notes</b>: {interview.notes}</p>
                             <div className={style.buttonContainer}>
                               <Tooltip title="Edit" placement="top">
                                 <span>
                                   <Button
                                     type={ButtonTypes.SECONDARY}
                                     btnText=""
-                                    width="40px"
+                                    width="30px"
                                     height="30px"
                                     display='flex'
                                     justifyContent='center'
@@ -96,7 +157,7 @@ function InterviewKanbanContent() {
                                     <Button
                                       btnText=" " 
                                       type={ButtonTypes.SECONDARY}
-                                      width="35px"
+                                      width="30px"
                                       height="30px"
                                       color="#C70039"
                                       borderColor="#C70039"
@@ -114,7 +175,7 @@ function InterviewKanbanContent() {
                                       <Button
                                         btnText=''
                                         type={ButtonTypes.SECONDARY}
-                                        width="35px"
+                                        width="30px"
                                         height="30px"
                                         color='rgb(2, 167, 0)'
                                         borderColor='rgb(2, 167, 0)'
@@ -142,13 +203,19 @@ function InterviewKanbanContent() {
         </div>
       </DragDropContext>
       {isModalOpen && selectedInterview && (
-        <RescheduleModal
-          open={isModalOpen}
-          handleClose={handleCloseModal}
-          handleReschedule={handleReschedule}
-          selectedInterview={selectedInterview}
-          allPhasesPassed={allPhasesPassed}
-          message={''}
+       <RescheduleModal
+       open={isModalOpen}
+       handleClose={handleCloseModal}
+       handleReschedule={async (interviewDate, notes) => {
+         try {
+           await handleReschedule(interviewDate, notes);
+         } catch (error) {
+           console.error('Failed to reschedule interview:', error);
+         }
+       }}
+       selectedInterview={selectedInterview}
+       allPhasesPassed={allPhasesPassed}
+    
         />
       )}
     </div>

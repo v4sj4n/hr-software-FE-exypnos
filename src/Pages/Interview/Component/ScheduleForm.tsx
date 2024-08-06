@@ -12,16 +12,14 @@ interface Interview {
   interviewDate: string;
   notes: string;
   phase: string;
-  message: string;
 }
 
 interface RescheduleModalProps {
   open: boolean;
   handleClose: () => void;
-  handleReschedule: (interviewDate: string, notes: string , phase:string, message:string) => void;
+  handleReschedule: (interviewDate: string, notes: string , phase:string) => void;
   selectedInterview: Interview;
   allPhasesPassed: boolean;
-  message: string;
 
 }
 
@@ -35,7 +33,6 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
   const [interviewDate, setInterviewDate] = useState(selectedInterview.interviewDate);
   const [notes, setNotes] = useState(selectedInterview.notes);
   const [phase, setPhase] = useState(selectedInterview.phase);
-  const [message, setMessage] = useState(selectedInterview.message);
 
 
   useEffect(() => {
@@ -43,13 +40,15 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
     setPhase(selectedInterview.phase);
 
     setNotes(selectedInterview.notes);
-    setMessage(selectedInterview.message);
 
   }, [selectedInterview]);
 
   const handleSubmit = () => {
-    handleReschedule(interviewDate, notes, phase, message);
+    handleReschedule(interviewDate, notes, phase);
   };
+
+
+
 
   return (
     <ModalComponent open={open} handleClose={handleClose}>
@@ -76,7 +75,7 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
           onChange={(e) => setNotes(e.target.value)}
           name="notes"
         />
-         <Input
+         {/* <Input
           IsUsername
           multiline={true}
           width="100%"
@@ -86,7 +85,7 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           name="message"
-        />
+        /> */}
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
           <Button
             type={ButtonTypes.PRIMARY}
