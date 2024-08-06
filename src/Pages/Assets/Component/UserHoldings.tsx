@@ -2,7 +2,14 @@ import { useContext, useCallback, useState, useEffect, FormEvent } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import { Autocomplete, Card, CircularProgress, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  Card,
+  CircularProgress,
+  TextField,
+  Tooltip,
+  Zoom,
+} from "@mui/material";
 import { AssetsContext } from "../AssetsContext";
 import { useFetch } from "@/Hooks/useFetch";
 import { Asset, UserWithAsset } from "../TAsset";
@@ -54,6 +61,7 @@ export const UserHoldings = () => {
     const payload = {
       userId: null,
       return: new Date().toISOString(),
+      status: "available",
     };
     const res = await AxiosInstance.patch(`/asset/${assetId}`, payload);
     if ([200, 201].includes(res.status)) {
@@ -172,17 +180,36 @@ export const UserHoldings = () => {
                           Taken on:{" "}
                           {dayjs(asset?.receive).format("DD-MMM-YYYY")}{" "}
                         </p>
-                        <form
-                          onSubmit={(e) => {
-                            handleItemReturn(e, asset._id);
+                        <Tooltip
+                          title={`Add the item as returned by ${data?.firstName} ${data?.lastName}`}
+                          arrow
+                          placement="right"
+                          TransitionComponent={Zoom}
+                          slotProps={{
+                            popper: {
+                              modifiers: [
+                                {
+                                  name: "offset",
+                                  options: {
+                                    offset: [0, 2.5],
+                                  },
+                                },
+                              ],
+                            },
                           }}
                         >
-                          <Button
-                            btnText={"Return"}
-                            isSubmit
-                            type={ButtonTypes.PRIMARY}
-                          />
-                        </form>
+                          <form
+                            onSubmit={(e) => {
+                              handleItemReturn(e, asset._id);
+                            }}
+                          >
+                            <Button
+                              btnText={"Return"}
+                              isSubmit
+                              type={ButtonTypes.PRIMARY}
+                            />
+                          </form>
+                        </Tooltip>
                       </div>
                     </div>
                   );
@@ -242,11 +269,32 @@ export const UserHoldings = () => {
                     />
                   )}
                 />
-                <Button
-                  btnText={"Assign"}
-                  isSubmit
-                  type={ButtonTypes.PRIMARY}
-                />
+                <Tooltip
+                  title={`Assign the selected item as a possesion of ${data?.firstName} ${data?.lastName}`}
+                  arrow
+                  placement="right"
+                  TransitionComponent={Zoom}
+                  slotProps={{
+                    popper: {
+                      modifiers: [
+                        {
+                          name: "offset",
+                          options: {
+                            offset: [-10, 0],
+                          },
+                        },
+                      ],
+                    },
+                  }}
+                >
+                  <span>
+                    <Button
+                      btnText={"Assign"}
+                      isSubmit
+                      type={ButtonTypes.PRIMARY}
+                    />
+                  </span>
+                </Tooltip>
               </form>
             </div>
           )}
