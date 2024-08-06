@@ -1,24 +1,8 @@
 import { useContext, useEffect } from "react";
-import { Asset, UserWithAsset } from "../TAsset";
+import {  UserWithAsset } from "../TAsset";
 import { AssetsContext } from "../AssetsContext";
 import { useFetch } from "@/Hooks/useFetch";
 import { User } from "@/Context/AuthProvider";
-
-export const useAllAssets = () => {
-  const { data, error, loading } = useFetch<Asset[]>("/asset", 10);
-  const { setAssets } = useContext(AssetsContext);
-
-  useEffect(() => {
-    if (data) {
-      setAssets(data);
-    }
-  }, [data, setAssets]);
-
-  return {
-    error,
-    loading,
-  };
-};
 
 export const useGetUsersWithAssets = (searchParams: URLSearchParams) => {
   const users = searchParams.get("users") || "all";
@@ -26,7 +10,7 @@ export const useGetUsersWithAssets = (searchParams: URLSearchParams) => {
 
   const { data, error, loading } = useFetch<UserWithAsset[]>(
     `/asset/user?users=${users}&search=${search}`,
-    30,
+    30
   );
   const { setUsersWithAssets } = useContext(AssetsContext);
 

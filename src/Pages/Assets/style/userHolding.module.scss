@@ -1,9 +1,12 @@
+@import "@/Helpers/_base.scss";
+
 .mainContainer {
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
     height: "100%";
+
 
     hr {
         fill: #1f1f1f;
@@ -19,25 +22,20 @@
         margin-bottom: 0.5rem;
     }
 
-    > h3:first-of-type {
+    >h3:first-of-type {
         font-size: 2rem;
         font-weight: 600;
         margin-bottom: 0;
         color: #1f1f1f;
     }
 
-    h3:first-of-type + p {
-        margin-top: 0;
-        margin-bottom: 0;
-        font-size: 0.75rem;
-        text-transform: uppercase;
-    }
 
     .simpleBio {
-        margin-top: 0.7rem;
+        margin-top: 0.75rem;
         display: flex;
         gap: 1rem;
         color: #3d3d3d;
+
         * {
             margin: 0;
         }
@@ -53,16 +51,18 @@
     margin-top: 1rem;
     width: 100%;
 
-    > div {
+    >div {
         display: flex;
         justify-content: space-between;
         width: 100%;
     }
-    button {
-        color: red;
+
+    & button {
+        color: $red-color;
         background-color: transparent;
         border: transparent;
         padding-right: 0;
+
         &:hover {
             background-color: transparent;
             color: lighten($color: red, $amount: 20);
@@ -75,12 +75,14 @@
     flex-direction: column;
     align-items: start;
     justify-content: center;
-    > h4 {
+
+    >h4 {
         margin-top: 0;
         margin-bottom: 0.2rem;
         font-size: 1.75rem;
     }
-    > p {
+
+    >p {
         font-family: monospace;
         font-size: 0.75rem;
         font-weight: 400;
@@ -93,8 +95,14 @@
     flex-direction: column;
     align-items: end;
     justify-content: center;
+
     p {
+        margin-bottom: 0px;
         font-size: 0.8rem;
+    }
+
+    button {
+        padding: 0;
     }
 }
 
@@ -104,19 +112,63 @@
     width: 100%;
     gap: 0.5rem;
 
-    > div:first-of-type {
+    >div:first-of-type {
         height: 3rem;
     }
 
     button[type="submit"] {
         height: 3rem;
         width: 7.5rem;
-        background-color: #1f1f1f;
-        border-color: #1f1f1f;
+    }
+}
 
-        &:hover {
-            background-color: lighten($color: #1f1f1f, $amount: 20%);
-            border-color: lighten($color: #1f1f1f, $amount: 20%);
+.assignReturningStatus {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    // gap: 0.25rem;
+    margin: 0;
+    align-items: end;
+
+    p {
+        margin: 0;
+    }
+
+    form {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: space-between;
+        padding: 0;
+        margin: 0;
+
+        span {
+
+
+            button {
+                margin-top: 2px;
+                padding-bottom: 0;
+
+            }
+
+            &:nth-of-type(1) {
+                button {
+                    color: #6d6d6d;
+                }
+            }
+
+            &:nth-of-type(2) {
+                button {
+                    color: $green-color;
+                }
+            }
         }
     }
+
+}
+
+.holdingDescription {
+    margin-top: 2.5px;
+    margin-bottom: 0;
+    font-size: 0.75rem;
+    text-transform: uppercase;
 }

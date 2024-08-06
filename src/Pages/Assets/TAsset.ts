@@ -4,7 +4,7 @@ export type Asset = {
   status: string
   userId?: { _id: string; firstName: string; lastName: string }
   serialNumber: string
-  receive: string
+  takenDate: string
   returnDate: Date | null
   history: history[]
 }

@@ -1,62 +1,71 @@
-import { useContext } from "react";
-import { useGetUsersWithAssets as useData } from "../Hook/index";
-import { AssetsContext } from "../AssetsContext";
-import { CircularProgress, Tooltip, Zoom } from "@mui/material";
-import { UserWithAsset } from "../TAsset";
-import Card from "@/Components/Card/Card";
-import style from "../style/employeesWithAssets.module.scss";
+import { useContext } from 'react'
+import { useGetUsersWithAssets as useData } from '../Hook/index'
+import { AssetsContext } from '../AssetsContext'
+import { CircularProgress, Tooltip, Zoom } from '@mui/material'
+import { UserWithAsset } from '../TAsset'
+import Card from '@/Components/Card/Card'
+import style from '../style/employeesWithAssets.module.scss'
 
 export const EmployeesWithAssets = () => {
   const { usersWithAssets, searchParams, setSearchParams, handleOpenModal } =
-    useContext(AssetsContext);
+    useContext(AssetsContext)
 
-  const { error, loading } = useData(searchParams);
+  const { error, loading } = useData(searchParams)
 
-  if (error) return <div>Error: {error}</div>;
-  if (loading) return <CircularProgress />;
+  if (error) return <div>Error: {error}</div>
+  if (loading) return <CircularProgress />
 
   const users = usersWithAssets.map((user: UserWithAsset) => (
     <Card key={user._id} className={style.userDiv}>
-      <img src={user.imageUrl} style={{}} />
       <div>
-        <Tooltip
-          title={`${user.firstName} ${user.lastName}'s holdings`}
-          arrow
-          placement="top"
-          TransitionComponent={Zoom}
-          slotProps={{
-            popper: {
-              modifiers: [
-                {
-                  name: "offset",
-                  options: {
-                    offset: [0, 5],
+        <img src={user.imageUrl} />
+        <div>
+          <Tooltip
+            title={`${user.firstName} ${user.lastName}'s holdings`}
+            arrow
+            placement="top"
+            TransitionComponent={Zoom}
+            slotProps={{
+              popper: {
+                modifiers: [
+                  {
+                    name: 'offset',
+                    options: {
+                      offset: [0, 5],
+                    },
                   },
-                },
-              ],
-            },
-          }}
-        >
-          <h2
-            onClick={() => {
-              setSearchParams(() => {
-                const newParams = new URLSearchParams();
-                if (user._id) {
-                  newParams.set("selected", user._id);
-                } else {
-                  newParams.delete("selected");
-                }
-                return newParams;
-              });
-              handleOpenModal();
+                ],
+              },
             }}
           >
-            {user.firstName} {user.lastName}
-          </h2>
-        </Tooltip>
+            <h2
+              onClick={() => {
+                setSearchParams(() => {
+                  const newParams = new URLSearchParams()
+                  if (user._id) {
+                    newParams.set('selected', user._id)
+                  } else {
+                    newParams.delete('selected')
+                  }
+                  return newParams
+                })
+                handleOpenModal()
+              }}
+            >
+              {user.firstName} {user.lastName}
+            </h2>
+          </Tooltip>
+          <div>
+            {user.assets.map((asset) => {
+              return <span className={style.assetType}>{asset.type}</span>
+            })}
+          </div>
+        </div>
+      </div>
+      <div>
         <p>{user.role}</p>
       </div>
     </Card>
-  ));
-  return <div className={style.mainContainer}>{users}</div>;
-};
+  ))
+  return <div className={style.mainContainer}>{users}</div>
+}
