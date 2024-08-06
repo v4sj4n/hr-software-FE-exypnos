@@ -29,4 +29,6 @@ export interface InputProps {
   multiline?: boolean
   rows?: number
   flex?: number | string;
+  iconPosition?: 'start' | 'end';
+  shrink?: boolean;
 }

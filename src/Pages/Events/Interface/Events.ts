@@ -1,3 +1,4 @@
+// Update this interface to match the actual structure
 export interface EventsData {
     _id: number;
     title: string;
@@ -7,23 +8,15 @@ export interface EventsData {
     creatingTime: string;
     location: string;
     poll: {
-        question: string;
-        options: { option: string; votes: number }[];
-        isMultipleVote: boolean;
+      question: string;
+      options: {
+        option: string;
+        votes: number;
+        voters: { _id: string; firstName: string; lastName: string; }[];
+      }[];
+      isMultipleVote: boolean;
     };
-}
-
-
-export interface PollOption {
-    option: string;
-    votes: number;
-    voters: string[]; // Array of user IDs who voted
-  }
-  
-  export interface Poll {
-    question: string;
-    options: PollOption[];
-    isMultipleVote: boolean;
+    onClose: () => void;
   }
   
   export interface EventsCreationData {
@@ -33,8 +26,13 @@ export interface PollOption {
     time: string;
     location: string;
     poll: {
-        question: string;
-        options: { option: string; votes: number }[];
-        isMultipleVote: boolean;
+      question: string;
+      options: {
+        option: string;
+        votes: number;
+        voters: { _id: string; firstName: string; lastName: string; }[]; 
+      }[];
+      isMultipleVote: boolean;
     };
-}
+  }
+  

@@ -32,7 +32,6 @@ export const useGetAllEvents = () => {
 
 export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>) => {
     const [creatingTime, setCreatingTime] = useState<string>('');
-
     const [event, setEvent] = useState<EventsCreationData>({
         title: '',
         description: '',
@@ -78,8 +77,10 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
     };
 
     const handleAddOption = () => {
-        setPollOptions([...pollOptions, '']);
-    };
+        if (pollOptions.length < 3) {
+          setPollOptions([...pollOptions, '']);
+        }
+      };
 
     const createEvent = (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -93,7 +94,7 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
             location: event.location,
             poll: {
                 question: pollQuestion,
-                options: pollOptions.filter(option => option.trim() !== '').map(option => ({ option })),
+                options: pollOptions.filter(option => option.trim() !== '').map(option => ({ option, votes: 0, voters: [] })),
                 isMultipleVote: isMultipleChoice
             }
         };
@@ -228,5 +229,3 @@ export const useDeleteEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
 
     return { handleDelete, closeModal, showModal, handleDeleteEventModal, eventToDeleteId };
 };
-
-
