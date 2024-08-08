@@ -99,7 +99,7 @@ export const InventoryTable = () => {
         return (
           <button
             onClick={() => {
-              handleOpenViewAssetModalOpen(true);
+              handleOpenViewAssetModalOpen();
               setSingleAssetID(param.value);
             }}
             style={{
@@ -116,7 +116,6 @@ export const InventoryTable = () => {
 
   const getRowId = (row: { id: number | string }) => row.id;
 
-  console.log(assets);
   return (
     <>
       <DataTable rows={rows} columns={columns} getRowId={getRowId} />

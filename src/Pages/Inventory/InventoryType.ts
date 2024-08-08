@@ -7,8 +7,8 @@ export type InventoryItem = {
 };
 
 export type ItemHistory = {
-  takenDate: null | Date | string;
-  returnedDate: null | Date | string;
+  receive: null | Date | string;
+  return: null | Date | string;
   userId: { _id: string; firstName: string; lastName: string };
 };
 

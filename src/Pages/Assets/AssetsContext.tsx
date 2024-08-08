@@ -14,6 +14,8 @@ interface AssetContextType {
   setSearchParams: Dispatch<SetStateAction<URLSearchParams>>;
   usersWithAssets: UserWithAsset[];
   setUsersWithAssets: Dispatch<SetStateAction<UserWithAsset[]>>;
+  userHoldings: UserWithAsset | null;
+  setUserHoldings: Dispatch<SetStateAction<UserWithAsset | null>>;
   modalOpen: boolean;
   handleCloseModal: () => void;
   handleOpenModal: () => void;
@@ -24,6 +26,8 @@ const defaultContextValue: AssetContextType = {
   setSearchParams: () => {},
   usersWithAssets: [],
   setUsersWithAssets: () => {},
+  userHoldings: null,
+  setUserHoldings: () => {},
   modalOpen: false,
   handleCloseModal: () => {},
   handleOpenModal: () => {},
@@ -36,6 +40,7 @@ const AssetProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [usersWithAssets, setUsersWithAssets] = useState<UserWithAsset[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [userHoldings, setUserHoldings] = useState<UserWithAsset | null>(null);
   const handleCloseModal = () => setModalOpen(false);
   const handleOpenModal = () => setModalOpen(true);
 
@@ -49,6 +54,8 @@ const AssetProvider: FC<{ children: ReactNode }> = ({ children }) => {
         modalOpen,
         handleCloseModal,
         handleOpenModal,
+        userHoldings,
+        setUserHoldings,
       }}
     >
       {children}

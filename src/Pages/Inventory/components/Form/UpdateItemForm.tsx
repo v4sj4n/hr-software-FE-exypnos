@@ -29,32 +29,7 @@ export const UpdateAssetForm: React.FC<UpdateAssetProps> = ({
   handleCloseModal,
   cancelEdit,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [options, setOptions] = useState<User[]>([]);
-  const [autocompleteLoading, setAutocompleteLoading] = useState(false);
-
-  useEffect(() => {
-    let active = true;
-
-    if (!isOpen) {
-      return undefined;
-    }
-
-    setAutocompleteLoading(true);
-    (async () => {
-      if (active) {
-        const { data } = await AxiosInstance.get<User[]>("/user");
-        setOptions(data);
-      }
-      setAutocompleteLoading(false);
-    })();
-
-    return () => {
-      active = false;
-    };
-  }, [isOpen]);
-
-  const [userId, setUserId] = useState<string | null>(null);
+  const [userId] = useState<string | null>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -117,58 +92,6 @@ export const UpdateAssetForm: React.FC<UpdateAssetProps> = ({
               {type === "monitor" ? <Monitor /> : <Laptop />}{" "}
               {type[0].toUpperCase() + type.slice(1)}
             </h3>
-
-            <Autocomplete
-              id="users-list"
-              sx={{
-                width: "50%",
-                marginBottom: "1rem",
-              }}
-              open={isOpen}
-              onOpen={() => setIsOpen(true)}
-              onClose={() => setIsOpen(false)}
-              onChange={(event, newValue) => {
-                event.preventDefault();
-                console.log(newValue);
-                if (newValue) {
-                  setUserId(newValue?._id);
-                }
-              }}
-              options={options}
-              loading={autocompleteLoading}
-              isOptionEqualToValue={(option, value) => option._id === value._id}
-              getOptionLabel={(option) =>
-                option.firstName + " " + option.lastName
-              }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Assign to User"
-                  variant="filled"
-                  size="small"
-                  sx={{ ...inputStyles }}
-                  InputLabelProps={{
-                    style: {
-                      color: "#4C556B",
-                      fontFamily: '"Outfit", sans-serif',
-                    },
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    disableUnderline: true,
-                    ...params.InputProps,
-                    endAdornment: (
-                      <>
-                        {autocompleteLoading ? (
-                          <CircularProgress color="inherit" size={20} />
-                        ) : null}
-                        {params.InputProps.endAdornment}
-                      </>
-                    ),
-                  }}
-                />
-              )}
-            />
           </div>
 
           <div

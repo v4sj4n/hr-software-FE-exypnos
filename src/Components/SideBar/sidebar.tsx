@@ -1,16 +1,16 @@
 import {
-  Dashboard as DashboardIcon,
-  Group as GroupIcon,
-  Event as EventIcon,
-  History as HistoryIcon,
-  Business as BusinessIcon,
+  GridView as DashboardIcon,
+  GroupOutlined as GroupIcon,
+  EventOutlined as EventIcon,
+  InfoOutlined as InfoIcon,
+  BusinessOutlined as BusinessIcon,
   Menu as MenuIcon,
   ExpandMore as ExpandMoreIcon,
   ExpandLess as ExpandLessIcon,
+  DevicesOutlined as DevicesIcon,
+  GroupAddOutlined as GroupAddIcon,
 } from '@mui/icons-material'
-import CategoryIcon from '@mui/icons-material/Category'
 
-import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import React, { useState } from 'react'
 import style from './sidebar.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -56,8 +56,14 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
           </div>
           <div className={style.item} onClick={toggleRecruitingDropdown}>
             <Link to="#recruiting" className={style.link}>
+            <div
+
+            >
+
               <GroupAddIcon className={style.icon} />
               {isOpen && <span className={style.text}>Recruiting</span>}
+            </div>
+
               {recruitingDropdownOpen ? (
                 <ExpandLessIcon className={style.expandIcon} />
               ) : (
@@ -111,7 +117,7 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
           </div>
           <div className={style.item} onClick={toggleAssetsDropdown}>
             <Link to="#assets" className={style.link}>
-              <CategoryIcon className={style.icon} />
+              <DevicesIcon className={style.icon} />
               {isOpen && <span className={style.text}>Assets</span>}
               {assetsDropdownOpen ? (
                 <ExpandLessIcon className={style.expandIcon} />
@@ -132,12 +138,7 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
               Inventory
             </Link>
           </div>
-          <div className={style.item}>
-            <Link to="/structure" className={style.link}>
-              <BusinessIcon className={style.icon} />
-              {isOpen && <span className={style.text}>Structure</span>}
-            </Link>
-          </div>
+
           <div className={style.item} onClick={toggleEventsDropdown}>
             <Link to="/events" className={style.link}>
               <EventIcon className={style.icon} />
@@ -162,9 +163,15 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
             </Link>
           </div>
           <div className={style.item}>
+            <Link to="/structure" className={style.link}>
+              <BusinessIcon className={style.icon} />
+              {isOpen && <span className={style.text}>Structure</span>}
+            </Link>
+          </div>
+          <div className={style.item}>
             <Link to="/historic" className={style.link}>
-              <HistoryIcon className={style.icon} />
-              {isOpen && <span className={style.text}>Historic</span>}
+              <InfoIcon className={style.icon} />
+              {isOpen && <span className={style.text}>About</span>}
             </Link>
           </div>
         </div>

@@ -2,19 +2,17 @@ import { EmployeesWithAssets } from './Component/EmployeesWithAssets'
 import AssetProvider, { AssetsContext } from './AssetsContext.tsx'
 import { ChangeEvent, useContext } from 'react'
 import Input from '@/Components/Input/Index.tsx'
-import style from './style/assets.module.scss'
 import FormLabel from '@mui/joy/FormLabel'
 import Radio, { radioClasses } from '@mui/joy/Radio'
 import RadioGroup from '@mui/joy/RadioGroup'
 import Sheet from '@mui/joy/Sheet'
 import Box from '@mui/joy/Box'
-
 import { debounce } from 'lodash'
-import { UserHoldings } from './Component/UserHoldings.tsx'
+import { TooltipImproved } from '@/Components/Tooltip/Tooltip.tsx'
+import style from './style/assets.module.scss'
 
 function AssetsComponent() {
-  const { setSearchParams, searchParams } =
-    useContext(AssetsContext)
+  const { setSearchParams, searchParams } = useContext(AssetsContext)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchParams((prev) => {
@@ -56,7 +54,7 @@ function AssetsComponent() {
   }
 
   return (
-    <>
+    <div style={{padding: "2rem"}}>
       <div className={style.titleHeading}>
         <div className={style.title}>Holdings</div>
         <Input
@@ -81,7 +79,9 @@ function AssetsComponent() {
           </FormLabel>
           <RadioGroup
             aria-labelledby="product-size-attribute"
-            defaultValue={'all'}
+            defaultValue={
+              searchParams.get('users') ? searchParams.get('users') : 'all'
+            }
             sx={{ gap: 1, mb: 2, flexWrap: 'wrap', flexDirection: 'row' }}
             onChange={handleChange}
           >
@@ -92,10 +92,11 @@ function AssetsComponent() {
                   position: 'relative',
                   height: 40,
                   flexShrink: 0,
-                  padding: '1rem 2rem',
+                  padding: '0.333rem 1rem',
                   display: 'flex',
                   alignItems: 'center',
-                  borderRadius: 20,
+                  alignSelf: 'end',
+                  borderRadius: 7.5,
                   justifyContent: 'center',
                   '--joy-focus-outlineOffset': '4px',
                   '--joy-palette-focusVisible': (theme) =>
@@ -114,36 +115,38 @@ function AssetsComponent() {
                   },
                 }}
               >
-                <Radio
-                  color="neutral"
-                  overlay
-                  disableIcon
-                  data-tooltip-conf="top"
-                  data-tooltip={`
-                  ${
+                <TooltipImproved
+                  text={
                     usersFilter === 'ALL'
                       ? 'All Employees'
                       : usersFilter === 'W ASSETS'
                       ? 'Employees with Assets'
                       : 'Employees without Assets'
-                  }`}
-                  value={
-                    usersFilter === 'ALL'
-                      ? 'all'
-                      : usersFilter === 'W ASSETS'
-                      ? 'with'
-                      : 'without'
                   }
-                  label={usersFilter}
-                />
+                  placement="top"
+                  offset={[0, 5]}
+                >
+                  <Radio
+                    color="neutral"
+                    overlay
+                    disableIcon
+                    value={
+                      usersFilter === 'ALL'
+                        ? 'all'
+                        : usersFilter === 'W ASSETS'
+                        ? 'with'
+                        : 'without'
+                    }
+                    label={usersFilter}
+                  />
+                </TooltipImproved>
               </Sheet>
             ))}
           </RadioGroup>
         </Box>
       </div>
       <EmployeesWithAssets />
-      {searchParams.get('selected') && <UserHoldings />}
-    </>
+    </div>
   )
 }
 

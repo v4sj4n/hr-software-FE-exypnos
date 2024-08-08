@@ -1,12 +1,26 @@
 .mainContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    grid-template-rows: repeat(auto-fit, min(6rem));
-    row-gap: 1rem;
-    column-gap: 0.5rem;
+    display: flex;
+    gap: 1rem;
     justify-content: center;
-}
 
+    .employeesContainer {
+        width: 70%;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .selectedUserContainer {
+        width: 30%;
+        min-height: 100%;
+        border-radius: 0.5rem;
+        border: #8f8f8f solid 1px;
+        overflow: hidden;
+
+        
+    }
+}
 .userDiv {
     display: flex;
     flex-direction: row;
@@ -14,31 +28,65 @@
     padding-left: 1.5rem !important;
     padding-right: 1.5rem !important;
     align-items: center;
-    border-radius: 5rem !important;
+    border-radius: 0.75rem !important;
+    background-color: #f0f7ff !important;
     border: gray 0.5px solid !important;
 
-    img {
-        min-width: 3rem;
-        height: 3rem;
-        object-fit: cover;
-        border-radius: 1.5rem;
-    }
-
-    div {
+    .imageAndName {
         display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
+        align-items: center;
+        gap: 1.5rem;
 
-        h2 {
-            font-size: 1.25rem;
-            font-weight: 500;
+        * {
             margin: 0;
-            color: #333;
+        }
+
+        img {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        h3 {
+
+            color: #0072f5;
+            font-size: 1.25rem;
 
             &:hover {
-                color: lighten(#333, 17.5%);
                 cursor: pointer;
+                color: lighten($color: #0072f5, $amount: 10);
             }
         }
     }
+
+    .userAssets {
+        display: flex;
+        gap: 0.5rem;
+
+        * {
+            margin: 0;
+        }
+
+        svg {
+            margin-top: .5rem;
+            width: 1.5rem;
+            fill: #00000082;
+        }
+
+    }
+
+    .roleDiv {
+        * {
+            margin: 0;
+        }
+    }
+}
+
+.noItemsOnSelectedUser {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: #0000000d;
 }

@@ -1,0 +1,137 @@
+@import "@/Helpers/_base.scss";
+
+.selectedUserDetails {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    height: 100%;
+    background-color: #f0f7ff !important;
+
+    >img {
+        width: 7.5rem;
+        height: 7.5rem;
+        border-radius: 50%;
+        margin-bottom: 0.5rem;
+    }
+
+    >h3 {
+        font-weight: 600;
+        color: #0062d1;
+        margin-bottom: 0.3rem;
+        text-transform: uppercase;
+    }
+
+    .selectedUserSimpleBio {
+        display: flex;
+        gap: 0.5rem;
+    }
+}
+
+
+
+
+.assetsContainer {
+    margin-top: 1rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .assetContainer {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .assetGeneralInfo {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+
+            * {
+                margin: 0;
+            }
+
+            h4 {
+                font-size: 1.5rem;
+                color: #0072f5;
+            }
+
+            p {
+                font-size: 0.75rem;
+            }
+        }
+
+        .dateAndActions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            * {
+                margin: 0;
+            }
+
+            button {
+                color: darken($color: #F87275, $amount: 10);
+                background-color: transparent;
+                border: none;
+                padding: 0rem;
+                align-self: flex-end;
+            }
+        }
+
+        .returnFormActions {
+            display: flex;
+            flex-direction: column;
+            gap: 0rem;
+
+            * {
+                margin: 0;
+            }
+
+            form {
+                display: flex;
+                align-self: flex-end;
+                gap: 0.5rem;
+
+                * {
+                    line-height: 115%;
+                }
+
+                >span:nth-of-type(1) button {
+                    color: #7D7D7D;
+                }
+
+                >span:nth-of-type(2) button {
+                    color: #45A557;
+                }
+            }
+
+            button {
+                // color: darken($color: #F87275, $amount: 10);
+                background-color: transparent;
+                border: none;
+                padding: 0rem;
+                align-self: flex-end;
+            }
+        }
+    }
+}
+
+
+.assignAssetForm {
+    margin-top: 2.5rem;
+    display: flex;
+    width: 100%;
+    gap: 0.5rem;
+
+    >span button {
+        color: white;
+        background-color: #0072f5;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+    }
+}

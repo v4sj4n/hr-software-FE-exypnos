@@ -5,7 +5,7 @@ import { InventoryContext } from "./InventoryContext";
 import { useOneAsset } from "../hook";
 import style from "../style/singleInventoryItem.module.scss";
 import { TitleCaser } from "@/Helpers/TitleCaser";
-import { InventoryItem } from "../InventoryType";
+import { InventoryItem, ItemHistory } from "../InventoryType";
 
 export const SingleInventoryItem = () => {
   const {
@@ -32,6 +32,17 @@ export const SingleInventoryItem = () => {
               </p>
               {data && renderStatus(data.status, data.userId)}
             </div>
+          </div>
+          <div>
+            {data?.history?.map((history: ItemHistory, index) => {
+              console.log(history);
+              return (
+                <div key={index}>
+                  <p>{history.receive}</p>
+                  <p>{renderStatus(history.return, history.userId)}</p>
+                </div>
+              );
+            })}
           </div>
         </>
       )}
