@@ -1,4 +1,3 @@
-// Update this interface to match the actual structure
 export interface EventsData {
     _id: number;
     title: string;
@@ -17,6 +16,7 @@ export interface EventsData {
       isMultipleVote: boolean;
     };
     onClose: () => void;
+    
   }
   
   export interface EventsCreationData {

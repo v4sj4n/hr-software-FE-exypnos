@@ -28,11 +28,11 @@ interface EventPollProps {
   userId: number | undefined;
 }
 
-
 const EventPoll: React.FC<EventPollProps> = ({ poll, eventId, userId }) => {
   const { currentUser } = useAuth();
   const [localPoll, setLocalPoll] = useState<Poll>(poll);
   const [hasVoted, setHasVoted] = useState(false);
+  const isAdmin = currentUser?.role === 'admin'
 
   useEffect(() => {
     setLocalPoll(poll);
@@ -51,17 +51,17 @@ const EventPoll: React.FC<EventPollProps> = ({ poll, eventId, userId }) => {
       options: prevPoll.options.map(opt =>
         opt.option === option
           ? {
-              ...opt,
-              votes: opt.votes + 1,
-              voters: [
-                ...opt.voters,
-                {
-                  _id: userId.toString(),
-                  firstName: currentUser?.firstName || '',
-                  lastName: currentUser?.lastName || ''
-                }
-              ]
-            }
+            ...opt,
+            votes: opt.votes + 1,
+            voters: [
+              ...opt.voters,
+              {
+                _id: userId.toString(),
+                firstName: currentUser?.firstName || '',
+                lastName: currentUser?.lastName || ''
+              }
+            ]
+          }
           : opt
       )
     }));
@@ -92,7 +92,7 @@ const EventPoll: React.FC<EventPollProps> = ({ poll, eventId, userId }) => {
   };
 
   const renderDevCheckbox = (userVoted: boolean) => {
-    if (currentUser?.role !== 'dev') return null;
+    if (isAdmin) return null;
 
     return (
       <span>
@@ -107,7 +107,7 @@ const EventPoll: React.FC<EventPollProps> = ({ poll, eventId, userId }) => {
   };
 
   const renderAdminTooltip = (option: PollOption) => {
-    if (currentUser?.role !== 'admin') return null;
+    if (!isAdmin) return null;
 
     return (
       <Tooltip
@@ -133,9 +133,8 @@ const EventPoll: React.FC<EventPollProps> = ({ poll, eventId, userId }) => {
         return (
           <div
             key={index}
-            className={`${styles.option} ${userVoted ? styles.activeOption : ''} ${
-              hasVoted && !userVoted ? styles.disabledOption : ''
-            }`}
+            className={`${styles.option} ${userVoted ? styles.activeOption : ''} ${hasVoted && !userVoted ? styles.disabledOption : ''
+              }`}
             onClick={() => !hasVoted && handleVote(option.option)}
           >
             {renderOptionContent(option)}

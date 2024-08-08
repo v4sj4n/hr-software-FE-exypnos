@@ -48,9 +48,13 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
     const [pollQuestion, setPollQuestion] = useState('');
     const [pollOptions, setPollOptions] = useState<string[]>(['', '']);
     const [isMultipleChoice, setIsMultipleChoice] = useState(false);
+    const [includesPoll, setIncludesPoll] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+        if (name === 'includesPoll') {
+            setIncludesPoll(e.target.checked);
+        }
         if (name === 'time') {
             setCreatingTime(value);
         } else if (name === 'date') {
@@ -92,11 +96,11 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
             description: event.description,
             date: combinedDateTime,
             location: event.location,
-            poll: {
+            poll: includesPoll ? {
                 question: pollQuestion,
                 options: pollOptions.filter(option => option.trim() !== '').map(option => ({ option, votes: 0, voters: [] })),
                 isMultipleVote: isMultipleChoice
-            }
+            } : null
         };
 
         AxiosInstance.post('/event', newEvent)
@@ -122,7 +126,8 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
         pollOptions,
         isMultipleChoice,
         handleOptionChange,
-        handleAddOption
+        handleAddOption,
+        includesPoll
     };
 }
 
@@ -130,20 +135,40 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
     const [editingEvent, setEditingEvent] = useState<EventsData | null>(null);
     const [editingTime, setEditingTime] = useState<string>('');
     const [showForm, setShowForm] = useState(false);
+    const [includePollInEdit, setIncludePollInEdit] = useState(false);
+    const [editPollQuestion, setEditPollQuestion] = useState('');
+    const [editPollOptions, setEditPollOptions] = useState<string[]>(['', '']);
+    const [editIsMultipleChoice, setEditIsMultipleChoice] = useState(false);
 
     const toggleForm = () => {
         setShowForm(!showForm);
         setEditingEvent(null);
+        resetEditPollState();
+    };
+
+    const resetEditPollState = () => {
+        setIncludePollInEdit(false);
+        setEditPollQuestion('');
+        setEditPollOptions(['', '']);
+        setEditIsMultipleChoice(false);
     };
 
     const handleEditClick = (eventToEdit: EventsData) => {
         setEventForEditing(eventToEdit);
+        setIncludePollInEdit(!!eventToEdit.poll);
+        if (eventToEdit.poll) {
+            setEditPollQuestion(eventToEdit.poll.question);
+            setEditPollOptions(eventToEdit.poll.options.map(opt => opt.option));
+            setEditIsMultipleChoice(eventToEdit.poll.isMultipleVote);
+        } else {
+            resetEditPollState();
+        }
         setShowForm(true);
     };
 
-
     const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+        const { name, value, type, checked } = e.target;
+        
         if (name === 'time') {
             setEditingTime(value);
         } else if (name === 'date') {
@@ -151,11 +176,29 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
                 ...prevEvent!,
                 date: value
             }));
+        } else if (name === 'includesPoll') {
+            setIncludePollInEdit(checked);
+        } else if (name === 'pollQuestion') {
+            setEditPollQuestion(value);
+        } else if (name === 'isMultipleChoice') {
+            setEditIsMultipleChoice(checked);
         } else {
             setEditingEvent(prevEvent => ({
                 ...prevEvent!,
-                [name]: value
+                [name]: type === 'checkbox' ? checked : value
             }));
+        }
+    };
+
+    const handleEditOptionChange = (index: number, value: string) => {
+        const newOptions = [...editPollOptions];
+        newOptions[index] = value;
+        setEditPollOptions(newOptions);
+    };
+
+    const handleAddEditOption = () => {
+        if (editPollOptions.length < 3) {
+            setEditPollOptions([...editPollOptions, '']);
         }
     };
 
@@ -180,6 +223,12 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
             title: editingEvent.title,
             description: editingEvent.description,
             date: combinedDateTime,
+            location: editingEvent.location,
+            poll: includePollInEdit ? {
+                question: editPollQuestion,
+                options: editPollOptions.filter(option => option.trim() !== '').map(option => ({ option, votes: 0, voters: [] })),
+                isMultipleVote: editIsMultipleChoice
+            } : null
         };
 
         AxiosInstance.patch(`/event/${editingEvent._id}`, fieldsToUpdate)
@@ -192,13 +241,31 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
                 );
                 setEditingEvent(null);
                 setEditingTime('');
+                resetEditPollState();
+                setShowForm(false);
             })
             .catch(error => {
                 console.error('Error updating event:', error);
             });
     }
 
-    return { editingEvent, editingTime, setEditingEvent, handleEditChange, updateEvent, setEventForEditing, showForm, toggleForm, handleEditClick };
+    return {
+        editingEvent,
+        editingTime,
+        showForm,
+        includePollInEdit,
+        editPollQuestion,
+        editPollOptions,
+        editIsMultipleChoice,
+        setEditingEvent,
+        handleEditChange,
+        handleEditOptionChange,
+        handleAddEditOption,
+        updateEvent,
+        setEventForEditing,
+        toggleForm,
+        handleEditClick
+    };
 }
 
 
