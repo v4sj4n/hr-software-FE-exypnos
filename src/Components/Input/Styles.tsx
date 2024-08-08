@@ -1,3 +1,6 @@
+import { styled } from '@mui/material/styles';
+
+
 export const inputStyles = {
   "& .css-1gctnaj-MuiInputBase-input-MuiFilledInput-input": {
     verticalAlign: "bottom",
@@ -8,21 +11,21 @@ export const inputStyles = {
   "& .MuiFilledInput-root": {
     border: "1px solid #999999",
     overflow: "hidden",
-    backgroundColor: "transparent",
+    backgroundColor: "#FFFFFF",
     borderRadius: 1,
     fontFamily: '"Outfit", sans-serif',
     color: "#000000",
     fontSize: "14px",
 
     "&.Mui-focused": {
-      backgroundColor: "transparent",
+      backgroundColor: "#FFFFFF",
       boxShadow: "none",
       borderColor: "#999999",
       color: "#000000",
       fontSize: "14px",
     },
     "&:hover": {
-      backgroundColor: "transparent",
+      backgroundColor: "#FFFFFF",
       color: "#000000",
       borderColor: "#999999",
       fontSize: "14px",
@@ -149,3 +152,16 @@ export const autoCompleteStyles = {
     },
 },
 }
+
+export const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+  color: "#2469FF",
+});

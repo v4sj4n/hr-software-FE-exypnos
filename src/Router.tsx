@@ -15,10 +15,9 @@ import Profile from "./Pages/Profile/Profile";
 import Recruitment from "./Pages/Recruitment/Recruitment.tsx";
 import Structure from "./Pages/Structure/Structure.tsx";
 import Vacation from "./Pages/Vacation/Vacation.tsx";
-import { EmployeeProvider } from "./Pages/Employees/Context/EmployeTableProvider.tsx";
-import { CandidateProvider } from "./Pages/Candidates/Context/CandidateTableProvider.tsx";
 import VacationProvider from "./Pages/Vacation/VacationContext.tsx";
 import Inventory from "./Pages/Inventory/Inventory.tsx";
+import Career from "./Pages/Career/Career.tsx";
 
 export default function Router() {
   const router = createBrowserRouter([
@@ -35,15 +34,17 @@ export default function Router() {
       element: <ResetPass />,
     },
     {
+      path: "career",
+      element: <Career />,
+    },
+    {
       path: "/",
       element: <PrivateRoute />,
       children: [
         {
           path: "employees",
           element: (
-            <EmployeeProvider>
-              <Employees />
-            </EmployeeProvider>
+            <Employees />
           ),
         },
         { path: "/dashboard", element: <Dashboard />, index: false },
@@ -74,9 +75,7 @@ export default function Router() {
         {
           path: "candidates",
           element: (
-            <CandidateProvider>
               <Candidates />
-            </CandidateProvider>
           ),
         },
         {
