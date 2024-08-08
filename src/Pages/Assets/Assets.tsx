@@ -54,7 +54,7 @@ function AssetsComponent() {
   }
 
   return (
-    <>
+    <div style={{padding: "2rem"}}>
       <div className={style.titleHeading}>
         <div className={style.title}>Holdings</div>
         <Input
@@ -146,7 +146,7 @@ function AssetsComponent() {
         </Box>
       </div>
       <EmployeesWithAssets />
-    </>
+    </div>
   )
 }
 
