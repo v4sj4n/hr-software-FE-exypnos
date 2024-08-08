@@ -10,7 +10,7 @@ export const useGetUsersWithAssets = (searchParams: URLSearchParams) => {
 
   const { data, error, loading } = useFetch<UserWithAsset[]>(
     `/asset/user?users=${users}&search=${search}`,
-    1
+    30
   )
   const { setUsersWithAssets } = useContext(AssetsContext)
 

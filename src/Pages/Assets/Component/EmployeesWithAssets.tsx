@@ -9,6 +9,7 @@ import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
 import { LaptopOutlined, MonitorOutlined } from '@mui/icons-material'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
+import { UserHoldings } from './UserHoldings'
 
 export const EmployeesWithAssets = () => {
   const { usersWithAssets, searchParams, setSearchParams, handleOpenModal } =
@@ -45,34 +46,33 @@ export const EmployeesWithAssets = () => {
 
   console.log(usersWithAssets)
 
-  const users = usersWithAssets.map(({_id, firstName, lastName, imageUrl,assets, role}: UserWithAsset) => (
-    <Card key={_id} className={style.userDiv}>
+  const users = usersWithAssets.map(
+    ({ _id, firstName, lastName, imageUrl, assets, role }: UserWithAsset) => (
+      <Card key={_id} className={style.userDiv}>
         <div className={style.imageAndName}>
-        <img src={imageUrl} alt={`${firstName}'s profile picture`} />
-        <TooltipImproved
+          <img src={imageUrl} alt={`${firstName}'s profile picture`} />
+          <TooltipImproved
             text={`Click to view ${firstName}'s holdings`}
             placement="right"
             offset={[0, 5]}
           >
-
-        <h3>{firstName} {lastName}</h3>
+            <h3 onClick={() => userClickHandler(_id)}>
+              {firstName} {lastName}
+            </h3>
           </TooltipImproved>
         </div>
 
         <div className={style.userAssets}>
-        {assets.map((asset) => {
-              return (
-                  <IconBasedOnAssetType asset={asset.type} />
-              )
-            })}
-
+          {assets.map((asset) => {
+            return <IconBasedOnAssetType asset={asset.type} />
+          })}
         </div>
 
         <div className={style.roleDiv}>
-        <p>{role}</p>
-      </div>
-        
-      {/* <div>
+          <p>{role}</p>
+        </div>
+
+        {/* <div>
         <img src={user.imageUrl} />
         <div>
           
@@ -93,44 +93,18 @@ export const EmployeesWithAssets = () => {
         </div>
       </div>
  */}
-    </Card>
-  ))
+      </Card>
+    )
+  )
   return (
     <div className={style.mainContainer}>
       <div className={style.employeesContainer}>{users}</div>
       <div className={style.selectedUserContainer}>
-        {true ? (
-          <div className={style.selectedUserDetails}>
-            <img
-              src="https://i.scdn.co/image/ab676161000051746e835a500e791bf9c27a422a"
-              alt="user's profile"
-            />
-            <h3>Kanye West</h3>
-
-            <div className={style.selectedUserSimpleBio}>
-              <p>kw@yeezy.com</p>|<p>+1 234 567 8901</p>|<p>Goat</p>
-            </div>
-
-            <div className={style.assetsContainer}>
-              {dummyAssets.map(({ id, type, sn, takenDate }) => (
-                <div key={id} className={style.assetContainer}>
-                  <div className={style.assetGeneralInfo}>
-                    <h4>{type}</h4>
-                    <p>{sn}</p>
-                  </div>
-                  <div className={style.dateAndActions}>
-                    <p>{takenDate}</p>
-                    <Button btnText="Return" type={ButtonTypes.PRIMARY} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className={style.noItemsOnSelectedUser}>
-            <p>No User selected</p>
-          </div>
-        )}
+        {searchParams.get('selected') ? <UserHoldings /> : (
+           <div className={style.noItemsOnSelectedUser}>
+           <p>No User selected</p>
+         </div>
+        )  }
       </div>
     </div>
   )

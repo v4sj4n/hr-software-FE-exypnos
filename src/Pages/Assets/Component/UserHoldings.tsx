@@ -1,18 +1,14 @@
 import { useContext, useCallback, useState, useEffect, FormEvent } from 'react'
-import Backdrop from '@mui/material/Backdrop'
-import Modal from '@mui/material/Modal'
-import Fade from '@mui/material/Fade'
 import { Autocomplete, Card, CircularProgress, TextField } from '@mui/material'
 import { AssetsContext } from '../AssetsContext'
 import { Asset } from '../TAsset'
-import style from '../style/userHolding.module.scss'
 import dayjs from 'dayjs'
 import AxiosInstance from '@/Helpers/Axios'
-import { inputStyles } from '@/Components/Input/Styles'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { useGetAssetsOfAUser } from '../Hook'
 import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
+import style from '../style/userHolding.module.scss'
 
 export const UserHoldings = () => {
   const { searchParams, setSearchParams, userHoldings, setUserHoldings } =
@@ -25,10 +21,10 @@ export const UserHoldings = () => {
     null
   )
 
-  const { error, loading } = useGetAssetsOfAUser(
-    searchParams.get('selected') as string
-  )
-
+    const { error, loading } = useGetAssetsOfAUser(
+      searchParams.get('selected') as string
+    )
+  
   const handleClose = useCallback(() => {
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev)
@@ -106,224 +102,56 @@ export const UserHoldings = () => {
     }
   }
 
-  return (
-    <Modal
-      aria-labelledby="transition-modal-title"
-      aria-describedby="transition-modal-description"
-      open={true}
-      onClose={handleClose}
-      closeAfterTransition
-      slots={{ backdrop: Backdrop }}
-      slotProps={{
-        backdrop: {
-          timeout: 500,
-        },
-      }}
-    >
-      <Fade in={true}>
-        <Card
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 500,
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            p: 4,
-            borderRadius: '10px',
-          }}
-        >
-          {loading ? (
-            <CircularProgress />
-          ) : error ? (
-            <div>Error: {error}</div>
-          ) : (
-            <div className={style.mainContainer} style={{}}>
-              <img
-                src={userHoldings?.imageUrl}
-                alt={`${userHoldings?.firstName}'s image`}
-              />
-              <h3>
-                {userHoldings?.firstName} {userHoldings?.lastName}
-              </h3>
 
-              <div className={style.simpleBio}>
-                <p>{userHoldings?.email}</p>
-                <p>{userHoldings?.phone}</p>
-                <p>{userHoldings?.role}</p>
+    console.log(userHoldings)
+    if (loading) {
+      return (
+        <div className={style.noItemsOnSelectedUser}>
+          <CircularProgress />
+        </div>
+      )
+    }
+    console.log(error)
+    if (error)
+      return (
+        <div className={style.noItemsOnSelectedUser}>
+          <span style={{ textAlign: 'center' }}>Error: {error}</span>
+        </div>
+      )
+
+    return (
+      <div className={style.selectedUserDetails}>
+        <img
+          src="https://i.scdn.co/image/ab676161000051746e835a500e791bf9c27a422a"
+          alt="user's profile"
+        />
+        <h3>
+          {userHoldings?.firstName} {userHoldings?.lastName}
+        </h3>
+
+        <div className={style.selectedUserSimpleBio}>
+          <p>{userHoldings?.email}</p>|<p>{userHoldings?.phone}</p>|
+          <p>{userHoldings?.role}</p>
+        </div>
+
+        <div className={style.assetsContainer}>
+          {userHoldings?.assets.map(
+            ({ _id, type, serialNumber, takenDate }) => (
+              <div key={_id} className={style.assetContainer}>
+                <div className={style.assetGeneralInfo}>
+                  <h4>{type}</h4>
+                  <p>{serialNumber}</p>
+                </div>
+                <div className={style.dateAndActions}>
+                Taken on:{' '}
+                {dayjs(takenDate).format('DD-MMM-YYYY')}{' '}
+                  <Button btnText="Return" type={ButtonTypes.PRIMARY} />
+                </div>
               </div>
-              <hr />
-              <div className={style.assetsContainer}>
-                {userHoldings?.assets.map((asset) => {
-                  return (
-                    <div
-                      key={asset._id}
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                      }}
-                    >
-                      <div className={style.itemDetails}>
-                        <h4>
-                          {asset.type[0].toUpperCase() + asset.type.slice(1)}
-                        </h4>
-                        <p>{asset.serialNumber}</p>
-                      </div>
-                      <div className={style.dateContainer}>
-                        <div>
-                          {returnItems[asset._id] ? (
-                            <div className={style.assignReturningStatus}>
-                              <p>Assign Returning status:</p>
-                              <form
-                                onSubmit={(e) => {
-                                  handleItemReturner(e, asset._id)
-                                }}
-                              >
-                                <TooltipImproved
-                                  text={`Return the item as broken by ${userHoldings?.firstName} ${userHoldings?.lastName}`}
-                                  placement="left"
-                                  offset={[0, 2.5]}
-                                >
-                                  <span>
-                                    <button
-                                      onClick={() => {
-                                        setAssetToReturnStatus('broken')
-                                      }}
-                                      type="submit"
-                                    >
-                                      broken
-                                    </button>
-                                  </span>
-                                </TooltipImproved>
-
-                                <TooltipImproved
-                                  text={`Make the item available by removing it from ${userHoldings?.firstName} ${userHoldings?.lastName} `}
-                                  placement="right"
-                                  offset={[0, 2.5]}
-                                >
-                                  <span>
-                                    <button
-                                      onClick={() => {
-                                        setAssetToReturnStatus('available')
-                                      }}
-                                      type="submit"
-                                    >
-                                      available
-                                    </button>
-                                  </span>
-                                </TooltipImproved>
-                              </form>
-                            </div>
-                          ) : (
-                            <div className={style.dateContainer}>
-                              <p>
-                                Taken on:{' '}
-                                {dayjs(asset?.takenDate).format('DD-MMM-YYYY')}{' '}
-                              </p>
-                              <TooltipImproved
-                                offset={[0, 2.5]}
-                                text={`Add the item as returned by ${userHoldings?.firstName} ${userHoldings?.lastName}`}
-                                placement="right"
-                              >
-                                <span>
-                                  <Button
-                                    btnText={'Return'}
-                                    onClick={() => {
-                                      setReturnItems((prev) => ({
-                                        ...prev,
-                                        [asset._id]: true,
-                                      }))
-                                    }}
-                                    type={ButtonTypes.PRIMARY}
-                                  />
-                                </span>
-                              </TooltipImproved>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-              <form onSubmit={handleSubmit} className={style.formInput}>
-                <Autocomplete
-                  id="users-list"
-                  sx={{
-                    width: '100%',
-                    marginBottom: '1rem',
-                  }}
-                  open={isOpen}
-                  onOpen={() => setIsOpen(true)}
-                  onClose={() => setIsOpen(false)}
-                  onChange={(event, newValue) => {
-                    event.preventDefault()
-                    console.log(newValue)
-                    if (newValue) {
-                      setAssetId(newValue?._id)
-                    }
-                  }}
-                  options={options}
-                  loading={autocompleteLoading}
-                  isOptionEqualToValue={(option, value) =>
-                    option._id === value._id
-                  }
-                  getOptionLabel={(option) =>
-                    option.type + ' ' + option.serialNumber
-                  }
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Assign to User"
-                      variant="filled"
-                      size="small"
-                      sx={{ ...inputStyles }}
-                      InputLabelProps={{
-                        style: {
-                          color: '#4C556B',
-                          fontFamily: '"Outfit", sans-serif',
-                        },
-                        shrink: true,
-                      }}
-                      InputProps={{
-                        disableUnderline: true,
-                        ...params.InputProps,
-                        endAdornment: (
-                          <>
-                            {autocompleteLoading ? (
-                              <CircularProgress color="inherit" size={20} />
-                            ) : null}
-                            {params.InputProps.endAdornment}
-                          </>
-                        ),
-                      }}
-                    />
-                  )}
-                />
-                <TooltipImproved
-                  text={`Assign the selected item as a possesion of ${userHoldings?.firstName} ${userHoldings?.lastName}`}
-                  placement="right"
-                  offset={[-10, 0]}
-                >
-                  <span>
-                    <Button
-                      btnText={'Assign'}
-                      isSubmit
-                      type={ButtonTypes.PRIMARY}
-                    />
-                  </span>
-                </TooltipImproved>
-              </form>
-
-              <p className={style.holdingDescription}>
-                Holding {userHoldings?.assets.length} item
-                {userHoldings?.assets.length === 1 ? '' : 's'}{' '}
-              </p>
-            </div>
+            )
           )}
-        </Card>
-      </Fade>
-    </Modal>
-  )
+        </div>
+      </div>
+    )
+  
 }
