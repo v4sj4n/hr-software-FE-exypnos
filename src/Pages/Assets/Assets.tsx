@@ -2,7 +2,6 @@ import { EmployeesWithAssets } from "./Component/EmployeesWithAssets";
 import AssetProvider, { AssetsContext } from "./AssetsContext.tsx";
 import { ChangeEvent, useContext } from "react";
 import Input from "@/Components/Input/Index.tsx";
-import style from "./style/assets.module.scss";
 import FormLabel from "@mui/joy/FormLabel";
 import Radio, { radioClasses } from "@mui/joy/Radio";
 import RadioGroup from "@mui/joy/RadioGroup";
@@ -10,8 +9,8 @@ import Sheet from "@mui/joy/Sheet";
 import Box from "@mui/joy/Box";
 import { debounce } from "lodash";
 import { UserHoldings } from "./Component/UserHoldings.tsx";
-import { Tooltip } from "@mui/material";
-import Zoom from "@mui/material/Zoom";
+import { TooltipImproved } from "@/Components/Tooltip/Tooltip.tsx";
+import style from "./style/assets.module.scss";
 
 function AssetsComponent() {
   const { setSearchParams, searchParams } = useContext(AssetsContext);
@@ -94,9 +93,10 @@ function AssetsComponent() {
                   position: "relative",
                   height: 40,
                   flexShrink: 0,
-                  padding: "1rem 2rem",
+                  padding: "0.333rem 1rem",
                   display: "flex",
                   alignItems: "center",
+                  alignSelf: "end",
                   borderRadius: 7.5,
                   justifyContent: "center",
                   "--joy-focus-outlineOffset": "4px",
@@ -116,29 +116,16 @@ function AssetsComponent() {
                   },
                 }}
               >
-                <Tooltip
-                  title={
+                <TooltipImproved
+                  text={
                     usersFilter === "ALL"
                       ? "All Employees"
                       : usersFilter === "W ASSETS"
                         ? "Employees with Assets"
                         : "Employees without Assets"
                   }
-                  arrow
                   placement="top"
-                  TransitionComponent={Zoom}
-                  slotProps={{
-                    popper: {
-                      modifiers: [
-                        {
-                          name: "offset",
-                          options: {
-                            offset: [0, 5],
-                          },
-                        },
-                      ],
-                    },
-                  }}
+                  offset={[0, 5]}
                 >
                   <Radio
                     color="neutral"
@@ -153,7 +140,7 @@ function AssetsComponent() {
                     }
                     label={usersFilter}
                   />
-                </Tooltip>
+                </TooltipImproved>
               </Sheet>
             ))}
           </RadioGroup>

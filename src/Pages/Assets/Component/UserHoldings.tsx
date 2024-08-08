@@ -2,49 +2,32 @@ import { useContext, useCallback, useState, useEffect, FormEvent } from 'react'
 import Backdrop from '@mui/material/Backdrop'
 import Modal from '@mui/material/Modal'
 import Fade from '@mui/material/Fade'
-import {
-  Autocomplete,
-  Card,
-  CircularProgress,
-  TextField,
-  Tooltip,
-  Zoom,
-} from '@mui/material'
+import { Autocomplete, Card, CircularProgress, TextField } from '@mui/material'
 import { AssetsContext } from '../AssetsContext'
-import { useFetch } from '@/Hooks/useFetch'
-import { Asset, UserWithAsset } from '../TAsset'
+import { Asset } from '../TAsset'
 import style from '../style/userHolding.module.scss'
 import dayjs from 'dayjs'
 import AxiosInstance from '@/Helpers/Axios'
 import { inputStyles } from '@/Components/Input/Styles'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-
-const modStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 500,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4,
-  borderRadius: '10px',
-}
+import { useGetAssetsOfAUser } from '../Hook'
+import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
 
 export const UserHoldings = () => {
-  const { searchParams, setSearchParams } = useContext(AssetsContext)
+  const { searchParams, setSearchParams, userHoldings, setUserHoldings } =
+    useContext(AssetsContext)
 
   const [returnItems, setReturnItems] = useState<{ [key: string]: boolean }>({})
+  const [assetId, setAssetId] = useState<string | null>(null)
 
   const [assetToReturnStatus, setAssetToReturnStatus] = useState<string | null>(
     null
   )
 
-  const { data, loading, error } = useFetch<UserWithAsset>(
-    `asset/user/${searchParams.get('selected')}`
+  const { error, loading } = useGetAssetsOfAUser(
+    searchParams.get('selected') as string
   )
-  console.log(data)
 
   const handleClose = useCallback(() => {
     setSearchParams((prev) => {
@@ -57,41 +40,6 @@ export const UserHoldings = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [options, setOptions] = useState<Asset[]>([])
   const [autocompleteLoading, setAutocompleteLoading] = useState(false)
-  const [assetId, setAssetId] = useState<string | null>(null)
-
-  const handleItemReturn = async (
-    e: FormEvent<HTMLFormElement>,
-    assetId: string
-  ) => {
-    e.preventDefault()
-    const payload = {
-      userId: null,
-      returnDate: new Date().toISOString(),
-      status: assetToReturnStatus,
-    }
-    const res = await AxiosInstance.patch(`/asset/${assetId}`, payload)
-    if ([200, 201].includes(res.status)) {
-      setReturnItems((prev) => ({ ...prev, [assetId]: false }))
-      handleClose()
-    } else {
-      alert('Something went wrong')
-    }
-  }
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (!assetId) return
-    const payload = {
-      userId: searchParams.get('selected'),
-      takenDate: new Date().toISOString(),
-    }
-    const res = await AxiosInstance.patch(`/asset/${assetId}`, payload)
-    if ([200, 201].includes(res.status)) {
-      handleClose()
-    } else {
-      alert('Something went wrong')
-    }
-  }
 
   useEffect(() => {
     let active = true
@@ -116,6 +64,48 @@ export const UserHoldings = () => {
     }
   }, [isOpen])
 
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!assetId) return
+    const payload = {
+      userId: searchParams.get('selected'),
+      takenDate: new Date().toISOString(),
+    }
+    const res = await AxiosInstance.patch(`/asset/${assetId}`, payload)
+    if ([200, 201].includes(res.status)) {
+      handleClose()
+    } else {
+      alert('Something went wrong')
+    }
+  }
+
+  const handleItemReturner = async (
+    e: FormEvent<HTMLFormElement>,
+    assetId: string
+  ) => {
+    e.preventDefault()
+
+    const payload = {
+      userId: null,
+      returnDate: new Date().toISOString(),
+      status: assetToReturnStatus,
+    }
+    const res = await AxiosInstance.patch(`/asset/${assetId}`, payload)
+    if ([200, 201].includes(res.status)) {
+      setReturnItems((prev) => ({ ...prev, [assetId]: false }))
+      setUserHoldings((prev) => {
+        if (!prev) return null
+        return {
+          ...prev,
+          assets: prev.assets.filter((asset) => asset._id !== assetId),
+        }
+      })
+      handleClose()
+    } else {
+      alert('Something went wrong')
+    }
+  }
+
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -131,7 +121,19 @@ export const UserHoldings = () => {
       }}
     >
       <Fade in={true}>
-        <Card sx={modStyle}>
+        <Card
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 500,
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+            borderRadius: '10px',
+          }}
+        >
           {loading ? (
             <CircularProgress />
           ) : error ? (
@@ -139,27 +141,21 @@ export const UserHoldings = () => {
           ) : (
             <div className={style.mainContainer} style={{}}>
               <img
-                src={data?.imageUrl}
-                style={{
-                  width: '150px',
-                  height: '150px',
-                  borderRadius: '50%',
-                  objectFit: 'cover',
-                }}
-                alt=""
+                src={userHoldings?.imageUrl}
+                alt={`${userHoldings?.firstName}'s image`}
               />
               <h3>
-                {data?.firstName} {data?.lastName}
+                {userHoldings?.firstName} {userHoldings?.lastName}
               </h3>
 
               <div className={style.simpleBio}>
-                <p>{data?.email}</p>
-                <p>{data?.phone}</p>
-                <p>{data?.role}</p>
+                <p>{userHoldings?.email}</p>
+                <p>{userHoldings?.phone}</p>
+                <p>{userHoldings?.role}</p>
               </div>
               <hr />
               <div className={style.assetsContainer}>
-                {data?.assets.map((asset) => {
+                {userHoldings?.assets.map((asset) => {
                   return (
                     <div
                       key={asset._id}
@@ -181,26 +177,13 @@ export const UserHoldings = () => {
                               <p>Assign Returning status:</p>
                               <form
                                 onSubmit={(e) => {
-                                  handleItemReturn(e, asset._id)
+                                  handleItemReturner(e, asset._id)
                                 }}
                               >
-                                <Tooltip
-                                  title={`Return the item as broken by ${data?.firstName} ${data?.lastName}`}
-                                  arrow
+                                <TooltipImproved
+                                  text={`Return the item as broken by ${userHoldings?.firstName} ${userHoldings?.lastName}`}
                                   placement="left"
-                                  TransitionComponent={Zoom}
-                                  slotProps={{
-                                    popper: {
-                                      modifiers: [
-                                        {
-                                          name: 'offset',
-                                          options: {
-                                            offset: [0, 2.5],
-                                          },
-                                        },
-                                      ],
-                                    },
-                                  }}
+                                  offset={[0, 2.5]}
                                 >
                                   <span>
                                     <button
@@ -212,24 +195,12 @@ export const UserHoldings = () => {
                                       broken
                                     </button>
                                   </span>
-                                </Tooltip>
-                                <Tooltip
-                                  title={`Make the item available by removing it from ${data?.firstName} ${data?.lastName} `}
-                                  arrow
+                                </TooltipImproved>
+
+                                <TooltipImproved
+                                  text={`Make the item available by removing it from ${userHoldings?.firstName} ${userHoldings?.lastName} `}
                                   placement="right"
-                                  TransitionComponent={Zoom}
-                                  slotProps={{
-                                    popper: {
-                                      modifiers: [
-                                        {
-                                          name: 'offset',
-                                          options: {
-                                            offset: [0, 2.5],
-                                          },
-                                        },
-                                      ],
-                                    },
-                                  }}
+                                  offset={[0, 2.5]}
                                 >
                                   <span>
                                     <button
@@ -241,7 +212,7 @@ export const UserHoldings = () => {
                                       available
                                     </button>
                                   </span>
-                                </Tooltip>
+                                </TooltipImproved>
                               </form>
                             </div>
                           ) : (
@@ -250,23 +221,10 @@ export const UserHoldings = () => {
                                 Taken on:{' '}
                                 {dayjs(asset?.takenDate).format('DD-MMM-YYYY')}{' '}
                               </p>
-                              <Tooltip
-                                title={`Add the item as returned by ${data?.firstName} ${data?.lastName}`}
-                                arrow
+                              <TooltipImproved
+                                offset={[0, 2.5]}
+                                text={`Add the item as returned by ${userHoldings?.firstName} ${userHoldings?.lastName}`}
                                 placement="right"
-                                TransitionComponent={Zoom}
-                                slotProps={{
-                                  popper: {
-                                    modifiers: [
-                                      {
-                                        name: 'offset',
-                                        options: {
-                                          offset: [0, 2.5],
-                                        },
-                                      },
-                                    ],
-                                  },
-                                }}
                               >
                                 <span>
                                   <Button
@@ -280,7 +238,7 @@ export const UserHoldings = () => {
                                     type={ButtonTypes.PRIMARY}
                                   />
                                 </span>
-                              </Tooltip>
+                              </TooltipImproved>
                             </div>
                           )}
                         </div>
@@ -343,23 +301,10 @@ export const UserHoldings = () => {
                     />
                   )}
                 />
-                <Tooltip
-                  title={`Assign the selected item as a possesion of ${data?.firstName} ${data?.lastName}`}
-                  arrow
+                <TooltipImproved
+                  text={`Assign the selected item as a possesion of ${userHoldings?.firstName} ${userHoldings?.lastName}`}
                   placement="right"
-                  TransitionComponent={Zoom}
-                  slotProps={{
-                    popper: {
-                      modifiers: [
-                        {
-                          name: 'offset',
-                          options: {
-                            offset: [-10, 0],
-                          },
-                        },
-                      ],
-                    },
-                  }}
+                  offset={[-10, 0]}
                 >
                   <span>
                     <Button
@@ -368,12 +313,12 @@ export const UserHoldings = () => {
                       type={ButtonTypes.PRIMARY}
                     />
                   </span>
-                </Tooltip>
+                </TooltipImproved>
               </form>
 
               <p className={style.holdingDescription}>
-                Holding {data?.assets.length} item
-                {data?.assets.length === 1 ? '' : 's'}{' '}
+                Holding {userHoldings?.assets.length} item
+                {userHoldings?.assets.length === 1 ? '' : 's'}{' '}
               </p>
             </div>
           )}

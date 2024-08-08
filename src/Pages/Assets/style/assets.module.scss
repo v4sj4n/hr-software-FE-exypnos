@@ -1,17 +1,21 @@
 .titleHeading {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
+    display: grid;
+    grid-auto-flow: column;
     margin-bottom: 2rem;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 0.75rem;
 
-    > h1 {
+    .title {
         font-weight: bold;
+        align-self: baseline;
     }
 
-    > div:nth-child(2) {
-        border-radius: 20px;
-        border: 1px solid transparent;
+    > div:nth-of-type(2) {
+        border-radius: 20px !important;
     }
+
 }
 
 .title {
@@ -25,4 +29,20 @@
 .mainPage {
     padding: 1rem 2rem;
     width: fit-content;
+
+}
+
+@media (max-width: 785px) {
+    .titleHeading {
+    
+        .title {
+            grid-column: span 3;
+            font-weight: bold;
+            align-self: baseline;
+        }
+        > div:nth-of-type(2){
+            grid-column: span 2;
+        }
+    
+}
 }
