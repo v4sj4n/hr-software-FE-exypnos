@@ -1,5 +1,5 @@
 import { useContext, useCallback, useState, useEffect, FormEvent } from 'react'
-import { Autocomplete, Card, CircularProgress, TextField } from '@mui/material'
+import { Autocomplete, CircularProgress, TextField } from '@mui/material'
 import { AssetsContext } from '../AssetsContext'
 import { Asset } from '../TAsset'
 import dayjs from 'dayjs'
@@ -60,7 +60,7 @@ export const UserHoldings = () => {
     }
   }, [isOpen])
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleItemAssigner = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!assetId) return
     const payload = {
@@ -123,7 +123,7 @@ export const UserHoldings = () => {
       <div className={style.selectedUserDetails}>
         <img
           src="https://i.scdn.co/image/ab676161000051746e835a500e791bf9c27a422a"
-          alt="user's profile"
+          alt={`${userHoldings?.firstName}'s profile`}
         />
         <h3>
           {userHoldings?.firstName} {userHoldings?.lastName}
@@ -150,7 +150,78 @@ export const UserHoldings = () => {
               </div>
             )
           )}
+
+
         </div>
+
+        <form onSubmit={handleItemAssigner} className={style.assignAssetForm}>
+                <Autocomplete
+                  id="users-list"
+                  sx={{
+                    width: '100%',
+                    marginBottom: '1rem',
+                  }}
+                  open={isOpen}
+                  onOpen={() => setIsOpen(true)}
+                  onClose={() => setIsOpen(false)}
+                  onChange={(event, newValue) => {
+                    event.preventDefault()
+                    console.log(newValue)
+                    if (newValue) {
+                      setAssetId(newValue?._id)
+                    }
+                  }}
+                  options={options}
+                  loading={autocompleteLoading}
+                  isOptionEqualToValue={(option, value) =>
+                    option._id === value._id
+                  }
+                  getOptionLabel={(option) =>
+                    option.type + ' ' + option.serialNumber
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Assign to User"
+                      variant="filled"
+                      size="small"
+                      sx={{  }}
+                      InputLabelProps={{
+                        style: {
+                          color: '#4C556B',
+                          fontFamily: '"Outfit", sans-serif',
+                        },
+                        shrink: true,
+                      }}
+                      InputProps={{
+                        disableUnderline: true,
+                        ...params.InputProps,
+                        endAdornment: (
+                          <>
+                            {autocompleteLoading ? (
+                              <CircularProgress color="inherit" size={20} />
+                            ) : null}
+                            {params.InputProps.endAdornment}
+                          </>
+                        ),
+                      }}
+                    />
+                  )}
+                />
+                <TooltipImproved
+                  text={`Assign the selected item as a possesion of ${userHoldings?.firstName} ${userHoldings?.lastName}`}
+                  placement="right"
+                  offset={[-10, 0]}
+                >
+                  <span>
+                    <Button
+                      btnText={'Assign'}
+                      isSubmit
+                      type={ButtonTypes.PRIMARY}
+                    />
+                  </span>
+                </TooltipImproved>
+              </form>
       </div>
     )
   

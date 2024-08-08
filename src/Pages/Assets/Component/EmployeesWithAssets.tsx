@@ -7,24 +7,11 @@ import Card from '@/Components/Card/Card'
 import style from '../style/employeesWithAssets.module.scss'
 import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
 import { LaptopOutlined, MonitorOutlined } from '@mui/icons-material'
-import Button from '@/Components/Button/Button'
-import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { UserHoldings } from './UserHoldings'
 
 export const EmployeesWithAssets = () => {
   const { usersWithAssets, searchParams, setSearchParams, handleOpenModal } =
     useContext(AssetsContext)
-
-  const dummyAssets = [
-    { id: 1, type: 'monitor', sn: '1234567890', takenDate: '24 July 2022' },
-    { id: 2, type: 'laptop', sn: '1234567891', takenDate: '24 July 2022' },
-    {
-      id: 3,
-      type: 'monitor',
-      sn: '1234567892',
-      takenDate: '24 July 2022',
-    },
-  ]
 
   const { error, loading } = useGetUsersWithAssets(searchParams)
 
@@ -100,11 +87,13 @@ export const EmployeesWithAssets = () => {
     <div className={style.mainContainer}>
       <div className={style.employeesContainer}>{users}</div>
       <div className={style.selectedUserContainer}>
-        {searchParams.get('selected') ? <UserHoldings /> : (
-           <div className={style.noItemsOnSelectedUser}>
-           <p>No User selected</p>
-         </div>
-        )  }
+        {searchParams.get('selected') ? (
+          <UserHoldings />
+        ) : (
+          <div className={style.noItemsOnSelectedUser}>
+            <p>No User selected</p>
+          </div>
+        )}
       </div>
     </div>
   )
