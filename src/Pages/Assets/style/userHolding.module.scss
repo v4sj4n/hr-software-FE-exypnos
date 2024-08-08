@@ -80,17 +80,53 @@
                 align-self: flex-end;
             }
         }
+
+        .returnFormActions {
+            display: flex;
+            flex-direction: column;
+            gap: 0rem;
+
+            * {
+                margin: 0;
+            }
+
+            form {
+                display: flex;
+                align-self: flex-end;
+                gap: 0.5rem;
+
+                * {
+                    line-height: 115%;
+                }
+
+                >span:nth-of-type(1) button {
+                    color: #7D7D7D;
+                }
+
+                >span:nth-of-type(2) button {
+                    color: #45A557;
+                }
+            }
+
+            button {
+                // color: darken($color: #F87275, $amount: 10);
+                background-color: transparent;
+                border: none;
+                padding: 0rem;
+                align-self: flex-end;
+            }
+        }
     }
 }
 
 
-.assignAssetForm{
+.assignAssetForm {
     margin-top: 2.5rem;
     display: flex;
     width: 100%;
     gap: 0.5rem;
 
-    >span button{
+    >span button {
         color: white;
         background-color: #0072f5;
         border: none;

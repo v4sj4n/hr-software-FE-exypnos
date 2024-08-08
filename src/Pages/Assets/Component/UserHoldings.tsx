@@ -21,10 +21,10 @@ export const UserHoldings = () => {
     null
   )
 
-    const { error, loading } = useGetAssetsOfAUser(
-      searchParams.get('selected') as string
-    )
-  
+  const { error, loading } = useGetAssetsOfAUser(
+    searchParams.get('selected') as string
+  )
+
   const handleClose = useCallback(() => {
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev)
@@ -102,127 +102,168 @@ export const UserHoldings = () => {
     }
   }
 
-
-    console.log(userHoldings)
-    if (loading) {
-      return (
-        <div className={style.noItemsOnSelectedUser}>
-          <CircularProgress />
-        </div>
-      )
-    }
-    console.log(error)
-    if (error)
-      return (
-        <div className={style.noItemsOnSelectedUser}>
-          <span style={{ textAlign: 'center' }}>Error: {error}</span>
-        </div>
-      )
-
+  console.log(userHoldings)
+  if (loading) {
     return (
-      <div className={style.selectedUserDetails}>
-        <img
-          src="https://i.scdn.co/image/ab676161000051746e835a500e791bf9c27a422a"
-          alt={`${userHoldings?.firstName}'s profile`}
-        />
-        <h3>
-          {userHoldings?.firstName} {userHoldings?.lastName}
-        </h3>
-
-        <div className={style.selectedUserSimpleBio}>
-          <p>{userHoldings?.email}</p>|<p>{userHoldings?.phone}</p>|
-          <p>{userHoldings?.role}</p>
-        </div>
-
-        <div className={style.assetsContainer}>
-          {userHoldings?.assets.map(
-            ({ _id, type, serialNumber, takenDate }) => (
-              <div key={_id} className={style.assetContainer}>
-                <div className={style.assetGeneralInfo}>
-                  <h4>{type}</h4>
-                  <p>{serialNumber}</p>
-                </div>
-                <div className={style.dateAndActions}>
-                Taken on:{' '}
-                {dayjs(takenDate).format('DD-MMM-YYYY')}{' '}
-                  <Button btnText="Return" type={ButtonTypes.PRIMARY} />
-                </div>
-              </div>
-            )
-          )}
-
-
-        </div>
-
-        <form onSubmit={handleItemAssigner} className={style.assignAssetForm}>
-                <Autocomplete
-                  id="users-list"
-                  sx={{
-                    width: '100%',
-                    marginBottom: '1rem',
-                  }}
-                  open={isOpen}
-                  onOpen={() => setIsOpen(true)}
-                  onClose={() => setIsOpen(false)}
-                  onChange={(event, newValue) => {
-                    event.preventDefault()
-                    console.log(newValue)
-                    if (newValue) {
-                      setAssetId(newValue?._id)
-                    }
-                  }}
-                  options={options}
-                  loading={autocompleteLoading}
-                  isOptionEqualToValue={(option, value) =>
-                    option._id === value._id
-                  }
-                  getOptionLabel={(option) =>
-                    option.type + ' ' + option.serialNumber
-                  }
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Assign to User"
-                      variant="filled"
-                      size="small"
-                      sx={{  }}
-                      InputLabelProps={{
-                        style: {
-                          color: '#4C556B',
-                          fontFamily: '"Outfit", sans-serif',
-                        },
-                        shrink: true,
-                      }}
-                      InputProps={{
-                        disableUnderline: true,
-                        ...params.InputProps,
-                        endAdornment: (
-                          <>
-                            {autocompleteLoading ? (
-                              <CircularProgress color="inherit" size={20} />
-                            ) : null}
-                            {params.InputProps.endAdornment}
-                          </>
-                        ),
-                      }}
-                    />
-                  )}
-                />
-                <TooltipImproved
-                  text={`Assign the selected item as a possesion of ${userHoldings?.firstName} ${userHoldings?.lastName}`}
-                  placement="right"
-                  offset={[-10, 0]}
-                >
-                  <span>
-                    <Button
-                      btnText={'Assign'}
-                      isSubmit
-                      type={ButtonTypes.PRIMARY}
-                    />
-                  </span>
-                </TooltipImproved>
-              </form>
+      <div className={style.noItemsOnSelectedUser}>
+        <CircularProgress />
       </div>
     )
-  
+  }
+  console.log(error)
+  if (error)
+    return (
+      <div className={style.noItemsOnSelectedUser}>
+        <span style={{ textAlign: 'center' }}>Error: {error}</span>
+      </div>
+    )
+
+  return (
+    <div className={style.selectedUserDetails}>
+      <img
+        src={userHoldings?.imageUrl}
+        alt={`${userHoldings?.firstName}'s profile`}
+      />
+      <h3>
+        {userHoldings?.firstName} {userHoldings?.lastName}
+      </h3>
+
+      <div className={style.selectedUserSimpleBio}>
+        <p>{userHoldings?.email}</p>|<p>{userHoldings?.phone}</p>|
+        <p>{userHoldings?.role}</p>
+      </div>
+
+      <div className={style.assetsContainer}>
+        {userHoldings?.assets.map(({ _id, type, serialNumber, takenDate }) => (
+          <div key={_id} className={style.assetContainer}>
+            <div className={style.assetGeneralInfo}>
+              <h4>{type}</h4>
+              <p>{serialNumber}</p>
+            </div>
+
+            {returnItems[_id] && (
+              <div className={style.returnFormActions}>
+                <p>Assign Returning status:</p>
+                <form
+                  onSubmit={(e) => {
+                    handleItemReturner(e, _id)
+                  }}
+                >
+                  <TooltipImproved
+                    text={`Return the item as broken by ${userHoldings?.firstName} ${userHoldings?.lastName}`}
+                    placement="left"
+                    offset={[0, 2.5]}
+                  >
+                    <span>
+                      <button
+                        onClick={() => {
+                          setAssetToReturnStatus('broken')
+                        }}
+                        type="submit"
+                      >
+                        broken
+                      </button>
+                    </span>
+                  </TooltipImproved>
+
+                  <TooltipImproved
+                    text={`Make the item available by removing it from ${userHoldings?.firstName} ${userHoldings?.lastName} `}
+                    placement="right"
+                    offset={[0, 2.5]}
+                  >
+                    <span>
+                      <button
+                        onClick={() => {
+                          setAssetToReturnStatus('available')
+                        }}
+                        type="submit"
+                      >
+                        available
+                      </button>
+                    </span>
+                  </TooltipImproved>
+                </form>
+              </div>
+            )}
+            {!returnItems[_id] && (
+              <div className={style.dateAndActions}>
+                <p>Taken on: {dayjs(takenDate).format('DD-MMM-YYYY')}</p>
+                <Button
+                  btnText="Return"
+                  type={ButtonTypes.PRIMARY}
+                  onClick={() => {
+                    setReturnItems((prev) => ({
+                      ...prev,
+                      [_id]: true,
+                    }))
+                  }}
+                />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <form onSubmit={handleItemAssigner} className={style.assignAssetForm}>
+        <Autocomplete
+          id="users-list"
+          sx={{
+            width: '100%',
+            marginBottom: '1rem',
+          }}
+          open={isOpen}
+          onOpen={() => setIsOpen(true)}
+          onClose={() => setIsOpen(false)}
+          onChange={(event, newValue) => {
+            event.preventDefault()
+            console.log(newValue)
+            if (newValue) {
+              setAssetId(newValue?._id)
+            }
+          }}
+          options={options}
+          loading={autocompleteLoading}
+          isOptionEqualToValue={(option, value) => option._id === value._id}
+          getOptionLabel={(option) => option.type + ' ' + option.serialNumber}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Assign to User"
+              variant="filled"
+              size="small"
+              sx={{}}
+              InputLabelProps={{
+                style: {
+                  color: '#4C556B',
+                  fontFamily: '"Outfit", sans-serif',
+                },
+                shrink: true,
+              }}
+              InputProps={{
+                disableUnderline: true,
+                ...params.InputProps,
+                endAdornment: (
+                  <>
+                    {autocompleteLoading ? (
+                      <CircularProgress color="inherit" size={20} />
+                    ) : null}
+                    {params.InputProps.endAdornment}
+                  </>
+                ),
+              }}
+            />
+          )}
+        />
+        <TooltipImproved
+          text={`Assign the selected item as a possesion of ${userHoldings?.firstName} ${userHoldings?.lastName}`}
+          placement="right"
+          offset={[-10, 0]}
+        >
+          <span>
+            <Button btnText={'Assign'} isSubmit type={ButtonTypes.PRIMARY} />
+          </span>
+        </TooltipImproved>
+      </form>
+    </div>
+  )
 }
