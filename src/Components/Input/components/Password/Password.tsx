@@ -28,7 +28,7 @@ const PasswordInput: React.FC<InputProps> = (props) => {
           style: {
             color: "#4C556B",
             fontFamily: '"Outfit", sans-serif',
-            fontSize: "12px",
+            fontSize: "14px",
           },
         }}
         sx={{ width: props.width || "auto", ...inputStyles }}

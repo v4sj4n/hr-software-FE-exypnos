@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-
 import Header from '../Components/Header/header';
 import SideBar from '../Components/SideBar/sidebar';
 
 const PrivateRoute = () => {
-
   const [isOpen, setIsOpen] = useState(true);
   const toggleSidebar = () => {
     setIsOpen(!isOpen);

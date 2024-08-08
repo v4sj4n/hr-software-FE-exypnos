@@ -5,7 +5,19 @@ import { inputStyles } from '../../Styles'
 import { InputProps } from '../Interface'
 
 const UsernameInput: React.FC<InputProps> = (props) => {
-  const { initialValue, width, register, name, flex } = props
+  const { initialValue, width, register, name, flex, iconPosition, icon, shrink } = props
+
+  const adornment = icon && (
+    <InputAdornment
+      sx={{
+        width: 40,
+        cursor: 'pointer',
+      }}
+      position={iconPosition || 'end'}
+    >
+      {icon}
+    </InputAdornment>
+  );
 
   return (
     <TextField
@@ -39,22 +51,14 @@ const UsernameInput: React.FC<InputProps> = (props) => {
         style: {
           color: '#4C556B',
           fontFamily: '"Outfit", sans-serif',
+          fontSize: "14px",
         },
-        shrink: true,
+        shrink: shrink
       }}
       InputProps={{
         disableUnderline: true,
-        endAdornment: props.icon && (
-          <InputAdornment
-            sx={{
-              width: 40,
-              cursor: 'pointer',
-            }}
-            position="end"
-          >
-            {props.icon}
-          </InputAdornment>
-        ),
+        startAdornment: iconPosition === 'start' ? adornment : undefined,
+        endAdornment: iconPosition === 'end' || !iconPosition ? adornment : undefined,
       }}
     />
   )

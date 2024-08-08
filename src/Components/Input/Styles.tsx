@@ -11,21 +11,21 @@ export const inputStyles = {
   "& .MuiFilledInput-root": {
     border: "1px solid #999999",
     overflow: "hidden",
-    backgroundColor: "transparent",
+    backgroundColor: "#FFFFFF",
     borderRadius: 1,
     fontFamily: '"Outfit", sans-serif',
     color: "#000000",
     fontSize: "14px",
 
     "&.Mui-focused": {
-      backgroundColor: "transparent",
+      backgroundColor: "#FFFFFF",
       boxShadow: "none",
       borderColor: "#999999",
       color: "#000000",
       fontSize: "14px",
     },
     "&:hover": {
-      backgroundColor: "transparent",
+      backgroundColor: "#FFFFFF",
       color: "#000000",
       borderColor: "#999999",
       fontSize: "14px",

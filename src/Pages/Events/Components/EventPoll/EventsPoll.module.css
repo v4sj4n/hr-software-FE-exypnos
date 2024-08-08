@@ -1,30 +1,40 @@
 .eventPoll {
     font-family: Arial, sans-serif;
-    max-width: 300px;
     display: flex;
     flex-direction: column;
+    gap: 10px;
   }
   
   .option {
     display: flex;
     align-items: center;
     cursor: pointer;
-    padding: 10px;
     border: 1px solid #ccc;
+    justify-content: space-between;
     border-radius: 5px;
-    margin-bottom: 10px;
+    padding: 5px ;
+  }
+
+
+  .activeOption {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid #02a700;
+    justify-content: space-between;
+    border-radius: 5px;
+    padding: 5px ;
   }
   
   .optionContent {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    margin-left: 5px;
     width: 100%;
   }
   
-  .optionStats {
-    display: flex;
-    gap: 10px;
-  }
   
   .option.selected {
     background-color: #333;
@@ -35,6 +45,15 @@
     margin-right: 10px;
   }
   
-  .percent {
-    margin-left: auto;
-  }
+ 
+.title {
+  color: #2457A3;
+  display: flex;
+  font-size: 18px;
+  font-weight: bolder;
+}
+
+.border {
+  border-bottom: 2px solid #ebebeb;
+  width: 100%;
+}
