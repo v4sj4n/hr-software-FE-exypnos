@@ -16,6 +16,7 @@ import { DateFilterType } from './Hook/utils';
 
 function InterviewKanbanContent() {
   const {
+    interviews,
     loading,
     error,
     selectedInterview,
@@ -206,17 +207,11 @@ function InterviewKanbanContent() {
        <RescheduleModal
        open={isModalOpen}
        handleClose={handleCloseModal}
-       handleReschedule={async (interviewDate, notes) => {
-         try {
-           await handleReschedule(interviewDate, notes);
-         } catch (error) {
-           console.error('Failed to reschedule interview:', error);
-         }
-       }}
        selectedInterview={selectedInterview}
        allPhasesPassed={allPhasesPassed}
+     />
+     
     
-        />
       )}
     </div>
   );

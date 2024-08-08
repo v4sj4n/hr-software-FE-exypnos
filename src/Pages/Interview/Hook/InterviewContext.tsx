@@ -255,11 +255,11 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DropResult } from 'react-beautiful-dnd';
-import { useGetAllInterviews, ApplicantsData } from '.';
+import { useGetAllInterviews, useRescheduleInterview, useDeleteInterview, useUpdateInterviewStatus } from '.';
 import { formatDate } from './utils';
-import axios from 'axios';
+import { applicantsData } from '../../Interview/Interface/Interview';
 
-export interface Interview extends ApplicantsData {
+export interface Interview extends applicantsData {
   fullName: string;
   auth: { email: string };
   interviewDate: string;
@@ -282,7 +282,7 @@ interface InterviewContextType {
   allPhasesPassed: boolean;
   handleOpenModal: (interview: Interview, isReschedule: boolean) => void;
   handleCloseModal: () => void;
-  handleReschedule: (interviewDate: string, notes: string) => Promise<void>;
+  handleReschedule: (interviewDate: string, notes: string, phase: string) => Promise<void>;
   handleCancel: (interview: Interview) => void;
   handleAccept: (interview: Interview) => void;
   onDragEnd: (result: DropResult) => void;
@@ -309,8 +309,12 @@ export const useInterviewContext = () => {
 };
 
 export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { data: interviewsData, error, loading } = useGetAllInterviews();
-  const [interviews, setInterviews] = useState<Interview[]>([]);
+  const { interviews: applicantsData, setInterviews, fetchInterviews, isLoading, error } = useGetAllInterviews();
+  const { rescheduleInterview } = useRescheduleInterview(setInterviews,); 
+  const { updateStatus } = useUpdateInterviewStatus(setInterviews);
+  const { handleDelete } = useDeleteInterview(setInterviews);
+
+  const [interviews, setInterviewsState] = useState<Interview[]>([]);
   const [selectedInterview, setSelectedInterview] = useState<Interview | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isReschedule, setIsReschedule] = useState(false);
@@ -328,23 +332,27 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   useEffect(() => {
-    if (interviewsData && Array.isArray(interviewsData)) {
-      const mappedInterviews: Interview[] = interviewsData
+    fetchInterviews();
+  }, [fetchInterviews]);
+
+  useEffect(() => {
+    if (applicantsData && Array.isArray(applicantsData)) {
+      const mappedInterviews: Interview[] = applicantsData
         .filter(applicant => applicant.status === 'accepted')
-        .map((applicant) => ({
+        .map(applicant => ({
+          ...applicant,
           fullName: `${applicant.firstName} ${applicant.lastName}`,
           auth: { email: applicant.email },
-          phoneNumber: applicant.phoneNumber,
-          positionApplied: applicant.positionApplied,
           interviewDate: applicant.interviewDate || '',
           notes: applicant.notes || '',
           phase: 'First Interview',
-          ...applicant,
-        }))
-        .sort((a, b) => new Date(a.interviewDate).getTime() - new Date(b.interviewDate).getTime());
-      setInterviews(mappedInterviews);
+          message: '',
+          positionApplied: applicant.positionApplied,
+          _id: applicant._id,
+        }));
+      setInterviewsState(mappedInterviews);
     }
-  }, [interviewsData]);
+  }, [applicantsData]);
 
   const handleDateChange = (dates: [Date | null, Date | null] | Date | null, type: DateFilterType) => {
     setDateFilterType(type);
@@ -379,74 +387,48 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     setSelectedInterview(null);
   };
 
-  const handleReschedule = async (interviewDate: string, notes: string) => {
-    if (selectedInterview) {
-      try {
-        const response = await axios.patch(`/api/applicant/${selectedInterview._id}/reschedule`, {
-          phase: selectedInterview.phase,
-          newInterviewDate: interviewDate,
-        });
+  const handleReschedule = async (id: string, interviewDate: string, notes: string, phase: string) => {
+    const response = await fetch(`/interview/reschedule${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ interviewDate, notes, phase }),
+    });
 
-        if (response.status === 200) {
-          const updatedInterviews = interviews.map(interview =>
-            interview._id === selectedInterview._id
-              ? {
-                  ...interview,
-                  interviewDate: allPhasesPassed ? interview.interviewDate : interviewDate,
-                  notes,
-                  phase: isReschedule ? interview.phase : 'Second Interview'
-                }
-              : interview
-          );
-          setInterviews(updatedInterviews);
-          handleCloseModal();
-        } else {
-          console.error('Failed to reschedule interview');
-        }
-      } catch (error) {
-        console.error('Error rescheduling interview:', error);
-      }
+    if (!response.ok) {
+        throw new Error('Failed to reschedule interview');
     }
-  };
+};
 
-  const handleCancel = (interview: Interview) => {
+  const handleCancel = async (interview: Interview) => {
     const isConfirmed = window.confirm(
-      `Are you sure you want to cancel the interview with ${interview.fullName}?`,
+      `Are you sure you want to cancel the interview with ${interview.fullName}?`
     );
     if (isConfirmed) {
-      const updatedInterviews = interviews.filter(
-        (i) => i._id !== interview._id,
-      );
-      setInterviews(updatedInterviews);
+      await handleDelete(interview._id.toString());
       handleCloseModal();
     }
   };
 
-  const handleAccept = (interview: Interview) => {
+  const handleAccept = async (interview: Interview) => {
     const nextPhase = interview.phase === 'First Interview' ? 'Second Interview' : 'Employed';
+    await updateStatus(interview._id.toString(), nextPhase);
     
-    const updatedInterviews = interviews.map(i =>
-      i._id === interview._id ? { ...i, phase: nextPhase } : i
-    );
-  
-    setInterviews(updatedInterviews);
-  
     if (nextPhase === 'Employed') {
       setAllPhasesPassed(true);
     } else {
-      handleOpenModal(interview, false);
+      handleOpenModal({ ...interview, phase: nextPhase }, false);
     }
   };
 
-  const onDragEnd = (result: DropResult) => {
+  const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
 
-    const newInterviews = Array.from(interviews);
-    const [reorderedItem] = newInterviews.splice(result.source.index, 1);
-    reorderedItem.phase = result.destination.droppableId;
-    newInterviews.splice(result.destination.index, 0, reorderedItem);
+    const { destination, draggableId } = result;
+    const newPhase = destination.droppableId;
 
-    setInterviews(newInterviews);
+    await updateStatus(draggableId, newPhase);
   };
 
   const handleNavigateToProfile = (CandidateViewId: string) => {
@@ -458,12 +440,11 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       .filter(interview => interview.phase === phase)
       .filter(interview => {
         const interviewDate = new Date(interview.interviewDate);
-        const matchesFilter = 
+        const matchesFilter =
           interview.fullName.toLowerCase().includes(filter.toLowerCase()) ||
-          interview.phase.toLowerCase().includes(filter.toLowerCase()) ||
           interview.positionApplied.toLowerCase().includes(filter.toLowerCase());
         
-        const withinDateRange = 
+        const withinDateRange =
           (!startDate || interviewDate >= startDate) &&
           (!endDate || interviewDate <= endDate);
 
@@ -475,7 +456,7 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     <InterviewContext.Provider
       value={{
         interviews,
-        loading,
+        loading: isLoading,
         error,
         selectedInterview,
         isModalOpen,
@@ -495,8 +476,8 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         handleFilterChange,
         startDate,
         endDate,
-        handleDateChange,
         dateFilterType,
+        handleDateChange,
       }}
     >
       {children}
