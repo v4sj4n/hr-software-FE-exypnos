@@ -28,8 +28,8 @@ export const InventoryTable = () => {
   const rows = assets!.map((asset: InventoryItem, index: number) => ({
     id: index + 1,
     type: asset.type[0].toUpperCase() + asset.type.slice(1),
-    status: asset.status,
     fullName: asset.userId,
+    status: asset.status,
     serialNumber: asset.serialNumber,
   }));
 
@@ -55,24 +55,6 @@ export const InventoryTable = () => {
         ),
     },
     {
-      field: "status",
-      headerName: "Status",
-      flex: 1,
-      renderCell: (param: GridRenderCellParams) => (
-        <span
-          className={
-            param.value === "available"
-              ? style.available
-              : param.value === "assigned"
-                ? style.assigned
-                : style.notAvailable
-          }
-        >
-          {param.value}
-        </span>
-      ),
-    },
-    {
       field: "fullName",
       headerName: "Full Name",
       flex: 1,
@@ -90,6 +72,25 @@ export const InventoryTable = () => {
         );
       },
     },
+    {
+      field: "status",
+      headerName: "Status",
+      flex: 1,
+      renderCell: (param: GridRenderCellParams) => (
+        <span
+          className={
+            param.value === "available"
+              ? style.available
+              : param.value === "assigned"
+                ? style.assigned
+                : style.notAvailable
+          }
+        >
+          {param.value}
+        </span>
+      ),
+    },
+
     {
       field: "serialNumber",
       headerName: "Serial Number",

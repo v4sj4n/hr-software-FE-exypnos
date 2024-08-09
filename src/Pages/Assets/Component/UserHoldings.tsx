@@ -9,6 +9,7 @@ import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { useGetAssetsOfAUser } from '../Hook'
 import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
 import style from '../style/userHolding.module.scss'
+import { inputStyles } from '@/Components/Input/Styles'
 
 export const UserHoldings = () => {
   const { searchParams, setSearchParams, userHoldings, setUserHoldings } =
@@ -231,7 +232,9 @@ export const UserHoldings = () => {
               label="Assign to User"
               variant="filled"
               size="small"
-              sx={{}}
+              sx={{
+                ...inputStyles,
+              }}
               InputLabelProps={{
                 style: {
                   color: '#4C556B',

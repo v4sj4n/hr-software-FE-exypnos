@@ -4,12 +4,13 @@ export type InventoryItem = {
   status: string;
   userId?: { _id: string; firstName: string; lastName: string };
   serialNumber: string;
+  history: ItemHistory[];
 };
 
 export type ItemHistory = {
-  receive: null | Date | string;
-  return: null | Date | string;
-  userId: { _id: string; firstName: string; lastName: string };
+  takenDate: null | Date | string;
+  returnDate: null | Date | string;
+  userId: { _id: string; firstName: string; lastName: string } ;
 };
 
 export type UserWithInventoryItem = {

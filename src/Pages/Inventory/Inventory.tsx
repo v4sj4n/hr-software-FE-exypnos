@@ -17,8 +17,8 @@ function InventoryBaseComponent() {
     handleCloseCreateModalOpen,
   } = useContext(InventoryContext);
   return (
-    <>
-      <div className={style.titleHeading}>
+    <div style={{padding: "2rem"}}>
+      <div className={style.titleHeading} >
         <div className={style.title}>Inventory</div>
         <Button
           type={ButtonTypes.PRIMARY}
@@ -34,7 +34,7 @@ function InventoryBaseComponent() {
         <CreateItemForm />
       </ModalComponent>
       <InventoryTable />
-    </>
+    </div>
   );
 }
 
