@@ -1,9 +1,9 @@
-
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DropResult } from 'react-beautiful-dnd';
-import { useGetAllInterviews, applicantsData } from '.';
+import { useGetAllInterviews, updateInterview,applicantsData } from '.';
 import { formatDate, getInterviewsByPhase } from './utils';
+import axios from 'axios';
 
 export interface Interview extends applicantsData {
   fullName: string;
@@ -24,7 +24,6 @@ interface InterviewContextType {
   allPhasesPassed: boolean;
   handleOpenModal: (interview: Interview, isReschedule: boolean) => void;
   handleCloseModal: () => void;
-  handleReschedule: (interviewDate: string, notes: string) => void;
   handleCancel: (interview: Interview) => void;
   handleAccept: (interview: Interview) => void;
   onDragEnd: (result: DropResult) => void;
@@ -55,6 +54,12 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   const phases = ['First Interview', 'Second Interview', 'Employed'];
 
+  const {
+    handleRescheduleClick,
+    handleRescheduleChange,
+    handleUpdateInterview,
+  } = updateInterview(setInterviews as React.Dispatch<React.SetStateAction<any>>);
+
   useEffect(() => {
     if (interviewsData && Array.isArray(interviewsData)) {
       const mappedInterviews: Interview[] = interviewsData
@@ -81,6 +86,10 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     });
     setIsModalOpen(true);
     setIsReschedule(isReschedule);
+
+    if (isReschedule) {
+      handleRescheduleClick(interview);
+    }
   };
 
   const handleCloseModal = () => {
@@ -88,49 +97,45 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     setSelectedInterview(null);
   };
 
-  const handleReschedule = (interviewDate: string, notes: string) => {
-    if (selectedInterview) {
-      const updatedInterviews = interviews.map(interview =>
-        interview._id === selectedInterview._id
-          ? {
-              ...interview,
-              interviewDate: allPhasesPassed ? interview.interviewDate : interviewDate,
-              notes,
-              phase: isReschedule ? interview.phase : 'Second Interview'
-            }
-          : interview
-      );
-      setInterviews(updatedInterviews);
-    }
-    handleCloseModal();
-  };
-
-  const handleCancel = (interview: Interview) => {
+  const handleCancel = async (interview: Interview) => {
     const isConfirmed = window.confirm(
       `Are you sure you want to cancel the interview with ${interview.fullName}?`,
     );
     if (isConfirmed) {
-      const updatedInterviews = interviews.filter(
-        (i) => i._id !== interview._id,
-      );
-      setInterviews(updatedInterviews);
-      handleCloseModal();
+      try {
+        await axios.delete(`/api/applicant/${interview._id}`);
+  
+        const updatedInterviews = interviews.filter(
+          (i) => i._id !== interview._id,
+        );
+        setInterviews(updatedInterviews);
+        handleCloseModal();
+      } catch (error) {
+        console.error('Error deleting interview:', error);
+      }
     }
   };
-
-  const handleAccept = (interview: Interview) => {
+  
+  const handleAccept = async (interview: Interview) => {
     const nextPhase = interview.phase === 'First Interview' ? 'Second Interview' : 'Employed';
     
-    const updatedInterviews = interviews.map(i =>
-      i._id === interview._id ? { ...i, phase: nextPhase } : i
-    );
+    try {
+      await axios.patch(`/api/applicant/${interview._id}/status`, {
+        status: nextPhase
+      });
   
-    setInterviews(updatedInterviews);
+      const updatedInterviews = interviews.map(i =>
+        i._id === interview._id ? { ...i, phase: nextPhase } : i
+      );
+      setInterviews(updatedInterviews);
   
-    if (nextPhase === 'Employed') {
-      setAllPhasesPassed(true);
-    } else {
-      handleOpenModal(interview, false);
+      if (nextPhase === 'Employed') {
+        setAllPhasesPassed(true);
+      } else {
+        handleOpenModal(interview, false);
+      }
+    } catch (error) {
+      console.error('Error accepting interview:', error);
     }
   };
 
@@ -161,7 +166,6 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         allPhasesPassed,
         handleOpenModal,
         handleCloseModal,
-        handleReschedule,
         handleCancel,
         handleAccept,
         onDragEnd,
@@ -169,6 +173,8 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         getInterviewsByPhase: (phase: string) => getInterviewsByPhase(interviews, phase),
         formatDate,
         phases,
+        handleReschedule: handleUpdateInterview,
+        handleRescheduleChange, 
       }}
     >
       {children}

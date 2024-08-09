@@ -3,8 +3,9 @@ import { ButtonTypes } from '@/Components/Button/ButtonTypes';
 import Input from '@/Components/Input/Index';
 import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-
+import { updateInterview } from '../Hook';
 import { ModalComponent } from '../../../Components/Modal/Modal';
+import { useFetch } from '@/Hooks/useFetch';
 
 interface Interview {
   fullName: string;
@@ -13,16 +14,15 @@ interface Interview {
   notes: string;
   phase: string;
   message: string;
+  _id:number;
 }
 
 interface RescheduleModalProps {
   open: boolean;
   handleClose: () => void;
-  handleReschedule: (interviewDate: string, notes: string , phase:string, message:string) => void;
+  handleReschedule: (interviewDate: string, notes: string, phase: string) => void;
   selectedInterview: Interview;
   allPhasesPassed: boolean;
-  message: string;
-
 }
 
 const RescheduleModal: React.FC<RescheduleModalProps> = ({
@@ -35,35 +35,42 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
   const [interviewDate, setInterviewDate] = useState(selectedInterview.interviewDate);
   const [notes, setNotes] = useState(selectedInterview.notes);
   const [phase, setPhase] = useState(selectedInterview.phase);
-  const [message, setMessage] = useState(selectedInterview.message);
-
 
   useEffect(() => {
     setInterviewDate(selectedInterview.interviewDate);
     setPhase(selectedInterview.phase);
-
     setNotes(selectedInterview.notes);
-    setMessage(selectedInterview.message);
-
   }, [selectedInterview]);
 
-  const handleSubmit = () => {
-    handleReschedule(interviewDate, notes, phase, message);
+  const handleSubmit = async () => {
+    try {
+      await updateInterview(selectedInterview._id, {
+        interviewDate,
+        notes,
+        phase,
+      });
+      handleClose();
+    } catch (error) {
+      console.error('Error updating interview:', error);
+
+    }
+    
   };
+  
 
   return (
     <ModalComponent open={open} handleClose={handleClose}>
       <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <h2>{allPhasesPassed ? 'Update Interview Notes' : 'Edit your interview'}</h2>
         {!allPhasesPassed && (
- <Input 
- IsUsername 
- type="datetime-local" 
- name='interviewDate' 
- label='Date'
- value={interviewDate}
- onChange={(e) => setInterviewDate(e.target.value)}
-/>
+          <Input
+            IsUsername
+            type="datetime-local"
+            name='interviewDate'
+            label='Date'
+            value={interviewDate}
+            onChange={(e) => setInterviewDate(e.target.value)}
+          />
         )}
         <Input
           IsUsername
@@ -75,17 +82,6 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           name="notes"
-        />
-         <Input
-          IsUsername
-          multiline={true}
-          width="100%"
-          label="Message"
-          type="textarea"
-          rows={4}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          name="message"
         />
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
           <Button
