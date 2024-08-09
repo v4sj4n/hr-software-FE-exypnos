@@ -1,6 +1,5 @@
 import { useContext, useCallback, useState, useEffect, FormEvent } from 'react'
 import { Autocomplete, CircularProgress, TextField } from '@mui/material'
-import { AssetsContext } from '../AssetsContext'
 import { Asset } from '../TAsset'
 import dayjs from 'dayjs'
 import AxiosInstance from '@/Helpers/Axios'
@@ -8,12 +7,13 @@ import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { useGetAssetsOfAUser } from '../Hook'
 import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
-import style from '../style/userHolding.module.scss'
 import { inputStyles } from '@/Components/Input/Styles'
+import { HoldingsContext } from '../HoldingsContext'
+import style from '../style/userHoldings.module.scss'
 
 export const UserHoldings = () => {
   const { searchParams, setSearchParams, userHoldings, setUserHoldings } =
-    useContext(AssetsContext)
+    useContext(HoldingsContext)
 
   const [returnItems, setReturnItems] = useState<{ [key: string]: boolean }>({})
   const [assetId, setAssetId] = useState<string | null>(null)

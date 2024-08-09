@@ -16,7 +16,7 @@ type history = {
   userId: string | null
 }
 
-export type UserWithAsset = {
+export type UserWithHoldings = {
   _id: string
   firstName: string
   lastName: string

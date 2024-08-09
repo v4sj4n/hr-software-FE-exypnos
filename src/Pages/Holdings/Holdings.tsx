@@ -1,5 +1,4 @@
-import { EmployeesWithAssets } from './Component/EmployeesWithAssets'
-import AssetProvider, { AssetsContext } from './AssetsContext.tsx'
+import { EmployeesWithHoldings } from './Component/EmployeesWithHoldings.tsx'
 import { ChangeEvent, useContext } from 'react'
 import Input from '@/Components/Input/Index.tsx'
 import FormLabel from '@mui/joy/FormLabel'
@@ -9,10 +8,12 @@ import Sheet from '@mui/joy/Sheet'
 import Box from '@mui/joy/Box'
 import { debounce } from 'lodash'
 import { TooltipImproved } from '@/Components/Tooltip/Tooltip.tsx'
-import style from './style/assets.module.scss'
+import HoldingsProvider, { HoldingsContext } from './HoldingsContext.tsx'
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import style from './style/holdings.module.scss'
 
-function AssetsComponent() {
-  const { setSearchParams, searchParams } = useContext(AssetsContext)
+function HoldingsComponent() {
+  const { setSearchParams, searchParams } = useContext(HoldingsContext)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchParams((prev) => {
@@ -57,7 +58,8 @@ function AssetsComponent() {
     <div style={{padding: "2rem"}}>
       <div className={style.titleHeading}>
         <div className={style.title}>Holdings</div>
-        <Input
+        <Input type='text'  iconPosition="end" icon={<SearchOutlinedIcon />}
+
           IsUsername
           label="Search"
           name="search"
@@ -145,15 +147,15 @@ function AssetsComponent() {
           </RadioGroup>
         </Box>
       </div>
-      <EmployeesWithAssets />
+      <EmployeesWithHoldings />
     </div>
   )
 }
 
-export default function Assets() {
+export default function Holdings() {
   return (
-    <AssetProvider>
-      <AssetsComponent />
-    </AssetProvider>
+    <HoldingsProvider>
+      <HoldingsComponent />
+    </HoldingsProvider>
   )
 }

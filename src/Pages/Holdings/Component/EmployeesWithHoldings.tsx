@@ -1,19 +1,19 @@
 import { useContext } from 'react'
-import { useGetUsersWithAssets } from '../Hook/index'
-import { AssetsContext } from '../AssetsContext'
+import { useGetUsersWithHoldings } from '../Hook/index'
+import { HoldingsContext } from '../HoldingsContext'
 import { CircularProgress } from '@mui/material'
-import { UserWithAsset } from '../TAsset'
+import { UserWithHoldings } from '../TAsset'
 import Card from '@/Components/Card/Card'
-import style from '../style/employeesWithAssets.module.scss'
 import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
 import { LaptopOutlined, MonitorOutlined } from '@mui/icons-material'
 import { UserHoldings } from './UserHoldings'
+import style from '../style/employeesWithHoldings.module.scss'
 
-export const EmployeesWithAssets = () => {
-  const { usersWithAssets, searchParams, setSearchParams, handleOpenModal } =
-    useContext(AssetsContext)
+export const EmployeesWithHoldings = () => {
+  const { usersWithHoldings, searchParams, setSearchParams, handleOpenModal } =
+    useContext(HoldingsContext)
 
-  const { error, loading } = useGetUsersWithAssets(searchParams)
+  const { error, loading } = useGetUsersWithHoldings(searchParams)
 
   if (error) return <div>Error: {error}</div>
   if (loading) return <CircularProgress />
@@ -31,10 +31,17 @@ export const EmployeesWithAssets = () => {
     handleOpenModal()
   }
 
-  console.log(usersWithAssets)
+  console.log(usersWithHoldings)
 
-  const users = usersWithAssets.map(
-    ({ _id, firstName, lastName, imageUrl, assets, role }: UserWithAsset) => (
+  const users = usersWithHoldings.map(
+    ({
+      _id,
+      firstName,
+      lastName,
+      imageUrl,
+      assets,
+      role,
+    }: UserWithHoldings) => (
       <Card key={_id} className={style.userDiv}>
         <div className={style.imageAndName}>
           <img src={imageUrl} alt={`${firstName}'s profile picture`} />
@@ -58,28 +65,6 @@ export const EmployeesWithAssets = () => {
         <div className={style.roleDiv}>
           <p>{role}</p>
         </div>
-
-        {/* <div>
-        <img src={user.imageUrl} />
-        <div>
-          
-            <h2 onClick={() => userClickHandler(user._id)}>
-              {user.firstName} {user.lastName}
-            </h2>
-          </TooltipImproved>
-          <div>
-            {user.assets.map((asset, index) => {
-              return (
-                <span key={index} className={style.assets}>
-                  <IconBasedOnAssetType asset={asset.type} />
-                  <p>{asset.type}</p>
-                </span>
-              )
-            })}
-          </div>
-        </div>
-      </div>
- */}
       </Card>
     )
   )

@@ -1,24 +1,24 @@
 import { useContext, useEffect } from 'react'
-import { UserWithAsset } from '../TAsset'
-import { AssetsContext } from '../AssetsContext'
+import { UserWithHoldings } from '../TAsset'
+import { HoldingsContext } from '../HoldingsContext'
 import { useFetch } from '@/Hooks/useFetch'
 import { User } from '@/Context/AuthProvider'
 
-export const useGetUsersWithAssets = (searchParams: URLSearchParams) => {
+export const useGetUsersWithHoldings = (searchParams: URLSearchParams) => {
   const users = searchParams.get('users') || 'all'
   const search = searchParams.get('search') || ''
 
-  const { data, error, loading } = useFetch<UserWithAsset[]>(
+  const { data, error, loading } = useFetch<UserWithHoldings[]>(
     `/asset/user?users=${users}&search=${search}`,
     30
   )
-  const { setUsersWithAssets } = useContext(AssetsContext)
+  const { setUsersWithHoldings } = useContext(HoldingsContext)
 
   useEffect(() => {
     if (data) {
-      setUsersWithAssets(data)
+      setUsersWithHoldings(data)
     }
-  }, [data, setUsersWithAssets])
+  }, [data, setUsersWithHoldings])
 
   return {
     error,
@@ -47,9 +47,9 @@ export const useGetUsers = () => {
 }
 
 export const useGetAssetsOfAUser = (userId: string) => {
-  const { setUserHoldings } = useContext(AssetsContext)
+  const { setUserHoldings } = useContext(HoldingsContext)
 
-  const { data, loading, error } = useFetch<UserWithAsset>(
+  const { data, loading, error } = useFetch<UserWithHoldings>(
     `asset/user/${userId}`
   )
 

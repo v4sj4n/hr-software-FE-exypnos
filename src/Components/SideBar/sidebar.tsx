@@ -56,13 +56,10 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
           </div>
           <div className={style.item} onClick={toggleRecruitingDropdown}>
             <Link to="#recruiting" className={style.link}>
-            <div
-
-            >
-
-              <GroupAddIcon className={style.icon} />
-              {isOpen && <span className={style.text}>Recruiting</span>}
-            </div>
+              <div>
+                <GroupAddIcon className={style.icon} />
+                {isOpen && <span className={style.text}>Recruiting</span>}
+              </div>
 
               {recruitingDropdownOpen ? (
                 <ExpandLessIcon className={style.expandIcon} />
@@ -131,7 +128,7 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
               assetsDropdownOpen ? style.open : ''
             }`}
           >
-            <Link to="/assets" className={style.dropdownItem}>
+            <Link to="/holdings" className={style.dropdownItem}>
               Holdings
             </Link>
             <Link to="/inventory" className={style.dropdownItem}>
