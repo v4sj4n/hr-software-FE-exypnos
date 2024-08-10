@@ -11,7 +11,7 @@ import { inputStyles } from '@/Components/Input/Styles'
 import { HoldingsContext } from '../HoldingsContext'
 import style from '../style/userHoldings.module.scss'
 
-export const UserHoldings = () => {
+export const UserHoldings = ({refetch}: {refetch: () => void}) => {
   const { searchParams, setSearchParams, userHoldings, setUserHoldings } =
     useContext(HoldingsContext)
 
@@ -70,6 +70,7 @@ export const UserHoldings = () => {
     }
     const res = await AxiosInstance.patch(`/asset/${assetId}`, payload)
     if ([200, 201].includes(res.status)) {
+      refetch()
       handleClose()
     } else {
       alert('Something went wrong')
@@ -97,6 +98,7 @@ export const UserHoldings = () => {
           assets: prev.assets.filter((asset) => asset._id !== assetId),
         }
       })
+      refetch()
       handleClose()
     } else {
       alert('Something went wrong')
