@@ -9,8 +9,9 @@ import Box from '@mui/joy/Box'
 import { debounce } from 'lodash'
 import { TooltipImproved } from '@/Components/Tooltip/Tooltip.tsx'
 import HoldingsProvider, { HoldingsContext } from './HoldingsContext.tsx'
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import style from './style/holdings.module.scss'
+import { UserHoldings } from './Component/UserHoldings.tsx'
 
 function HoldingsComponent() {
   const { setSearchParams, searchParams } = useContext(HoldingsContext)
@@ -55,11 +56,13 @@ function HoldingsComponent() {
   }
 
   return (
-    <div style={{padding: "2rem"}}>
+    <div style={{ padding: '2rem' }}>
       <div className={style.titleHeading}>
         <div className={style.title}>Holdings</div>
-        <Input type='text'  iconPosition="end" icon={<SearchOutlinedIcon />}
-
+        <Input
+          type="text"
+          iconPosition="end"
+          icon={<SearchOutlinedIcon />}
           IsUsername
           label="Search"
           name="search"
@@ -147,7 +150,19 @@ function HoldingsComponent() {
           </RadioGroup>
         </Box>
       </div>
-      <EmployeesWithHoldings />
+      <div className={style.mainContainer}>
+        <EmployeesWithHoldings />
+
+        <div className={style.selectedUserContainer}>
+          {searchParams.get('selected') ? (
+            <UserHoldings />
+          ) : (
+            <div className={style.noItemsOnSelectedUser}>
+              <p>No User selected</p>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

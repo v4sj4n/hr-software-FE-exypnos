@@ -3,7 +3,6 @@ import { UserWithHoldings } from "../TAsset";
 import { HoldingsContext } from "../HoldingsContext";
 import { useFetch } from "@/Hooks/useFetch";
 import { User } from "@/Context/AuthProvider";
-import AxiosInstance from "@/Helpers/Axios"
 
 export const useGetUsersWithHoldings = (searchParams: URLSearchParams) => {
   const users = searchParams.get("users") || "all";
@@ -76,17 +75,3 @@ export const useGetAssetsOfAUser = (userId: string) => {
     loading,
   };
 };
-
-
-export const getHoldings =  async (users: string, search: string) => {
-  await new Promise(resolve => setTimeout(resolve, 3000))
-  const res = await AxiosInstance.get(`/asset/user?users=${users}&search=${search}`)
-  return res.data
-}
-
-export const getUserHoldings = async(userId: string) => {
-  await new Promise(resolve => setTimeout(resolve, 3000))
-
-  const res = await AxiosInstance.get(`/asset/user/${userId}`)
-  return res.data
-}

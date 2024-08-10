@@ -1,26 +1,14 @@
-.mainContainer {
+
+
+.employeesContainer {
+    width: 70%;
     display: flex;
-    gap: 1rem;
-    justify-content: center;
-
-    .employeesContainer {
-        width: 70%;
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .selectedUserContainer {
-        width: 30%;
-        min-height: 100%;
-        border-radius: 0.5rem;
-        border: #8f8f8f solid 1px;
-        overflow: hidden;
-
-        
-    }
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 0.5rem;
 }
+
+
 .userDiv {
     display: flex;
     flex-direction: row;
@@ -83,10 +71,11 @@
     }
 }
 
-.noItemsOnSelectedUser {
+
+.loading{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
-    background-color: #0000000d;
+    height: 50vh;
+    width: 100%;
 }

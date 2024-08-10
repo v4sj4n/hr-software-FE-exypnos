@@ -5,15 +5,17 @@ import dayjs from 'dayjs'
 import AxiosInstance from '@/Helpers/Axios'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-import { useGetAssetsOfAUser } from '../Hook'
+import { getUserHoldings } from '../Hook/index.ts'
 import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
 import { inputStyles } from '@/Components/Input/Styles'
 import { HoldingsContext } from '../HoldingsContext'
 import style from '../style/userHoldings.module.scss'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
-export const UserHoldings = ({refetch}: {refetch: () => void}) => {
-  const { searchParams, setSearchParams, userHoldings, setUserHoldings } =
+export const UserHoldings = () => {
+  const { searchParams, setSearchParams, setUserHoldings } =
     useContext(HoldingsContext)
+  const queryClient = useQueryClient()
 
   const [returnItems, setReturnItems] = useState<{ [key: string]: boolean }>({})
   const [assetId, setAssetId] = useState<string | null>(null)
@@ -22,9 +24,10 @@ export const UserHoldings = ({refetch}: {refetch: () => void}) => {
     null
   )
 
-  const { error, loading } = useGetAssetsOfAUser(
-    searchParams.get('selected') as string
-  )
+  const userHoldings = useQuery({
+    queryKey: ['userHoldings', searchParams.get('selected')],
+    queryFn: () => getUserHoldings(searchParams.get('selected') as string),
+  })
 
   const handleClose = useCallback(() => {
     setSearchParams((prev) => {
@@ -70,7 +73,7 @@ export const UserHoldings = ({refetch}: {refetch: () => void}) => {
     }
     const res = await AxiosInstance.patch(`/asset/${assetId}`, payload)
     if ([200, 201].includes(res.status)) {
-      refetch()
+      queryClient.invalidateQueries({ queryKey: ['usersWithHoldings'] })
       handleClose()
     } else {
       alert('Something went wrong')
@@ -98,7 +101,7 @@ export const UserHoldings = ({refetch}: {refetch: () => void}) => {
           assets: prev.assets.filter((asset) => asset._id !== assetId),
         }
       })
-      refetch()
+      queryClient.invalidateQueries({ queryKey: ['usersWithHoldings'] })
       handleClose()
     } else {
       alert('Something went wrong')
@@ -106,105 +109,118 @@ export const UserHoldings = ({refetch}: {refetch: () => void}) => {
   }
 
   console.log(userHoldings)
-  if (loading) {
+  if (userHoldings?.isLoading) {
     return (
-      <div className={style.noItemsOnSelectedUser}>
+      <div className={style.loading}>
         <CircularProgress />
       </div>
     )
   }
-  console.log(error)
-  if (error)
+  if (userHoldings?.isError)
     return (
       <div className={style.noItemsOnSelectedUser}>
-        <span style={{ textAlign: 'center' }}>Error: {error}</span>
+        <span style={{ textAlign: 'center' }}>
+          Error: {userHoldings.error.message}
+        </span>
       </div>
     )
 
   return (
     <div className={style.selectedUserDetails}>
       <img
-        src={userHoldings?.imageUrl}
-        alt={`${userHoldings?.firstName}'s profile`}
+        src={userHoldings?.data.imageUrl}
+        alt={`${userHoldings?.data.firstName}'s profile`}
       />
       <h3>
-        {userHoldings?.firstName} {userHoldings?.lastName}
+        {userHoldings?.data.firstName} {userHoldings?.data.lastName}
       </h3>
 
       <div className={style.selectedUserSimpleBio}>
-        <p>{userHoldings?.email}</p>|<p>{userHoldings?.phone}</p>|
-        <p>{userHoldings?.role}</p>
+        <p>{userHoldings?.data.email}</p>|<p>{userHoldings?.data.phone}</p>|
+        <p>{userHoldings?.data.role}</p>
       </div>
 
       <div className={style.assetsContainer}>
-        {userHoldings?.assets.map(({ _id, type, serialNumber, takenDate }) => (
-          <div key={_id} className={style.assetContainer}>
-            <div className={style.assetGeneralInfo}>
-              <h4>{type}</h4>
-              <p>{serialNumber}</p>
+        {userHoldings?.data.assets.map(
+          ({
+            _id,
+            type,
+            serialNumber,
+            takenDate,
+          }: {
+            _id: string
+            type: string
+            serialNumber: string
+            takenDate: string
+          }) => (
+            <div key={_id} className={style.assetContainer}>
+              <div className={style.assetGeneralInfo}>
+                <h4>{type}</h4>
+                <p>{serialNumber}</p>
+              </div>
+
+              {returnItems[_id] && (
+                <div className={style.returnFormActions}>
+                  <p>Assign Returning status:</p>
+                  <form
+                    onSubmit={(e) => {
+                      handleItemReturner(e, _id)
+                    }}
+                  >
+                    <TooltipImproved
+                      text={`Return the item as broken by ${userHoldings?.data.firstName} ${userHoldings?.data.lastName}`}
+                      placement="left"
+                      offset={[0, 2.5]}
+                    >
+                      <span>
+                        <button
+                          onClick={() => {
+                            setAssetToReturnStatus('broken')
+                          }}
+                          type="submit"
+                        >
+                          broken
+                        </button>
+                      </span>
+                    </TooltipImproved>
+
+                    <TooltipImproved
+                      text={`Make the item available by removing it from ${userHoldings?.data.firstName} ${userHoldings?.data.lastName} `}
+                      placement="right"
+                      offset={[0, 2.5]}
+                    >
+                      <span>
+                        <button
+                          onClick={() => {
+                            setAssetToReturnStatus('available')
+                          }}
+                          type="submit"
+                        >
+                          available
+                        </button>
+                      </span>
+                    </TooltipImproved>
+                  </form>
+                </div>
+              )}
+              {!returnItems[_id] && (
+                <div className={style.dateAndActions}>
+                  <p>Taken on: {dayjs(takenDate).format('DD-MMM-YYYY')}</p>
+                  <Button
+                    btnText="Return"
+                    type={ButtonTypes.PRIMARY}
+                    onClick={() => {
+                      setReturnItems((prev) => ({
+                        ...prev,
+                        [_id]: true,
+                      }))
+                    }}
+                  />
+                </div>
+              )}
             </div>
-
-            {returnItems[_id] && (
-              <div className={style.returnFormActions}>
-                <p>Assign Returning status:</p>
-                <form
-                  onSubmit={(e) => {
-                    handleItemReturner(e, _id)
-                  }}
-                >
-                  <TooltipImproved
-                    text={`Return the item as broken by ${userHoldings?.firstName} ${userHoldings?.lastName}`}
-                    placement="left"
-                    offset={[0, 2.5]}
-                  >
-                    <span>
-                      <button
-                        onClick={() => {
-                          setAssetToReturnStatus('broken')
-                        }}
-                        type="submit"
-                      >
-                        broken
-                      </button>
-                    </span>
-                  </TooltipImproved>
-
-                  <TooltipImproved
-                    text={`Make the item available by removing it from ${userHoldings?.firstName} ${userHoldings?.lastName} `}
-                    placement="right"
-                    offset={[0, 2.5]}
-                  >
-                    <span>
-                      <button
-                        onClick={() => {
-                          setAssetToReturnStatus('available')
-                        }}
-                        type="submit"
-                      >
-                        available
-                      </button>
-                    </span>
-                  </TooltipImproved>
-                </form>
-              </div>
-            )}
-            {!returnItems[_id] && (
-              <div className={style.dateAndActions}>
-                <p>Taken on: {dayjs(takenDate).format('DD-MMM-YYYY')}</p>
-                <Button
-                  btnText="Return"
-                  type={ButtonTypes.PRIMARY}
-                  onClick={() => {
-                    setReturnItems((prev) => ({
-                      ...prev,
-                      [_id]: true,
-                    }))
-                  }}
-                />
-              </div>
-            )}
-          </div>
-        ))}
+          )
+        )}
       </div>
 
       <form onSubmit={handleItemAssigner} className={style.assignAssetForm}>
@@ -260,7 +276,7 @@ export const UserHoldings = ({refetch}: {refetch: () => void}) => {
           )}
         />
         <TooltipImproved
-          text={`Assign the selected item as a possesion of ${userHoldings?.firstName} ${userHoldings?.lastName}`}
+          text={`Assign the selected item as a possesion of ${userHoldings?.data.firstName} ${userHoldings?.data.lastName}`}
           placement="right"
           offset={[-10, 0]}
         >

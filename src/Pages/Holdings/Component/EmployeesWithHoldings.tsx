@@ -1,94 +1,92 @@
-import { useCallback, useContext, useMemo } from 'react'
-import { useGetUsersWithHoldings } from '../Hook/index'
+import { useContext } from 'react'
+import { getHoldings } from '../Hook/index.ts'
 import { HoldingsContext } from '../HoldingsContext'
 import { CircularProgress } from '@mui/material'
 import { UserWithHoldings } from '../TAsset'
 import Card from '@/Components/Card/Card'
 import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
 import { LaptopOutlined, MonitorOutlined } from '@mui/icons-material'
-import { UserHoldings } from './UserHoldings'
 import style from '../style/employeesWithHoldings.module.scss'
+import { useQuery } from '@tanstack/react-query'
 
 export const EmployeesWithHoldings = () => {
-  const { usersWithHoldings, searchParams, setSearchParams, handleOpenModal } =
+  const { searchParams, setSearchParams, handleOpenModal } =
     useContext(HoldingsContext)
 
-  const { error, loading, refetch } = useGetUsersWithHoldings(searchParams)
-
-  const userClickHandler = useCallback(
-    (userId: string) => {
-      setSearchParams((prevParams) => {
-        const newParams = new URLSearchParams(prevParams)
-        if (userId) {
-          newParams.set('selected', userId)
-        } else {
-          newParams.delete('selected')
-        }
-        return newParams
-      })
-      handleOpenModal()
-    },
-    [setSearchParams, handleOpenModal]
-  )
-
-  const users = useMemo(
-    () =>
-      usersWithHoldings.map(
-        ({
-          _id,
-          firstName,
-          lastName,
-          imageUrl,
-          assets,
-          role,
-        }: UserWithHoldings) => (
-          <Card key={_id} className={style.userDiv}>
-            <div className={style.imageAndName}>
-              <img src={imageUrl} alt={`${firstName}'s profile picture`} />
-              <TooltipImproved
-                text={`Click to view ${firstName}'s holdings`}
-                placement="right"
-                offset={[0, 5]}
-              >
-                <h3 onClick={() => userClickHandler(_id)}>
-                  {firstName} {lastName}
-                </h3>
-              </TooltipImproved>
-            </div>
-
-            <div className={style.userAssets}>
-              {assets.map((asset) => {
-                return <IconBasedOnAssetType asset={asset.type} />
-              })}
-            </div>
-
-            <div className={style.roleDiv}>
-              <p>{role}</p>
-            </div>
-          </Card>
-        )
+  const query = useQuery({
+    queryKey: [
+      'usersWithHoldings',
+      searchParams.get('users'),
+      searchParams.get('search'),
+    ],
+    queryFn: () =>
+      getHoldings(
+        searchParams.get('users') || '',
+        searchParams.get('search') || ''
       ),
-    [usersWithHoldings, userClickHandler]
-  )
+  })
 
-  if (error) return <div>Error: {error}</div>
-  if (loading) return <CircularProgress />
+  console.log(query)
+  console.log(query.data)
 
-  console.log(usersWithHoldings)
-  return (
-    <div className={style.mainContainer}>
-      <div className={style.employeesContainer}>{users}</div>
-      <div className={style.selectedUserContainer}>
-        {searchParams.get('selected') ? (
-          <UserHoldings refetch={refetch} />
-        ) : (
-          <div className={style.noItemsOnSelectedUser}>
-            <p>No User selected</p>
-          </div>
-        )}
+  const userClickHandler = (userId: string) => {
+    setSearchParams((prevParams) => {
+      const newParams = new URLSearchParams(prevParams)
+      if (userId) {
+        newParams.set('selected', userId)
+      } else {
+        newParams.delete('selected')
+      }
+      return newParams
+    })
+    handleOpenModal()
+  }
+
+  if (query.error) return <div>Error: {query.error.message}</div>
+  if (query.isFetching)
+    return (
+      <div className={style.loading}>
+        <CircularProgress />
       </div>
-    </div>
+    )
+
+  const users = query.data.map(
+    ({
+      _id,
+      firstName,
+      lastName,
+      imageUrl,
+      assets,
+      role,
+    }: UserWithHoldings) => (
+      <Card key={_id} className={style.userDiv}>
+        <div className={style.imageAndName}>
+          <img src={imageUrl} alt={`${firstName}'s profile picture`} />
+          <TooltipImproved
+            text={`Click to view ${firstName}'s holdings`}
+            placement="right"
+            offset={[0, 5]}
+          >
+            <h3 onClick={() => userClickHandler(_id)}>
+              {firstName} {lastName}
+            </h3>
+          </TooltipImproved>
+        </div>
+
+        <div className={style.userAssets}>
+          {assets.map((asset) => {
+            return <IconBasedOnAssetType asset={asset.type} />
+          })}
+        </div>
+
+        <div className={style.roleDiv}>
+          <p>{role}</p>
+        </div>
+      </Card>
+    )
   )
+
+  return <div className={style.employeesContainer}>{users}</div>
 }
 
 const IconBasedOnAssetType = ({ asset }: { asset: string }) => {

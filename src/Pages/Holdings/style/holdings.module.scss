@@ -46,3 +46,29 @@
     
 }
 }
+
+.mainContainer {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+
+    
+}
+
+.selectedUserContainer {
+    width: 30%;
+    min-height: 100%;
+    border-radius: 0.5rem;
+    border: #8f8f8f solid 1px;
+    overflow: hidden;
+
+    
+}
+
+.noItemsOnSelectedUser {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: #0000000d;
+}
