@@ -75,7 +75,7 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
           </div>
           <div
             className={`${style.dropdownMenu} ${
-              recruitingDropdownOpen ? style.open : ''
+              recruitingDropdownOpen ? style.open : style.close
             }`}
           >
             <Link to="/recruitment" className={style.dropdownItem}>
@@ -103,7 +103,7 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
           </div>
           <div
             className={`${style.dropdownMenu} ${
-              employeeDropdownOpen ? style.open : ''
+              employeeDropdownOpen ? style.open : style.close
             }`}
           >
             <Link to="/employees" className={style.dropdownItem}>
@@ -134,7 +134,7 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
           </div>
           <div
             className={`${style.dropdownMenu} ${
-              assetsDropdownOpen ? style.open : ''
+              assetsDropdownOpen ? style.open : style.close
             }`}
           >
             <Link to="/holdings" className={style.dropdownItem}>
@@ -160,7 +160,7 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
           </div>
           <div
             className={`${style.dropdownMenu} ${
-              eventsDropdownOpen ? style.open : ''
+              eventsDropdownOpen ? style.open : style.close
             }`}
           >
             <Link to="/activities" className={style.dropdownItem}>
