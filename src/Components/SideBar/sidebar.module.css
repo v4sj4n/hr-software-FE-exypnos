@@ -59,6 +59,8 @@ background: white;
   padding: 10px 0;
   transition: color 0.3s ease;
   text-decoration: none;
+  justify-content: space-between;
+  align-items: center;
 }
 .dropdownMenu {
   display: flex;
@@ -74,6 +76,9 @@ background: white;
 }
 .dropdownMenu.open {
   max-height: 200px;
+}
+.dropdownMenu.close {
+  display: none;
 }
 .dropdownItem {
   color: rgba(0, 0, 0, 0.8);
@@ -105,4 +110,15 @@ background: white;
 }
  .navOpen{
   width: 230px;
+ }
+
+ .text{
+  /* line-height: 100%; */
+  margin: 0;
+ }
+
+ .iconTextContainer{
+  display: flex;
+  align-items: center;
+  gap: 4px;
  }

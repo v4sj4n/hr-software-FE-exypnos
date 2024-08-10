@@ -15,6 +15,7 @@ export const SingleInventoryItem = () => {
     singleAssetID,
   } = useContext(InventoryContext)
   const { data, error, loading } = useOneAsset<InventoryItem>(singleAssetID!)
+  console.log(data)
   return (
     <ModalComponent handleClose={handleClose} open={open}>
       {error ? (
@@ -33,37 +34,33 @@ export const SingleInventoryItem = () => {
               {data && renderStatus(data.status, data.userId)}
             </div>
           </div>
-          <div
-          className={style.historyContainer}
-          >
-            <div className={style.singleHistoryHeading}>
-                  <p>
-                   Taken Date
-                  </p>
-                  <p>
-                  Released Date
-                  </p>
-                  <p>
-                    User
-                  </p>
+          <div className={style.historyContainer}>
+            {data?.history.length !== 0 ? (
+              <>
+                <div className={style.singleHistoryHeading}>
+                  <p>Taken Date</p>
+                  <p>Released Date</p>
+                  <p>User</p>
                 </div>
-
-            {data?.history?.map((history: ItemHistory, index) => {
-              return (
-                <div key={index} className={style.singleHistory}>
-                  <p>
-                    {dayjs(history?.takenDate).format('DD-MMM-YYYY HH:MM')}{' '}
-                  </p>
-                  <p>
-                    {history.returnDate ?
-                      dayjs(history.returnDate).format('DD-MMM-YYYY HH:MM') : "Not yet"}
-                  </p>
-                  <p>
-                    {history.userId.slice(0, 10)}
-                  </p>
-                </div>
-              )
-            })}
+                {data?.history.map((history: ItemHistory, index: number) => (
+                  <div key={index} className={style.singleHistory}>
+                    <p>
+                      {dayjs(history?.takenDate).format('DD-MMM-YYYY HH:mm')}
+                    </p>
+                    <p>
+                      {history.returnDate
+                        ? dayjs(history.returnDate).format('DD-MMM-YYYY HH:mm')
+                        : 'Not yet'}
+                    </p>
+                    <p>
+                      {history.user.firstName} {history.user.lastName}
+                    </p>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <p>This item has no history</p>
+            )}
           </div>
         </>
       )}

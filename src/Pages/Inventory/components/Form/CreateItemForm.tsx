@@ -1,20 +1,19 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useContext } from "react";
-import Button from "@/Components/Button/Button";
-import { ButtonTypes } from "@/Components/Button/ButtonTypes";
-import Input from "@/Components/Input/Index";
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { useContext } from 'react'
+import Button from '@/Components/Button/Button'
+import { ButtonTypes } from '@/Components/Button/ButtonTypes'
+import Input from '@/Components/Input/Index'
 import {
   CreateAssetFormFields,
   createAssetSchema,
-} from "@/Schemas/Assets/CreateAsset.schema";
-import { ErrorText } from "@/Components/Error/ErrorTextForm";
-import { InventoryContext } from "../InventoryContext";
-import { onSubmit } from "../../hook";
+} from '@/Schemas/Assets/CreateAsset.schema'
+import { ErrorText } from '@/Components/Error/ErrorTextForm'
+import { InventoryContext } from '../InventoryContext'
+import { onSubmit } from '../../hook'
 
 export const CreateItemForm = () => {
-  const { handleCloseCreateModalOpen, setAssets } =
-    useContext(InventoryContext);
+  const { handleCloseCreateModalOpen, setAssets } = useContext(InventoryContext)
   const {
     register,
     handleSubmit,
@@ -22,32 +21,32 @@ export const CreateItemForm = () => {
     formState: { errors, isSubmitting },
   } = useForm<CreateAssetFormFields>({
     resolver: zodResolver(createAssetSchema),
-  });
+  })
 
   return (
     <>
       <h3>Create an asset</h3>
       <form
         onSubmit={handleSubmit((data) =>
-          onSubmit(data, { setError, setAssets, handleCloseCreateModalOpen }),
+          onSubmit(data, { setError, setAssets, handleCloseCreateModalOpen })
         )}
         style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "0.5rem",
-          marginTop: "1.5rem",
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.5rem',
+          marginTop: '1.5rem',
         }}
       >
         <div>
           <select
-            {...register("type")}
+            {...register('type')}
             style={{
-              padding: "0.5rem",
-              width: "100%",
-              borderRadius: "0.5rem",
+              padding: '0.5rem',
+              width: '100%',
+              borderRadius: '0.5rem',
             }}
           >
-            <option value="" disabled defaultValue>
+            <option value="" disabled selected>
               Select an item
             </option>
             <option value="laptop">Laptop</option>
@@ -60,33 +59,32 @@ export const CreateItemForm = () => {
           <Input
             IsUsername
             name="serialNumber"
-            width={"100%"}
+            width={'100%'}
             label="Serial Number"
-            register={register("serialNumber")}
+            register={register('serialNumber')}
           />
           {errors.serialNumber && (
             <ErrorText>{errors.serialNumber.message}</ErrorText>
           )}
         </div>
+        {errors.root && <ErrorText>{errors.root.message}</ErrorText>}
 
-        <div style={{ display: "flex", gap: "0.3rem" }}>
+        <div style={{ display: 'flex', gap: '0.3rem' }}>
           <Button
             type={ButtonTypes.SECONDARY}
             btnText="Cancel"
             border="none"
             onClick={handleCloseCreateModalOpen}
-            width={"100%"}
+            width={'100%'}
           />
           <Button
             type={ButtonTypes.PRIMARY}
-            btnText={isSubmitting ? "Submitting" : "Submit"}
-            width={"100%"}
+            btnText={isSubmitting ? 'Submitting' : 'Submit'}
+            width={'100%'}
             isSubmit
           />
         </div>
-
-        {errors.root && <ErrorText>{errors.root.message}</ErrorText>}
       </form>
     </>
-  );
-};
+  )
+}
