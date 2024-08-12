@@ -5,29 +5,27 @@ import dayjs from 'dayjs'
 import AxiosInstance from '@/Helpers/Axios'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-import { getUserHoldings } from '../Hook/index.ts'
+import {
+  useGetUserHoldings,
+  useHandleItemAssigner,
+  useHandleItemReturner,
+} from '../Hook/index.ts'
 import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
 import { inputStyles } from '@/Components/Input/Styles'
 import { HoldingsContext } from '../HoldingsContext'
 import style from '../style/userHoldings.module.scss'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const UserHoldings = () => {
-  const { searchParams, setSearchParams, setUserHoldings } =
-    useContext(HoldingsContext)
-  const queryClient = useQueryClient()
-
+  const { searchParams, setSearchParams } = useContext(HoldingsContext)
   const [returnItems, setReturnItems] = useState<{ [key: string]: boolean }>({})
   const [assetId, setAssetId] = useState<string | null>(null)
-
   const [assetToReturnStatus, setAssetToReturnStatus] = useState<string | null>(
     null
   )
 
-  const userHoldings = useQuery({
-    queryKey: ['userHoldings', searchParams.get('selected')],
-    queryFn: () => getUserHoldings(searchParams.get('selected') as string),
-  })
+  const userHoldings = useGetUserHoldings()
+  const handleItemAssigner = useHandleItemAssigner()
+  const handleItemReturner = useHandleItemReturner()
 
   const handleClose = useCallback(() => {
     setSearchParams((prev) => {
@@ -63,54 +61,6 @@ export const UserHoldings = () => {
       active = false
     }
   }, [isOpen])
-
-  const handleItemAssigner = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (!assetId) return
-    const payload = {
-      userId: searchParams.get('selected'),
-      takenDate: new Date().toISOString(),
-    }
-    const res = await AxiosInstance.patch(`/asset/${assetId}`, payload)
-    if ([200, 201].includes(res.status)) {
-      queryClient.invalidateQueries({
-        queryKey: ['usersWithHoldings', 'userHoldings'],
-      })
-      // handleClose()
-    } else {
-      alert('Something went wrong')
-    }
-  }
-
-  const handleItemReturner = async (
-    e: FormEvent<HTMLFormElement>,
-    assetId: string
-  ) => {
-    e.preventDefault()
-
-    const payload = {
-      userId: null,
-      returnDate: new Date().toISOString(),
-      status: assetToReturnStatus,
-    }
-    const res = await AxiosInstance.patch(`/asset/${assetId}`, payload)
-    if ([200, 201].includes(res.status)) {
-      setReturnItems((prev) => ({ ...prev, [assetId]: false }))
-      setUserHoldings((prev) => {
-        if (!prev) return null
-        return {
-          ...prev,
-          assets: prev.assets.filter((asset) => asset._id !== assetId),
-        }
-      })
-      queryClient.invalidateQueries({
-        queryKey: ['usersWithHoldings', 'userHoldings'],
-      })
-      // handleClose()
-    } else {
-      alert('Something went wrong')
-    }
-  }
 
   console.log(userHoldings)
   if (userHoldings?.isLoading) {
@@ -167,8 +117,12 @@ export const UserHoldings = () => {
                 <div className={style.returnFormActions}>
                   <p>Assign Returning status:</p>
                   <form
-                    onSubmit={(e) => {
-                      handleItemReturner(e, _id)
+                    onSubmit={(e: FormEvent<HTMLFormElement>) => {
+                      handleItemReturner.mutate({
+                        event: e,
+                        assetId: _id,
+                        status: assetToReturnStatus as string,
+                      })
                     }}
                   >
                     <TooltipImproved
@@ -227,7 +181,16 @@ export const UserHoldings = () => {
         )}
       </div>
 
-      <form onSubmit={handleItemAssigner} className={style.assignAssetForm}>
+      <form
+        onSubmit={(event: FormEvent<HTMLFormElement>) =>
+          handleItemAssigner.mutate({
+            event,
+            assetId: assetId as string,
+            userId: searchParams.get('selected') as string,
+          })
+        }
+        className={style.assignAssetForm}
+      >
         <Autocomplete
           id="users-list"
           sx={{
@@ -289,6 +252,7 @@ export const UserHoldings = () => {
           </span>
         </TooltipImproved>
       </form>
+      <Button btnText={"Close"} type={ButtonTypes.SECONDARY} onClick={handleClose}/>
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { getHoldings } from '../Hook/index.ts'
+import { useEmployeesWithHoldings } from '../Hook/index.ts'
 import { HoldingsContext } from '../HoldingsContext'
 import { CircularProgress } from '@mui/material'
 import { UserWithHoldings } from '../TAsset'
@@ -7,27 +7,11 @@ import Card from '@/Components/Card/Card'
 import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
 import { LaptopOutlined, MonitorOutlined } from '@mui/icons-material'
 import style from '../style/employeesWithHoldings.module.scss'
-import { useQuery } from '@tanstack/react-query'
 
 export const EmployeesWithHoldings = () => {
-  const { searchParams, setSearchParams, handleOpenModal } =
-    useContext(HoldingsContext)
+  const { setSearchParams, handleOpenModal } = useContext(HoldingsContext)
 
-  const query = useQuery({
-    queryKey: [
-      'usersWithHoldings',
-      searchParams.get('users'),
-      searchParams.get('search'),
-    ],
-    queryFn: () =>
-      getHoldings(
-        searchParams.get('users') || '',
-        searchParams.get('search') || ''
-      ),
-  })
-
-  console.log(query)
-  console.log(query.data)
+  const { isError, error, data, isFetching } = useEmployeesWithHoldings()
 
   const userClickHandler = (userId: string) => {
     setSearchParams((prevParams) => {
@@ -42,15 +26,15 @@ export const EmployeesWithHoldings = () => {
     handleOpenModal()
   }
 
-  if (query.error) return <div>Error: {query.error.message}</div>
-  if (query.isFetching)
+  if (isError) return <div>Error: {error.message}</div>
+  if (isFetching)
     return (
       <div className={style.loading}>
         <CircularProgress />
       </div>
     )
 
-  const users = query.data.map(
+  const users = data.map(
     ({
       _id,
       firstName,
