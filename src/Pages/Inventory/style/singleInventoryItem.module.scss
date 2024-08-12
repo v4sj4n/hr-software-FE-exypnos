@@ -65,6 +65,8 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;
     align-items: center;
+    justify-content: space-between;
+
 
     *{
         margin-bottom: 0.25rem;
@@ -79,5 +81,4 @@
         font-size: 1rem;
     }
 
-    justify-content: space-between;
 }

@@ -73,8 +73,10 @@ export const UserHoldings = () => {
     }
     const res = await AxiosInstance.patch(`/asset/${assetId}`, payload)
     if ([200, 201].includes(res.status)) {
-      queryClient.invalidateQueries({ queryKey: ['usersWithHoldings'] })
-      handleClose()
+      queryClient.invalidateQueries({
+        queryKey: ['usersWithHoldings', 'userHoldings'],
+      })
+      // handleClose()
     } else {
       alert('Something went wrong')
     }
@@ -101,8 +103,10 @@ export const UserHoldings = () => {
           assets: prev.assets.filter((asset) => asset._id !== assetId),
         }
       })
-      queryClient.invalidateQueries({ queryKey: ['usersWithHoldings'] })
-      handleClose()
+      queryClient.invalidateQueries({
+        queryKey: ['usersWithHoldings', 'userHoldings'],
+      })
+      // handleClose()
     } else {
       alert('Something went wrong')
     }
