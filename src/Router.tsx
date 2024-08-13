@@ -28,10 +28,6 @@ export default function Router() {
       element: <Login />,
     },
     {
-     path:'/projectManager',
-     element: <ProjectManager />,
-    },
-    {
       path: "recruitment",
       element: <Recruitment />,
     },
