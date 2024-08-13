@@ -14,7 +14,7 @@ import { ModalComponent } from "@/Components/Modal/Modal";
 
 export default function Recruitment() {
 
-    const { handleChange, aplicantFormData, handleTechnologiesChange, handleFileChange, handleCreateAplicant, showModal, closeModal, resetForm } = useCreateAplicant();
+    const { handleChange, aplicantFormData, handleTechnologiesChange, handleFileChange, handleCreateAplicant, showModal, closeModal, resetForm} = useCreateAplicant();
 
     return (
         <div className={style.background}>

@@ -1,6 +1,7 @@
 import { useFetch } from '@/Hooks/useFetch';
 
 export interface applicantsData {
+    forEach(arg0: (applicant: applicantsData) => void): unknown;
     firstName: string;
     lastName: string;
     phoneNumber: string;

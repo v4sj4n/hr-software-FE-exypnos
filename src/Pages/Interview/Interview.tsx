@@ -20,6 +20,7 @@ function InterviewKanbanContent() {
     handleOpenModal,
     handleCloseModal,
     handleReschedule,
+    handleSchedule,
     handleCancel,
     handleAccept,
     onDragEnd,
@@ -148,7 +149,8 @@ function InterviewKanbanContent() {
           handleReschedule={handleReschedule}
           selectedInterview={selectedInterview}
           allPhasesPassed={allPhasesPassed}
-          message={''}
+          handleSchedule={ handleSchedule}
+          // message={''}
         />
       )}
     </div>
