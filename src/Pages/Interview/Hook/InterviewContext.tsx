@@ -4,7 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { DropResult } from 'react-beautiful-dnd';
 import { useGetAllInterviews, applicantsData } from '.';
 import { formatDate, getInterviewsByPhase } from './utils';
-import axios from 'axios';
 import AxiosInstance from '@/Helpers/Axios';
 
 export interface Interview extends applicantsData {

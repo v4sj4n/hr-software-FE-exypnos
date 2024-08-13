@@ -45,6 +45,7 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
     setNotes(selectedInterview.notes);
     // setMessage(selectedInterview.message);
   }, [selectedInterview]);
+  
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => { 
     e.preventDefault();
