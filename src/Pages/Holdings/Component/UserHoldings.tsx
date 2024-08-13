@@ -1,6 +1,5 @@
 import { useContext, useCallback, useState, useEffect, FormEvent } from 'react'
 import { Autocomplete, CircularProgress, TextField } from '@mui/material'
-import { AssetsContext } from '../AssetsContext'
 import { Asset } from '../TAsset'
 import dayjs from 'dayjs'
 import AxiosInstance from '@/Helpers/Axios'
@@ -8,12 +7,13 @@ import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { useGetAssetsOfAUser } from '../Hook'
 import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
-import style from '../style/userHolding.module.scss'
 import { inputStyles } from '@/Components/Input/Styles'
+import { HoldingsContext } from '../HoldingsContext'
+import style from '../style/userHoldings.module.scss'
 
-export const UserHoldings = () => {
+export const UserHoldings = ({refetch}: {refetch: () => void}) => {
   const { searchParams, setSearchParams, userHoldings, setUserHoldings } =
-    useContext(AssetsContext)
+    useContext(HoldingsContext)
 
   const [returnItems, setReturnItems] = useState<{ [key: string]: boolean }>({})
   const [assetId, setAssetId] = useState<string | null>(null)
@@ -70,6 +70,7 @@ export const UserHoldings = () => {
     }
     const res = await AxiosInstance.patch(`/asset/${assetId}`, payload)
     if ([200, 201].includes(res.status)) {
+      refetch()
       handleClose()
     } else {
       alert('Something went wrong')
@@ -97,6 +98,7 @@ export const UserHoldings = () => {
           assets: prev.assets.filter((asset) => asset._id !== assetId),
         }
       })
+      refetch()
       handleClose()
     } else {
       alert('Something went wrong')

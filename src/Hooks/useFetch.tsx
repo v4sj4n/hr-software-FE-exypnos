@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
 import AxiosInstance from '../Helpers/Axios'
+import { useEffect, useState, useCallback } from 'react'
 import { AxiosError } from 'axios'
 
 export const useFetch = <T,>(url: string, intervalInSeconds: number = 0) => {
@@ -7,28 +7,29 @@ export const useFetch = <T,>(url: string, intervalInSeconds: number = 0) => {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await AxiosInstance.get(url)
-        if (res.status === 200) {
-          setData(res.data)
-        } else {
-          throw new Error('Failed to fetch data')
-        }
-      } catch (err: unknown) {
-        console.log(err)
-        if (err instanceof AxiosError) {
-          setError(err.response?.data?.message || 'An error occurred')
-        }
-        setError(
-          'An error occurred while fetching data. Please try again later.'
-        )
-      } finally {
-        setLoading(false)
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true)
+      const res = await AxiosInstance.get(url)
+      if (res.status === 200) {
+        setData(res.data)
+      } else {
+        throw new Error('Failed to fetch data')
       }
+    } catch (err: unknown) {
+      console.log(err)
+      if (err instanceof AxiosError) {
+        setError(err.response?.data?.message || 'An error occurred')
+      }
+      setError(
+        'An error occurred while fetching data. Please try again later.'
+      )
+    } finally {
+      setLoading(false)
     }
+  }, [url])
 
+  useEffect(() => {
     fetchData()
 
     let intervalId: NodeJS.Timeout | null = null
@@ -42,7 +43,7 @@ export const useFetch = <T,>(url: string, intervalInSeconds: number = 0) => {
         clearInterval(intervalId)
       }
     }
-  }, [url, intervalInSeconds])
+  }, [url, intervalInSeconds, fetchData])
 
-  return { data, error, loading }
+  return { data, error, loading, refetch: fetchData }
 }
