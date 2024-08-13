@@ -11,15 +11,16 @@ import {
   GroupAddOutlined as GroupAddIcon,
 } from '@mui/icons-material'
 
-import React, { useState } from 'react'
+import  { useContext, useState } from 'react'
 import style from './sidebar.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Link } from 'react-router-dom'
+import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
 
-const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
-  isOpen,
-  toggleSidebar,
-}) => {
+export const SideBar = () => {
+  const { isSidebarOpen: isOpen, toggleSidebar } =
+    useContext(SidebarHeaderContext)
+
   const [dropdownOpen, setDropdownOpen] = useState({
     recruiting: false,
     employee: false,
@@ -27,17 +28,16 @@ const SideBar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
     assets: false,
   })
 
-const toggleDropdown = (dropdown: keyof typeof dropdownOpen) => {
-  setDropdownOpen((prevState) => {
-    const newState = { ...prevState };
-    Object.keys(newState).forEach((key) => {
-      newState[key as keyof typeof dropdownOpen] = false;
-    });
-    newState[dropdown] = !prevState[dropdown];
-    return newState;
-  });
-};
-
+  const toggleDropdown = (dropdown: keyof typeof dropdownOpen) => {
+    setDropdownOpen((prevState) => {
+      const newState = { ...prevState }
+      Object.keys(newState).forEach((key) => {
+        newState[key as keyof typeof dropdownOpen] = false
+      })
+      newState[dropdown] = !prevState[dropdown]
+      return newState
+    })
+  }
 
   return (
     <div className={style.sidebarContainer}>
@@ -201,5 +201,3 @@ const toggleDropdown = (dropdown: keyof typeof dropdownOpen) => {
     </div>
   )
 }
-
-export default SideBar

@@ -1,31 +1,33 @@
-import React, { useState } from "react";
-import EmailIcon from "@mui/icons-material/Email";
-import PersonIcon from "@mui/icons-material/Person";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import LogoutIcon from "@mui/icons-material/Logout";
-import PermIdentityIcon from "@mui/icons-material/PermIdentity";
-import codeviderLogo from "/Images/codevider.png";
-import style from "./header.module.css";
-import { useAuth } from "../../Context/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { useContext, useState } from 'react'
+import EmailIcon from '@mui/icons-material/Email'
+import PersonIcon from '@mui/icons-material/Person'
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
+import LogoutIcon from '@mui/icons-material/Logout'
+import PermIdentityIcon from '@mui/icons-material/PermIdentity'
+import codeviderLogo from '/Images/codevider.png'
+import style from './header.module.css'
+import { useAuth } from '../../Context/AuthProvider'
+import { useNavigate } from 'react-router-dom'
+import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
 
-const Header: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
-  const [showDropdown, setShowDropdown] = useState(false);
-  const navigate = useNavigate();
+export const Header = () => {
+  const { isSidebarOpen: isOpen } = useContext(SidebarHeaderContext)
+  const [showDropdown, setShowDropdown] = useState(false)
+  const navigate = useNavigate()
   const toggleDropdown = () => {
-    setShowDropdown(!showDropdown);
-  };
+    setShowDropdown(!showDropdown)
+  }
 
-  const { logout, currentUser } = useAuth();
+  const { logout, currentUser } = useAuth()
 
   const handleLogout = () => {
-    logout();
-    navigate("/");
-  };
+    logout()
+    navigate('/')
+  }
 
   const handleProfileClick = () => {
-    navigate(`/profile/${currentUser?._id}`);
-  };
+    navigate(`/profile/${currentUser?._id}`)
+  }
 
   return (
     <header className={style.header}>
@@ -46,11 +48,11 @@ const Header: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
       </div>
       <div className={style.headerRight}>
         <div className={style.icon}>
-          <EmailIcon style={{ cursor: "pointer" }} />
+          <EmailIcon style={{ cursor: 'pointer' }} />
           <span className={style.badge}>3</span>
         </div>
         <div className={style.icon} onClick={toggleDropdown}>
-          <PersonIcon style={{ cursor: "pointer" }} />
+          <PersonIcon style={{ cursor: 'pointer' }} />
           <div className={style.username}></div>
           {showDropdown && (
             <div className={style.dropdown}>
@@ -60,7 +62,7 @@ const Header: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
 
               <div
                 className={style.dropdownItem}
-                onClick={() => console.log("Settings")}
+                onClick={() => console.log('Settings')}
               >
                 Settings <SettingsOutlinedIcon />
               </div>
@@ -72,7 +74,5 @@ const Header: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
         </div>
       </div>
     </header>
-  );
-};
-
-export default Header;
+  )
+}
