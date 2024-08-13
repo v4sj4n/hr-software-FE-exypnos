@@ -4,7 +4,6 @@ import {
   EventOutlined as EventIcon,
   InfoOutlined as InfoIcon,
   BusinessOutlined as BusinessIcon,
-  Menu as MenuIcon,
   ExpandMore as ExpandMoreIcon,
   ExpandLess as ExpandLessIcon,
   DevicesOutlined as DevicesIcon,
@@ -18,7 +17,7 @@ import { Link } from 'react-router-dom'
 import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
 
 export const SideBar = () => {
-  const { isSidebarOpen: isOpen, toggleSidebar } =
+  const { isSidebarOpen: isOpen } =
     useContext(SidebarHeaderContext)
 
   const [dropdownOpen, setDropdownOpen] = useState({
@@ -41,9 +40,7 @@ export const SideBar = () => {
 
   return (
     <div className={style.sidebarContainer}>
-      <div className={style.toggleButton} onClick={toggleSidebar}>
-        <MenuIcon />
-      </div>
+
       <nav
         className={`${style.nav} ${isOpen ? style.navOpen : style.navClosed}`}
       >

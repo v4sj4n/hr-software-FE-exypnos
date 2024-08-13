@@ -3,7 +3,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import DesktopMacIcon from '@mui/icons-material/DesktopMac';
-import style from '../../../Pages/Dashboard/style/card.module.css';
+import style from '@/Pages/Dashboard/style/card.module.css';
 
 type IconType = 'Present' | 'Absent' | 'On Leave' | 'Remote';
 
@@ -25,11 +25,12 @@ const Card: React.FC<CardProps> = ({ title, content, icon }) => {
 
     return (
         <div className={style.card}>
-            <h2>{title}</h2>
-            <p>{content}</p>
-            <div className={style.cardIcon}>
+                        <div className={style.cardIcon}>
                 {icons[icon]}
             </div>
+            <h2>{title}</h2>
+            <p>{content}</p>
+
         </div>
     );
 };
