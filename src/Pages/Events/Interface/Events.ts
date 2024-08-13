@@ -2,10 +2,13 @@ export interface EventsData {
     _id: number;
     title: string;
     description: string;
-    date: string;
+    startDate: string;
+    endDate:string;
     time: string;
     creatingTime: string;
+    file: string;
     location: string;
+    type: string;
     poll: {
       question: string;
       options: {
@@ -16,15 +19,16 @@ export interface EventsData {
       isMultipleVote: boolean;
     };
     onClose: () => void;
-    
   }
   
   export interface EventsCreationData {
     title: string;
     description: string;
-    date: string;
-    time: string;
+    startDate: string;
+    endDate: string;
     location: string;
+    participants: string[];
+    type: string;
     poll: {
       question: string;
       options: {

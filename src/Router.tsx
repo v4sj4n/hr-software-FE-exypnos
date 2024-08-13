@@ -18,12 +18,18 @@ import Vacation from "./Pages/Vacation/Vacation.tsx";
 import VacationProvider from "./Pages/Vacation/VacationContext.tsx";
 import Inventory from "./Pages/Inventory/Inventory.tsx";
 import Career from "./Pages/Career/Career.tsx";
+import ProjectManager from "./Pages/ProjectManager.tsx";
+
 
 export default function Router() {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Login />,
+    },
+    {
+     path:'/projectManager',
+     element: <ProjectManager />,
     },
     {
       path: "recruitment",

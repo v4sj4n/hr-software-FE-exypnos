@@ -1,12 +1,12 @@
 import EventPoll from "../EventPoll/EventsPoll";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+// import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import style from '../../styles/Events.module.css'
 import { EventsData } from "../../Interface/Events";
 import { useAuth } from "@/Context/AuthProvider";
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import image from "../../../../../public/Images/background (1).png"
+import image from "../../../../../public/Images/image.png"
 
 interface SelectedEventCardProps {
     event: EventsData;
@@ -29,18 +29,22 @@ const SelectedEventCard = ({ event, onClose, showVotersButton = false }: Selecte
                 <div className={style.description}>{event.description}</div>
                 <div className={style.dataContainer}>
                     <div className={style.dateContainer}>
-                        <div className={style.data}>
+                        {/* <div className={style.data}>
                             <AccessTimeIcon sx={{ height: 20, width: 20, color: "#6b7280" }} />
                             {new Date(event.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                        </div> */}
+                        <div className={style.data}>
+                            <CalendarTodayIcon sx={{ height: 20, width: 20, color: "#6b7280" }} />
+                            {new Date(event.startDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                         </div>
                         <div className={style.data}>
                             <CalendarTodayIcon sx={{ height: 20, width: 20, color: "#6b7280" }} />
-                            {new Date(event.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                            {new Date(event.endDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                         </div>
                     </div>
 
-                    <div className={style.data}>
-                        <LocationSearchingIcon sx={{ height: 20, width: 20, color: "#6b7280" }} />
+                    <div className={style.data} style={{marginBottom:"10px"}}>
+                        <LocationOnOutlinedIcon sx={{ height: 20, width: 20, color: "#6b7280" }} />
                         <div>{event.location}</div>
                     </div>
                     </div>
