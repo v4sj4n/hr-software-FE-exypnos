@@ -1,10 +1,8 @@
 
 .body {
-  background: url("C:\Users\User\CV\hr-software-FE-exypnos\public\Images\background (1).png");
+  background: url("/Images/background (1).png");
   
 }
-
-
 
 .container {
   padding: 20px;
@@ -49,7 +47,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  /* flex-direction: column; */
 }
 .jobCardContent{
   flex-grow: 1;
@@ -223,7 +220,6 @@
 .modalFooter{
 display: flex; 
 gap: 10px;
- marginTop: 20px;
 }
 .cultureImages{
   display: flex; 

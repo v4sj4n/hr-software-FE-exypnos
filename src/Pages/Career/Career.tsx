@@ -8,6 +8,9 @@ import { useGetAllEvents, useCreateEvent, useUpdateEvent, useDeleteEvent, Events
 import { ModalComponent } from '@/Components/Modal/Modal';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { useAuth } from '@/Context/AuthProvider';
+import Workers from "../../../public/Images/happy workers.webp"
+import worker3 from "../../../public/Images/happyWork3.jpeg"
+import worker2 from "../../../public/Images/happyWorkers2.jpg"
 
 const Careers = () => {
   const { events, setEvents, isLoading } = useGetAllEvents();
@@ -191,9 +194,9 @@ const Careers = () => {
           <h2>Our Culture</h2>
           <p>At our company, we value innovation, collaboration, and growth. Join us and thrive in a supportive and dynamic environment.</p>
           <div className={style.cultureImages}>
-            <img src='public\Images\happy workers.webp' alt=''className={style.cultureImage}></img>
-            <img src='public\Images\happyWork3.jpeg' alt=''className={style.cultureImage}></img>
-            <img src='public\Images\happyWorkers2.jpg' alt='' className={style.cultureImage}></img>
+          <img src={Workers} alt=''className={style.cultureImage}></img>
+<img src={worker3} alt=''className={style.cultureImage}></img>
+<img src={worker2} alt='' className={style.cultureImage}></img> 
 
           </div>
         </div>
