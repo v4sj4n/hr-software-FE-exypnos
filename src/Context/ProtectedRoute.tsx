@@ -16,7 +16,13 @@ const PrivateRoute = () => {
         <Header />
         <div style={{ display: 'flex' }}>
           <SideBar />
-          <main style={{ backgroundColor: '#f0f5ff', width: '100%', height: "94svh" }}>
+          <main
+            style={{
+              backgroundColor: '#f0f5ff',
+              width: '100%',
+              height: '100%',
+            }}
+          >
             <Outlet />
           </main>
         </div>
