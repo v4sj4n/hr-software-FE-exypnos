@@ -25,7 +25,7 @@ export const InventoryTable = () => {
   if (error) return <div>Error: {error}</div>;
   if (loading) return <CircularProgress />;
 
-  const rows = assets!.map((asset: InventoryItem, index: number) => ({
+  const rows = assets!.map((asset: InventoryItem) => ({
     id: asset._id,
     type: asset.type[0].toUpperCase() + asset.type.slice(1),
     fullName: asset.userId,
