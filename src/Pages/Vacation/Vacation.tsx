@@ -1,38 +1,67 @@
-import { useContext } from 'react'
-
-import Button from '../../Components/Button/Button'
-import { ButtonTypes } from '../../Components/Button/ButtonTypes'
-import { ModalComponent } from '../../Components/Modal/Modal'
-import { CreateVacationForm } from './Component/Form/CreateVacationForm'
-import VacationsTable from './Component/VacationsTable'
-import style from './style/vacation.module.css'
+import { SearchOutlined as SearchIcon } from '@mui/icons-material'
+import Input from '@/Components/Input/Index'
+import {
+  FormLabel,
+  Radio,
+  RadioGroup,
+  Sheet,
+  Box,
+  radioClasses,
+} from '@mui/joy'
+import style from './style/vacation.module.scss'
+import { useContext, useState } from 'react'
 import { VacationContext } from './VacationContext'
+import { ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { VacationTable } from './components/VacationTable'
 
 export default function Vacation() {
-  const { handleOpenModal, modalOpen, handleCloseModal } =
-    useContext(VacationContext)
-
+  const [alignment, setAlignment] = useState('requests')
+  const handleChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newAlignment: string
+  ) => {
+    setAlignment(newAlignment)
+  }
+  const { searchParams } = useContext(VacationContext)
+  const pageToggleChoices = [
+    {
+      value: 'requests',
+      label: 'Requests',
+    },
+    {
+      value: 'userLeaves',
+      label: 'User Leaves',
+    },
+  ]
   return (
-    <main
-      className={style.mainPage}
-      style={{
-        width: '100%',
-        backgroundColor: 'f5f8fc',
-      }}
-    >
-      <div className={style.titleHeading}>
-        <h1 className={style.title}>Vacations</h1>
-        <Button
-          type={ButtonTypes.PRIMARY}
-          btnText="Create Vacation"
-          onClick={handleOpenModal}
-          width="15rem"
-        />
+    <main className={style.main}>
+      <div className={style.heading}>
+        <div className={style.title}>Vacation</div>
+
+        <ToggleButtonGroup
+          color="primary"
+          value={alignment}
+          exclusive
+          onChange={handleChange}
+          aria-label="Leave"
+        >
+          {pageToggleChoices.map(({ value, label }) => (
+            <ToggleButton
+              sx={{
+                padding: '0.5rem 1rem',
+                fontSize: '0.8rem',
+              }}
+              key={value}
+              value={value}
+            >
+              {label}
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
       </div>
-      <ModalComponent open={modalOpen} handleClose={handleCloseModal}>
-        <CreateVacationForm />
-      </ModalComponent>
-      <VacationsTable />
+      <div>
+        <VacationTable />
+      </div>
     </main>
   )
 }

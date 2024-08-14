@@ -9,7 +9,7 @@ import { LaptopOutlined, MonitorOutlined } from '@mui/icons-material'
 import style from '../style/employeesWithHoldings.module.scss'
 
 export const EmployeesWithHoldings = () => {
-  const { setSearchParams, handleOpenModal } = useContext(HoldingsContext)
+  const { setSearchParams } = useContext(HoldingsContext)
 
   const { isError, error, data, isFetching } = useEmployeesWithHoldings()
 
@@ -23,7 +23,6 @@ export const EmployeesWithHoldings = () => {
       }
       return newParams
     })
-    handleOpenModal()
   }
 
   if (isError) return <div>Error: {error.message}</div>

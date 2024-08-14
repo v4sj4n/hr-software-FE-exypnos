@@ -11,7 +11,11 @@ import {
 export const useEmployeesWithHoldings = () => {
   const { searchParams } = useContext(HoldingsContext)
   const employeesWithHoldings = useQuery({
-    queryKey: ['usersWithHoldings'],
+    queryKey: [
+      'usersWithHoldings',
+      searchParams.get('users'),
+      searchParams.get('search'),
+    ],
     queryFn: () =>
       getHoldings(
         searchParams.get('users') || '',

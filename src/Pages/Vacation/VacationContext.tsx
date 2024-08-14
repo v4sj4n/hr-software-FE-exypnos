@@ -1,46 +1,27 @@
-import {
-  createContext,
-  ReactNode,
-  useState,
-  Dispatch,
-  SetStateAction,
-  FC,
-} from 'react'
-import { Vacation } from './TVacation'
+import { createContext, ReactNode, Dispatch, SetStateAction, FC } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 interface VacationContextType {
-  vacations: Vacation[]
-  setVacations: Dispatch<SetStateAction<Vacation[]>>
-  modalOpen: boolean
-  handleCloseModal: () => void
-  handleOpenModal: () => void
+  searchParams: URLSearchParams
+  setSearchParams: Dispatch<SetStateAction<URLSearchParams>>
 }
 
 const defaultContextValue: VacationContextType = {
-  vacations: [],
-  setVacations: () => {},
-  modalOpen: false,
-  handleCloseModal: () => {},
-  handleOpenModal: () => {},
+  searchParams: new URLSearchParams(),
+  setSearchParams: () => {},
 }
 
 export const VacationContext =
   createContext<VacationContextType>(defaultContextValue)
 
 const VacationProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [vacations, setVacations] = useState<Vacation[]>([])
-  const [modalOpen, setModalOpen] = useState<boolean>(false)
-  const handleCloseModal = () => setModalOpen(false)
-  const handleOpenModal = () => setModalOpen(true)
+  const [searchParams, setSearchParams] = useSearchParams()
 
   return (
     <VacationContext.Provider
       value={{
-        vacations,
-        setVacations,
-        modalOpen,
-        handleCloseModal,
-        handleOpenModal,
+        searchParams,
+        setSearchParams,
       }}
     >
       {children}

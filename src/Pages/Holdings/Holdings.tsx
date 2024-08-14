@@ -1,17 +1,21 @@
-import { EmployeesWithHoldings } from './Component/EmployeesWithHoldings.tsx'
-import { ChangeEvent, useContext } from 'react'
 import Input from '@/Components/Input/Index.tsx'
-import FormLabel from '@mui/joy/FormLabel'
-import Radio, { radioClasses } from '@mui/joy/Radio'
-import RadioGroup from '@mui/joy/RadioGroup'
-import Sheet from '@mui/joy/Sheet'
-import Box from '@mui/joy/Box'
-import { debounce } from 'lodash'
 import { TooltipImproved } from '@/Components/Tooltip/Tooltip.tsx'
+import { EmployeesWithHoldings } from './Component/EmployeesWithHoldings.tsx'
+import {
+  FormLabel,
+  Radio,
+  RadioGroup,
+  Sheet,
+  Box,
+  radioClasses
+} from '@mui/joy'
+import { debounce } from 'lodash'
 import HoldingsProvider, { HoldingsContext } from './HoldingsContext.tsx'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
-import style from './style/holdings.module.scss'
 import { UserHoldings } from './Component/UserHoldings.tsx'
+import { ChangeEvent, useContext } from 'react'
+import style from './style/holdings.module.scss'
+
 
 function HoldingsComponent() {
   const { setSearchParams, searchParams } = useContext(HoldingsContext)
@@ -56,9 +60,9 @@ function HoldingsComponent() {
   }
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <div className={style.titleHeading}>
-        <div className={style.title}>Holdings</div>
+    <main className={style.main}>
+      <div className={style.heading}>
+        <h2 className={style.title}>Holdings</h2>
         <Input
           type="text"
           iconPosition="end"
@@ -163,7 +167,7 @@ function HoldingsComponent() {
           )}
         </div>
       </div>
-    </div>
+    </main>
   )
 }
 

@@ -1,11 +1,6 @@
-
-
+@import "@/Helpers/_base.scss";
 .employeesContainer {
-    width: 70%;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    gap: 0.5rem;
+    @include employeeContainer
 }
 
 
@@ -72,7 +67,7 @@
 }
 
 
-.loading{
+.loading {
     display: flex;
     justify-content: center;
     align-items: center;
