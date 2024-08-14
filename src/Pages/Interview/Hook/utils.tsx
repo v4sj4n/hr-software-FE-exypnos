@@ -15,7 +15,4 @@ export const formatDate = (dateString: string | number | Date) => {
   return `${formattedDate} ${formattedTime}`;
 };
 
-export const getInterviewsByPhase = (interviews: Interview[], phase: string) => {
-  return interviews.filter(interview => interview.phase === phase)
-    .sort((a, b) => new Date(a.interviewDate).getTime() - new Date(b.interviewDate).getTime());
-};
+

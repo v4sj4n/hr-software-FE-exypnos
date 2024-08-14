@@ -32,6 +32,7 @@ function InterviewKanbanContent() {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error loading interviews: {error || 'Unknown error'}</div>;
+  
 
   return (
     <div className={style.kanbanBoard}>
