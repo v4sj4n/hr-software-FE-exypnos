@@ -11,25 +11,9 @@
 }
 
 
-.infoSection .button {
-  text-align: center;
-}
 
-.infoSection .button button {
-  background-color: #2469FF;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
 
-.infoSection .button button:hover {
-  background-color: #eaedf1;
-  color: #276AFF;
-}
+
 
 .redDot {
   height: 10px;
