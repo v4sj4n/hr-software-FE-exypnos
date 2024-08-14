@@ -1,3 +1,4 @@
+import { useAuth } from '@/Context/AuthProvider.tsx';
 import Card1 from '../../Components/Card/Card.tsx'
 import style from '../Dashboard/style/dashboard.module.css'
 import Calendar from "./components/calendar.tsx";
@@ -5,6 +6,7 @@ import Card from './components/card.tsx';
 import InfoSection from "./components/infoSection.tsx";
 import PieChartComponent from "./components/piechart.tsx";
 import { DashboardProvider, useDashboardContext } from './context/hook.tsx';
+
 
 const DashboardContent: React.FC = () => {
   const { employeeData } = useDashboardContext();
@@ -15,14 +17,17 @@ const DashboardContent: React.FC = () => {
     { name: "On Leave", value: employeeData.onLeave },
     { name: "Remote", value: employeeData.remote },
   ];
+  const { currentUser } = useAuth();
+  const userName = currentUser ? currentUser.firstName : 'User';
+  const isAdmin = currentUser?.role === 'admin';
 
   return (
     <div className={style.dashboardContainer}>
       <div className={style.mainContent}>
         <div className={style.rightContent}>
           <div className={style.welcome}>
-            <h2>Welcome, Elisabeta!</h2>
-            <p>Here's what's happening with your team today</p>
+            <h2>Welcome  {userName} </h2>
+          { isAdmin ? <p>Here's what's happening with your team today</p> : ''}
           </div>
           <div className={style.cardContainer}>
             <div className={style.cardGreen}><Card title="Present" content={employeeData.present.toString()} icon="Present" /></div>

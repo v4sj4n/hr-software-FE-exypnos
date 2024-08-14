@@ -14,12 +14,12 @@ const COLORS = ['#0088FE', '#c542f5', '#9f6fd6', '#6db3e8'];
 
 const PieChartComponent: React.FC<PieChartComponentProps> = ({ data }) => {
   return (
-    <PieChart width={350} height={270} >
+    <PieChart width={350} height={370} >
       <Pie
         data={data}
-        cx={140}
-        cy={100}
-        innerRadius={36}
+        cx={200}
+        cy={175}
+        innerRadius={46}
         outerRadius={90}
         fill="#8884d8"
         dataKey="value"
