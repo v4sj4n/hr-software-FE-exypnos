@@ -84,7 +84,8 @@ export default function Router() {
         },
         {
           path: 'events',
-          element: <Events />,
+          element:
+              <Events />
         },
         {
           path: 'interview',
