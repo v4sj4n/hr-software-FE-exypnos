@@ -80,10 +80,10 @@ export const InventoryTable = () => {
         <span
           className={
             param.value === "available"
-              ? style.available
+              ? style.badgeAvailable
               : param.value === "assigned"
-                ? style.assigned
-                : style.notAvailable
+                ? style.badgeAssigned
+                : style.badgeBroken
           }
         >
           {param.value}
