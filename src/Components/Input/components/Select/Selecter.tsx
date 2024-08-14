@@ -3,7 +3,7 @@ import { useState } from "react";
 import { inputStyles } from "../../Styles";
 
 interface SelecterProps {
-  value: string | string[];  // Can be a string or array of strings
+  value: string | string[];
   onChange: (value: string | string[]) => void;
   options: string[];
   multiple: boolean;
@@ -14,8 +14,16 @@ interface SelecterProps {
 const Selecter = ({ value, onChange, options, multiple, label, name }: SelecterProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleChange = (_: any, newValue: string | string[]) => {
-    onChange(newValue); // Passes the selected value(s) back to the parent
+  const handleChange = (
+    event: React.SyntheticEvent,
+    newValue: string | string[] | null,
+  
+  ) => {
+    if (newValue !== null) {
+      onChange(newValue);
+    } else {
+      onChange([]);
+    }
   };
 
   return (
