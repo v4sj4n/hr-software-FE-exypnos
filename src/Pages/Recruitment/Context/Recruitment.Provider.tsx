@@ -72,6 +72,7 @@ export const useCreateAplicant = () => {
                 formData.append(key, aplicantFormData[key as keyof typeof aplicantFormData] as string);
             }
         });
+        console.log(aplicantFormData)
         setIsLoading(true);
         setError(null);
         try {
@@ -109,5 +110,6 @@ export const useCreateAplicant = () => {
         showModal,
         closeModal ,
         resetForm
+        
     };
 };

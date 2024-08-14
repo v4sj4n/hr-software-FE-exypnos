@@ -19,7 +19,6 @@ import { EmployeeProvider } from './Context/EmployeTableProvider';
     );
 }
 
-
 const Employees: React.FC = () => {
     return (
       <EmployeeProvider>

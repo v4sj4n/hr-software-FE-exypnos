@@ -10,14 +10,15 @@ import {
   GroupAddOutlined as GroupAddIcon,
 } from '@mui/icons-material'
 
-import { useContext, useState } from 'react'
+import  { useContext, useState } from 'react'
 import style from './sidebar.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Link } from 'react-router-dom'
 import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
 
 export const SideBar = () => {
-  const { isSidebarOpen: isOpen } = useContext(SidebarHeaderContext)
+  const { isSidebarOpen: isOpen } =
+    useContext(SidebarHeaderContext)
 
   const [dropdownOpen, setDropdownOpen] = useState({
     recruiting: false,

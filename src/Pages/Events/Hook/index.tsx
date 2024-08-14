@@ -1,43 +1,95 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import AxiosInstance from '@/Helpers/Axios';
 import { EventsCreationData, EventsData } from '../Interface/Events';
+import { useAuth } from '@/Context/AuthProvider';
+import { useGetAllUsers } from '@/Pages/Employees/Hook';
+import { useSearchParams } from 'react-router-dom';
+import { debounce } from 'lodash';
 
 export const useGetAllEvents = () => {
     const [events, setEvents] = useState<EventsData[]>([]);
+    const [searchParams, setSearchParams] = useSearchParams();
     const [isLoading, setIsLoading] = useState(false);
+    const { currentUser } = useAuth();
+    const isAdmin = currentUser?.role === 'admin';
+    const [selectedEvent, setSelectedEvent] = useState<null | EventsData>(null);
+    const [showEventModal, setShowEventModal] = useState(false);
+    const label = { inputProps: { 'aria-label': 'Switch demo' } };
+
+    const handleSeeVoters = (event: EventsData) => {
+        setSelectedEvent(event);
+        setShowEventModal(true);
+    };
+
+    const debouncedSetSearchParams = debounce((value: string) => {
+        setSearchParams((prev) => {
+            const newParams = new URLSearchParams(prev);
+            if (value) {
+                newParams.set('search', value);
+            } else {
+                newParams.delete('search');
+            }
+            return newParams;
+        });
+    }, 500);
+
+    const onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+        debouncedSetSearchParams(e.target.value);
+        fetchEvents();
+    };
 
     const fetchEvents = () => {
         setIsLoading(true);
-        AxiosInstance.get<EventsData[]>('/event')
+        const currentSearch = searchParams.get('search') || '';
+        AxiosInstance.get<EventsData[]>(`/event?search=${currentSearch}`)
             .then(response => {
                 console.log('Fetched events:', response.data);
-                setTimeout(() => {
+                
                     setIsLoading(false);
-                }, 500)
+                
                 setEvents(response.data);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
+                setIsLoading(false);
             });
     };
 
     useEffect(() => {
         fetchEvents();
-    }, []);
+    }, [searchParams]);
 
-    return { events, setEvents, fetchEvents, isLoading };
-}
-
-
+    return { 
+        events, 
+        setEvents, 
+        label, 
+        isLoading, 
+        isAdmin, 
+        handleSeeVoters, 
+        selectedEvent, 
+        showEventModal, 
+        onSearchChange,
+        setSelectedEvent, 
+        setShowEventModal 
+    };
+};
 
 export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>) => {
-    const [creatingTime, setCreatingTime] = useState<string>('');
+    const typesofEvent = ['sports', 'carier', 'teambuilding', 'training', 'other']
+    const { users } = useGetAllUsers()
+    const allEmails = users.map((user) => user.auth.email);
+
+    const [toastOpen, setToastOpen] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>('success');
     const [event, setEvent] = useState<EventsCreationData>({
         title: '',
         description: '',
-        date: '',
-        time: '',
+        endDate: '',
+        startDate: '',
         location: '',
+        participants: [],
+        type: '',
         poll: {
             question: '',
             options: [],
@@ -49,19 +101,15 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
     const [pollOptions, setPollOptions] = useState<string[]>(['', '']);
     const [isMultipleChoice, setIsMultipleChoice] = useState(false);
     const [includesPoll, setIncludesPoll] = useState(false);
+    const [participants, setParticipants] = useState<string[]>([]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        if (name === 'includesPoll') {
+
+        if (name === 'participants') {
+            setParticipants(value.split(',').map((_id) => _id.trim()));
+        } else if (name === 'includesPoll') {
             setIncludesPoll(e.target.checked);
-        }
-        if (name === 'time') {
-            setCreatingTime(value);
-        } else if (name === 'date') {
-            setEvent(prevEvent => ({
-                ...prevEvent,
-                date: value
-            }));
         } else if (name === 'pollQuestion') {
             setPollQuestion(value);
         } else if (name === 'isMultipleChoice') {
@@ -82,66 +130,95 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
 
     const handleAddOption = () => {
         if (pollOptions.length < 3) {
-          setPollOptions([...pollOptions, '']);
+            setPollOptions([...pollOptions, '']);
         }
-      };
+    };
 
     const createEvent = (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        const combinedDateTime = new Date(`${event.date}T${creatingTime}`);
-
         const newEvent = {
             title: event.title,
             description: event.description,
-            date: combinedDateTime,
+            startDate: event.startDate,
             location: event.location,
+            endDate: event.endDate,
+            participants: participants,
+            type: event.type,
             poll: includesPoll ? {
                 question: pollQuestion,
                 options: pollOptions.filter(option => option.trim() !== '').map(option => ({ option, votes: 0, voters: [] })),
                 isMultipleVote: isMultipleChoice
             } : null
         };
-
         AxiosInstance.post('/event', newEvent)
             .then((response) => {
-                console.log('Event created successfully');
+                setToastMessage('Event created successfully');
+                setToastOpen(true);
+                setToastSeverity('success');
                 setEvents(prevEvents => [...prevEvents, response.data]);
-                setEvent({ title: '', description: '', date: '', time: '', location: '', poll: { question: '', options: [], isMultipleVote: false } });
+                setEvent({
+                    title: '',
+                    description: '',
+                    startDate: '',
+                    endDate: '',
+                    location: '',
+                    type: '',
+                    participants: [],
+                    poll: { question: '', options: [], isMultipleVote: false }
+                });
                 setPollQuestion('');
                 setPollOptions(['', '']);
                 setIsMultipleChoice(false);
             })
             .catch(error => {
                 console.error('Error creating event:', error);
+                setToastMessage('Error creating event');
+                setToastSeverity('error');
+      setToastOpen(true);
             });
     }
+
+    const handleToastClose = () => {
+        setToastOpen(false);
+      };
 
     return {
         createEvent,
         handleChange,
         event,
-        creatingTime,
+        endDate: event.endDate,
         pollQuestion,
         pollOptions,
         isMultipleChoice,
         handleOptionChange,
         handleAddOption,
-        includesPoll
+        includesPoll,
+        participants,
+        setParticipants,
+        type: event.type,
+        typesofEvent,
+        allEmails,
+        toastOpen,
+        toastMessage,
+        handleToastClose,
+        toastSeverity,
     };
 }
 
 export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>) => {
     const [editingEvent, setEditingEvent] = useState<EventsData | null>(null);
-    const [editingTime, setEditingTime] = useState<string>('');
-    const [showForm, setShowForm] = useState(false);
+    const [showEditDrawer, setEditDrawer] = useState(false);
     const [includePollInEdit, setIncludePollInEdit] = useState(false);
     const [editPollQuestion, setEditPollQuestion] = useState('');
     const [editPollOptions, setEditPollOptions] = useState<string[]>(['', '']);
     const [editIsMultipleChoice, setEditIsMultipleChoice] = useState(false);
+    const [updateToastOpen, setUpdateToastOpen] = useState(false);
+    const [updateToastMessage, setUpdateToastMessage] = useState('');
+    const [updateToastSeverity, setUpdateToastSeverity] = useState<'success' | 'error'>('success');
 
     const toggleForm = () => {
-        setShowForm(!showForm);
+        setEditDrawer(!showEditDrawer);
         setEditingEvent(null);
         resetEditPollState();
     };
@@ -163,20 +240,23 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
         } else {
             resetEditPollState();
         }
-        setShowForm(true);
+        setEditDrawer(true);
+    };
+
+    const handleToggleForm = () => {
+        toggleForm();
     };
 
     const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target;
-        
-        if (name === 'time') {
-            setEditingTime(value);
-        } else if (name === 'date') {
+
+        if (name === 'startDate' || name === 'endDate') {
             setEditingEvent(prevEvent => ({
                 ...prevEvent!,
-                date: value
+                [name]: value
             }));
-        } else if (name === 'includesPoll') {
+        }
+        if (name === 'includesPoll') {
             setIncludePollInEdit(checked);
         } else if (name === 'pollQuestion') {
             setEditPollQuestion(value);
@@ -203,26 +283,22 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
     };
 
     const setEventForEditing = (event: EventsData) => {
-        const eventDate = new Date(event.date);
-        const formattedDate = eventDate.toISOString().split('T')[0];
-        const formattedTime = eventDate.toTimeString().slice(0, 5);
         setEditingEvent({
             ...event,
-            date: formattedDate,
+            startDate: new Date(event.startDate).toISOString().slice(0, 16),
+            endDate: new Date(event.endDate).toISOString().slice(0, 16)
         });
-        setEditingTime(formattedTime);
     };
 
     const updateEvent = (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
         if (!editingEvent) return;
 
-        const combinedDateTime = new Date(`${editingEvent.date}T${editingTime}`);
-
         const fieldsToUpdate = {
             title: editingEvent.title,
             description: editingEvent.description,
-            date: combinedDateTime,
+            startDate: editingEvent.startDate,
+            endDate: editingEvent.endDate,
             location: editingEvent.location,
             poll: includePollInEdit ? {
                 question: editPollQuestion,
@@ -233,26 +309,33 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
 
         AxiosInstance.patch(`/event/${editingEvent._id}`, fieldsToUpdate)
             .then((response) => {
-                console.log('Event updated successfully');
+                setUpdateToastMessage('Event updated successfully');
+                setUpdateToastOpen(true);
+                setUpdateToastSeverity('success');
                 setEvents(prevEvents =>
                     prevEvents.map(event =>
                         event._id === editingEvent._id ? response.data : event
                     )
                 );
                 setEditingEvent(null);
-                setEditingTime('');
                 resetEditPollState();
-                setShowForm(false);
+                setEditDrawer(false);
             })
             .catch(error => {
                 console.error('Error updating event:', error);
+                setUpdateToastMessage('Error updating event');
+                setUpdateToastOpen(true);
+                setUpdateToastSeverity('error');
             });
     }
 
+    const handleUpdateToastClose = () => {
+        setUpdateToastOpen(false);
+      };
+
     return {
         editingEvent,
-        editingTime,
-        showForm,
+        setEditDrawer,
         includePollInEdit,
         editPollQuestion,
         editPollOptions,
@@ -264,10 +347,14 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
         updateEvent,
         setEventForEditing,
         toggleForm,
-        handleEditClick
+        handleEditClick,
+        handleToggleForm,
+        handleUpdateToastClose,
+        updateToastMessage,
+        updateToastOpen,
+        updateToastSeverity
     };
 }
-
 
 export const useDeleteEvent = (setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>) => {
 
@@ -296,3 +383,4 @@ export const useDeleteEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
 
     return { handleDelete, closeModal, showModal, handleDeleteEventModal, eventToDeleteId };
 };
+
