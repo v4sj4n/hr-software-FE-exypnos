@@ -7,78 +7,33 @@ import { ButtonTypes } from '../Button/ButtonTypes';
 import Switch from '@mui/material/Switch';
 import style from '../../../src/Pages/Events/styles/Events.module.css'
 import Selecter from '../Input/components/Select/Selecter';
+import { useEvents } from '@/Pages/Events/Context/EventsContext';
 
 interface AnchorTemporaryDrawerProps {
-    open: boolean;
-    onClose: () => void;
-    
-    editingEvent: {
-      title: string;
-      startDate: string;
-      endDate: string;
-      location: string;
-      description: string;
-    } | null;
-    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleEditChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    event: {
-      title: string;
-      startDate: string;
-      location: string;
-      description: string;
-    };
-    endDate: string;
-    participants: string[];
-    setParticipants: (participants: string[]) => void;
-    allEmails: string[];
-    type: string;
-    typesofEvent: string[];
-    includesPoll: boolean;
-    includePollInEdit: boolean;
-    pollQuestion: string;
-    editPollQuestion: string;
-    isMultipleChoice: boolean;
-    editIsMultipleChoice: boolean;
-    pollOptions: string[];
-    editPollOptions: string[];
-    handleOptionChange: (index: number, value: string) => void;
-    handleEditOptionChange: (index: number, value: string) => void;
-    handleAddOption: () => void;
-    handleAddEditOption: () => void;
-    createEvent: (e: React.FormEvent<HTMLButtonElement>) => void;
-    updateEvent: (e: React.FormEvent<HTMLButtonElement>) => void;
-  }
+  open: boolean;
+  onClose: () => void;
+  endDate: string;
+}
 
- function DrawerComponent({
-    open,
-    onClose,
-   
-    editingEvent,
-    handleChange,
-    handleEditChange,
-    event,
-    endDate,
-    participants,
-    setParticipants,
-    allEmails,
-    type,
-    typesofEvent,
-    includesPoll,
-    includePollInEdit,
-    pollQuestion,
-    editPollQuestion,
-    isMultipleChoice,
-    editIsMultipleChoice,
-    pollOptions,
-    editPollOptions,
-    handleOptionChange,
+function DrawerComponent({
+  open,
+  onClose,
+  endDate,
+}: AnchorTemporaryDrawerProps) {
+
+  const { editingEvent, editPollQuestion,
+    editPollOptions, handleOptionChange,
     handleEditOptionChange,
     handleAddOption,
     handleAddEditOption,
     createEvent,
-    updateEvent,
-  }: AnchorTemporaryDrawerProps) {
- 
+    updateEvent, pollQuestion,
+    pollOptions,
+    isMultipleChoice, includePollInEdit, includesPoll, editIsMultipleChoice, handleChange,
+    handleEditChange, event, setParticipants,
+    participants, allEmails,
+    typesofEvent, type } = useEvents()
+
   return (
     <Drawer
       anchor="right"
@@ -88,35 +43,35 @@ interface AnchorTemporaryDrawerProps {
       <Box sx={{ width: 400, display: "flex", flexDirection: "column", gap: 2, padding: 2 }}>
         <div className={style.create}>{editingEvent ? 'Edit Event' : 'Create New Event'}</div>
         <Input IsUsername label='Event Title' name='title' onChange={editingEvent ? handleEditChange : handleChange}
-         value={ editingEvent ? editingEvent.title : event.title}  />
-<div style={{display:'flex', width:"100%", gap:15}}>
-     <Input
-          IsUsername
-          label='Start Date and Time'
-          shrink={true}
-          name='startDate'
-          type="datetime-local"
-          onChange={editingEvent ? handleEditChange : handleChange}
-          value={ editingEvent  ? editingEvent.startDate.slice(0, 16) : event.startDate}
-          width={178}
-        />
+          value={editingEvent ? editingEvent.title : event.title} />
+        <div style={{ display: 'flex', width: "100%", gap: 15 }}>
+          <Input
+            IsUsername
+            label='Start Date and Time'
+            shrink={true}
+            name='startDate'
+            type="datetime-local"
+            onChange={editingEvent ? handleEditChange : handleChange}
+            value={editingEvent ? editingEvent.startDate.slice(0, 16) : event.startDate}
+            width={178}
+          />
 
-        <Input
-          IsUsername
-          label='End Date and Time'
-          shrink={true}
-          name='endDate'
-          type="datetime-local"
-          width={173}
-          onChange={editingEvent ? handleEditChange : handleChange}
-          value={ editingEvent  ? editingEvent.endDate.slice(0, 16) : endDate}
-        />
-</div>
-       
-        <Input IsUsername width="100%" label='Location' name='location' onChange={editingEvent ? handleEditChange : handleChange} value={ editingEvent  ? editingEvent.location : event.location} />
+          <Input
+            IsUsername
+            label='End Date and Time'
+            shrink={true}
+            name='endDate'
+            type="datetime-local"
+            width={173}
+            onChange={editingEvent ? handleEditChange : handleChange}
+            value={editingEvent ? editingEvent.endDate.slice(0, 16) : endDate}
+          />
+        </div>
+
+        <Input IsUsername width="100%" label='Location' name='location' onChange={editingEvent ? handleEditChange : handleChange} value={editingEvent ? editingEvent.location : event.location} />
         <Input IsUsername label="Description" type="textarea" name='description' multiline rows={4}
           onChange={editingEvent ? handleEditChange : handleChange}
-          value={ editingEvent  ? editingEvent.description : event.description}
+          value={editingEvent ? editingEvent.description : event.description}
         />
         <Selecter
           value={participants}

@@ -1,8 +1,6 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import AxiosInstance from '@/Helpers/Axios';
 import { EventsCreationData, EventsData } from '../Interface/Events';
-import { useAuth } from '@/Context/AuthProvider';
-import { useGetAllUsers } from '@/Pages/Employees/Hook';
 import { useSearchParams } from 'react-router-dom';
 import { debounce } from 'lodash';
 
@@ -10,16 +8,6 @@ export const useGetAllEvents = () => {
     const [events, setEvents] = useState<EventsData[]>([]);
     const [searchParams, setSearchParams] = useSearchParams();
     const [isLoading, setIsLoading] = useState(false);
-    const { currentUser } = useAuth();
-    const isAdmin = currentUser?.role === 'admin';
-    const [selectedEvent, setSelectedEvent] = useState<null | EventsData>(null);
-    const [showEventModal, setShowEventModal] = useState(false);
-    const label = { inputProps: { 'aria-label': 'Switch demo' } };
-
-    const handleSeeVoters = (event: EventsData) => {
-        setSelectedEvent(event);
-        setShowEventModal(true);
-    };
 
     const debouncedSetSearchParams = debounce((value: string) => {
         setSearchParams((prev) => {
@@ -62,22 +50,12 @@ export const useGetAllEvents = () => {
     return { 
         events, 
         setEvents, 
-        label, 
-        isLoading, 
-        isAdmin, 
-        handleSeeVoters, 
-        selectedEvent, 
-        showEventModal, 
+        isLoading,  
         onSearchChange,
-        setSelectedEvent, 
-        setShowEventModal 
     };
 };
 
 export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>) => {
-    const typesofEvent = ['sports', 'carier', 'teambuilding', 'training', 'other']
-    const { users } = useGetAllUsers()
-    const allEmails = users.map((user) => user.auth.email);
 
     const [toastOpen, setToastOpen] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
@@ -197,8 +175,6 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
         participants,
         setParticipants,
         type: event.type,
-        typesofEvent,
-        allEmails,
         toastOpen,
         toastMessage,
         handleToastClose,

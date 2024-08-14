@@ -1,5 +1,4 @@
 import EventPoll from "../EventPoll/EventsPoll";
-// import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import style from '../../styles/Events.module.css'
@@ -16,6 +15,7 @@ interface SelectedEventCardProps {
 }
 
 const SelectedEventCard = ({ event, onClose, showVotersButton = false }: SelectedEventCardProps) => {
+    
     const { currentUser } = useAuth();
 
     return (
@@ -29,10 +29,6 @@ const SelectedEventCard = ({ event, onClose, showVotersButton = false }: Selecte
                 <div className={style.description}>{event.description}</div>
                 <div className={style.dataContainer}>
                     <div className={style.dateContainer}>
-                        {/* <div className={style.data}>
-                            <AccessTimeIcon sx={{ height: 20, width: 20, color: "#6b7280" }} />
-                            {new Date(event.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-                        </div> */}
                         <div className={style.data}>
                             <CalendarTodayIcon sx={{ height: 20, width: 20, color: "#6b7280" }} />
                             {new Date(event.startDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
