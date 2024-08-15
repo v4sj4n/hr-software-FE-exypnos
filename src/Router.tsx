@@ -19,6 +19,7 @@ import Inventory from './Pages/Inventory/Inventory.tsx'
 import Career from './Pages/Career/Career.tsx'
 import Holdings from './Pages/Holdings/Holdings.tsx'
 
+
 export default function Router() {
   const router = createBrowserRouter([
     {

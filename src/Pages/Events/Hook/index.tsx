@@ -32,9 +32,9 @@ export const useGetAllEvents = () => {
         AxiosInstance.get<EventsData[]>(`/event?search=${currentSearch}`)
             .then(response => {
                 console.log('Fetched events:', response.data);
-                
-                    setIsLoading(false);
-                
+
+                setIsLoading(false);
+
                 setEvents(response.data);
             })
             .catch(error => {
@@ -47,10 +47,10 @@ export const useGetAllEvents = () => {
         fetchEvents();
     }, [searchParams]);
 
-    return { 
-        events, 
-        setEvents, 
-        isLoading,  
+    return {
+        events,
+        setEvents,
+        isLoading,
         onSearchChange,
     };
 };
@@ -60,12 +60,14 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
     const [toastOpen, setToastOpen] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>('success');
+    const [eventPhotos, setEventPhotos] = useState<File[]>([]);
     const [event, setEvent] = useState<EventsCreationData>({
         title: '',
         description: '',
         endDate: '',
         startDate: '',
         location: '',
+        photo:[],
         participants: [],
         type: '',
         poll: {
@@ -100,6 +102,10 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
         }
     };
 
+    const handleFileUpload = (photo: File[]) => {
+        setEventPhotos(photo);
+    };
+
     const handleOptionChange = (index: number, value: string) => {
         const newOptions = [...pollOptions];
         newOptions[index] = value;
@@ -112,54 +118,71 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
         }
     };
 
-    const createEvent = (e: React.FormEvent<HTMLButtonElement>) => {
+    const createEvent = async (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        const newEvent = {
-            title: event.title,
-            description: event.description,
-            startDate: event.startDate,
-            location: event.location,
-            endDate: event.endDate,
-            participants: participants,
-            type: event.type,
-            poll: includesPoll ? {
+        const formData = new FormData();
+        formData.append('title', event.title);
+        formData.append('description', event.description);
+        formData.append('startDate', event.startDate);
+        formData.append('endDate', event.endDate);
+        formData.append('location', event.location);
+        formData.append('type', event.type);
+        participants.forEach((participant, index) => {
+            formData.append(`participants[${index}]`, participant);
+        });
+
+        if (includesPoll) {
+            formData.append('poll', JSON.stringify({
                 question: pollQuestion,
                 options: pollOptions.filter(option => option.trim() !== '').map(option => ({ option, votes: 0, voters: [] })),
                 isMultipleVote: isMultipleChoice
-            } : null
-        };
-        AxiosInstance.post('/event', newEvent)
-            .then((response) => {
-                setToastMessage('Event created successfully');
-                setToastOpen(true);
-                setToastSeverity('success');
-                setEvents(prevEvents => [...prevEvents, response.data]);
-                setEvent({
-                    title: '',
-                    description: '',
-                    startDate: '',
-                    endDate: '',
-                    location: '',
-                    type: '',
-                    participants: [],
-                    poll: { question: '', options: [], isMultipleVote: false }
-                });
-                setPollQuestion('');
-                setPollOptions(['', '']);
-                setIsMultipleChoice(false);
-            })
-            .catch(error => {
-                console.error('Error creating event:', error);
-                setToastMessage('Error creating event');
-                setToastSeverity('error');
-      setToastOpen(true);
+            }));
+        }
+
+       eventPhotos.forEach((photo,) => {
+    formData.append('photo', photo);
+});
+
+        console.log('Form data:', formData);
+        try {
+            const response = await AxiosInstance.post('/event', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
             });
-    }
+            setToastMessage('Event created successfully');
+            setToastOpen(true);
+            setToastSeverity('success');
+            setEvents(prevEvents => [...prevEvents, response.data]);
+            setEvent({
+                title: '',
+                description: '',
+                startDate: '',
+                endDate: '',
+                location: '',
+                type: '',
+                photo:[],
+                participants: [],
+                poll: { question: '', options: [], isMultipleVote: false }
+            });
+            setPollQuestion('');
+            setPollOptions(['', '']);
+            setIsMultipleChoice(false);
+            setParticipants([]);
+            setEventPhotos([]);
+            setEventPhotos([])
+        } catch (error) {
+            console.error('Error creating event:', error);
+            setToastMessage('Error creating event');
+            setToastSeverity('error');
+            setToastOpen(true);
+        }
+    };
 
     const handleToastClose = () => {
         setToastOpen(false);
-      };
+    };
 
     return {
         createEvent,
@@ -179,6 +202,8 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
         toastMessage,
         handleToastClose,
         toastSeverity,
+        handleFileUpload, 
+        eventPhotos
     };
 }
 
@@ -192,6 +217,9 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
     const [updateToastOpen, setUpdateToastOpen] = useState(false);
     const [updateToastMessage, setUpdateToastMessage] = useState('');
     const [updateToastSeverity, setUpdateToastSeverity] = useState<'success' | 'error'>('success');
+    const [editParticipants, setEditParticipants] = useState<string[]>([]);
+    const [editType, setEditType] = useState<string>('');
+    
 
     const toggleForm = () => {
         setEditDrawer(!showEditDrawer);
@@ -206,22 +234,29 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
         setEditIsMultipleChoice(false);
     };
 
-    const handleEditClick = (eventToEdit: EventsData) => {
-        setEventForEditing(eventToEdit);
-        setIncludePollInEdit(!!eventToEdit.poll);
-        if (eventToEdit.poll) {
-            setEditPollQuestion(eventToEdit.poll.question);
-            setEditPollOptions(eventToEdit.poll.options.map(opt => opt.option));
-            setEditIsMultipleChoice(eventToEdit.poll.isMultipleVote);
-        } else {
-            resetEditPollState();
-        }
-        setEditDrawer(true);
+    const handleEditClick = (eventToEdit: EventsData["_id"]) => {
+        AxiosInstance.get(`/event/${eventToEdit}`).then(response => {
+            setEditingEvent(response.data);
+            setEditParticipants(response.data.participants);
+            setEditType(response.data.type);
+            setIncludePollInEdit(!!response.data.poll);
+            if (response.data.poll) {
+                setEditPollQuestion(response.data.poll.question);
+                setEditPollOptions(response.data.poll.options.map((opt: { option: string[]; }) => opt.option));
+                setEditIsMultipleChoice(response.data.poll.isMultipleVote);
+            } else {
+                resetEditPollState();
+            }
+            setEditDrawer(true);
+        })
+
     };
 
     const handleToggleForm = () => {
         toggleForm();
     };
+
+
 
     const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target;
@@ -231,13 +266,16 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
                 ...prevEvent!,
                 [name]: value
             }));
-        }
-        if (name === 'includesPoll') {
+        } else if (name === 'includesPoll') {
             setIncludePollInEdit(checked);
         } else if (name === 'pollQuestion') {
             setEditPollQuestion(value);
         } else if (name === 'isMultipleChoice') {
             setEditIsMultipleChoice(checked);
+        } else if (name === 'participants') {
+            setEditParticipants(value.split(',').map((_id) => _id.trim()));
+        } else if (name === 'type') {
+            setEditType(value);
         } else {
             setEditingEvent(prevEvent => ({
                 ...prevEvent!,
@@ -264,6 +302,8 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
             startDate: new Date(event.startDate).toISOString().slice(0, 16),
             endDate: new Date(event.endDate).toISOString().slice(0, 16)
         });
+        setEditParticipants(event.participants);
+        setEditType(event.type);
     };
 
     const updateEvent = (e: React.FormEvent<HTMLButtonElement>) => {
@@ -276,15 +316,19 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
             startDate: editingEvent.startDate,
             endDate: editingEvent.endDate,
             location: editingEvent.location,
+            participants: editParticipants,
+            type: editType,
             poll: includePollInEdit ? {
                 question: editPollQuestion,
                 options: editPollOptions.filter(option => option.trim() !== '').map(option => ({ option, votes: 0, voters: [] })),
                 isMultipleVote: editIsMultipleChoice
             } : null
         };
-
+        console.log(fieldsToUpdate, "iuegfyugwegf")
         AxiosInstance.patch(`/event/${editingEvent._id}`, fieldsToUpdate)
+
             .then((response) => {
+
                 setUpdateToastMessage('Event updated successfully');
                 setUpdateToastOpen(true);
                 setUpdateToastSeverity('success');
@@ -307,7 +351,7 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
 
     const handleUpdateToastClose = () => {
         setUpdateToastOpen(false);
-      };
+    };
 
     return {
         editingEvent,
@@ -328,7 +372,11 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
         handleUpdateToastClose,
         updateToastMessage,
         updateToastOpen,
-        updateToastSeverity
+        updateToastSeverity,
+        editParticipants,
+        setEditParticipants,
+        editType,
+        setEditType,
     };
 }
 

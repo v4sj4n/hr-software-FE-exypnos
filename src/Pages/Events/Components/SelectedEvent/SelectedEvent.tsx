@@ -5,7 +5,7 @@ import style from '../../styles/Events.module.css'
 import { EventsData } from "../../Interface/Events";
 import { useAuth } from "@/Context/AuthProvider";
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import image from "../../../../../public/Images/image.png"
+import Example from "@/Components/Carosel/Carosel";
 
 interface SelectedEventCardProps {
     event: EventsData;
@@ -20,7 +20,7 @@ const SelectedEventCard = ({ event, onClose, showVotersButton = false }: Selecte
 
     return (
         <div className={style.Wrap}>
-            <img src={image} alt="Event" className={style.img} />
+              <Example images={event.photo} />
             <div style={{ gap: "10px", padding: "5px 15px 15px 15px", width:"100%" }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div className={style.title}>{event.title}</div>
