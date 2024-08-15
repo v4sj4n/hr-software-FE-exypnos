@@ -1,4 +1,3 @@
-
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import CheckIcon from '@mui/icons-material/Check';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -6,13 +5,20 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Tooltip } from '@mui/material';
 import { ButtonTypes } from '@/Components/Button/ButtonTypes';
 import { useInterviewContext, InterviewProvider } from './Hook/InterviewContext';
-import style from './styles/Interview.module.css';
 import Button from '@/Components/Button/Button';
 import RescheduleModal from './Component/ScheduleForm';
 
+import style from '../../../style/interview.module.css';
+
+
+
+
+
+
 function InterviewKanbanContent() {
   const {
-    loading,
+    loading, 
+    
     error,
     selectedInterview,
     isModalOpen,
@@ -30,6 +36,7 @@ function InterviewKanbanContent() {
     phases,
   } = useInterviewContext();
 
+  // Handle loading and error states
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error loading interviews: {error || 'Unknown error'}</div>;
 
@@ -39,7 +46,8 @@ function InterviewKanbanContent() {
         <div className={style.kanbanColumns}>
           {phases.map(phase => (
             <div key={phase} className={style.kanbanColumn}>
-              <h2>{phase}
+              <h2>
+                {phase}
                 <span className={style.applicantCount}>
                   ({getInterviewsByPhase(phase).length})
                 </span>
@@ -64,11 +72,11 @@ function InterviewKanbanContent() {
                               onClick={() => handleNavigateToProfile(interview._id.toString())}
                               className={style.candidateName}
                             >
-                              {interview.fullName}
+                              {`${interview.firstName} ${interview.lastName}`}
                             </h6>
                             <p>{interview.positionApplied}</p>
                             {phase !== 'Employed' && (
-                              <p>Interview Date: {formatDate(interview.interviewDate)}</p>
+                              <p>Interview Date: {formatDate(interview.currentPhase === "first" ? interview.firstInterviewDate ?? '' : interview.secondInterviewDate ?? '')}</p>
                             )}
                             <p>Email: {interview.email}</p>
                             <p>Phone: {interview.phoneNumber}</p>
@@ -87,15 +95,15 @@ function InterviewKanbanContent() {
                                     color='#2457A3'
                                     borderColor='#2457A3'
                                     icon={<EditIcon />}
-                                    onClick={() => handleOpenModal(interview, true)}
+                                    onClick={() => handleOpenModal(interview, false)}
                                   />
                                 </span>
                               </Tooltip>
-                              <div style={{display:"flex", justifyContent:"flex-end", gap:'10px'}}>    
+                              <div style={{ display: "flex", justifyContent: "flex-end", gap: '10px' }}>
                                 <Tooltip title="Delete" placement="top">
                                   <span>
                                     <Button
-                                      btnText=" " 
+                                      btnText=" "
                                       type={ButtonTypes.SECONDARY}
                                       width="35px"
                                       height="30px"
@@ -149,8 +157,7 @@ function InterviewKanbanContent() {
           handleReschedule={handleReschedule}
           selectedInterview={selectedInterview}
           allPhasesPassed={allPhasesPassed}
-          handleSchedule={ handleSchedule}
-          // message={''}
+          handleSchedule={handleSchedule}
         />
       )}
     </div>

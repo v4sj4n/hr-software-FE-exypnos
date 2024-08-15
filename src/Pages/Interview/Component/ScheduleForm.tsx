@@ -4,26 +4,29 @@ import Input from '@/Components/Input/Index';
 import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { ModalComponent } from '../../../Components/Modal/Modal';
-import AxiosInstance from '@/Helpers/Axios';
 
 interface Interview {
-  fullName: string;
-  auth: { email: string };
-  interviewDate: string;
-   notes: string;
-  phase: string;
-  message: string;
-  _id: number;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  positionApplied: string;
+  status: string;
+  _id: string;
+  firstInterviewDate?: Date;
+  secondInterviewDate?: Date;
+  notes: string;
+  isDeleted: boolean;
+  currentPhase: string;
 }
 
 interface RescheduleModalProps {
   open: boolean;
   handleClose: () => void;
-  handleSchedule: (interviewDate: string, phase: string, notes: string) => void
-  handleReschedule: (interviewDate: string,  phase: string ) => void;
+  handleSchedule: (date: Date, currentPhase: 'first' | 'second', notes: string) => void;
+  handleReschedule: (date: Date, currentPhase: 'first' | 'second', notes: string) => void;
   selectedInterview: Interview;
   allPhasesPassed: boolean;
-  // message: string;
 }
 
 const RescheduleModal: React.FC<RescheduleModalProps> = ({
@@ -34,53 +37,45 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
   allPhasesPassed,
   handleSchedule,
 }) => {
-  const [interviewDate, setInterviewDate] = useState(selectedInterview.interviewDate);
-  const [notes, setNotes] = useState(selectedInterview.notes);
-  const [phase, setPhase] = useState(selectedInterview.phase);
-  // const [message, setMessage] = useState(selectedInterview.message);
+  const [interviewDate, setInterviewDate] = useState<string>(
+    selectedInterview.firstInterviewDate 
+      ? new Date(selectedInterview.firstInterviewDate).toISOString().slice(0, 16)
+      : ''
+  );
+  
+  const [notes, setNotes] = useState<string>(selectedInterview.notes);
+  const [currentPhase, setCurrentPhase] = useState<string>(selectedInterview.currentPhase);
 
   useEffect(() => {
-    setInterviewDate(selectedInterview.interviewDate);
-    setPhase(selectedInterview.phase);
+    setInterviewDate(selectedInterview.firstInterviewDate?.toISOString().slice(0, 16) || '');
+    setCurrentPhase(selectedInterview.currentPhase);
     setNotes(selectedInterview.notes);
-    // setMessage(selectedInterview.message);
   }, [selectedInterview]);
-  
 
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => { 
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    // try {
-    //   console.log("vgjyf",interviewDate, phase)
-  
-    //   const response = await AxiosInstance.patch(`/applicant/${selectedInterview._id}/interview/reschedule`, {
-    //    phase:"applicant",
-    //   newInterviewDate:"2024-08-15T10:00:00.000Z"
-    //   });
-    //   console.log(interviewDate, phase)
-  
-    //   if (response.status === 200) {
-    //     handleReschedule(interviewDate, phase);
-    //   }
-    // } catch (error) {
-    //   console.error('Failed to reschedule interview:', error);
-    //   // Handle error (e.g., show an error message to the user)
-    // }
-    handleReschedule(interviewDate, phase);
-    handleSchedule(interviewDate, phase,notes);
-    console.log("gjynaf",interviewDate, phase)
+
+    const date = new Date(interviewDate); // Convert string to Date
+
+    if (allPhasesPassed) {
+      handleSchedule(date, currentPhase as 'first' | 'second', notes);
+    } else {
+      handleReschedule(date, currentPhase as 'first' | 'second', notes);
+    }
+    
     handleClose();
   };
 
   return (
     <ModalComponent open={open} handleClose={handleClose}>
       <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <h2>{allPhasesPassed ? 'Update Interview Notes' : 'Edit your interview'}</h2>
+        <h2>{allPhasesPassed ? 'Update Interview Notes' : 'Edit Your Interview'}</h2>
         {!allPhasesPassed && (
           <Input
             IsUsername
             type="datetime-local"
-            name='interviewDate'
-            label='Date'
+            name="interviewDate"
+            label="Date"
             value={interviewDate}
             onChange={(e) => setInterviewDate(e.target.value)}
           />
@@ -96,17 +91,6 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
           onChange={(e) => setNotes(e.target.value)}
           name="notes"
         />
-        {/* <Input
-          IsUsername
-          multiline={true}
-          width="100%"
-          label="Message"
-          type="textarea"
-          rows={4}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          name="message"
-        /> */}
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
           <Button
             type={ButtonTypes.PRIMARY}
@@ -126,3 +110,50 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
 };
 
 export default RescheduleModal;
+
+
+
+
+
+// import React, { useState } from 'react';
+// import { applicantsData } from '@/Pages/Interview/Hook/index';
+
+// interface ScheduleModalProps {
+//   isOpen: boolean;
+//   onClose: () => void;
+//   applicant: applicantsData;
+// }
+
+// const ScheduleModal: React.FC<ScheduleModalProps> = ({ isOpen, onClose, applicant }) => {
+//   const [date, setDate] = useState('');
+//   const [notes, setNotes] = useState('');
+
+//   const handleSubmit = (e: React.FormEvent) => {
+//     e.preventDefault();
+//     // Implement the logic to update the applicant's interview date and notes
+//     console.log('Scheduling interview for', applicant.firstName, 'on', date, 'with notes:', notes);
+//     onClose();
+//   };
+
+//   if (!isOpen) return null;
+
+//   return (
+//     <div className="modal">
+//       <h2>Schedule Interview</h2>
+//       <form onSubmit={handleSubmit}>
+//         <label>
+//           Date:
+//           <input type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} required />
+//         </label>
+//         <label>
+//           Notes:
+//           <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
+//         </label>
+//         <button type="submit">Schedule</button>
+//         <button type="button" onClick={onClose}>Cancel</button>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default ScheduleModal;

@@ -1,21 +1,21 @@
-
 import { Interview } from './InterviewContext';
 
-export const formatDate = (dateString: string | number | Date) => {
-  if (!dateString) {
-    return "No Date Provided";
-  }
-
-  const date = new Date(dateString);
-  if (isNaN(date.getTime())) {
-    return "Invalid Date";
-  }
-  const formattedDate = date.toLocaleDateString('en-GB'); 
-  const formattedTime = date.toLocaleTimeString('en-GB'); 
-  return `${formattedDate} ${formattedTime}`;
-};
-
 export const getInterviewsByPhase = (interviews: Interview[], phase: string) => {
-  return interviews.filter(interview => interview.phase === phase)
-    .sort((a, b) => new Date(a.interviewDate).getTime() - new Date(b.interviewDate).getTime());
+  if (!Array.isArray(interviews)) {
+    console.error('Expected an array of interviews');
+    return [];
+  }
+
+  return interviews
+    .filter(interview => interview.currentPhase === phase)
+    .sort((a, b) => {
+      const dateA = a.firstInterviewDate ? new Date(a.firstInterviewDate) : new Date(0);
+      const dateB = b.firstInterviewDate ? new Date(b.firstInterviewDate) : new Date(0);
+
+      if (isNaN(dateA.getTime()) && isNaN(dateB.getTime())) return 0;
+      if (isNaN(dateA.getTime())) return 1;
+      if (isNaN(dateB.getTime())) return -1;
+
+      return dateA.getTime() - dateB.getTime();
+    });
 };
