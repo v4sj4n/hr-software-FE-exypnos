@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import styles from './Dropzone.module.css';
 import CloseIcon from '@mui/icons-material/Close';
+import { useEvents } from '@/Pages/Events/Context/EventsContext';
 
 interface DropzoneProps {
   className?: string;
@@ -12,18 +13,23 @@ interface PreviewFile extends File {
 }
 
 const Dropzone: React.FC<DropzoneProps> = ({ className }) => {
-  const [files, setFiles] = useState<PreviewFile[]>([]);
+  const { eventPhotos, handleFileUpload } = useEvents();
+  const [previewFiles, setPreviewFiles] = useState<PreviewFile[]>([]);
+
+  useEffect(() => {
+    const newPreviewFiles = eventPhotos.map(file => 
+      Object.assign(file, { preview: URL.createObjectURL(file) })
+    );
+    setPreviewFiles(newPreviewFiles);
+
+    return () => newPreviewFiles.forEach((file) => URL.revokeObjectURL(file.preview));
+  }, [eventPhotos]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles?.length) {
-      setFiles((previousFiles) => [
-        ...previousFiles,
-        ...acceptedFiles.map((file) =>
-          Object.assign(file, { preview: URL.createObjectURL(file) })
-        ),
-      ]);
+      handleFileUpload([...eventPhotos, ...acceptedFiles]);
     }
-  }, []);
+  }, [eventPhotos, handleFileUpload]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
@@ -33,40 +39,16 @@ const Dropzone: React.FC<DropzoneProps> = ({ className }) => {
     onDrop,
   });
 
-  useEffect(() => {
-    return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
-  }, [files]);
-
   const removeFile = (name: string) => {
-    setFiles((files) => files.filter((file) => file.name !== name));
+    handleFileUpload(eventPhotos.filter(file => file.name !== name));
   };
 
   const removeAll = () => {
-    setFiles([]);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!files?.length) return;
-
-    const formData = new FormData();
-    files.forEach((file) => formData.append('file', file));
-    formData.append('upload_preset', 'friendsbook');
-
-    const URL = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
-    if (URL) {
-      const data = await fetch(URL, {
-        method: 'POST',
-        body: formData,
-      }).then((res) => res.json());
-
-      console.log(data);
-    }
+    handleFileUpload([]);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div>
       <div {...getRootProps({ className: `${styles.container} ${className}` })}>
         <input {...getInputProps()} />
         <div className={styles.container}>
@@ -78,7 +60,6 @@ const Dropzone: React.FC<DropzoneProps> = ({ className }) => {
         </div>
       </div>
 
-      {/* Preview */}
       <section className={styles.section}>
         <div className={styles.flexRow}>
           <button
@@ -88,13 +69,11 @@ const Dropzone: React.FC<DropzoneProps> = ({ className }) => {
           >
             Remove all files
           </button>
-          
         </div>
 
-        {/* Accepted files */}
         <h3 className={styles.title}>Accepted Files</h3>
         <ul className={styles.previewList}>
-          {files.map((file) => (
+          {previewFiles.map((file) => (
             <li key={file.name} className={styles.previewItem}>
               <img
                 src={file.preview}
@@ -118,7 +97,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ className }) => {
           ))}
         </ul>
       </section>
-    </form>
+    </div>
   );
 };
 

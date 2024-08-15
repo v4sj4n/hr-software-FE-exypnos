@@ -9,8 +9,8 @@ const EventsContext = createContext<EventsContextProps | undefined>(undefined);
 export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { events, setEvents, isLoading, onSearchChange } = useGetAllEvents();
     const {
-        handleChange, event, createEvent, pollQuestion, pollOptions, participants, isMultipleChoice, handleOptionChange, handleAddOption, includesPoll, setParticipants, toastOpen, toastMessage, handleToastClose, toastSeverity
-    } = useCreateEvent(setEvents);
+        handleChange, event, createEvent, pollQuestion, pollOptions, participants, isMultipleChoice, handleOptionChange, handleAddOption, includesPoll, setParticipants, toastOpen, toastMessage, handleToastClose, toastSeverity, handleFileUpload
+    ,eventPhotos} = useCreateEvent(setEvents);
 
     const {
         editingEvent,
@@ -28,7 +28,12 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         handleUpdateToastClose,
         updateToastMessage,
         updateToastOpen,
-        updateToastSeverity
+        updateToastSeverity, 
+        editParticipants,
+         setEditParticipants,
+         editType,
+         setEditType,
+        
     } = useUpdateEvent(setEvents);
 
     const { handleDelete, closeModal, showModal, handleDeleteEventModal, eventToDeleteId } = useDeleteEvent(setEvents);
@@ -51,7 +56,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const handleOpenDrawer = (action: 'create' | 'edit', event?: EventsData) => {
         setDrawerAction(action);
         if (action === 'edit' && event) {
-            handleEditClick(event);
+            handleEditClick(event._id);
         }
         setDrawerOpen(true);
     };
@@ -116,7 +121,9 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             handleSeeVoters,
             drawerOpen,
             handleOpenDrawer,
-            handleCloseDrawer
+            handleCloseDrawer, editParticipants, setEditParticipants,     editType,
+            setEditType,
+            handleFileUpload, eventPhotos, 
         }}>
             {children}
         </EventsContext.Provider>

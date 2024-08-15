@@ -8,6 +8,7 @@ import Switch from '@mui/material/Switch';
 import style from '../../../src/Pages/Events/styles/Events.module.css'
 import Selecter from '../Input/components/Select/Selecter';
 import { useEvents } from '@/Pages/Events/Context/EventsContext';
+import Dropzone from '@/Dropzone/Dropzone';
 
 interface AnchorTemporaryDrawerProps {
   open: boolean;
@@ -32,7 +33,7 @@ function DrawerComponent({
     isMultipleChoice, includePollInEdit, includesPoll, editIsMultipleChoice, handleChange,
     handleEditChange, event, setParticipants,
     participants, allEmails,
-    typesofEvent, type } = useEvents()
+    typesofEvent,  editParticipants, setEditParticipants, editType, setEditType } = useEvents()
 
   return (
     <Drawer
@@ -74,8 +75,14 @@ function DrawerComponent({
           value={editingEvent ? editingEvent.description : event.description}
         />
         <Selecter
-          value={participants}
-          onChange={(newValue) => setParticipants(Array.isArray(newValue) ? newValue : [newValue])}
+        value={editingEvent ? editParticipants : participants}
+        onChange={(newValue) => {
+          if (editingEvent) {
+            setEditParticipants(Array.isArray(newValue) ? newValue : [newValue]);
+          } else {
+            setParticipants(Array.isArray(newValue) ? newValue : [newValue]);
+          }
+        }}
           options={allEmails}
           multiple={true}
           name='participants'
@@ -83,8 +90,16 @@ function DrawerComponent({
         />
 
         <Selecter
-          value={type}
-          onChange={(newValue) => handleChange({ target: { name: 'type', value: newValue } } as React.ChangeEvent<HTMLInputElement>)}
+          value={editingEvent ? editType : event.type}
+          onChange={(newValue) => {
+              if (editingEvent) {
+                  setEditType(Array.isArray(newValue) ? newValue[0] : newValue);
+              } else {
+                  handleChange({
+                      target: { name: 'type', value: Array.isArray(newValue) ? newValue[0] : newValue }
+                  } as React.ChangeEvent<HTMLInputElement>);
+              }
+          }}
           options={typesofEvent}
           multiple={false}
           name="type"
@@ -144,7 +159,7 @@ function DrawerComponent({
             )}
           </div>
         )}
-
+<Dropzone/>
         <div className={style.border}></div>
         <Button1 btnText={editingEvent ? 'Update' : 'Save event'} type={ButtonTypes.PRIMARY} backgroundColor='#2469FF' border='none' onClick={editingEvent ? updateEvent : createEvent} />
       </Box>

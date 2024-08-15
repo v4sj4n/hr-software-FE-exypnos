@@ -10,6 +10,7 @@ export interface EventsData {
     file: string;
     location: string;
     type: string;
+    photo:string[];
     participants: string[];
     poll: {
       question: string;
@@ -30,6 +31,7 @@ export interface EventsData {
     endDate: string;
     location: string;
     participants: string[];
+    photo: File[];
     type: string;
     poll: {
       question: string;
@@ -62,7 +64,7 @@ export interface EventsData {
     includesPoll: boolean;
     includePollInEdit: boolean;
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleEditClick: (event: EventsData) => void;
+    handleEditClick: (event: EventsData['_id']) => void;
     handleEditOptionChange: (index: number, value: string) => void;
     toggleForm: () => void;
     handleToggleForm: () => void;
@@ -79,6 +81,7 @@ export interface EventsData {
     updateToastOpen: boolean;
     updateToastSeverity: 'success' | 'error';
     editPollQuestion: string;
+    setEditParticipants: React.Dispatch<React.SetStateAction<string[]>>;
     editPollOptions: string[];
     editIsMultipleChoice: boolean;
     type: string;
@@ -96,5 +99,10 @@ export interface EventsData {
     handleSeeVoters: (event: EventsData) => void;
     drawerOpen: boolean;
     handleOpenDrawer: (action: "create" | "edit", event?: EventsData) => void;
+    editParticipants: string[];
     handleCloseDrawer: () => void;
+    setEditType: React.Dispatch<React.SetStateAction<string>>;
+    editType: string;
+    handleFileUpload: (files: File[]) => void;
+    eventPhotos: File[];
 }
