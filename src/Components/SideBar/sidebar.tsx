@@ -65,6 +65,12 @@ export const SideBar = () => {
                   </p>
                 )}
               </div>
+              {isOpen &&
+                (dropdownOpen.recruiting ? (
+                  <ExpandLessIcon className={style.expandIcon} />
+                ) : (
+                  <ExpandMoreIcon className={style.expandIcon} />
+                ))}
             </Link>
           </div>
           <div
@@ -91,11 +97,12 @@ export const SideBar = () => {
                 <GroupIcon className={style.icon} />
                 {isOpen && <span className={style.text}>Employee</span>}
               </div>
-              {dropdownOpen.employee ? (
-                <ExpandLessIcon className={style.expandIcon} />
-              ) : (
-                <ExpandMoreIcon className={style.expandIcon} />
-              )}
+              {isOpen &&
+                (dropdownOpen.employee ? (
+                  <ExpandLessIcon className={style.expandIcon} />
+                ) : (
+                  <ExpandMoreIcon className={style.expandIcon} />
+                ))}
             </Link>
           </div>
           <div
@@ -122,11 +129,12 @@ export const SideBar = () => {
                 <DevicesIcon className={style.icon} />
                 {isOpen && <span className={style.text}>Assets</span>}
               </div>
-              {dropdownOpen.assets ? (
-                <ExpandLessIcon className={style.expandIcon} />
-              ) : (
-                <ExpandMoreIcon className={style.expandIcon} />
-              )}
+              {isOpen &&
+                (dropdownOpen.assets ? (
+                  <ExpandLessIcon className={style.expandIcon} />
+                ) : (
+                  <ExpandMoreIcon className={style.expandIcon} />
+                ))}
             </Link>
           </div>
           <div
@@ -148,11 +156,12 @@ export const SideBar = () => {
                 <EventIcon className={style.icon} />
                 {isOpen && <span className={style.text}>Events</span>}
               </div>
-              {dropdownOpen.events ? (
-                <ExpandLessIcon className={style.expandIcon} />
-              ) : (
-                <ExpandMoreIcon className={style.expandIcon} />
-              )}
+              {isOpen &&
+                (dropdownOpen.events ? (
+                  <ExpandLessIcon className={style.expandIcon} />
+                ) : (
+                  <ExpandMoreIcon className={style.expandIcon} />
+                ))}
             </Link>
           </div>
           <div
