@@ -43,6 +43,7 @@ export const SelectedVacation = () => {
             boxShadow: 24,
             p: 4,
             borderRadius: '10px',
+            width: "33vw"
           }}
         >
           <VacationForm data={vacation} />

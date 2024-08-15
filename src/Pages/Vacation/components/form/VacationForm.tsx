@@ -7,8 +7,12 @@ import { UseQueryResult } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import style from '../../style/vacationForm.module.scss'
 import dayjs from 'dayjs'
+import { ErrorText } from '@/Components/Error/ErrorTextForm'
+import Button from '@/Components/Button/Button'
+import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 
 type MyComponentProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: UseQueryResult<any, Error>
 }
 
@@ -44,9 +48,11 @@ export const VacationForm: React.FC<MyComponentProps> = ({
   ]
   console.log(vacation.data)
   return (
-    <div className={style.form}>
-      <div></div>
-      <form>
+    <div>
+      <h3 className={style.fullName}>
+        {vacation.data.userId.firstName} {vacation.data.userId.lastName}
+      </h3>
+      <form className={style.selectedForm}>
         <div>
           <select id="type" {...register('type')}>
             {vacationTypes.map((type) => (
@@ -60,17 +66,29 @@ export const VacationForm: React.FC<MyComponentProps> = ({
           </select>
         </div>
         <div>
-          <input
-            type="datetime-local"
-            {...register('startDate')}
-            placeholder="Start Date"
-          />
-          <input
-            type="datetime-local"
-            {...register('endDate')}
-            placeholder="End Date"
-          />
+          <div>
+            <input
+              type="datetime-local"
+              {...register('startDate')}
+              placeholder="Start Date"
+            />
+            {errors.startDate && (
+              <ErrorText>{errors.startDate.message}</ErrorText>
+            )}
+          </div>
+          <div>
+            <input
+              type="datetime-local"
+              {...register('endDate')}
+              placeholder="End Date"
+            />
+            {errors.endDate && <ErrorText>{errors.endDate.message}</ErrorText>}
+          </div>
         </div>
+        <div className={style.buttonGroups}>
+          <Button type={ButtonTypes.SECONDARY} btnText={"cancel"} /> <Button type={ButtonTypes.PRIMARY} btnText={"submit"} isSubmit />
+        </div>
+        {errors.root && <ErrorText>{errors.root.message}</ErrorText>}
       </form>
     </div>
   )
