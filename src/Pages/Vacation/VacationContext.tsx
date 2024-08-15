@@ -33,7 +33,14 @@ const VacationProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [viewVacationModalOpen, setViewVacationModalOpen] =
     useState<boolean>(false);
   const handleOpenViewVacationModalOpen = () => setViewVacationModalOpen(true);
-  const handleCloseVacationModalOpen = () => setViewVacationModalOpen(false);
+  const handleCloseVacationModalOpen = () => {
+    setViewVacationModalOpen(false);
+    setSearchParams((prevParams) => {
+      const newParams = new URLSearchParams(prevParams);
+      newParams.delete("selectedVacation");
+      return newParams;
+    });
+  };
 
   return (
     <VacationContext.Provider
