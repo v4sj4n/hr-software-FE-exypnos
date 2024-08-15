@@ -9,11 +9,18 @@ export interface applicantsData {
     positionApplied: string;
     status: string;
     _id: number;
+    firstInterviewDate?: Date;
+    secondInterviewDate?: Date;
+    isDeleted: boolean;
+    notes: string;
+    currentPhase?: string;
+    message: string;
+
     
 }
 
 export const useGetAllInterviews = () => {
-   const {data,error,loading} = useFetch<applicantsData>("applicant?status=accepted")
+   const {data,error,loading} = useFetch<applicantsData>("applicant")
 
    return {data, error, loading}
 }

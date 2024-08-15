@@ -16,6 +16,10 @@ export const formatDate = (dateString: string | number | Date) => {
 };
 
 export const getInterviewsByPhase = (interviews: Interview[], phase: string) => {
-  return interviews.filter(interview => interview.phase === phase)
-    .sort((a, b) => new Date(a.interviewDate).getTime() - new Date(b.interviewDate).getTime());
-};
+  return interviews.filter(interview => interview.currentPhase === phase)}
+//     .sort((a, b) => new Date(a.firstInterviewDate).getTime() - new Date(b.firstInterviewDate).getTime());
+// };
+
+// function sort(arg0: (a: any, b: any) => number) {
+//   throw new Error('Function not implemented.');
+// }

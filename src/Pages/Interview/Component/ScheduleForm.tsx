@@ -9,21 +9,22 @@ import AxiosInstance from '@/Helpers/Axios';
 interface Interview {
   fullName: string;
   auth: { email: string };
-  interviewDate: string;
-   notes: string;
-  phase: string;
-  message: string;
-  _id: number;
+  firstInterviewDate: Date;
+  secondInterviewDate: Date;
+  // message: string;
+  notes: string;
+  currentPhase: string;
+  email: string;
+  _id: string;
 }
 
 interface RescheduleModalProps {
   open: boolean;
   handleClose: () => void;
-  handleSchedule: (interviewDate: string, phase: string, notes: string) => void
-  handleReschedule: (interviewDate: string,  phase: string ) => void;
+  handleSchedule: (firstInterviewDate: Date, currentPhase: string, notes: string) => void;
+  handleReschedule: (firstInterviewDate: Date, currentPhase: string,notes:string) => void;
   selectedInterview: Interview;
   allPhasesPassed: boolean;
-  // message: string;
 }
 
 const RescheduleModal: React.FC<RescheduleModalProps> = ({
@@ -34,57 +35,55 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
   allPhasesPassed,
   handleSchedule,
 }) => {
-  const [interviewDate, setInterviewDate] = useState(selectedInterview.interviewDate);
-  const [notes, setNotes] = useState(selectedInterview.notes);
-  const [phase, setPhase] = useState(selectedInterview.phase);
-  // const [message, setMessage] = useState(selectedInterview.message);
+  const [interviewDate, setInterviewDate] = useState<Date | undefined>(undefined);
+  const [notes, setNotes] = useState<string>(selectedInterview.notes);
+  const [currentPhase, setCurrentPhase] = useState<string>(selectedInterview.currentPhase);
+  // const [message, setMessage] = useState<string>(selectedInterview.message);
 
   useEffect(() => {
-    setInterviewDate(selectedInterview.interviewDate);
-    setPhase(selectedInterview.phase);
     setNotes(selectedInterview.notes);
+    setCurrentPhase(selectedInterview.currentPhase);
     // setMessage(selectedInterview.message);
-  }, [selectedInterview]);
-  
 
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => { 
+    if (selectedInterview.currentPhase === 'first') {
+      setInterviewDate(selectedInterview.firstInterviewDate);
+    } else if (selectedInterview.currentPhase === 'second') {
+      setInterviewDate(selectedInterview.secondInterviewDate);
+    }
+  }, [selectedInterview]);
+
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    // try {
-    //   console.log("vgjyf",interviewDate, phase)
-  
-    //   const response = await AxiosInstance.patch(`/applicant/${selectedInterview._id}/interview/reschedule`, {
-    //    phase:"applicant",
-    //   newInterviewDate:"2024-08-15T10:00:00.000Z"
-    //   });
-    //   console.log(interviewDate, phase)
-  
-    //   if (response.status === 200) {
-    //     handleReschedule(interviewDate, phase);
-    //   }
-    // } catch (error) {
-    //   console.error('Failed to reschedule interview:', error);
-    //   // Handle error (e.g., show an error message to the user)
-    // }
-    handleReschedule(interviewDate, phase);
-    handleSchedule(interviewDate, phase,notes);
-    console.log("gjynaf",interviewDate, phase)
+    
+    if (!interviewDate) {
+      // Handle the case when interviewDate is undefined
+      console.error("Interview date is required.");
+      return; // Prevent submission
+    }
+    
+    if (allPhasesPassed) {
+      handleSchedule(interviewDate, currentPhase, notes);
+    } else {
+      handleReschedule(interviewDate, currentPhase, notes);
+    }
+    
+    console.log("Submitted Data", interviewDate, currentPhase, notes);
     handleClose();
   };
-
+  
   return (
     <ModalComponent open={open} handleClose={handleClose}>
       <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <h2>{allPhasesPassed ? 'Update Interview Notes' : 'Edit your interview'}</h2>
-        {!allPhasesPassed && (
-          <Input
-            IsUsername
-            type="datetime-local"
-            name='interviewDate'
-            label='Date'
-            value={interviewDate}
-            onChange={(e) => setInterviewDate(e.target.value)}
-          />
-        )}
+        {/* Conditional rendering for interview date input */}
+        <Input
+          IsUsername
+          type="datetime-local"
+          name='interviewDate'
+          label={currentPhase === 'first' ? 'First Interview Date' : 'Second Interview Date'}
+          value={interviewDate ? interviewDate.toISOString().slice(0, 16) : ''}
+          onChange={(e) => setInterviewDate(new Date(e.target.value))}
+        />
         <Input
           IsUsername
           multiline={true}
@@ -123,6 +122,5 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
       </Box>
     </ModalComponent>
   );
-};
-
-export default RescheduleModal;
+}
+export default RescheduleModal; 
