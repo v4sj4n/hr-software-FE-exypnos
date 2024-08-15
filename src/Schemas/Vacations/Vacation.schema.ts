@@ -17,8 +17,8 @@ export const VacationSchema = z
         message: `Status should be one of 'pending', 'accepted', 'rejected'`,
       }),
     description: z.string().optional(),
-    startDate: z.string().datetime(),
-    endDate: z.string().datetime(),
+    startDate: z.string().date(),
+    endDate: z.string().date(),
   })
   .refine((data) => data.startDate < data.endDate, {
     message: 'End date should be after start date',

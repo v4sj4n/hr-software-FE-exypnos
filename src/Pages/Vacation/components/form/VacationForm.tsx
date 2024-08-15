@@ -4,12 +4,15 @@ import {
 } from '@/Schemas/Vacations/Vacation.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { UseQueryResult } from '@tanstack/react-query'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import style from '../../style/vacationForm.module.scss'
 import dayjs from 'dayjs'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
+import { useUpdateVacation } from '../../Hook'
+import { useContext } from 'react'
+import { VacationContext } from '../../VacationContext'
 
 type MyComponentProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -19,6 +22,7 @@ type MyComponentProps = {
 export const VacationForm: React.FC<MyComponentProps> = ({
   data: vacation,
 }) => {
+  const updater = useUpdateVacation()
   const {
     register,
     handleSubmit,
@@ -28,11 +32,24 @@ export const VacationForm: React.FC<MyComponentProps> = ({
     defaultValues: {
       status: vacation.data.status,
       type: vacation.data.type,
-      startDate: dayjs(vacation.data.startDate).format('YYYY-MM-DDTHH:mm'),
-      endDate: dayjs(vacation.data.endDate).format('YYYY-MM-DDTHH:mm'),
+      startDate: dayjs(vacation.data.startDate).format('YYYY-MM-DD'),
+      endDate: dayjs(vacation.data.endDate).format('YYYY-MM-DD'),
     },
     resolver: zodResolver(VacationSchema),
   })
+
+  const onSubmit: SubmitHandler<VacationFormFields> = async (
+    data: VacationFormFields
+  ) => {
+    console.log('hello', data)
+    data.endDate = dayjs(data.endDate).toISOString()
+    data.startDate = dayjs(data.startDate).toISOString()
+
+    updater.mutate({ vacation: data })
+    if (updater.isError) {
+      setError('root', updater.error)
+    }
+  }
 
   const vacationTypes = [
     { value: 'vacation', label: 'Vacation' },
@@ -46,13 +63,15 @@ export const VacationForm: React.FC<MyComponentProps> = ({
     { value: 'accepted', label: 'Accepted' },
     { value: 'rejected', label: 'Rejected' },
   ]
-  console.log(vacation.data)
+
+  const { handleCloseVacationModalOpen } = useContext(VacationContext)
+
   return (
     <div>
       <h3 className={style.fullName}>
         {vacation.data.userId.firstName} {vacation.data.userId.lastName}
       </h3>
-      <form className={style.selectedForm}>
+      <form className={style.selectedForm} onSubmit={handleSubmit(onSubmit)}>
         <div>
           <select id="type" {...register('type')}>
             {vacationTypes.map((type) => (
@@ -66,9 +85,9 @@ export const VacationForm: React.FC<MyComponentProps> = ({
           </select>
         </div>
         <div>
-          <div>
+          <div className={style.oneElement}>
             <input
-              type="datetime-local"
+              type="date"
               {...register('startDate')}
               placeholder="Start Date"
             />
@@ -76,9 +95,9 @@ export const VacationForm: React.FC<MyComponentProps> = ({
               <ErrorText>{errors.startDate.message}</ErrorText>
             )}
           </div>
-          <div>
+          <div className={style.oneElement}>
             <input
-              type="datetime-local"
+              type="date"
               {...register('endDate')}
               placeholder="End Date"
             />
@@ -86,7 +105,17 @@ export const VacationForm: React.FC<MyComponentProps> = ({
           </div>
         </div>
         <div className={style.buttonGroups}>
-          <Button type={ButtonTypes.SECONDARY} btnText={"cancel"} /> <Button type={ButtonTypes.PRIMARY} btnText={"submit"} isSubmit />
+          <Button
+            type={ButtonTypes.SECONDARY}
+            btnText={'cancel'}
+            onClick={handleCloseVacationModalOpen}
+          />{' '}
+          <Button
+            type={ButtonTypes.PRIMARY}
+            btnText={`${isSubmitting ? 'Submitting' : 'Submit'}`}
+            disabled={isSubmitting}
+            isSubmit
+          />
         </div>
         {errors.root && <ErrorText>{errors.root.message}</ErrorText>}
       </form>
