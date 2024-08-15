@@ -24,8 +24,8 @@ function HoldingsComponent() {
     setSearchParams((prev) => {
       const value = e.target.value
       const newParams = new URLSearchParams(prev)
-      if (newParams.get('selected')) {
-        newParams.delete('selected')
+      if (newParams.get('selectedHolding')) {
+        newParams.delete('selectedHolding')
       }
 
       if (value === 'all') {
@@ -41,8 +41,8 @@ function HoldingsComponent() {
   const debouncedSetSearchParams = debounce((value: string) => {
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev)
-      if (newParams.get('selected')) {
-        newParams.delete('selected')
+      if (newParams.get('selectedHolding')) {
+        newParams.delete('selectedHolding')
       }
 
       if (value) {
@@ -158,7 +158,7 @@ function HoldingsComponent() {
         <EmployeesWithHoldings />
 
         <div className={style.selectedUserContainer}>
-          {searchParams.get('selected') ? (
+          {searchParams.get('selectedHolding') ? (
             <UserHoldings />
           ) : (
             <div className={style.noItemsOnSelectedUser}>

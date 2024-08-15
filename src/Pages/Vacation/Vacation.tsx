@@ -1,13 +1,3 @@
-import { SearchOutlined as SearchIcon } from '@mui/icons-material'
-import Input from '@/Components/Input/Index'
-import {
-  FormLabel,
-  Radio,
-  RadioGroup,
-  Sheet,
-  Box,
-  radioClasses,
-} from '@mui/joy'
 import style from './style/vacation.module.scss'
 import { useContext, useState } from 'react'
 import { VacationContext } from './VacationContext'
@@ -23,6 +13,7 @@ export default function Vacation() {
     setAlignment(newAlignment)
   }
   const { searchParams } = useContext(VacationContext)
+  
   const pageToggleChoices = [
     {
       value: 'requests',

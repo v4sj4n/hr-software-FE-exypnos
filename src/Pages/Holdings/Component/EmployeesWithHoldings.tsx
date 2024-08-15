@@ -17,9 +17,9 @@ export const EmployeesWithHoldings = () => {
     setSearchParams((prevParams) => {
       const newParams = new URLSearchParams(prevParams)
       if (userId) {
-        newParams.set('selected', userId)
+        newParams.set('selectedHolding', userId)
       } else {
-        newParams.delete('selected')
+        newParams.delete('selectedHolding')
       }
       return newParams
     })

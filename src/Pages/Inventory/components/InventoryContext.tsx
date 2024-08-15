@@ -1,3 +1,4 @@
+import { Asset } from '@/Pages/Holdings/TAsset'
 import {
   createContext,
   ReactNode,
@@ -5,19 +6,19 @@ import {
   Dispatch,
   SetStateAction,
   FC,
-} from "react";
+} from 'react'
 
 interface AssetContextType {
-  assets: Asset[];
-  setAssets: Dispatch<SetStateAction<Asset[]>>;
-  createModalOpen: boolean;
-  handleCloseCreateModalOpen: () => void;
-  handleOpenCreateModalOpen: () => void;
-  singleAssetID: string | null;
-  setSingleAssetID: Dispatch<SetStateAction<string | null>>;
-  viewAssetModalOpen: boolean;
-  handleCloseViewAssetModalOpen: () => void;
-  handleOpenViewAssetModalOpen: () => void;
+  assets: Asset[]
+  setAssets: Dispatch<SetStateAction<Asset[]>>
+  createModalOpen: boolean
+  handleCloseCreateModalOpen: () => void
+  handleOpenCreateModalOpen: () => void
+  singleAssetID: string | null
+  setSingleAssetID: Dispatch<SetStateAction<string | null>>
+  viewAssetModalOpen: boolean
+  handleCloseViewAssetModalOpen: () => void
+  handleOpenViewAssetModalOpen: () => void
 }
 
 const defaultContextValue: AssetContextType = {
@@ -31,23 +32,23 @@ const defaultContextValue: AssetContextType = {
   viewAssetModalOpen: false,
   handleCloseViewAssetModalOpen: () => {},
   handleOpenViewAssetModalOpen: () => {},
-};
+}
 
 export const InventoryContext =
-  createContext<AssetContextType>(defaultContextValue);
+  createContext<AssetContextType>(defaultContextValue)
 
 export const InventoryProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [assets, setAssets] = useState<InventoryItem[]>([]);
+  const [assets, setAssets] = useState<Asset[]>([])
 
-  const [createModalOpen, setCreateModalOpen] = useState<boolean>(false);
-  const handleCloseCreateModalOpen = () => setCreateModalOpen(false);
-  const handleOpenCreateModalOpen = () => setCreateModalOpen(true);
-  const [singleAssetID, setSingleAssetID] = useState<string | null>(null);
-  const [viewAssetModalOpen, setViewAssetModalOpen] = useState<boolean>(false);
-  const handleCloseViewAssetModalOpen = () => setViewAssetModalOpen(false);
-  const handleOpenViewAssetModalOpen = () => setViewAssetModalOpen(true);
+  const [createModalOpen, setCreateModalOpen] = useState<boolean>(false)
+  const handleCloseCreateModalOpen = () => setCreateModalOpen(false)
+  const handleOpenCreateModalOpen = () => setCreateModalOpen(true)
+  const [singleAssetID, setSingleAssetID] = useState<string | null>(null)
+  const [viewAssetModalOpen, setViewAssetModalOpen] = useState<boolean>(false)
+  const handleCloseViewAssetModalOpen = () => setViewAssetModalOpen(false)
+  const handleOpenViewAssetModalOpen = () => setViewAssetModalOpen(true)
 
   return (
     <InventoryContext.Provider
@@ -66,5 +67,5 @@ export const InventoryProvider: FC<{ children: ReactNode }> = ({
     >
       {children}
     </InventoryContext.Provider>
-  );
-};
+  )
+}

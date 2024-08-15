@@ -28,8 +28,8 @@ export const useEmployeesWithHoldings = () => {
 export const useGetUserHoldings = () => {
   const { searchParams } = useContext(HoldingsContext)
   const userHoldings = useQuery({
-    queryKey: ['userHoldings', searchParams.get('selected')],
-    queryFn: () => getUserHoldings(searchParams.get('selected') as string),
+    queryKey: ['userHoldings', searchParams.get('selectedHolding')],
+    queryFn: () => getUserHoldings(searchParams.get('selectedHolding') as string),
   })
   return userHoldings
 }

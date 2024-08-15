@@ -25,3 +25,13 @@ $red-color: #a70000;
     color: $red-color;
     background-color: lighten($color: $red-color, $amount: 55);
 }
+
+.viewButton {
+    display: inline;
+    margin: 0;
+    &:hover{
+        text-decoration: underline;
+    }
+
+
+}

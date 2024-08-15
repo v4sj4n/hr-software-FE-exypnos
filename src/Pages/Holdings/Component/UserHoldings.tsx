@@ -30,7 +30,7 @@ export const UserHoldings = () => {
   const handleClose = useCallback(() => {
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev)
-      newParams.delete('selected')
+      newParams.delete('selectedHolding')
       return newParams
     })
   }, [setSearchParams])
@@ -186,7 +186,7 @@ export const UserHoldings = () => {
           handleItemAssigner.mutate({
             event,
             assetId: assetId as string,
-            userId: searchParams.get('selected') as string,
+            userId: searchParams.get('selectedHolding') as string,
           })
         }
         className={style.assignAssetForm}
