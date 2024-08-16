@@ -1,8 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import styles from './Dropzone.module.css';
 import CloseIcon from '@mui/icons-material/Close';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { useEvents } from '@/Pages/Events/Context/EventsContext';
+import Button from '@/Components/Button/Button';
+import { ButtonTypes } from '@/Components/Button/ButtonTypes';
 
 interface DropzoneProps {
   className?: string;
@@ -17,7 +20,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ className }) => {
   const [previewFiles, setPreviewFiles] = useState<PreviewFile[]>([]);
 
   useEffect(() => {
-    const newPreviewFiles = eventPhotos.map(file => 
+    const newPreviewFiles = eventPhotos.map(file =>
       Object.assign(file, { preview: URL.createObjectURL(file) })
     );
     setPreviewFiles(newPreviewFiles);
@@ -35,7 +38,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ className }) => {
     accept: {
       'image/*': [],
     },
-    maxSize: 1024 * 1000, 
+    maxSize: 1024 * 1000,
     onDrop,
   });
 
@@ -48,55 +51,44 @@ const Dropzone: React.FC<DropzoneProps> = ({ className }) => {
   };
 
   return (
-    <div>
-      <div {...getRootProps({ className: `${styles.container} ${className}` })}>
+    <div className={`${styles.dropzone} ${className}`}>
+      <div {...getRootProps()} className={styles.dropzoneContent}>
         <input {...getInputProps()} />
-        <div className={styles.container}>
-          {isDragActive ? (
-            <p>Drop the files here ...</p>
-          ) : (
-            <p>Drag & drop files here, or click to select files</p>
-          )}
-        </div>
+        {previewFiles.length === 0 ? (
+          <>
+            <InsertDriveFileIcon className={styles.fileIcon} />
+            {isDragActive ? (
+              <p>Drop the files here ...</p>
+            ) : (
+              <p>Drag & drop files here, or click to select files</p>
+            )}
+          </>
+        ) : (
+          <div className={styles.previewGrid}>
+            {previewFiles.map((file) => (
+              <div key={file.name} className={styles.previewItem}>
+                <InsertDriveFileIcon className={styles.fileIcon} />
+                <div className={styles.fileName}>{file.name}</div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeFile(file.name);
+                  }}
+                  className={styles.removeButton}
+                >
+                  <CloseIcon style={{width:"15px",height:"15px"}}/>
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-
-      <section className={styles.section}>
-        <div className={styles.flexRow}>
-          <button
-            type="button"
-            onClick={removeAll}
-            className={styles.removeAllBtn}
-          >
-            Remove all files
-          </button>
+      {previewFiles.length > 0 && (
+        <div className={styles.controls}>
+          <Button color='#d32f2f' backgroundColor='white' borderColor='#d32f2f' onClick={removeAll} btnText={'Remove all files'} type={ButtonTypes.PRIMARY}/>
+          <p className={styles.fileCount}>{previewFiles.length} file(s) selected</p>
         </div>
-
-        <h3 className={styles.title}>Accepted Files</h3>
-        <ul className={styles.previewList}>
-          {previewFiles.map((file) => (
-            <li key={file.name} className={styles.previewItem}>
-              <img
-                src={file.preview}
-                alt={file.name}
-                width={50}
-                height={50}
-                onLoad={() => {
-                  URL.revokeObjectURL(file.preview);
-                }}
-                className={styles.image}
-              />
-              <button
-                type="button"
-                className={styles.removeBtn}
-                onClick={() => removeFile(file.name)}
-              >
-                <CloseIcon />
-              </button>
-              <p className={styles.fileName}>{file.name}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
+      )}
     </div>
   );
 };

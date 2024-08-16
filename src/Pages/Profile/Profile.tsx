@@ -7,7 +7,6 @@ export default function Profile() {
     <>
       <div className={style.container}>
         <div className={style.content}>
-            <div className={style.account}>Account Settings</div>
           <Tabs />
         </div>
       </div>

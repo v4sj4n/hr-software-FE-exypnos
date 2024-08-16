@@ -60,7 +60,6 @@ import { EventsProvider, useEvents } from './Context/EventsContext';
           onClose={handleCloseDrawer}
           endDate={endDate}
         />
-        <div className={style.account}>Upcoming Events</div>
         <div style={{ display: 'flex', alignItems: "center", gap: "10px" }}>
           <Input IsUsername type='text' label='search' name='Search' width={220} iconPosition="end" icon={<SearchOutlinedIcon />} onChange={onSearchChange} />
           {isAdmin ? <Button btnText='Create Event' type={ButtonTypes.PRIMARY} onClick={() => handleOpenDrawer('create')} /> : ''}

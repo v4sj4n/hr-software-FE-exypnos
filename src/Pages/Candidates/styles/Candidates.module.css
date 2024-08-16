@@ -1,17 +1,5 @@
-.Candidates{
-    color: #000000;
-    display: flex;
-    font-size: 18px;
-    font-weight: bolder;
-    margin: 0px 0px 16px 0px;
-    font-family: "Outfit", sans-serif;
-  }
 
-  .content {
-    display: flex;
-    flex-direction: column;
-    padding: 16px;    
-  }
+
 
 
   .statusAccepted {
