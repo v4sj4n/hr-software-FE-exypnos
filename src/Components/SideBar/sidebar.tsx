@@ -64,6 +64,12 @@ export const SideBar = () => {
                   </p>
                 )}
               </div>
+              {isOpen &&
+                (dropdownOpen.recruiting ? (
+                  <ExpandLessIcon className={style.expandIcon} />
+                ) : (
+                  <ExpandMoreIcon className={style.expandIcon} />
+                ))}
             </Link>
           </div>
           <div
@@ -90,11 +96,12 @@ export const SideBar = () => {
                 <GroupIcon className={style.icon} />
                 {isOpen && <span className={style.text}>Employee</span>}
               </div>
-              {dropdownOpen.employee ? (
-                <ExpandLessIcon className={style.expandIcon} />
-              ) : (
-                <ExpandMoreIcon className={style.expandIcon} />
-              )}
+              {isOpen &&
+                (dropdownOpen.employee ? (
+                  <ExpandLessIcon className={style.expandIcon} />
+                ) : (
+                  <ExpandMoreIcon className={style.expandIcon} />
+                ))}
             </Link>
           </div>
           <div
@@ -121,11 +128,12 @@ export const SideBar = () => {
                 <DevicesIcon className={style.icon} />
                 {isOpen && <span className={style.text}>Assets</span>}
               </div>
-              {dropdownOpen.assets ? (
-                <ExpandLessIcon className={style.expandIcon} />
-              ) : (
-                <ExpandMoreIcon className={style.expandIcon} />
-              )}
+              {isOpen &&
+                (dropdownOpen.assets ? (
+                  <ExpandLessIcon className={style.expandIcon} />
+                ) : (
+                  <ExpandMoreIcon className={style.expandIcon} />
+                ))}
             </Link>
           </div>
           <div
@@ -142,16 +150,17 @@ export const SideBar = () => {
           </div>
 
           <div className={style.item} onClick={() => toggleDropdown('events')}>
-            <Link to="/events" className={style.link}>
+            <Link to="#events" className={style.link}>
               <div className={style.iconTextContainer}>
                 <EventIcon className={style.icon} />
-                {isOpen && <span className={style.text}>Events</span>}
+                {isOpen && <span className={style.text}>Activities</span>}
               </div>
-              {dropdownOpen.events ? (
-                <ExpandLessIcon className={style.expandIcon} />
-              ) : (
-                <ExpandMoreIcon className={style.expandIcon} />
-              )}
+              {isOpen &&
+                (dropdownOpen.events ? (
+                  <ExpandLessIcon className={style.expandIcon} />
+                ) : (
+                  <ExpandMoreIcon className={style.expandIcon} />
+                ))}
             </Link>
           </div>
           <div
@@ -159,8 +168,8 @@ export const SideBar = () => {
               dropdownOpen.events ? style.open : style.close
             }`}
           >
-            <Link to="/activities" className={style.dropdownItem}>
-              Activities
+            <Link to="/events" className={style.dropdownItem}>
+              Events
             </Link>
             <Link to="/career" className={style.dropdownItem}>
               Career{' '}

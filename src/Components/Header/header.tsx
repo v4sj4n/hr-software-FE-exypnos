@@ -1,7 +1,6 @@
 import { useContext, useState } from 'react'
 import {
   NotificationsOutlined as NotificationsIcon,
-  Person as PersonIcon,
   SettingsOutlined as SettingsOutlinedIcon,
   Logout as LogoutIcon,
   PermIdentity as PermIdentityIcon,
@@ -55,7 +54,15 @@ export const Header = () => {
           <span className={style.badge}>3</span>
         </div>
         <div className={style.icon} onClick={toggleDropdown}>
-          <PersonIcon style={{ cursor: 'pointer' }} />
+          <img
+            src={currentUser?.imageUrl}
+            style={{
+              cursor: 'pointer',
+              width: '40px',
+              height: '40px',
+              borderRadius: '50%',
+            }}
+          />
           <div className={style.username}></div>
           {showDropdown && (
             <div className={style.dropdown}>

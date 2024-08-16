@@ -28,7 +28,7 @@ const DashboardContent: React.FC = () => {
         <div className={style.rightContent}>
           <div className={style.welcome}>
             <h2>
-              {greeter()} {userName}{' '}
+              {greeter()} {userName}!
             </h2>
             {isAdmin ? <p>Here's what's happening with your team today</p> : ''}
           </div>

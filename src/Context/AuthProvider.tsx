@@ -8,6 +8,7 @@ export interface User {
     lastName: string;
     phone: string;
     role: string;
+    imageUrl: string;
 }
 
 interface AuthContextType {
