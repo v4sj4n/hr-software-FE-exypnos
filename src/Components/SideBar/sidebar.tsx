@@ -151,10 +151,10 @@ export const SideBar = () => {
           </div>
 
           <div className={style.item} onClick={() => toggleDropdown('events')}>
-            <Link to="/events" className={style.link}>
+            <Link to="#events" className={style.link}>
               <div className={style.iconTextContainer}>
                 <EventIcon className={style.icon} />
-                {isOpen && <span className={style.text}>Events</span>}
+                {isOpen && <span className={style.text}>Activities</span>}
               </div>
               {isOpen &&
                 (dropdownOpen.events ? (
@@ -169,8 +169,8 @@ export const SideBar = () => {
               dropdownOpen.events ? style.open : style.close
             }`}
           >
-            <Link to="/activities" className={style.dropdownItem}>
-              Activities
+            <Link to="/events" className={style.dropdownItem}>
+              Events
             </Link>
             <Link to="/career" className={style.dropdownItem}>
               Career{' '}
