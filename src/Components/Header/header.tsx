@@ -6,7 +6,6 @@ import {
   PermIdentity as PermIdentityIcon,
   Menu as MenuIcon,
 } from '@mui/icons-material'
-
 import codeviderLogo from '/Images/codevider.png'
 import style from './header.module.css'
 import { useAuth } from '../../Context/AuthProvider'

@@ -9,6 +9,7 @@ import style from '../../../src/Pages/Events/styles/Events.module.css'
 import Selecter from '../Input/components/Select/Selecter';
 import { useEvents } from '@/Pages/Events/Context/EventsContext';
 import Dropzone from '@/Dropzone/Dropzone';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface AnchorTemporaryDrawerProps {
   open: boolean;
@@ -42,7 +43,7 @@ function DrawerComponent({
       onClose={onClose}
     >
       <Box sx={{ width: 400, display: "flex", flexDirection: "column", gap: 2, padding: 2 }}>
-        <div className={style.create}>{editingEvent ? 'Edit Event' : 'Create New Event'}</div>
+        <div className={style.create}>{editingEvent ? 'Edit Event' : 'Create New Event'}<CloseIcon onClick={onClose} style={{cursor:"pointer"}}/></div>
         <Input IsUsername label='Event Title' name='title' onChange={editingEvent ? handleEditChange : handleChange}
           value={editingEvent ? editingEvent.title : event.title} />
         <div style={{ display: 'flex', width: "100%", gap: 15 }}>
@@ -105,6 +106,8 @@ function DrawerComponent({
           name="type"
           label='Event Type'
         />
+        <div > Add Event Images</div>
+        <Dropzone/>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Switch
             checked={editingEvent ? includePollInEdit : includesPoll}
@@ -159,7 +162,6 @@ function DrawerComponent({
             )}
           </div>
         )}
-<Dropzone/>
         <div className={style.border}></div>
         <Button1 btnText={editingEvent ? 'Update' : 'Save event'} type={ButtonTypes.PRIMARY} backgroundColor='#2469FF' border='none' onClick={editingEvent ? updateEvent : createEvent} />
       </Box>

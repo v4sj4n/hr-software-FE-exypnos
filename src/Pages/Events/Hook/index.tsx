@@ -32,7 +32,7 @@ export const useGetAllEvents = () => {
         AxiosInstance.get<EventsData[]>(`/event?search=${currentSearch}`)
             .then(response => {
                 console.log('Fetched events:', response.data);
-
+console.log("Event data: ", events);
                 setIsLoading(false);
 
                 setEvents(response.data);

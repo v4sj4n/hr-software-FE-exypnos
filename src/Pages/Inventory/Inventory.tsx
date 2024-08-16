@@ -19,7 +19,6 @@ function InventoryBaseComponent() {
   return (
     <main className={style.main}>
       <div className={style.heading}>
-        <h2 className={style.title}>Inventory</h2>
         <Button
           type={ButtonTypes.PRIMARY}
           btnText="Add an Item"

@@ -62,7 +62,6 @@ function HoldingsComponent() {
   return (
     <main className={style.main}>
       <div className={style.heading}>
-        <h2 className={style.title}>Holdings</h2>
         <Input
           type="text"
           iconPosition="end"
