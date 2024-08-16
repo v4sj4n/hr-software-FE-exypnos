@@ -1,6 +1,6 @@
 
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { DropResult } from 'react-beautiful-dnd';
 import { useGetAllInterviews, applicantsData } from '.';
 import { formatDate, getInterviewsByPhase } from './utils';
@@ -53,8 +53,7 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [selectedInterview, setSelectedInterview] = useState<Interview | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isReschedule, setIsReschedule] = useState(false);
-  const [allPhasesPassed, setAllPhasesPassed] = useState(false);
-  const {id} = useParams()
+  const [allPhasesPassed] = useState(false);
   const navigate = useNavigate();
 
   const phases = ['applicant' , 'first', 'second'];

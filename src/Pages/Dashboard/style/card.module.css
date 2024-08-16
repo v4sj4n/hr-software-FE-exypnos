@@ -1,23 +1,20 @@
+.card p {
+  color: #2457a3;
+  align-items: center;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
 
-  
-  .card p {
-    color: #2457a3;
-    align-items: center;
+.card h2 {
+  color: #2457a3;
+  font-size: medium;
+  font-weight: 400;
+  align-items: center;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
 
-  }
-  
-  .card h2 {
-    color: #2457a3;
-    font-size: medium;
-    font-weight: bold;
-align-items: center;
-margin-top: 0.25rem;
-margin-bottom: 0.25rem;
-
-  }
-  
-  
-   
-  .cardIcon {
-font-size: large;
- }
+.cardIcon {
+  font-size: large;
+}

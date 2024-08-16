@@ -13,6 +13,7 @@ import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { useUpdateVacation } from '../../Hook'
 import { useContext } from 'react'
 import { VacationContext } from '../../VacationContext'
+import { AxiosError } from 'axios'
 
 type MyComponentProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,7 +48,10 @@ export const VacationForm: React.FC<MyComponentProps> = ({
 
     updater.mutate({ vacation: data })
     if (updater.isError) {
-      setError('root', updater.error)
+      if (updater.error instanceof AxiosError)
+        setError('root', { message: updater.error.response?.data })
+    } else {
+      setError('root', { message: 'something happened' })
     }
   }
 

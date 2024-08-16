@@ -8,6 +8,7 @@ import style from '../style/vacationTable.module.scss'
 import { useContext } from 'react'
 import { VacationContext } from '../VacationContext'
 import { SelectedVacation } from './form/SelectedVacation'
+import { StatusBadge } from '@/Components/StatusBadge/StatusBadge'
 
 export const VacationTable = () => {
   const {
@@ -92,19 +93,13 @@ export const VacationTable = () => {
 }
 
 const StatusRenderer = (value: string) => {
-  return (
-    <span
-      className={
-        value === 'pending'
-          ? style.badgePending
-          : value === 'accepted'
-          ? style.badgeSuccess
-          : value === 'rejected'
-          ? style.badgeError
-          : ''
-      }
-    >
-      ● {value}
-    </span>
-  )
+  const color =
+    value === 'pending'
+      ? 'orange'
+      : value === 'accepted'
+      ? 'green'
+      : value === 'rejected'
+      ? 'red'
+      : ''
+  return <StatusBadge color={color} status={value} />
 }

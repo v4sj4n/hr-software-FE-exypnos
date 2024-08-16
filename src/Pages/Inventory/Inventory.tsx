@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import {
   InventoryContext,
   InventoryProvider,
-} from './components/InventoryContext.tsx'
+} from './InventoryContext.tsx'
 import style from './style/inventory.module.scss'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Button from '@/Components/Button/Button'
@@ -18,14 +18,7 @@ function InventoryBaseComponent() {
   } = useContext(InventoryContext)
   return (
     <main className={style.main}>
-      <div className={style.heading}>
-        <Button
-          type={ButtonTypes.PRIMARY}
-          btnText="Add an Item"
-          onClick={handleOpenCreateModalOpen}
-          width="12rem"
-        />
-      </div>
+
       <ModalComponent
         open={createModalOpen}
         handleClose={handleCloseCreateModalOpen}
@@ -33,6 +26,18 @@ function InventoryBaseComponent() {
         <CreateItemForm />
       </ModalComponent>
       <InventoryTable />
+      <div style={{
+        display: "flex",
+        justifyContent: "end",
+        marginTop: "1rem"
+      }}>
+        <Button
+          type={ButtonTypes.PRIMARY}
+          btnText="Add an Item"
+          onClick={handleOpenCreateModalOpen}
+          width="12rem"
+        />
+      </div>
     </main>
   )
 }

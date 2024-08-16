@@ -1,0 +1,34 @@
+$green-color: #02a700;
+$red-color: #d32f2f;
+$orange-color: #ca8206;
+$gray-color: #4d4d4d;
+
+@mixin badge {
+    padding: 0.3rem .75rem;
+    border-radius: 1rem;
+    font-weight: bold;
+}
+
+.orangeBadge {
+    @include badge;
+    color: white;
+    background-color: lighten($color: $orange-color, $amount: 10);
+}
+
+.grayBadge {
+    @include badge;
+    color: white;
+    background-color: lighten($color: $gray-color, $amount: 10);
+}
+
+.greenBadge {
+    @include badge;
+    color: white;
+    background-color: lighten($color: $green-color, $amount: 5);
+}
+
+.redBadge {
+    @include badge;
+    color: white;
+    background-color: lighten($color: $red-color, $amount: 10);
+}

@@ -3,7 +3,6 @@
 
 import { useState, useEffect } from 'react';
 import AxiosInstance from '@/Helpers/Axios';
-import { number } from 'prop-types';
 
 export interface EventsData {
     _id: number;

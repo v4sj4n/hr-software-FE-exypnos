@@ -1,5 +1,4 @@
-import { Asset } from '@/Pages/Holdings/TAsset'
-import {
+import { 
   createContext,
   ReactNode,
   useState,
@@ -7,28 +6,25 @@ import {
   SetStateAction,
   FC,
 } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 interface AssetContextType {
-  assets: Asset[]
-  setAssets: Dispatch<SetStateAction<Asset[]>>
   createModalOpen: boolean
   handleCloseCreateModalOpen: () => void
   handleOpenCreateModalOpen: () => void
-  singleAssetID: string | null
-  setSingleAssetID: Dispatch<SetStateAction<string | null>>
   viewAssetModalOpen: boolean
   handleCloseViewAssetModalOpen: () => void
   handleOpenViewAssetModalOpen: () => void
+  searchParams: URLSearchParams
+  setSearchParams: Dispatch<SetStateAction<URLSearchParams>>
 }
 
 const defaultContextValue: AssetContextType = {
-  assets: [],
-  setAssets: () => {},
+  searchParams: new URLSearchParams(),
+  setSearchParams: () => {},
   createModalOpen: false,
   handleCloseCreateModalOpen: () => {},
   handleOpenCreateModalOpen: () => {},
-  singleAssetID: null,
-  setSingleAssetID: () => {},
   viewAssetModalOpen: false,
   handleCloseViewAssetModalOpen: () => {},
   handleOpenViewAssetModalOpen: () => {},
@@ -40,26 +36,22 @@ export const InventoryContext =
 export const InventoryProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [assets, setAssets] = useState<Asset[]>([])
-
   const [createModalOpen, setCreateModalOpen] = useState<boolean>(false)
   const handleCloseCreateModalOpen = () => setCreateModalOpen(false)
   const handleOpenCreateModalOpen = () => setCreateModalOpen(true)
-  const [singleAssetID, setSingleAssetID] = useState<string | null>(null)
   const [viewAssetModalOpen, setViewAssetModalOpen] = useState<boolean>(false)
   const handleCloseViewAssetModalOpen = () => setViewAssetModalOpen(false)
   const handleOpenViewAssetModalOpen = () => setViewAssetModalOpen(true)
+  const [searchParams, setSearchParams] = useSearchParams()
 
   return (
     <InventoryContext.Provider
       value={{
-        assets,
-        setAssets,
+        searchParams,
+        setSearchParams,
         createModalOpen,
         handleCloseCreateModalOpen,
         handleOpenCreateModalOpen,
-        singleAssetID,
-        setSingleAssetID,
         viewAssetModalOpen,
         handleCloseViewAssetModalOpen,
         handleOpenViewAssetModalOpen,

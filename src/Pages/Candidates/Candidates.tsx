@@ -1,4 +1,4 @@
-import DataTable from "../../Components/Table/Table";
+import DataTable from "@/Components/Table/Table";
 import { useCandidateContext } from "./Context/CandidateTableContext";
 import { CandidateProvider } from "./Context/CandidateTableProvider";
 

@@ -63,7 +63,7 @@ function HoldingsComponent() {
     <main className={style.main}>
       <div className={style.heading}>
         <Input
-          type="text"
+          type="search"
           iconPosition="end"
           icon={<SearchOutlinedIcon />}
           IsUsername

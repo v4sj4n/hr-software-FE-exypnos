@@ -15,7 +15,6 @@
 
 .rightContent {
   flex: 1;
-  padding: 20px;
   display: flex;
   flex-direction: column;
 }
@@ -26,6 +25,21 @@
   border-radius: 15px;
   padding: 2.5rem   2rem;
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.333rem;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.075);
+  & h2{
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+
+
+
+  * {
+    margin: 0;
+  }
 }
 
 .cardContainer {
@@ -42,6 +56,7 @@
   color: #2457A3;
   text-align: center;
 }
+
 
 .cardGreen {
   background-image: linear-gradient(180deg, #E0F2F7, #A8E0F0);
@@ -68,13 +83,10 @@
 .middleRow {
   display: flex;
   gap: 20px;
-  margin-bottom: 20px;
-  width: 100%; 
-  flex-wrap: wrap; 
+  flex: 1;
 }
 
 .calendar, .infoSection, .pieChartDiv {
-  width: calc(33.33% - 14px); 
   min-width: 250px; 
 }
 
@@ -90,4 +102,5 @@
 h2, h3 {
   color: #2457A3;
   margin-bottom: 0;
+  margin-top: 0;
 }

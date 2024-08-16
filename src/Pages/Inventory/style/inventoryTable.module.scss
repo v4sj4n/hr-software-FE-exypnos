@@ -2,35 +2,6 @@
 .spanStyleA {
     font-weight: 700;
 }
-
-$orange-color: #4d4d4d;
-$green-color: #02a700;
-$red-color: #a70000;
-
-@mixin badge {
-    padding: 0.5rem 1rem;
-    border-radius: 1rem;
-    font-weight: bold;
-}
-
-.badgeBroken {
-    @include badge;
-    color: $orange-color;
-    background-color: lighten($color: $orange-color, $amount: 55);
-}
-
-.badgeAvailable {
-    @include badge;
-    color: $green-color;
-    background-color: lighten($color: $green-color, $amount: 55);
-}
-
-.badgeAssigned {
-    @include badge;
-    color: $red-color;
-    background-color: lighten($color: $red-color, $amount: 55);
-}
-
 .spanStyleNA {
     color: "gray";
 }

@@ -1,6 +1,5 @@
 import style from './style/vacation.module.scss'
-import { useContext, useState } from 'react'
-import { VacationContext } from './VacationContext'
+import { useState } from 'react'
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { VacationTable } from './components/VacationTable'
 
@@ -10,10 +9,9 @@ export default function Vacation() {
     event: React.MouseEvent<HTMLElement>,
     newAlignment: string
   ) => {
+    event.preventDefault()
     setAlignment(newAlignment)
   }
-  const { searchParams } = useContext(VacationContext)
-  
   const pageToggleChoices = [
     {
       value: 'requests',
@@ -26,8 +24,16 @@ export default function Vacation() {
   ]
   return (
     <main className={style.main}>
-      <div className={style.heading}>
-        <div className={style.title}>Vacation</div>
+     
+      <div>
+        <VacationTable />
+      </div>
+      <div style={{
+        display: "flex",
+        justifyContent: "end",
+        marginTop: "1rem"
+      }}>
+
 
         <ToggleButtonGroup
           color="primary"
@@ -49,9 +55,6 @@ export default function Vacation() {
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
-      </div>
-      <div>
-        <VacationTable />
       </div>
     </main>
   )

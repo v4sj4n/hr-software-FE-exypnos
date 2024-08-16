@@ -1,35 +1,8 @@
-$orange-color: #a76a00;
-$green-color: #02a700;
-$red-color: #a70000;
-
-@mixin badge {
-    padding: 0.5rem 1rem;
-    border-radius: 1rem;
-    font-weight: bold;
-}
-
-.badgePending {
-    @include badge;
-    color: $orange-color;
-    background-color: lighten($color: $orange-color, $amount: 55);
-}
-
-.badgeSuccess {
-    @include badge;
-    color: $green-color;
-    background-color: lighten($color: $green-color, $amount: 55);
-}
-
-.badgeError {
-    @include badge;
-    color: $red-color;
-    background-color: lighten($color: $red-color, $amount: 55);
-}
-
 .viewButton {
     display: inline;
     margin: 0;
-    &:hover{
+
+    &:hover {
         text-decoration: underline;
     }
 

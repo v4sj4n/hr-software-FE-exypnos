@@ -12,12 +12,6 @@ const DashboardContent: React.FC = () => {
   const { employeeData } = useDashboardContext()
   greeter()
 
-  const data = [
-    { name: 'Present', value: employeeData.present },
-    { name: 'Absent', value: employeeData.absent },
-    { name: 'On Leave', value: employeeData.onLeave },
-    { name: 'Remote', value: employeeData.remote },
-  ]
   const { currentUser } = useAuth()
   const userName = currentUser ? currentUser.firstName : 'User'
   const isAdmin = currentUser?.role === 'admin'
@@ -63,25 +57,27 @@ const DashboardContent: React.FC = () => {
             </div>
           </div>
           <div className={style.middleRow}>
-            <Card1 padding="20px" borderRadius="15px" flex="1">
-              <h3>Calendar</h3>
+            <Card1 padding="15px" borderRadius="15px" flex="1">
+              <h2 style={{ justifyContent: 'flex-start' }}>Calendar</h2>
               <Calendar />
             </Card1>
-            <Card1 padding="20px" borderRadius="15px" flex="1">
-              <div className={style.infoSection}>
-                <InfoSection />
-              </div>
+            <Card1 padding="15px" borderRadius="15px" flex="2">
+              <InfoSection />
             </Card1>
-            <Card1 padding="20px" borderRadius="15px" flex="1">
-              <div className={style.pieChartDiv}>
-                <h3>Employee Status</h3>
-                <PieChartComponent data={data} />
-              </div>
+            <Card1 padding="15px" borderRadius="15px" flex="2">
+              <h2>Employee Status</h2>
+              <PieChartComponent />
             </Card1>
           </div>
-          <div className={style.employeeProfile}>
-            <h3>Employee Profiles</h3>
-          </div>
+          <Card1
+            padding="20px"
+            border="15px"
+            marginTop="20px"
+            borderRadius="15px"
+            flex="1"
+          >
+            <h2>Employee Profiles</h2>
+          </Card1>
         </div>
       </div>
     </div>

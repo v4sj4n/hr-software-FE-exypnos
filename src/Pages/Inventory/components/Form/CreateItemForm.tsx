@@ -1,35 +1,48 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { useContext } from 'react'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Input from '@/Components/Input/Index'
 import {
-  CreateAssetFormFields,
-  createAssetSchema,
-} from '@/Schemas/Assets/CreateAsset.schema'
+  CreateInventoryItemFormFields,
+  createInventoryItemSchema,
+} from '@/Schemas/Inventory/CreateInventoryItem.schema'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
-import { InventoryContext } from '../InventoryContext'
-import { onSubmit } from '../../hook'
+import { InventoryContext } from '../../InventoryContext'
+import { AxiosError } from 'axios'
+import { useCreateInventoryItem } from '../../Hook/hook'
 
 export const CreateItemForm = () => {
-  const { handleCloseCreateModalOpen, setAssets } = useContext(InventoryContext)
+  const { handleCloseCreateModalOpen } = useContext(InventoryContext)
+  const creator = useCreateInventoryItem()
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
-  } = useForm<CreateAssetFormFields>({
-    resolver: zodResolver(createAssetSchema),
+  } = useForm<CreateInventoryItemFormFields>({
+    resolver: zodResolver(createInventoryItemSchema),
   })
+
+  const onSubmit: SubmitHandler<CreateInventoryItemFormFields> = async (
+    data: CreateInventoryItemFormFields
+  ) => {
+    creator.mutate({ item: data })
+    if (creator.isError) {
+      console.log(creator.error)
+      if (creator.error instanceof AxiosError)
+        setError('root', { message: creator.error.response?.data?.message })
+    } else {
+      setError('root', { message: 'something happened' })
+    }
+  }
 
   return (
     <>
       <h3>Create an asset</h3>
       <form
-        onSubmit={handleSubmit((data) =>
-          onSubmit(data, { setError, setAssets, handleCloseCreateModalOpen })
-        )}
+        onSubmit={handleSubmit(onSubmit)}
         style={{
           display: 'flex',
           flexDirection: 'column',

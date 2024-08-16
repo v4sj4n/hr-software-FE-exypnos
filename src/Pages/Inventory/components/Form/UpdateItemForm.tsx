@@ -1,10 +1,9 @@
 import Button from "@/Components/Button/Button";
 import { ButtonTypes } from "@/Components/Button/ButtonTypes";
 import AxiosInstance from "@/Helpers/Axios";
-import { Autocomplete, CircularProgress, TextField } from "@mui/material";
-import { useState, useEffect, FormEvent } from "react";
+import { useState,  FormEvent } from "react";
 import { Laptop, Monitor } from "@mui/icons-material";
-import { inputStyles } from "@/Components/Input/Styles";
+
 
 interface UpdateAssetProps {
   type: string;

@@ -3,7 +3,6 @@ import { useState } from 'react';
 import style from './Style/Career.module.css';
 import Button from '@/Components/Button/Button';
 import { ButtonTypes } from '@/Components/Button/ButtonTypes';
-import Recruitment from '../Recruitment/Recruitment';
 import { useGetAllEvents, useCreateEvent, useUpdateEvent, useDeleteEvent, EventsData } from './Hook';
 import { ModalComponent } from '@/Components/Modal/Modal';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
@@ -11,6 +10,7 @@ import { useAuth } from '@/Context/AuthProvider';
 import Workers from "../../../public/Images/happy workers.webp"
 import worker3 from "../../../public/Images/happyWork3.jpeg"
 import worker2 from "../../../public/Images/happyWorkers2.jpg"
+import { Link } from 'react-router-dom';
 
 const Careers = () => {
   const { events, setEvents, isLoading } = useGetAllEvents();
@@ -20,17 +20,12 @@ const Careers = () => {
   const { currentUser } = useAuth();
 
   const [showForm, setShowForm] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState<EventsData | null>(null);
   const [filter, setFilter] = useState<string>('');
 
   const toggleForm = () => {
     setShowForm(!showForm);
   };
 
-  const handleApply = (event: EventsData) => {
-    setSelectedEvent(event);
-    console.log(`Applying for ${event.title}`);
-  };
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilter(e.target.value);
@@ -98,11 +93,7 @@ const Careers = () => {
           <p className={style.description}>{event.description}</p>
           <p className={style.location}>{event.location}</p>
           <div className={style.actions}>
-            <Button  
-              btnText="Apply" 
-              type={ButtonTypes.PRIMARY}
-              onClick={() => handleApply(event)}
-            />
+            <Link to={"/recruitment"}>Apply</Link>
           </div>
         </div>
        {isAdmin ? <div className={style.dropdownContainer}>
@@ -186,9 +177,7 @@ const Careers = () => {
           </div>
         </ModalComponent>
 
-        {selectedEvent && (
-          <Recruitment event ={selectedEvent} onClose={() => setSelectedEvent(null)} />
-        )}
+   
 
         <div className={style.culture}>
           <h2>Our Culture</h2>

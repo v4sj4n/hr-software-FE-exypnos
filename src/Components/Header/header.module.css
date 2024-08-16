@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  padding: .5rem 1.2rem;
   background: #fdfdfe;
   width: 100%;
 
@@ -14,7 +14,6 @@
 }
 
 .headerLeft {
-  margin-left: 0.25rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -96,8 +95,8 @@
 
 
 .hamburgerIcon{
-    cursor: pointer;
-
+  height: 24px;
+  cursor: pointer;
     & svg:hover {
         fill: #525252;
     }

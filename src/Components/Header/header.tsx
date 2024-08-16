@@ -36,14 +36,16 @@ export const Header = () => {
         <div onClick={toggleSidebar} className={style.hamburgerIcon}>
           <MenuIcon />
         </div>
-        <div className={style.logo}>
-          <img alt="logo" src={codeviderLogo} />
-        </div>
+          <img alt="logo" src={codeviderLogo} style={{
+            width: '35px',
+            height: 'auto',
+            // cursor: 'pointer',
+          }} />
         {isOpen && (
           <h3 className={style.title}>
             <Link to={'/dashboard'}>
-              <span>code</span>
-              vider
+              <span>Code</span>
+              Vider
             </Link>
           </h3>
         )}

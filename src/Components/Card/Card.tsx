@@ -4,11 +4,11 @@ import styles from './Card.module.css'
 interface CardProps {
   children: ReactNode;
   padding?: string;
+  marginTop?: string
   borderRadius?: string;
   gap?: string;
   className?: string;
   height?: string;
-
   flex?: string;
   style?: React.CSSProperties; 
   width?: string;  
@@ -32,6 +32,7 @@ const Card: React.FC<CardProps> = ({
   backgroundColor,
   position,
   alignSelf,
+  marginTop
  
 }) => {
   const cardStyle: CSSProperties = {
@@ -46,6 +47,7 @@ const Card: React.FC<CardProps> = ({
     backgroundColor: backgroundColor || '#ffffff',
     position: position || 'static',
     alignContent: alignSelf || 'flex-start',
+    marginTop: marginTop || '0'
   };
 
   return (
