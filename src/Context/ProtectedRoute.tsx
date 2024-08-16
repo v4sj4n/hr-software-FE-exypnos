@@ -1,7 +1,9 @@
+
 import { Navigate, Outlet } from 'react-router-dom'
 import { Header } from '../Components/Header/header'
 import { SideBar } from '../Components/SideBar/sidebar'
 import SidebarHeaderProvider from './SidebarHeaderContext'
+import { BreadcrumbComponent } from '@/Components/BreadCrumbs/BreadCrumbs'
 
 const PrivateRoute = () => {
   const isAuthenticated = !!localStorage.getItem('access_token')
@@ -20,9 +22,12 @@ const PrivateRoute = () => {
             style={{
               backgroundColor: '#f0f5ff',
               width: '100%',
+              minHeight: '100vh',
               height: '100%',
+              padding: '20px', 
             }}
           >
+            <BreadcrumbComponent /> 
             <Outlet />
           </main>
         </div>

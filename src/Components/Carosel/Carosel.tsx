@@ -23,7 +23,7 @@ interface ItemProps {
 const Item: React.FC<ItemProps> = ({ image }) => {
     return (
         <Paper sx={{width:"100%", height:"100%"}}>
-            <img src={image} alt="Event" style={{ width: '100%', height: 'auto' }} />
+            <img src={image} alt="Event" style={{ width: '100%',  height: '200px', objectFit:"contain", border:'none', display:'block' }} />
         </Paper>
     );
 };
