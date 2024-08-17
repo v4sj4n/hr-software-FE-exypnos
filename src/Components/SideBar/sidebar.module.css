@@ -1,12 +1,11 @@
 .sidebarContainer {
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   position: sticky;
   left: 0;
   top: 62px;
   z-index: 1;
   height: 100%;
 }
-
 
 .toggleButton {
   position: absolute;
@@ -17,7 +16,6 @@
   border: none;
   padding: 7px;
   cursor: pointer;
-
 }
 .toggleButton:hover {
   background-color: transparent;
@@ -38,13 +36,13 @@
   transition: background-color 0.3s ease;
 }
 .item:hover {
-background: white;
+  background: white;
 }
 .item:hover .icon {
-  color: #2457A3;
+  color: #2457a3;
 }
 .item:hover .link {
-  color: #2457A3;
+  color: #2457a3;
 }
 .link {
   color: rgba(0, 0, 0, 0.8);
@@ -68,6 +66,7 @@ background: white;
   transition: max-height 0.3s ease;
   overflow: hidden;
   max-height: 0;
+  margin-bottom: 0.5rem;
 }
 .dropdownMenu.open {
   max-height: 200px;
@@ -89,7 +88,7 @@ background: white;
   border-bottom: none;
 }
 .dropdownItem:hover {
-  color: #2457A3;
+  color: #2457a3;
   background-color: white;
 }
 .icon {
@@ -103,17 +102,17 @@ background: white;
 .navClosed .dropdownMenu {
   display: none;
 }
- .navOpen{
+.navOpen {
   width: 230px;
- }
+}
 
- .text{
+.text {
   /* line-height: 100%; */
   margin: 0;
- }
+}
 
- .iconTextContainer{
+.iconTextContainer {
   display: flex;
   align-items: center;
   gap: 4px;
- }
+}

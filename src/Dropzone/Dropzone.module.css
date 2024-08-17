@@ -6,11 +6,11 @@
 }
 
 .dropzoneContent {
-  border: 2px dashed #0087F7;
+  border: 2px dashed #0087f7;
   border-radius: 4px;
   padding: 20px;
   text-align: center;
-  background-color: #F6F8FA;
+  background-color: #f6f8fa;
   transition: all 0.3s ease;
   cursor: pointer;
   min-height: 100px;
@@ -21,12 +21,12 @@
 }
 
 .dropzoneContent:hover {
-  background-color: #E1E8ED;
+  background-color: #e1e8ed;
 }
 
 .fileIcon {
   font-size: 48px;
-  color: #0087F7;
+  color: #0087f7;
   margin-bottom: 10px;
 }
 
@@ -81,7 +81,7 @@
 }
 
 .removeAllButton {
-  background-color: #FF4136;
+  background-color: #ff4136;
   color: white;
   border: none;
   padding: 8px 16px;

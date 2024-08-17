@@ -1,6 +1,5 @@
-import React, { createContext } from 'react';
-import { UserProfileData } from '../../../../Employees/interfaces/Employe';
-
+import React, { createContext } from "react";
+import { UserProfileData } from "../../../../Employees/interfaces/Employe";
 
 export interface ProfileContextType {
   user: UserProfileData | null;
@@ -12,4 +11,6 @@ export interface ProfileContextType {
   handleUpdate: (event: React.FormEvent<HTMLButtonElement>) => Promise<void>;
 }
 
-export const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
+export const ProfileContext = createContext<ProfileContextType | undefined>(
+  undefined,
+);

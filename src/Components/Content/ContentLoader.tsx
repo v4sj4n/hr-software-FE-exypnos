@@ -14,11 +14,11 @@ export const EventsContent = () => {
     >
       <ContentLoader
         speed={2}
-        width={340} 
-        height={200} 
+        width={340}
+        height={200}
         backgroundColor="#ececec"
         foregroundColor="#d0d0d0"
-        style={{ borderRadius: '8px' }}
+        style={{ borderRadius: "8px" }}
       >
         {/* Title */}
         <rect x="15" y="15" rx="4" ry="4" width="200" height="20" />

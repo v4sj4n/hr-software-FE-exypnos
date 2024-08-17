@@ -2,15 +2,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: .5rem 1.2rem;
+  padding: 0.75rem 1.25rem;
   background: #fdfdfe;
   width: 100%;
-
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   left: 0;
-  z-index: 999;
+  z-index: 1;
 }
 
 .headerLeft {
@@ -21,7 +20,6 @@
 .logo img {
   width: 35px;
   height: auto;
-  /* margin-left: 30px; */
 }
 
 .title {
@@ -51,9 +49,8 @@
   position: relative;
 }
 
-
-.icon:hover{
-    color: #525252;
+.icon:hover {
+  color: #525252;
 }
 .badge {
   position: absolute;
@@ -93,11 +90,10 @@
   background-color: #f0f0f0;
 }
 
-
-.hamburgerIcon{
+.hamburgerIcon {
   height: 24px;
   cursor: pointer;
-    & svg:hover {
-        fill: #525252;
-    }
+  & svg:hover {
+    fill: #525252;
+  }
 }

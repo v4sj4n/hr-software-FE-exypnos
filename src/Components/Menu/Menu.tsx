@@ -40,62 +40,60 @@ export default function LongMenu(props) {
         onClose={handleClose}
         anchorOrigin={{
           vertical: "top",
-          horizontal: "left", 
+          horizontal: "left",
         }}
         transformOrigin={{
           vertical: "top",
-          horizontal: "right", 
+          horizontal: "right",
         }}
         PaperProps={{
           style: {
             maxHeight: ITEM_HEIGHT * 4.5,
             width: "20ch",
             borderRadius: "10px",
-            fontFamily:"Outfit, sans-serif",
-            color:"rgb(44, 56, 68)"
+            fontFamily: "Outfit, sans-serif",
+            color: "rgb(44, 56, 68)",
           },
         }}
       >
-      
-          <div>
-            <MenuItem>
-              <ListItemIcon>
-                {<Icon  onClick={props.onClickEdit} Icon={props.EditIcon} />}
-              </ListItemIcon>
-              <button
-                style={{
-                  textDecoration: "none",
-                  color: "rgb(44, 56, 68)",
-                  border: "none",
-                  backgroundColor: "transparent",
-                  fontFamily:"Outfit, sans-serif",
-                  fontSize: "18px",
-                }}
-                onClick={props.onClickEdit}
-              >
-                {props.name}
-              </button>
-            </MenuItem>
-            <MenuItem>
-              <ListItemIcon>
-                {<Icon  onClick={props.onClickDelete} Icon={props.Delete} />}
-              </ListItemIcon>
-              <button
-                onClick={props.onClickDelete}
-                style={{
-                  textDecoration: "none",
-                  color: "#3C3A3B",
-                  border: "none",
-                  backgroundColor: "transparent",
-                  fontFamily:"Outfit, sans-serif",
-                  fontSize: "18px",
-                }}
-              >
-                {props.name2}
-              </button>
-            </MenuItem>
-          </div>
-      
+        <div>
+          <MenuItem>
+            <ListItemIcon>
+              {<Icon onClick={props.onClickEdit} Icon={props.EditIcon} />}
+            </ListItemIcon>
+            <button
+              style={{
+                textDecoration: "none",
+                color: "rgb(44, 56, 68)",
+                border: "none",
+                backgroundColor: "transparent",
+                fontFamily: "Outfit, sans-serif",
+                fontSize: "18px",
+              }}
+              onClick={props.onClickEdit}
+            >
+              {props.name}
+            </button>
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon>
+              {<Icon onClick={props.onClickDelete} Icon={props.Delete} />}
+            </ListItemIcon>
+            <button
+              onClick={props.onClickDelete}
+              style={{
+                textDecoration: "none",
+                color: "#3C3A3B",
+                border: "none",
+                backgroundColor: "transparent",
+                fontFamily: "Outfit, sans-serif",
+                fontSize: "18px",
+              }}
+            >
+              {props.name2}
+            </button>
+          </MenuItem>
+        </div>
       </Menu>
     </div>
   );

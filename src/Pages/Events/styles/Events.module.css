@@ -1,20 +1,20 @@
-.firstContainer{
+.firstContainer {
   display: flex;
   align-items: center;
 }
 
-.titleContainer{
+.titleContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.dateContainer{
+.dateContainer {
   display: flex;
   justify-content: space-between;
 }
 
-.dataContainer{
+.dataContainer {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -35,7 +35,7 @@
 }
 
 .title {
-  color: #2457A3;
+  color: #2457a3;
   display: flex;
   font-size: 18px;
   font-weight: bolder;
@@ -61,14 +61,12 @@
   align-items: center;
 }
 
-
 .account {
-  color: #2457A3;
+  color: #2457a3;
   display: flex;
   font-size: 18px;
   font-weight: bolder;
 }
-
 
 .create {
   color: #000000;
@@ -82,7 +80,7 @@
 .Icon {
   width: 42px;
   height: 42px;
-  background-color: rgb(234, 243, 251);;
+  background-color: rgb(234, 243, 251);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -93,7 +91,6 @@
   border-bottom: 2px solid #ebebeb;
   width: 100%;
 }
-
 
 .Wrap {
   display: flex;

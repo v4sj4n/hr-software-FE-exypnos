@@ -3,10 +3,11 @@ import AddIcon from "@mui/icons-material/Add";
 import { styled } from "@mui/material/styles";
 
 interface FloatingActionButtonProps {
-    onClick?: () => void;
-  }
-  export default function FloatingActionButtonSize({ onClick }: FloatingActionButtonProps) {
-  
+  onClick?: () => void;
+}
+export default function FloatingActionButtonSize({
+  onClick,
+}: FloatingActionButtonProps) {
   const StyledFab = styled(Fab)(({ theme }) => ({
     width: "68px",
     height: "68px",

@@ -15,7 +15,8 @@ type InputActions = {
   handleMouseDownPassword: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-export type InputHookReturn = InputState & InputActions & { hasError: boolean; isValid: boolean };
+export type InputHookReturn = InputState &
+  InputActions & { hasError: boolean; isValid: boolean };
 
 const useInput = (validateValue: (value: string) => boolean) => {
   const [enteredValue, setEnteredValue] = useState("");
@@ -27,7 +28,9 @@ const useInput = (validateValue: (value: string) => boolean) => {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     event.preventDefault();
   };
 

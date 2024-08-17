@@ -3,22 +3,25 @@ import { useCandidateContext } from "./Context/CandidateTableContext";
 import { CandidateProvider } from "./Context/CandidateTableProvider";
 
 function CandidatesCoontext() {
-
-  const { getRowId, headerIcons, columns, rows, handleRowClick } = useCandidateContext();
+  const { getRowId, headerIcons, columns, rows, handleRowClick } =
+    useCandidateContext();
   return (
-      <DataTable getRowId={getRowId} headerIcons={headerIcons} columns={columns} rows={rows} handleRowClick={handleRowClick} />
-  )
+    <DataTable
+      getRowId={getRowId}
+      headerIcons={headerIcons}
+      columns={columns}
+      rows={rows}
+      handleRowClick={handleRowClick}
+    />
+  );
 }
-
 
 const Candidates: React.FC = () => {
   return (
     <CandidateProvider>
       <CandidatesCoontext />
     </CandidateProvider>
-  )
-
-}
-
+  );
+};
 
 export default Candidates;

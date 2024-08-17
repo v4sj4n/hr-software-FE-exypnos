@@ -11,14 +11,21 @@ interface SelecterProps {
   name: string;
 }
 
-const Selecter = ({ value, onChange, options, multiple, label, name }: SelecterProps) => {
+const Selecter = ({
+  value,
+  onChange,
+  options,
+  multiple,
+  label,
+  name,
+}: SelecterProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleChange = (
     event: React.SyntheticEvent,
     newValue: string | string[] | null,
   ) => {
-    event.preventDefault()
+    event.preventDefault();
     if (newValue !== null) {
       onChange(newValue);
     } else {

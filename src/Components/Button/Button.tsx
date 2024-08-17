@@ -86,33 +86,32 @@
 
 // export default Button;
 
-import './Button.css'
-import { ButtonTypes } from './ButtonTypes'
-import React, { CSSProperties } from 'react'
+import "./Button.css";
+import { ButtonTypes } from "./ButtonTypes";
+import React, { CSSProperties } from "react";
 
-type ButtonType = (typeof ButtonTypes)[keyof typeof ButtonTypes]
+type ButtonType = (typeof ButtonTypes)[keyof typeof ButtonTypes];
 
 interface ButtonStyles extends CSSProperties {
-  backgroundColor?: string
-  color?: string
-  borderColor?: string
-  width?: string | number
-  height?: string | number
-  fontSize?: string | number
-  padding?: string
-  margin?: string
-  borderRadius?: string | number
-  
+  backgroundColor?: string;
+  color?: string;
+  borderColor?: string;
+  width?: string | number;
+  height?: string | number;
+  fontSize?: string | number;
+  padding?: string;
+  margin?: string;
+  borderRadius?: string | number;
 }
 
 interface ButtonProps extends ButtonStyles {
-  isSubmit?: boolean
-  type: ButtonType
-  btnText: string | JSX.Element
-  disabled?: boolean
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
-  color?: string
-  icon?: React.ReactNode
+  isSubmit?: boolean;
+  type: ButtonType;
+  btnText: string | JSX.Element;
+  disabled?: boolean;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  color?: string;
+  icon?: React.ReactNode;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -127,26 +126,26 @@ const Button: React.FC<ButtonProps> = ({
   const getButtonClass = (): string => {
     switch (type) {
       case ButtonTypes.PRIMARY:
-        return 'primaryBtn button'
+        return "primaryBtn button";
       case ButtonTypes.SECONDARY:
-        return 'secondaryBtn'
+        return "secondaryBtn";
       case ButtonTypes.TERTIARY:
-        return 'tertiaryBtn'
+        return "tertiaryBtn";
       case ButtonTypes.DISABLED:
-        return 'disabled'
+        return "disabled";
       default:
-        return 'primaryBtn'
+        return "primaryBtn";
     }
-  }
+  };
 
   const buttonStyle: ButtonStyles = {
     ...restProps,
-  }
+  };
 
   return (
     <button
       disabled={disabled}
-      type={isSubmit ? 'submit' : 'button'}
+      type={isSubmit ? "submit" : "button"}
       onClick={onClick}
       className={getButtonClass()}
       style={buttonStyle}
@@ -154,7 +153,7 @@ const Button: React.FC<ButtonProps> = ({
       {btnText}
       {icon}
     </button>
-  )
-}
+  );
+};
 
-export default Button
+export default Button;

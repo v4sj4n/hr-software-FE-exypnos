@@ -8,33 +8,33 @@ import {
   ExpandLess as ExpandLessIcon,
   DevicesOutlined as DevicesIcon,
   GroupAddOutlined as GroupAddIcon,
-} from '@mui/icons-material'
+} from "@mui/icons-material";
 
-import { useContext, useState } from 'react'
-import style from './sidebar.module.css'
-import { Link } from 'react-router-dom'
-import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
+import { useContext, useState } from "react";
+import style from "./sidebar.module.css";
+import { Link } from "react-router-dom";
+import { SidebarHeaderContext } from "@/Context/SidebarHeaderContext";
 
 export const SideBar = () => {
-  const { isSidebarOpen: isOpen } = useContext(SidebarHeaderContext)
+  const { isSidebarOpen: isOpen } = useContext(SidebarHeaderContext);
 
   const [dropdownOpen, setDropdownOpen] = useState({
     recruiting: false,
     employee: false,
     events: false,
     assets: false,
-  })
+  });
 
   const toggleDropdown = (dropdown: keyof typeof dropdownOpen) => {
     setDropdownOpen((prevState) => {
-      const newState = { ...prevState }
+      const newState = { ...prevState };
       Object.keys(newState).forEach((key) => {
-        newState[key as keyof typeof dropdownOpen] = false
-      })
-      newState[dropdown] = !prevState[dropdown]
-      return newState
-    })
-  }
+        newState[key as keyof typeof dropdownOpen] = false;
+      });
+      newState[dropdown] = !prevState[dropdown];
+      return newState;
+    });
+  };
 
   return (
     <div className={style.sidebarContainer}>
@@ -50,16 +50,16 @@ export const SideBar = () => {
           </div>
           <div
             className={style.item}
-            onClick={() => toggleDropdown('recruiting')}
+            onClick={() => toggleDropdown("recruiting")}
           >
             <Link to="#recruiting" className={style.link}>
               <div className={style.iconTextContainer}>
                 <GroupAddIcon
                   className={style.icon}
-                  style={{ marginLeft: '2px' }}
+                  style={{ marginLeft: "2px" }}
                 />
                 {isOpen && (
-                  <p className={style.text} style={{ marginLeft: '-2px' }}>
+                  <p className={style.text} style={{ marginLeft: "-2px" }}>
                     Recruiting
                   </p>
                 )}
@@ -77,19 +77,16 @@ export const SideBar = () => {
               dropdownOpen.recruiting ? style.open : style.close
             }`}
           >
-            <Link to="/recruitment" className={style.dropdownItem}>
-              Recruitment
-            </Link>
             <Link to="/candidates" className={style.dropdownItem}>
-              Candidates{' '}
+              Candidates{" "}
             </Link>
             <Link to="/interview" className={style.dropdownItem}>
-              Interviews{' '}
+              Interviews{" "}
             </Link>
           </div>
           <div
             className={style.item}
-            onClick={() => toggleDropdown('employee')}
+            onClick={() => toggleDropdown("employee")}
           >
             <Link to="#employee" className={style.link}>
               <div className={style.iconTextContainer}>
@@ -113,16 +110,16 @@ export const SideBar = () => {
               Employees
             </Link>
             <Link to="/payroll" className={style.dropdownItem}>
-              Payroll{' '}
+              Payroll{" "}
             </Link>
             <Link to="/vacation" className={style.dropdownItem}>
-              Vacation{' '}
+              Vacation{" "}
             </Link>
             <Link to="/promotion" className={style.dropdownItem}>
-              Promotion{' '}
+              Promotion{" "}
             </Link>
           </div>
-          <div className={style.item} onClick={() => toggleDropdown('assets')}>
+          <div className={style.item} onClick={() => toggleDropdown("assets")}>
             <Link to="#assets" className={style.link}>
               <div className={style.iconTextContainer}>
                 <DevicesIcon className={style.icon} />
@@ -149,7 +146,7 @@ export const SideBar = () => {
             </Link>
           </div>
 
-          <div className={style.item} onClick={() => toggleDropdown('events')}>
+          <div className={style.item} onClick={() => toggleDropdown("events")}>
             <Link to="#events" className={style.link}>
               <div className={style.iconTextContainer}>
                 <EventIcon className={style.icon} />
@@ -172,7 +169,7 @@ export const SideBar = () => {
               Events
             </Link>
             <Link to="/career" className={style.dropdownItem}>
-              Career{' '}
+              Career{" "}
             </Link>
           </div>
           <div className={style.item}>
@@ -194,5 +191,5 @@ export const SideBar = () => {
         </div>
       </nav>
     </div>
-  )
-}
+  );
+};

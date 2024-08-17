@@ -1,21 +1,21 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { useContext } from 'react'
-import Button from '@/Components/Button/Button'
-import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-import Input from '@/Components/Input/Index'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useContext } from "react";
+import Button from "@/Components/Button/Button";
+import { ButtonTypes } from "@/Components/Button/ButtonTypes";
+import Input from "@/Components/Input/Index";
 import {
   CreateInventoryItemFormFields,
   createInventoryItemSchema,
-} from '@/Schemas/Inventory/CreateInventoryItem.schema'
-import { ErrorText } from '@/Components/Error/ErrorTextForm'
-import { InventoryContext } from '../../InventoryContext'
-import { AxiosError } from 'axios'
-import { useCreateInventoryItem } from '../../Hook/hook'
+} from "@/Schemas/Inventory/CreateInventoryItem.schema";
+import { ErrorText } from "@/Components/Error/ErrorTextForm";
+import { InventoryContext } from "../../InventoryContext";
+import { AxiosError } from "axios";
+import { useCreateInventoryItem } from "../../Hook/hook";
 
 export const CreateItemForm = () => {
-  const { handleCloseCreateModalOpen } = useContext(InventoryContext)
-  const creator = useCreateInventoryItem()
+  const { handleCloseCreateModalOpen } = useContext(InventoryContext);
+  const { mutate, isError, error } = useCreateInventoryItem();
   const {
     register,
     handleSubmit,
@@ -23,20 +23,19 @@ export const CreateItemForm = () => {
     formState: { errors, isSubmitting },
   } = useForm<CreateInventoryItemFormFields>({
     resolver: zodResolver(createInventoryItemSchema),
-  })
+  });
 
   const onSubmit: SubmitHandler<CreateInventoryItemFormFields> = async (
-    data: CreateInventoryItemFormFields
+    data: CreateInventoryItemFormFields,
   ) => {
-    creator.mutate({ item: data })
-    if (creator.isError) {
-      console.log(creator.error)
-      if (creator.error instanceof AxiosError)
-        setError('root', { message: creator.error.response?.data?.message })
+    mutate({ item: data });
+    if (isError) {
+      if (error instanceof AxiosError)
+        setError("root", { message: error.response?.data?.message });
     } else {
-      setError('root', { message: 'something happened' })
+      setError("root", { message: "something happened" });
     }
-  }
+  };
 
   return (
     <>
@@ -44,19 +43,19 @@ export const CreateItemForm = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '0.5rem',
-          marginTop: '1.5rem',
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.5rem",
+          marginTop: "1.5rem",
         }}
       >
         <div>
           <select
-            {...register('type')}
+            {...register("type")}
             style={{
-              padding: '0.5rem',
-              width: '100%',
-              borderRadius: '0.5rem',
+              padding: "0.5rem",
+              width: "100%",
+              borderRadius: "0.5rem",
             }}
           >
             <option value="" disabled selected>
@@ -72,9 +71,9 @@ export const CreateItemForm = () => {
           <Input
             IsUsername
             name="serialNumber"
-            width={'100%'}
+            width={"100%"}
             label="Serial Number"
-            register={register('serialNumber')}
+            register={register("serialNumber")}
           />
           {errors.serialNumber && (
             <ErrorText>{errors.serialNumber.message}</ErrorText>
@@ -82,22 +81,22 @@ export const CreateItemForm = () => {
         </div>
         {errors.root && <ErrorText>{errors.root.message}</ErrorText>}
 
-        <div style={{ display: 'flex', gap: '0.3rem' }}>
+        <div style={{ display: "flex", gap: "0.3rem" }}>
           <Button
             type={ButtonTypes.SECONDARY}
             btnText="Cancel"
             border="none"
             onClick={handleCloseCreateModalOpen}
-            width={'100%'}
+            width={"100%"}
           />
           <Button
             type={ButtonTypes.PRIMARY}
-            btnText={isSubmitting ? 'Submitting' : 'Submit'}
-            width={'100%'}
+            btnText={isSubmitting ? "Submitting" : "Submit"}
+            width={"100%"}
             isSubmit
           />
         </div>
       </form>
     </>
-  )
-}
+  );
+};

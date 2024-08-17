@@ -1,24 +1,20 @@
-import { useContext } from 'react'
-import {
-  InventoryContext,
-  InventoryProvider,
-} from './InventoryContext.tsx'
-import style from './style/inventory.module.scss'
-import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-import Button from '@/Components/Button/Button'
-import { ModalComponent } from '@/Components/Modal/Modal'
-import { InventoryTable } from './components/InventoryTable.tsx'
-import { CreateItemForm } from './components/Form/CreateItemForm.tsx'
+import { useContext } from "react";
+import { InventoryContext, InventoryProvider } from "./InventoryContext.tsx";
+import style from "./style/inventory.module.scss";
+import { ButtonTypes } from "@/Components/Button/ButtonTypes";
+import Button from "@/Components/Button/Button";
+import { ModalComponent } from "@/Components/Modal/Modal";
+import { InventoryTable } from "./components/InventoryTable.tsx";
+import { CreateItemForm } from "./components/Form/CreateItemForm.tsx";
 
 function InventoryBaseComponent() {
   const {
     createModalOpen,
     handleOpenCreateModalOpen,
     handleCloseCreateModalOpen,
-  } = useContext(InventoryContext)
+  } = useContext(InventoryContext);
   return (
     <main className={style.main}>
-
       <ModalComponent
         open={createModalOpen}
         handleClose={handleCloseCreateModalOpen}
@@ -26,11 +22,13 @@ function InventoryBaseComponent() {
         <CreateItemForm />
       </ModalComponent>
       <InventoryTable />
-      <div style={{
-        display: "flex",
-        justifyContent: "end",
-        marginTop: "1rem"
-      }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "end",
+          marginTop: "1rem",
+        }}
+      >
         <Button
           type={ButtonTypes.PRIMARY}
           btnText="Add an Item"
@@ -39,7 +37,7 @@ function InventoryBaseComponent() {
         />
       </div>
     </main>
-  )
+  );
 }
 
 export default function Inventory() {
@@ -47,5 +45,5 @@ export default function Inventory() {
     <InventoryProvider>
       <InventoryBaseComponent />
     </InventoryProvider>
-  )
+  );
 }

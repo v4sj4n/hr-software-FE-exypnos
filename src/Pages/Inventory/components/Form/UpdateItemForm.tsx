@@ -1,9 +1,8 @@
 import Button from "@/Components/Button/Button";
 import { ButtonTypes } from "@/Components/Button/ButtonTypes";
 import AxiosInstance from "@/Helpers/Axios";
-import { useState,  FormEvent } from "react";
+import { useState, FormEvent } from "react";
 import { Laptop, Monitor } from "@mui/icons-material";
-
 
 interface UpdateAssetProps {
   type: string;
@@ -52,7 +51,6 @@ export const UpdateAssetForm: React.FC<UpdateAssetProps> = ({
       console.log(err);
     }
   };
-  console.log(user);
 
   return (
     <div>

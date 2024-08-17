@@ -18,11 +18,7 @@ const Input: React.FC<InputProps> = (props) => {
     }
   };
 
-  return (
-    <div>
-      {renderInput()}
-    </div>
-  );
+  return <div>{renderInput()}</div>;
 };
 
 export default Input;

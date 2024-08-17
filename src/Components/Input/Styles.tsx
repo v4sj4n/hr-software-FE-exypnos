@@ -1,5 +1,4 @@
-import { styled } from '@mui/material/styles';
-
+import { styled } from "@mui/material/styles";
 
 export const inputStyles = {
   "& .css-1gctnaj-MuiInputBase-input-MuiFilledInput-input": {
@@ -44,126 +43,126 @@ export const inputStyles = {
       verticalAlign: "bottom",
     },
   },
-}
+};
 
 export const chekboxStyles = {
-  '& .MuiFormControlLabel-label': {
+  "& .MuiFormControlLabel-label": {
     fontFamily: '"Outfit", sans-serif',
   },
-}
+};
 
 //#96bde4 color for header
 //#
 
 export const TableStyles = {
-  backgroundColor: '#FFFFFF',
+  backgroundColor: "#FFFFFF",
+  fontFamily: '"Outfit", sans-serif',
+  borderRadius: "5px",
+  overflow: "hidden",
+  "& .MuiDataGrid-root": {
     fontFamily: '"Outfit", sans-serif',
-    borderRadius: '5px',
-    overflow: 'hidden',
-    '& .MuiDataGrid-root': {
-      fontFamily: '"Outfit", sans-serif',
-      borderRadius: '5px',
-    },
-    '& .MuiDataGrid-columnHeaders': {
-      fontFamily: '"Outfit", sans-serif',
-      borderTopLeftRadius: '5px',
-      borderTopRightRadius: '5px',
-    },
-    '& .MuiDataGrid-row': {
-      backgroundColor: '#FFFFFF',
-      fontFamily: '"Outfit", sans-serif',
-    },
-    '& .MuiDataGrid-cell': {
-      fontFamily: '"Outfit", sans-serif',
-      alignItems: 'center',
-    },
-    '& .MuiTablePagination-root': {
-      backgroundColor: '#FFFFFF',
-      fontFamily: '"Outfit", sans-serif',
-      borderBottomLeftRadius: '5px',
-      alignItems: 'center',
-      borderBottomRightRadius: '5px',
-    },
-    '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows, & .MuiTablePagination-select, & .MuiTablePagination-actions': {
-      backgroundColor: 'white',
-      alignItems: 'center',
+    borderRadius: "5px",
+  },
+  "& .MuiDataGrid-columnHeaders": {
+    fontFamily: '"Outfit", sans-serif',
+    borderTopLeftRadius: "5px",
+    borderTopRightRadius: "5px",
+  },
+  "& .MuiDataGrid-row": {
+    backgroundColor: "#FFFFFF",
+    fontFamily: '"Outfit", sans-serif',
+  },
+  "& .MuiDataGrid-cell": {
+    fontFamily: '"Outfit", sans-serif',
+    alignItems: "center",
+  },
+  "& .MuiTablePagination-root": {
+    backgroundColor: "#FFFFFF",
+    fontFamily: '"Outfit", sans-serif',
+    borderBottomLeftRadius: "5px",
+    alignItems: "center",
+    borderBottomRightRadius: "5px",
+  },
+  "& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows, & .MuiTablePagination-select, & .MuiTablePagination-actions":
+    {
+      backgroundColor: "white",
+      alignItems: "center",
       fontFamily: '"Outfit", sans-serif',
     },
-    "& .css-1jlz3st":{
-      display:"hiden",
-      alignItems: 'center',
+  "& .css-1jlz3st": {
+    display: "hiden",
+    alignItems: "center",
+  },
+  "& .css-1asbit7-MuiDataGrid-roo.css-955zky-MuiDataGrid-root .MuiDataGrid-withBorderColor":
+    {
+      backgroundColor: "#FFFFFF",
+      alignItems: "center",
     },
-    '& .css-1asbit7-MuiDataGrid-roo.css-955zky-MuiDataGrid-root .MuiDataGrid-withBorderColor': {
-      backgroundColor:"#FFFFFF",
-      alignItems: 'center',
-    }, 
-    "& .css-un20tp-MuiDataGrid-root .MuiDataGrid-withBorderColor":{
-      backgroundColor:"#FFFFFF !important",
-      alignItems: 'center',
-    },
-    "& .css-rtrcn9-MuiTablePagination-root .MuiTablePagination-selectLabel":{
-      margin:"0"
-    },
-    "& .css-levciy-MuiTablePagination-displayedRows":{
-      margin:"0"
-    }
-}
+  "& .css-un20tp-MuiDataGrid-root .MuiDataGrid-withBorderColor": {
+    backgroundColor: "#FFFFFF !important",
+    alignItems: "center",
+  },
+  "& .css-rtrcn9-MuiTablePagination-root .MuiTablePagination-selectLabel": {
+    margin: "0",
+  },
+  "& .css-levciy-MuiTablePagination-displayedRows": {
+    margin: "0",
+  },
+};
 
 export const autoCompleteStyles = {
-  '& .MuiFilledInput-root': {
-    backgroundColor: 'transparent',
+  "& .MuiFilledInput-root": {
+    backgroundColor: "transparent",
     fontFamily: '"Outfit", sans-serif',
-    fontSize:"14px",
-    borderRadius:"5px",
-    border: '1px solid #999999',
-    '&:hover': {
-        backgroundColor: 'transparent',
-        color: '#4C556B',
-        border: '1px solid #999999',
-        fontFamily: '"Outfit", sans-serif',
-        borderRadius:"5px"
+    fontSize: "14px",
+    borderRadius: "5px",
+    border: "1px solid #999999",
+    "&:hover": {
+      backgroundColor: "transparent",
+      color: "#4C556B",
+      border: "1px solid #999999",
+      fontFamily: '"Outfit", sans-serif',
+      borderRadius: "5px",
     },
-    '&.Mui-focused': {
-        backgroundColor: 'transparent',
-        color: '#4C556B',
-        border: '1px solid #999999',
-        borderRadius:"5px",
-        fontFamily: '"Outfit", sans-serif',
+    "&.Mui-focused": {
+      backgroundColor: "transparent",
+      color: "#4C556B",
+      border: "1px solid #999999",
+      borderRadius: "5px",
+      fontFamily: '"Outfit", sans-serif',
     },
-    '&::before': {
-        content: 'none',
-        fontFamily: '"Outfit", sans-serif',
+    "&::before": {
+      content: "none",
+      fontFamily: '"Outfit", sans-serif',
     },
-    '&::after': {
-        border: 'none',
-        fontFamily: '"Outfit", sans-serif',
+    "&::after": {
+      border: "none",
+      fontFamily: '"Outfit", sans-serif',
     },
-},
-'& .MuiFilledInput-input': {
-    '&:focus': {
-        backgroundColor: 'transparent',
-        fontFamily: '"Outfit", sans-serif',
+  },
+  "& .MuiFilledInput-input": {
+    "&:focus": {
+      backgroundColor: "transparent",
+      fontFamily: '"Outfit", sans-serif',
     },
-},
-'& .MuiInputLabel-root': {
-    '&.Mui-focused': {
-        color: '#4C556B',
-        fontFamily: '"Outfit", sans-serif',
+  },
+  "& .MuiInputLabel-root": {
+    "&.Mui-focused": {
+      color: "#4C556B",
+      fontFamily: '"Outfit", sans-serif',
     },
-},
-}
+  },
+};
 
-export const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
+export const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
   height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
+  overflow: "hidden",
+  position: "absolute",
   bottom: 0,
   left: 0,
-  whiteSpace: 'nowrap',
+  whiteSpace: "nowrap",
   width: 1,
   color: "#2469FF",
 });
-
-

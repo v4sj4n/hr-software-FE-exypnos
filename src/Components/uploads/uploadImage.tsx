@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface ImageProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -32,6 +32,6 @@ const Image: React.FC<ImageProps> = ({ onChange }) => {
       </label>
     </div>
   );
-}
+};
 
 export default Image;

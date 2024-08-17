@@ -1,5 +1,4 @@
-
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext } from "react";
 
 interface DashboardContextType {
   employeeData: {
@@ -8,12 +7,18 @@ interface DashboardContextType {
     onLeave: number;
     remote: number;
   };
-  updateEmployeeData: (data: Partial<DashboardContextType['employeeData']>) => void;
+  updateEmployeeData: (
+    data: Partial<DashboardContextType["employeeData"]>,
+  ) => void;
 }
 
-const DashboardContext = createContext<DashboardContextType | undefined>(undefined);
+const DashboardContext = createContext<DashboardContextType | undefined>(
+  undefined,
+);
 
-export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [employeeData, setEmployeeData] = useState({
     present: 20,
     absent: 8,
@@ -21,8 +26,10 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     remote: 3,
   });
 
-  const updateEmployeeData = (data: Partial<DashboardContextType['employeeData']>) => {
-    setEmployeeData(prevData => ({ ...prevData, ...data }));
+  const updateEmployeeData = (
+    data: Partial<DashboardContextType["employeeData"]>,
+  ) => {
+    setEmployeeData((prevData) => ({ ...prevData, ...data }));
   };
 
   return (
@@ -36,7 +43,9 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 export const useDashboardContext = () => {
   const context = useContext(DashboardContext);
   if (context === undefined) {
-    throw new Error('useDashboardContext must be used within a DashboardProvider');
+    throw new Error(
+      "useDashboardContext must be used within a DashboardProvider",
+    );
   }
   return context;
 };

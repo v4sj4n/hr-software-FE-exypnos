@@ -1,20 +1,20 @@
-import { useAuth } from '@/Context/AuthProvider.tsx'
-import Card1 from '../../Components/Card/Card.tsx'
-import style from '../Dashboard/style/dashboard.module.css'
-import Calendar from './components/calendar.tsx'
-import Card from './components/card.tsx'
-import InfoSection from './components/infoSection.tsx'
-import PieChartComponent from './components/piechart.tsx'
-import { DashboardProvider, useDashboardContext } from './context/hook.tsx'
-import { greeter } from '@/Helpers/Greeter.tsx'
+import { useAuth } from "@/Context/AuthProvider.tsx";
+import Card1 from "../../Components/Card/Card.tsx";
+import style from "../Dashboard/style/dashboard.module.css";
+import Calendar from "./components/calendar.tsx";
+import Card from "./components/card.tsx";
+import InfoSection from "./components/infoSection.tsx";
+import PieChartComponent from "./components/piechart.tsx";
+import { DashboardProvider, useDashboardContext } from "./context/hook.tsx";
+import { greeter } from "@/Helpers/Greeter.tsx";
 
 const DashboardContent: React.FC = () => {
-  const { employeeData } = useDashboardContext()
-  greeter()
+  const { employeeData } = useDashboardContext();
+  greeter();
 
-  const { currentUser } = useAuth()
-  const userName = currentUser ? currentUser.firstName : 'User'
-  const isAdmin = currentUser?.role === 'admin'
+  const { currentUser } = useAuth();
+  const userName = currentUser ? currentUser.firstName : "User";
+  const isAdmin = currentUser?.role === "admin";
 
   return (
     <div className={style.dashboardContainer}>
@@ -24,7 +24,7 @@ const DashboardContent: React.FC = () => {
             <h2>
               {greeter()} {userName}!
             </h2>
-            {isAdmin ? <p>Here's what's happening with your team today</p> : ''}
+            {isAdmin ? <p>Here's what's happening with your team today</p> : ""}
           </div>
           <div className={style.cardContainer}>
             <div className={style.cardGreen}>
@@ -57,14 +57,14 @@ const DashboardContent: React.FC = () => {
             </div>
           </div>
           <div className={style.middleRow}>
-            <Card1 padding="15px" borderRadius="15px" flex="1">
-              <h2 style={{ justifyContent: 'flex-start' }}>Calendar</h2>
+            <Card1 padding="20px" borderRadius="15px" flex="1">
+              <h2 style={{ justifyContent: "flex-start" }}>Calendar</h2>
               <Calendar />
             </Card1>
-            <Card1 padding="15px" borderRadius="15px" flex="2">
+            <Card1 padding="20px" borderRadius="15px" flex="2">
               <InfoSection />
             </Card1>
-            <Card1 padding="15px" borderRadius="15px" flex="2">
+            <Card1 padding="20px" borderRadius="15px" flex="2">
               <h2>Employee Status</h2>
               <PieChartComponent />
             </Card1>
@@ -81,15 +81,15 @@ const DashboardContent: React.FC = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Dashboard: React.FC = () => {
   return (
     <DashboardProvider>
       <DashboardContent />
     </DashboardProvider>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

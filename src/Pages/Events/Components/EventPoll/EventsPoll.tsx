@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import Checkbox from '@mui/material/Checkbox';
-import { Tooltip } from '@mui/material';
-import styles from './EventsPoll.module.css';
-import AxiosInstance from '@/Helpers/Axios';
-import { useAuth } from '@/Context/AuthProvider';
+import React, { useState, useEffect } from "react";
+import Checkbox from "@mui/material/Checkbox";
+import { Tooltip } from "@mui/material";
+import styles from "./EventsPoll.module.css";
+import AxiosInstance from "@/Helpers/Axios";
+import { useAuth } from "@/Context/AuthProvider";
 
 interface Voter {
   _id: string;
@@ -31,70 +31,70 @@ interface EventPollProps {
 const EventPoll: React.FC<EventPollProps> = ({ poll, eventId, userId }) => {
   const { currentUser } = useAuth();
   const [localPoll, setLocalPoll] = useState<Poll>(poll);
-  const isAdmin = currentUser?.role === 'admin';
+  const isAdmin = currentUser?.role === "admin";
 
   useEffect(() => {
     setLocalPoll(poll);
   }, [poll, userId]);
 
   const hasUserVoted = (voters: Voter[]): boolean => {
-    return userId ? voters.some(voter => voter._id === userId.toString()) : false;
+    return userId
+      ? voters.some((voter) => voter._id === userId.toString())
+      : false;
   };
 
   const handleVote = async (option: string) => {
     if (!userId) return;
 
-    const existingVotedOption = localPoll.options.find(opt =>
-      opt.voters.some(voter => voter._id === userId.toString())
+    const existingVotedOption = localPoll.options.find((opt) =>
+      opt.voters.some((voter) => voter._id === userId.toString()),
     );
 
     try {
       if (existingVotedOption && existingVotedOption.option !== option) {
-
         await AxiosInstance.delete(`/event/${eventId}/vote`, {
           data: { option: existingVotedOption.option, userId },
         });
 
-        setLocalPoll(prevPoll => ({
+        setLocalPoll((prevPoll) => ({
           ...prevPoll,
-          options: prevPoll.options.map(opt =>
+          options: prevPoll.options.map((opt) =>
             opt.option === existingVotedOption.option
               ? {
-                ...opt,
-                votes: opt.votes - 1,
-                voters: opt.voters.filter(
-                  voter => voter._id !== userId.toString()
-                ),
-              }
-              : opt
+                  ...opt,
+                  votes: opt.votes - 1,
+                  voters: opt.voters.filter(
+                    (voter) => voter._id !== userId.toString(),
+                  ),
+                }
+              : opt,
           ),
         }));
       }
 
-
       await AxiosInstance.post(`/event/${eventId}/vote`, { option, userId });
 
-      setLocalPoll(prevPoll => ({
+      setLocalPoll((prevPoll) => ({
         ...prevPoll,
-        options: prevPoll.options.map(opt =>
+        options: prevPoll.options.map((opt) =>
           opt.option === option
             ? {
-              ...opt,
-              votes: opt.votes + 1,
-              voters: [
-                ...opt.voters,
-                {
-                  _id: userId.toString(),
-                  firstName: currentUser?.firstName || '',
-                  lastName: currentUser?.lastName || '',
-                },
-              ],
-            }
-            : opt
+                ...opt,
+                votes: opt.votes + 1,
+                voters: [
+                  ...opt.voters,
+                  {
+                    _id: userId.toString(),
+                    firstName: currentUser?.firstName || "",
+                    lastName: currentUser?.lastName || "",
+                  },
+                ],
+              }
+            : opt,
         ),
       }));
     } catch (error) {
-      console.error('Error updating vote:', error);
+      console.error("Error updating vote:", error);
       setLocalPoll(poll);
     }
   };
@@ -155,7 +155,7 @@ const EventPoll: React.FC<EventPollProps> = ({ poll, eventId, userId }) => {
         return (
           <div
             key={index}
-            className={`${styles.option} ${userVoted ? styles.activeOption : ''}`}
+            className={`${styles.option} ${userVoted ? styles.activeOption : ""}`}
             onClick={() => handleVote(option.option)}
           >
             {renderOptionContent(option)}

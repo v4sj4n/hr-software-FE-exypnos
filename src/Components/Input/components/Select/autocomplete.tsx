@@ -1,12 +1,12 @@
-import React from 'react'
-import { Box, TextField, Chip, MenuItem } from '@mui/material'
-import { SelectChangeEvent } from '@mui/material/Select'
-import { autoCompleteStyles } from '../../Styles'
+import React from "react";
+import { Box, TextField, Chip, MenuItem } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material/Select";
+import { autoCompleteStyles } from "../../Styles";
 
 interface MuiSelectProps {
-  value: string[]
-  onChange: (value: string[]) => void
-  name: string
+  value: string[];
+  onChange: (value: string[]) => void;
+  name: string;
 }
 
 export const MuiSelect: React.FC<MuiSelectProps> = ({
@@ -15,15 +15,15 @@ export const MuiSelect: React.FC<MuiSelectProps> = ({
   name,
 }) => {
   const handleDelete = (chipToDelete: string) => () => {
-    onChange(value.filter((item) => item !== chipToDelete))
-  }
+    onChange(value.filter((item) => item !== chipToDelete));
+  };
 
   const handleChange = (event: SelectChangeEvent<string[]>) => {
-    const newValue = event.target.value
-    onChange(typeof newValue === 'string' ? newValue.split(',') : newValue)
-  }
+    const newValue = event.target.value;
+    onChange(typeof newValue === "string" ? newValue.split(",") : newValue);
+  };
 
-  const technologies = ['Angular', 'jQuery', 'Polymer', 'React', 'Vue.js']
+  const technologies = ["Angular", "jQuery", "Polymer", "React", "Vue.js"];
 
   return (
     <Box width="620px">
@@ -35,15 +35,15 @@ export const MuiSelect: React.FC<MuiSelectProps> = ({
         SelectProps={{
           multiple: true,
           renderValue: (selected) => (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
               {(selected as string[]).map((data) => (
                 <Chip
-                  sx={{ fontFamily: '"Outfit", sans-serif', fontSize: '14px' }}
+                  sx={{ fontFamily: '"Outfit", sans-serif', fontSize: "14px" }}
                   key={data}
                   label={data}
                   onDelete={handleDelete(data)}
                   onMouseDown={(event) => {
-                    event.stopPropagation()
+                    event.stopPropagation();
                   }}
                 />
               ))}
@@ -59,9 +59,9 @@ export const MuiSelect: React.FC<MuiSelectProps> = ({
         name={name}
         InputLabelProps={{
           style: {
-            color: '#4C556B',
+            color: "#4C556B",
             fontFamily: '"Outfit", sans-serif',
-            fontSize: '12px',
+            fontSize: "12px",
           },
         }}
       >
@@ -76,5 +76,5 @@ export const MuiSelect: React.FC<MuiSelectProps> = ({
         ))}
       </TextField>
     </Box>
-  )
-}
+  );
+};

@@ -44,16 +44,17 @@
   padding: 10px;
 }
 
-
 .organizationChart :global(.p-organizationchart) {
   padding: 20px;
 }
 
-.organizationChart :global(.p-organizationchart .p-organizationchart-line-down) {
+.organizationChart
+  :global(.p-organizationchart .p-organizationchart-line-down) {
   background-color: #ebebeb;
 }
 
-.organizationChart :global(.p-organizationchart .p-organizationchart-line-left) {
+.organizationChart
+  :global(.p-organizationchart .p-organizationchart-line-left) {
   border-right: 1px solid #ebebeb;
 }
 
@@ -61,7 +62,8 @@
   border-top: 1px solid #ebebeb;
 }
 
-.organizationChart :global(.p-organizationchart .p-organizationchart-node-content) {
+.organizationChart
+  :global(.p-organizationchart .p-organizationchart-node-content) {
   border: 1px solid #ebebeb;
   padding: 0.5em 0.75em;
 }
@@ -76,4 +78,3 @@
 .verticalList li {
   margin-bottom: 5px;
 }
-

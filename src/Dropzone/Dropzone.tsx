@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
-import styles from './Dropzone.module.css';
-import CloseIcon from '@mui/icons-material/Close';
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
-import { useEvents } from '@/Pages/Events/Context/EventsContext';
-import Button from '@/Components/Button/Button';
-import { ButtonTypes } from '@/Components/Button/ButtonTypes';
+import React, { useCallback, useEffect, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import styles from "./Dropzone.module.css";
+import CloseIcon from "@mui/icons-material/Close";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import { useEvents } from "@/Pages/Events/Context/EventsContext";
+import Button from "@/Components/Button/Button";
+import { ButtonTypes } from "@/Components/Button/ButtonTypes";
 
 interface DropzoneProps {
   className?: string;
@@ -20,30 +20,34 @@ const Dropzone: React.FC<DropzoneProps> = ({ className }) => {
   const [previewFiles, setPreviewFiles] = useState<PreviewFile[]>([]);
 
   useEffect(() => {
-    const newPreviewFiles = eventPhotos.map(file =>
-      Object.assign(file, { preview: URL.createObjectURL(file) })
+    const newPreviewFiles = eventPhotos.map((file) =>
+      Object.assign(file, { preview: URL.createObjectURL(file) }),
     );
     setPreviewFiles(newPreviewFiles);
 
-    return () => newPreviewFiles.forEach((file) => URL.revokeObjectURL(file.preview));
+    return () =>
+      newPreviewFiles.forEach((file) => URL.revokeObjectURL(file.preview));
   }, [eventPhotos]);
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles?.length) {
-      handleFileUpload([...eventPhotos, ...acceptedFiles]);
-    }
-  }, [eventPhotos, handleFileUpload]);
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (acceptedFiles?.length) {
+        handleFileUpload([...eventPhotos, ...acceptedFiles]);
+      }
+    },
+    [eventPhotos, handleFileUpload],
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
-      'image/*': [],
+      "image/*": [],
     },
     maxSize: 1024 * 1000,
     onDrop,
   });
 
   const removeFile = (name: string) => {
-    handleFileUpload(eventPhotos.filter(file => file.name !== name));
+    handleFileUpload(eventPhotos.filter((file) => file.name !== name));
   };
 
   const removeAll = () => {
@@ -76,7 +80,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ className }) => {
                   }}
                   className={styles.removeButton}
                 >
-                  <CloseIcon style={{width:"15px",height:"15px"}}/>
+                  <CloseIcon style={{ width: "15px", height: "15px" }} />
                 </button>
               </div>
             ))}
@@ -85,8 +89,17 @@ const Dropzone: React.FC<DropzoneProps> = ({ className }) => {
       </div>
       {previewFiles.length > 0 && (
         <div className={styles.controls}>
-          <Button color='#d32f2f' backgroundColor='white' borderColor='#d32f2f' onClick={removeAll} btnText={'Remove all files'} type={ButtonTypes.PRIMARY}/>
-          <p className={styles.fileCount}>{previewFiles.length} file(s) selected</p>
+          <Button
+            color="#d32f2f"
+            backgroundColor="white"
+            borderColor="#d32f2f"
+            onClick={removeAll}
+            btnText={"Remove all files"}
+            type={ButtonTypes.PRIMARY}
+          />
+          <p className={styles.fileCount}>
+            {previewFiles.length} file(s) selected
+          </p>
         </div>
       )}
     </div>

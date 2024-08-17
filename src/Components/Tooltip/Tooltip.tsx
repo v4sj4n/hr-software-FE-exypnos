@@ -1,35 +1,34 @@
-import { Tooltip, Zoom } from '@mui/material'
-import { isValidElement, ReactNode } from 'react'
+import { Tooltip, Zoom } from "@mui/material";
+import { isValidElement, ReactNode } from "react";
 
 interface TooltipImprovedProps {
-  children: ReactNode
-  text: string
+  children: ReactNode;
+  text: string;
   placement?:
-    | 'top'
-    | 'bottom-end'
-    | 'bottom-start'
-    | 'bottom'
-    | 'left-end'
-    | 'left-start'
-    | 'left'
-    | 'right-end'
-    | 'right-start'
-    | 'right'
-    | 'top-end'
-    | 'top-start'
-  offset?: [number, number]
+    | "top"
+    | "bottom-end"
+    | "bottom-start"
+    | "bottom"
+    | "left-end"
+    | "left-start"
+    | "left"
+    | "right-end"
+    | "right-start"
+    | "right"
+    | "top-end"
+    | "top-start";
+  offset?: [number, number];
 }
 
 export const TooltipImproved: React.FC<TooltipImprovedProps> = ({
   children,
   text,
-  placement = 'top',
+  placement = "top",
   offset = [0, 0],
 }) => {
   if (!isValidElement(children)) {
-    return null
+    return null;
   }
-
 
   return (
     <Tooltip
@@ -42,7 +41,7 @@ export const TooltipImproved: React.FC<TooltipImprovedProps> = ({
         popper: {
           modifiers: [
             {
-              name: 'offset',
+              name: "offset",
               options: {
                 offset: offset,
               },
@@ -53,5 +52,5 @@ export const TooltipImproved: React.FC<TooltipImprovedProps> = ({
     >
       {children}
     </Tooltip>
-  )
-}
+  );
+};

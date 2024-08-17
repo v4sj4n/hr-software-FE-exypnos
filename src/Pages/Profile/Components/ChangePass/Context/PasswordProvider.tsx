@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { PasswordContext, PasswordContextType } from './PasswordContext';
-import AxiosInstance from '../../../../../Helpers/Axios';
-import { AxiosError } from 'axios';
+import React, { useState } from "react";
+import { PasswordContext, PasswordContextType } from "./PasswordContext";
+import AxiosInstance from "../../../../../Helpers/Axios";
+import { AxiosError } from "axios";
 
-export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -40,7 +42,9 @@ export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return true;
   };
 
-  const handleUpdatePassword = async (event: React.FormEvent<HTMLButtonElement>) => {
+  const handleUpdatePassword = async (
+    event: React.FormEvent<HTMLButtonElement>,
+  ) => {
     event.preventDefault();
     setError("");
     setSuccess("");
@@ -52,7 +56,7 @@ export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     try {
       const response = await AxiosInstance.post("/auth/updatepassword", {
         currentPassword,
-        newPassword
+        newPassword,
       });
 
       if (response.status === 200) {
@@ -64,7 +68,9 @@ export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } catch (error: unknown) {
       if (error instanceof AxiosError && error.response?.data) {
         const errorData = error.response.data;
-        setError(errorData.message || "An error occurred while updating the password");
+        setError(
+          errorData.message || "An error occurred while updating the password",
+        );
       } else {
         setError("An error occurred while updating the password");
       }
@@ -78,7 +84,7 @@ export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     error,
     success,
     handleChange,
-    handleUpdatePassword
+    handleUpdatePassword,
   };
 
   return (

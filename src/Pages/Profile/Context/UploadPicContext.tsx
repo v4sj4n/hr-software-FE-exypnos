@@ -1,5 +1,5 @@
-import { createContext } from 'react';
-import { UserProfileData } from '../../Employees/interfaces/Employe';
+import { createContext } from "react";
+import { UserProfileData } from "../../Employees/interfaces/Employe";
 
 export interface FileUploadContextType {
   uploadImage: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
@@ -9,4 +9,6 @@ export interface FileUploadContextType {
   userImage: UserProfileData | null;
 }
 
-export const FileUploadContext = createContext<FileUploadContextType | undefined>(undefined);
+export const FileUploadContext = createContext<
+  FileUploadContextType | undefined
+>(undefined);

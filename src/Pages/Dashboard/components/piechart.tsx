@@ -1,12 +1,12 @@
-import { PieChart } from '@mui/x-charts'
+import { PieChart } from "@mui/x-charts";
 
 const PieChartComponent = () => {
   const data = [
-    { value: 50, label: 'Present' },
-    { value: 10, label: 'Absent' },
-    { value: 15, label: 'On Leave' },
-    { value: 20, label: 'Remote' },
-  ]
+    { value: 50, label: "Present" },
+    { value: 10, label: "Absent" },
+    { value: 15, label: "On Leave" },
+    { value: 20, label: "Remote" },
+  ];
 
   return (
     <PieChart
@@ -20,12 +20,11 @@ const PieChartComponent = () => {
           cornerRadius: 5,
           startAngle: 0,
           endAngle: 360,
-          cx: 150,
-          
+          cx: 110,
         },
       ]}
     />
-  )
-}
+  );
+};
 
-export default PieChartComponent
+export default PieChartComponent;

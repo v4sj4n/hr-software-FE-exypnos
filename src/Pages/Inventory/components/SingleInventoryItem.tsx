@@ -1,20 +1,20 @@
-import { useContext } from 'react'
-import { ModalComponent } from '@/Components/Modal/Modal'
-import QrCodeIcon from '@mui/icons-material/QrCode'
-import { InventoryContext } from '../InventoryContext'
-import { useGetOneInventoryItem } from '../Hook/hook'
-import style from '../style/singleInventoryItem.module.scss'
-import { TitleCaser } from '@/Helpers/TitleCaser'
-import { ItemHistory } from '../InventoryType'
-import dayjs from 'dayjs'
+import { useContext } from "react";
+import { ModalComponent } from "@/Components/Modal/Modal";
+import QrCodeIcon from "@mui/icons-material/QrCode";
+import { InventoryContext } from "../InventoryContext";
+import { useGetOneInventoryItem } from "../Hook/hook";
+import style from "../style/singleInventoryItem.module.scss";
+import { TitleCaser } from "@/Helpers/TitleCaser";
+import { ItemHistory } from "../InventoryType";
+import dayjs from "dayjs";
 
 export const SingleInventoryItem = () => {
   const {
     viewAssetModalOpen: open,
     handleCloseViewAssetModalOpen: handleClose,
-  } = useContext(InventoryContext)
+  } = useContext(InventoryContext);
 
-  const { error, isLoading, data } = useGetOneInventoryItem()
+  const { error, isLoading, data } = useGetOneInventoryItem();
   return (
     <ModalComponent handleClose={handleClose} open={open}>
       {error ? (
@@ -44,12 +44,14 @@ export const SingleInventoryItem = () => {
                 {data?.history.map((history: ItemHistory, index: number) => (
                   <div key={index} className={style.singleHistory}>
                     <p>
-                      {dayjs(history?.takenDate).format('DD MMMM YYYY - HH:MM')}
+                      {dayjs(history?.takenDate).format("DD MMMM YYYY - HH:MM")}
                     </p>
                     <p>
                       {history.returnDate
-                        ? dayjs(history.returnDate).format('DD MMMM YYYY - HH:MM')
-                        : 'Not yet'}
+                        ? dayjs(history.returnDate).format(
+                            "DD MMMM YYYY - HH:MM",
+                          )
+                        : "Not yet"}
                     </p>
                     <p>
                       {history.user.firstName} {history.user.lastName}
@@ -64,18 +66,23 @@ export const SingleInventoryItem = () => {
         </>
       )}
     </ModalComponent>
-  )
-}
+  );
+};
 
 const renderStatus = (
   status: string,
-  user: { firstName: string; lastName: string } | null = null
+  user: { firstName: string; lastName: string } | null = null,
 ) => {
   return (
     <span>
       <span
         style={{
-          color: status === 'assigned' ? 'rgb(211, 47, 47)' : 'rgb(2, 167, 0)',
+          color:
+            status === "assigned"
+              ? "#d32f2f"
+              : status === "available"
+                ? "#02a700"
+                : "4d4d4d",
         }}
       >
         {status}
@@ -89,5 +96,5 @@ const renderStatus = (
         </>
       )}
     </span>
-  )
-}
+  );
+};

@@ -1,63 +1,62 @@
-import Input from '@/Components/Input/Index.tsx'
-import { TooltipImproved } from '@/Components/Tooltip/Tooltip.tsx'
-import { EmployeesWithHoldings } from './Component/EmployeesWithHoldings.tsx'
+import Input from "@/Components/Input/Index.tsx";
+import { TooltipImproved } from "@/Components/Tooltip/Tooltip.tsx";
+import { EmployeesWithHoldings } from "./Component/EmployeesWithHoldings.tsx";
 import {
   FormLabel,
   Radio,
   RadioGroup,
   Sheet,
   Box,
-  radioClasses
-} from '@mui/joy'
-import { debounce } from 'lodash'
-import HoldingsProvider, { HoldingsContext } from './HoldingsContext.tsx'
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
-import { UserHoldings } from './Component/UserHoldings.tsx'
-import { ChangeEvent, useContext } from 'react'
-import style from './style/holdings.module.scss'
-
+  radioClasses,
+} from "@mui/joy";
+import { debounce } from "lodash";
+import HoldingsProvider, { HoldingsContext } from "./HoldingsContext.tsx";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { UserHoldings } from "./Component/UserHoldings.tsx";
+import { ChangeEvent, useContext } from "react";
+import style from "./style/holdings.module.scss";
 
 function HoldingsComponent() {
-  const { setSearchParams, searchParams } = useContext(HoldingsContext)
+  const { setSearchParams, searchParams } = useContext(HoldingsContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchParams((prev) => {
-      const value = e.target.value
-      const newParams = new URLSearchParams(prev)
-      if (newParams.get('selectedHolding')) {
-        newParams.delete('selectedHolding')
+      const value = e.target.value;
+      const newParams = new URLSearchParams(prev);
+      if (newParams.get("selectedHolding")) {
+        newParams.delete("selectedHolding");
       }
 
-      if (value === 'all') {
-        newParams.delete('users')
+      if (value === "all") {
+        newParams.delete("users");
       } else {
-        newParams.set('users', value)
+        newParams.set("users", value);
       }
 
-      return newParams
-    })
-  }
+      return newParams;
+    });
+  };
 
   const debouncedSetSearchParams = debounce((value: string) => {
     setSearchParams((prev) => {
-      const newParams = new URLSearchParams(prev)
-      if (newParams.get('selectedHolding')) {
-        newParams.delete('selectedHolding')
+      const newParams = new URLSearchParams(prev);
+      if (newParams.get("selectedHolding")) {
+        newParams.delete("selectedHolding");
       }
 
       if (value) {
-        newParams.set('search', value)
+        newParams.set("search", value);
       } else {
-        newParams.delete('search')
+        newParams.delete("search");
       }
-      return newParams
-    })
-  }, 500)
-  const userFilterChoices = ['ALL', 'W ASSETS', 'W/O ASSETS']
+      return newParams;
+    });
+  }, 500);
+  const userFilterChoices = ["ALL", "W ASSETS", "W/O ASSETS"];
 
   const onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    debouncedSetSearchParams(e.target.value)
-  }
+    debouncedSetSearchParams(e.target.value);
+  };
 
   return (
     <main className={style.main}>
@@ -69,18 +68,18 @@ function HoldingsComponent() {
           IsUsername
           label="Search"
           name="search"
-          initialValue={searchParams.get('search') || ''}
+          initialValue={searchParams.get("search") || ""}
           onChange={onSearchChange}
         />
-        <Box sx={{ display: 'flex', gap: 2 }}>
+        <Box sx={{ display: "flex", gap: 2 }}>
           <FormLabel
             id="filter-user-choices"
             sx={{
               mb: 1.5,
-              fontWeight: 'xl',
-              textTransform: 'uppercase',
-              fontSize: 'xs',
-              letterSpacing: '0.1em',
+              fontWeight: "xl",
+              textTransform: "uppercase",
+              fontSize: "xs",
+              letterSpacing: "0.1em",
             }}
           >
             Filter by
@@ -88,48 +87,48 @@ function HoldingsComponent() {
           <RadioGroup
             aria-labelledby="product-size-attribute"
             defaultValue={
-              searchParams.get('users') ? searchParams.get('users') : 'all'
+              searchParams.get("users") ? searchParams.get("users") : "all"
             }
-            sx={{ gap: 1, mb: 2, flexWrap: 'wrap', flexDirection: 'row' }}
+            sx={{ gap: 1, mb: 2, flexWrap: "wrap", flexDirection: "row" }}
             onChange={handleChange}
           >
             {userFilterChoices.map((usersFilter) => (
               <Sheet
                 key={usersFilter}
                 sx={{
-                  position: 'relative',
+                  position: "relative",
                   height: 40,
                   flexShrink: 0,
-                  padding: '0.333rem 1rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  alignSelf: 'end',
+                  padding: "0.333rem 1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  alignSelf: "end",
                   borderRadius: 7.5,
-                  justifyContent: 'center',
-                  '--joy-focus-outlineOffset': '4px',
-                  '--joy-palette-focusVisible': (theme) =>
+                  justifyContent: "center",
+                  "--joy-focus-outlineOffset": "4px",
+                  "--joy-palette-focusVisible": (theme) =>
                     theme.vars.palette.neutral.outlinedBorder,
                   [`& .${radioClasses.checked}`]: {
                     [`& .${radioClasses.label}`]: {
-                      fontWeight: 'lg',
+                      fontWeight: "lg",
                     },
                     [`& .${radioClasses.action}`]: {
-                      '--variant-borderWidth': '1px',
-                      borderColor: 'text.secondary',
+                      "--variant-borderWidth": "1px",
+                      borderColor: "text.secondary",
                     },
                   },
                   [`& .${radioClasses.action}.${radioClasses.focusVisible}`]: {
-                    outlineWidth: '2px',
+                    outlineWidth: "2px",
                   },
                 }}
               >
                 <TooltipImproved
                   text={
-                    usersFilter === 'ALL'
-                      ? 'All Employees'
-                      : usersFilter === 'W ASSETS'
-                      ? 'Employees with Assets'
-                      : 'Employees without Assets'
+                    usersFilter === "ALL"
+                      ? "All Employees"
+                      : usersFilter === "W ASSETS"
+                        ? "Employees with Assets"
+                        : "Employees without Assets"
                   }
                   placement="top"
                   offset={[0, 5]}
@@ -139,11 +138,11 @@ function HoldingsComponent() {
                     overlay
                     disableIcon
                     value={
-                      usersFilter === 'ALL'
-                        ? 'all'
-                        : usersFilter === 'W ASSETS'
-                        ? 'with'
-                        : 'without'
+                      usersFilter === "ALL"
+                        ? "all"
+                        : usersFilter === "W ASSETS"
+                          ? "with"
+                          : "without"
                     }
                     label={usersFilter}
                   />
@@ -157,7 +156,7 @@ function HoldingsComponent() {
         <EmployeesWithHoldings />
 
         <div className={style.selectedUserContainer}>
-          {searchParams.get('selectedHolding') ? (
+          {searchParams.get("selectedHolding") ? (
             <UserHoldings />
           ) : (
             <div className={style.noItemsOnSelectedUser}>
@@ -167,7 +166,7 @@ function HoldingsComponent() {
         </div>
       </div>
     </main>
-  )
+  );
 }
 
 export default function Holdings() {
@@ -175,5 +174,5 @@ export default function Holdings() {
     <HoldingsProvider>
       <HoldingsComponent />
     </HoldingsProvider>
-  )
+  );
 }
