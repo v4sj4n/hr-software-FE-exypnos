@@ -1,14 +1,14 @@
 export interface Product {
-  name: string;
+    name: string
 }
 
 export interface Account {
-  name: string;
-  product: Product;
+    name: string
+    product: Product
 }
 
 export interface Organization {
-  tradingName: string;
-  account?: Account[];
-  organizationChildRelationship?: Organization[];
+    tradingName: string
+    account?: Account[]
+    organizationChildRelationship?: Organization[]
 }

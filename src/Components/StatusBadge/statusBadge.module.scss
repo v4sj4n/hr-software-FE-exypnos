@@ -39,31 +39,31 @@ $orange-color: #ca8206;
 $gray-color: #4d4d4d;
 
 @mixin badge {
-  padding: 0.3rem 0.75rem;
-  border-radius: 1rem;
-  font-weight: bold;
+    padding: 0.3rem 0.75rem;
+    border-radius: 1rem;
+    font-weight: bold;
 }
 
 .orangeBadge {
-  @include badge;
-  color: #1f1f1fd0;
-  background-color: lighten($color: $orange-color, $amount: 35);
+    @include badge;
+    color: #1f1f1fd0;
+    background-color: lighten($color: $orange-color, $amount: 35);
 }
 
 .grayBadge {
-  @include badge;
-  color: #1f1f1fd0;
-  background-color: lighten($color: $gray-color, $amount: 50);
+    @include badge;
+    color: #1f1f1fd0;
+    background-color: lighten($color: $gray-color, $amount: 50);
 }
 
 .greenBadge {
-  @include badge;
-  color: #1f1f1fd0;
-  background-color: lighten($color: $green-color, $amount: 45);
+    @include badge;
+    color: #1f1f1fd0;
+    background-color: lighten($color: $green-color, $amount: 45);
 }
 
 .redBadge {
-  @include badge;
-  color: #1f1f1fd0;
-  background-color: lighten($color: $red-color, $amount: 25);
+    @include badge;
+    color: #1f1f1fd0;
+    background-color: lighten($color: $red-color, $amount: 25);
 }

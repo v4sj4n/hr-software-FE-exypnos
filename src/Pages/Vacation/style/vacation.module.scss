@@ -1,13 +1,13 @@
-@import "@/Helpers/_base.scss";
+@import '@/Helpers/_base.scss';
 
 .main {
-  @include mainPage;
+    @include mainPage;
 }
 
 .heading {
-  @include pageHeading;
+    @include pageHeading;
 }
 
 .title {
-  @include pageTitle;
+    @include pageTitle;
 }

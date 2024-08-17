@@ -1,79 +1,79 @@
 .container {
-  display: flex;
-  width: 100%;
-  padding: 20px;
-  gap: 32px;
-  background-color: transparent;
-  font-family: "Outfit", sans-serif;
+    display: flex;
+    width: 100%;
+    padding: 20px;
+    gap: 32px;
+    background-color: transparent;
+    font-family: 'Outfit', sans-serif;
 }
 
 .columContanier {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .column {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .border {
-  border-bottom: 1px solid #ebebeb;
-  width: 100%;
-  margin: 15px 0;
+    border-bottom: 1px solid #ebebeb;
+    width: 100%;
+    margin: 15px 0;
 }
 
 .centerStatus {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .section {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .label {
-  font-weight: bold;
-  color: #333;
+    font-weight: bold;
+    color: #333;
 }
 
 .value {
-  color: #555;
-  margin-top: 4px;
+    color: #555;
+    margin-top: 4px;
 }
 
 a {
-  color: #1b5ff4;
-  text-decoration: none;
+    color: #1b5ff4;
+    text-decoration: none;
 }
 
 .statusAccepted {
-  background-color: #02a700;
-  color: #ffffff;
-  padding: 5px 20px 5px 20px;
-  border-radius: 60px;
+    background-color: #02a700;
+    color: #ffffff;
+    padding: 5px 20px 5px 20px;
+    border-radius: 60px;
 }
 
 .statusRejected {
-  background-color: #d32f2f;
-  color: #ffffff;
-  padding: 5px 20px 5px 20px;
-  border-radius: 60px;
+    background-color: #d32f2f;
+    color: #ffffff;
+    padding: 5px 20px 5px 20px;
+    border-radius: 60px;
 }
 
 .statusPending {
-  background-color: orange;
-  color: #ffffff;
-  padding: 5px 20px 5px 20px;
-  border-radius: 60px;
+    background-color: orange;
+    color: #ffffff;
+    padding: 5px 20px 5px 20px;
+    border-radius: 60px;
 }
 
 .title {
-  font-weight: bold;
-  color: #333;
-  font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    font-size: 18px;
 }

@@ -1,37 +1,37 @@
 .infoSection h2 {
-  color: #2457a3;
-  text-align: left;
-  padding: 0%;
+    color: #2457a3;
+    text-align: left;
+    padding: 0%;
 }
 
 .infoSection li {
-  display: flex;
-  color: #000000;
-  padding: 10px;
+    display: flex;
+    color: #000000;
+    padding: 10px;
 }
 
 .blueDot {
-  height: 10px;
-  width: 10px;
-  background-color: #2469ff;
-  border-radius: 50%;
-  margin-right: 10px;
-  flex-shrink: 0;
+    height: 10px;
+    width: 10px;
+    background-color: #2469ff;
+    border-radius: 50%;
+    margin-right: 10px;
+    flex-shrink: 0;
 }
 
 .eventContainer {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  width: 100%;
-  * {
-    margin: 0;
-  }
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
+    * {
+        margin: 0;
+    }
 }
 
 .eventData {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 100%;
 }
