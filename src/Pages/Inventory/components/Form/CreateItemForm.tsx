@@ -1,4 +1,3 @@
-import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useContext } from 'react'
 import Button from '@/Components/Button/Button'
@@ -6,12 +5,14 @@ import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Input from '@/Components/Input/Index'
 import {
     CreateInventoryItemFormFields,
-    createInventoryItemSchema,
+    CreateInventoryItemSchema,
 } from '@/Schemas/Inventory/CreateInventoryItem.schema'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import { InventoryContext } from '../../InventoryContext'
 import { AxiosError } from 'axios'
 import { useCreateInventoryItem } from '../../Hook/hook'
+import { valibotResolver } from '@hookform/resolvers/valibot'
+import style from '../../style/createItemForm.module.scss'
 
 export const CreateItemForm = () => {
     const { handleCloseCreateModalOpen } = useContext(InventoryContext)
@@ -22,7 +23,7 @@ export const CreateItemForm = () => {
         setError,
         formState: { errors, isSubmitting },
     } = useForm<CreateInventoryItemFormFields>({
-        resolver: zodResolver(createInventoryItemSchema),
+        resolver: valibotResolver(CreateInventoryItemSchema),
     })
 
     const onSubmit: SubmitHandler<CreateInventoryItemFormFields> = async (
@@ -32,32 +33,18 @@ export const CreateItemForm = () => {
         if (isError) {
             if (error instanceof AxiosError)
                 setError('root', { message: error.response?.data?.message })
-        } else {
-            setError('root', { message: 'something happened' })
+            else {
+                setError('root', { message: 'something happened' })
+            }
         }
     }
 
     return (
         <>
-            <h3>Create an asset</h3>
-            <form
-                onSubmit={handleSubmit(onSubmit)}
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '0.5rem',
-                    marginTop: '1.5rem',
-                }}
-            >
+            <h3 className={style.heading}>Create an asset</h3>
+            <form onSubmit={handleSubmit(onSubmit)} className={style.form}>
                 <div>
-                    <select
-                        {...register('type')}
-                        style={{
-                            padding: '0.5rem',
-                            width: '100%',
-                            borderRadius: '0.5rem',
-                        }}
-                    >
+                    <select {...register('type')} className={style.selector}>
                         <option value="" disabled selected>
                             Select an item
                         </option>

@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { InventoryContext } from '../InventoryContext'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
     createInventoryItem,
     getAllInventoryItems,
@@ -30,8 +30,17 @@ export const useGetOneInventoryItem = () => {
 }
 
 export const useCreateInventoryItem = () => {
+    const { handleCloseCreateModalOpen } = useContext(InventoryContext)
+
+    const queryClient = useQueryClient()
     return useMutation({
         mutationFn: ({ item }: { item: CreateInventoryItemFormFields }) =>
             createInventoryItem(item),
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ['allInventoryItems'],
+            })
+            handleCloseCreateModalOpen()
+        },
     })
 }

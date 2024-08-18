@@ -7,13 +7,13 @@ import img from '/Images/HeroImage.png'
 import logo from '/Images/image_1-removebg-preview.png'
 import { useLogin } from './Hook'
 import style from './styles/Login.module.css'
-import { LoginFormFields, loginSchema } from '@/Schemas/Login/Login.schema'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { LoginFormFields, LoginSchema } from '@/Schemas/Login/Login.schema'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import AxiosInstance from '@/Helpers/Axios'
 import { useAuth } from '@/Context/AuthProvider'
 import { AxiosError } from 'axios'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
+import { valibotResolver } from '@hookform/resolvers/valibot'
 
 const Login: React.FC = () => {
     const { login } = useAuth()
@@ -25,7 +25,7 @@ const Login: React.FC = () => {
         setError,
         formState: { errors, isSubmitting },
     } = useForm<LoginFormFields>({
-        resolver: zodResolver(loginSchema),
+        resolver: valibotResolver(LoginSchema),
     })
 
     const onSubmit: SubmitHandler<LoginFormFields> = async (

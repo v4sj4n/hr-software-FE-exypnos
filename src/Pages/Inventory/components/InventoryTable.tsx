@@ -40,16 +40,19 @@ export const InventoryTable = () => {
             field: 'type',
             headerName: 'Type',
             flex: 1,
-            renderCell: (param: GridRenderCellParams) =>
-                param.value === 'laptop' ? (
-                    <>
-                        <Laptop /> {param.value}
-                    </>
-                ) : (
-                    <>
-                        <Monitor /> {param.value}
-                    </>
-                ),
+            renderCell: (param: GridRenderCellParams) => (
+                <div className={style.itemDiv}>
+                    {param.value === 'Monitor' ? (
+                        <>
+                            <Monitor /> {param.value}
+                        </>
+                    ) : (
+                        <>
+                            <Laptop /> {param.value}
+                        </>
+                    )}
+                </div>
+            ),
         },
         {
             field: 'occupant',

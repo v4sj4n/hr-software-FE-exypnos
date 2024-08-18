@@ -1,8 +1,7 @@
 import {
-    VacationFormFields,
+    VacationFormfields,
     VacationSchema,
 } from '@/Schemas/Vacations/Vacation.schema'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { UseQueryResult } from '@tanstack/react-query'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import style from '../../style/vacationForm.module.scss'
@@ -14,6 +13,7 @@ import { useUpdateVacation } from '../../Hook'
 import { useContext } from 'react'
 import { VacationContext } from '../../VacationContext'
 import { AxiosError } from 'axios'
+import { valibotResolver } from '@hookform/resolvers/valibot'
 
 type MyComponentProps = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,18 +29,18 @@ export const VacationForm: React.FC<MyComponentProps> = ({
         handleSubmit,
         setError,
         formState: { errors, isSubmitting },
-    } = useForm<VacationFormFields>({
+    } = useForm<VacationFormfields>({
         defaultValues: {
             status: vacation.data.status,
             type: vacation.data.type,
             startDate: dayjs(vacation.data.startDate).format('YYYY-MM-DD'),
             endDate: dayjs(vacation.data.endDate).format('YYYY-MM-DD'),
         },
-        resolver: zodResolver(VacationSchema),
+        resolver: valibotResolver(VacationSchema),
     })
 
-    const onSubmit: SubmitHandler<VacationFormFields> = async (
-        data: VacationFormFields,
+    const onSubmit: SubmitHandler<VacationFormfields> = async (
+        data: VacationFormfields,
     ) => {
         data.endDate = dayjs(data.endDate).toISOString()
         data.startDate = dayjs(data.startDate).toISOString()

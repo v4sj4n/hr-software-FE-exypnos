@@ -20,7 +20,7 @@ const PieChartComponent = () => {
                     cornerRadius: 5,
                     startAngle: 0,
                     endAngle: 360,
-                    cx: 110,
+                    cx: 125,
                 },
             ]}
         />
