@@ -1,14 +1,25 @@
-import z from 'zod'
+import {
+    InferInput,
+    minLength,
+    nonEmpty,
+    object,
+    picklist,
+    pipe,
+    string,
+} from 'valibot'
 
-export const createInventoryItemSchema = z.object({
-  type: z.enum(['laptop', 'monitor'], {
-    message: 'Asset should be either a laptop or a monitor',
-  }),
-  serialNumber: z.string().min(10, {
-    message: 'Serial Number should be at least 10 characters long',
-  }),
+export const CreateInventoryItemSchema = object({
+    type: picklist(
+        ['laptop', 'monitor'],
+        "Please select an item type of 'laptop' or'monitor'",
+    ),
+    serialNumber: pipe(
+        string('Serial Number is required'),
+        nonEmpty('Please type your serial number'),
+        minLength(10, 'Serial Number should be at least 10 characters long'),
+    ),
 })
 
-export type CreateInventoryItemFormFields = z.infer<
-  typeof createInventoryItemSchema
+export type CreateInventoryItemFormFields = InferInput<
+    typeof CreateInventoryItemSchema
 >

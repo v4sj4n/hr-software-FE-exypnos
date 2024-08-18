@@ -19,85 +19,83 @@ import Inventory from './Pages/Inventory/Inventory.tsx'
 import Career from './Pages/Career/Career.tsx'
 import Holdings from './Pages/Holdings/Holdings.tsx'
 
-
 export default function Router() {
-  const router = createBrowserRouter([
-    {
-      path: '/',
-      element: <Login />,
-    },
-    {
-      path: 'recruitment',
-      element: <Recruitment />,
-    },
-    {
-      path: '/forgot-password',
-      element: <ResetPass />,
-    },
-    {
-      path: 'career',
-      element: <Career />,
-    },
-    {
-      path: '/',
-      element: <PrivateRoute />,
-      children: [
+    const router = createBrowserRouter([
         {
-          path: 'employees',
-          element: <Employees />,
-        },
-        { path: '/dashboard', element: <Dashboard />, index: false },
-        {
-          path: 'profile/:id',
-          element: <Profile />,
+            path: '/',
+            element: <Login />,
         },
         {
-          path: 'view/:id',
-          element: <ViewCandidats />,
+            path: 'recruitment',
+            element: <Recruitment />,
         },
         {
-          path: 'holdings',
-          element: <Holdings />,
+            path: '/forgot-password',
+            element: <ResetPass />,
         },
         {
-          path: 'payroll',
-          element: <Payroll />,
+            path: 'career',
+            element: <Career />,
         },
         {
-          path: 'createEmplye',
-          element: <CreateEmplye />,
+            path: '/',
+            element: <PrivateRoute />,
+            children: [
+                {
+                    path: 'employees',
+                    element: <Employees />,
+                },
+                { path: '/dashboard', element: <Dashboard />, index: false },
+                {
+                    path: 'profile/:id',
+                    element: <Profile />,
+                },
+                {
+                    path: 'view/:id',
+                    element: <ViewCandidats />,
+                },
+                {
+                    path: 'holdings',
+                    element: <Holdings />,
+                },
+                {
+                    path: 'payroll',
+                    element: <Payroll />,
+                },
+                {
+                    path: 'createEmplye',
+                    element: <CreateEmplye />,
+                },
+                {
+                    path: 'structure',
+                    element: <Structure />,
+                },
+                {
+                    path: 'candidates',
+                    element: <Candidates />,
+                },
+                {
+                    path: 'vacation',
+                    element: (
+                        <VacationProvider>
+                            <Vacation />
+                        </VacationProvider>
+                    ),
+                },
+                {
+                    path: 'events',
+                    element: <Events />,
+                },
+                {
+                    path: 'interview',
+                    element: <Interview />,
+                },
+                {
+                    path: 'inventory',
+                    element: <Inventory />,
+                },
+            ],
         },
-        {
-          path: 'structure',
-          element: <Structure />,
-        },
-        {
-          path: 'candidates',
-          element: <Candidates />,
-        },
-        {
-          path: 'vacation',
-          element: (
-            <VacationProvider>
-              <Vacation />
-            </VacationProvider>
-          ),
-        },
-        {
-          path: 'events',
-          element:
-              <Events />
-        },
-        {
-          path: 'interview',
-          element: <Interview />,
-        },
-        {
-          path: 'inventory',
-          element: <Inventory />,
-        },
-      ],
-    },
-  ])
-  return <RouterProvider router={router} />
+    ])
+    return <RouterProvider router={router} />
 }

@@ -1,160 +1,168 @@
-import { useState, useEffect, ChangeEvent } from 'react';
-import AxiosInstance from '@/Helpers/Axios';
-import { EventsCreationData, EventsData } from '../Interface/Events';
-import { useSearchParams } from 'react-router-dom';
-import { debounce } from 'lodash';
+import { useState, useEffect, ChangeEvent } from 'react'
+import AxiosInstance from '@/Helpers/Axios'
+import { EventsCreationData, EventsData } from '../Interface/Events'
+import { useSearchParams } from 'react-router-dom'
+import { debounce } from 'lodash'
 
 export const useGetAllEvents = () => {
-    const [events, setEvents] = useState<EventsData[]>([]);
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [isLoading, setIsLoading] = useState(false);
+    const [events, setEvents] = useState<EventsData[]>([])
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [isLoading, setIsLoading] = useState(false)
 
     const debouncedSetSearchParams = debounce((value: string) => {
         setSearchParams((prev) => {
-            const newParams = new URLSearchParams(prev);
+            const newParams = new URLSearchParams(prev)
             if (value) {
-                newParams.set('search', value);
+                newParams.set('search', value)
             } else {
-                newParams.delete('search');
+                newParams.delete('search')
             }
-            return newParams;
-        });
-    }, 500);
+            return newParams
+        })
+    }, 500)
 
     const onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-        debouncedSetSearchParams(e.target.value);
-        fetchEvents();
-    };
+        debouncedSetSearchParams(e.target.value)
+        fetchEvents()
+    }
 
     const fetchEvents = () => {
-        setIsLoading(true);
-        const currentSearch = searchParams.get('search') || '';
+        setIsLoading(true)
+        const currentSearch = searchParams.get('search') || ''
         AxiosInstance.get<EventsData[]>(`/event?search=${currentSearch}`)
-            .then(response => {
-                console.log('Fetched events:', response.data);
-console.log("Event data: ", events);
-                setIsLoading(false);
+            .then((response) => {
+                console.log('Fetched events:', response.data)
+                console.log('Event data: ', events)
+                setIsLoading(false)
 
-                setEvents(response.data);
+                setEvents(response.data)
             })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                setIsLoading(false);
-            });
-    };
+            .catch((error) => {
+                console.error('Error fetching data:', error)
+                setIsLoading(false)
+            })
+    }
 
     useEffect(() => {
-        fetchEvents();
-    }, [searchParams]);
+        fetchEvents()
+    }, [searchParams])
 
     return {
         events,
         setEvents,
         isLoading,
         onSearchChange,
-    };
-};
+    }
+}
 
-export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>) => {
-
-    const [toastOpen, setToastOpen] = useState(false);
-    const [toastMessage, setToastMessage] = useState('');
-    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>('success');
-    const [eventPhotos, setEventPhotos] = useState<File[]>([]);
+export const useCreateEvent = (
+    setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>,
+) => {
+    const [toastOpen, setToastOpen] = useState(false)
+    const [toastMessage, setToastMessage] = useState('')
+    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
+        'success',
+    )
+    const [eventPhotos, setEventPhotos] = useState<File[]>([])
     const [event, setEvent] = useState<EventsCreationData>({
         title: '',
         description: '',
         endDate: '',
         startDate: '',
         location: '',
-        photo:[],
+        photo: [],
         participants: [],
         type: '',
         poll: {
             question: '',
             options: [],
-            isMultipleVote: false
-        }
-    });
+            isMultipleVote: false,
+        },
+    })
 
-    const [pollQuestion, setPollQuestion] = useState('');
-    const [pollOptions, setPollOptions] = useState<string[]>(['', '']);
-    const [isMultipleChoice, setIsMultipleChoice] = useState(false);
-    const [includesPoll, setIncludesPoll] = useState(false);
-    const [participants, setParticipants] = useState<string[]>([]);
+    const [pollQuestion, setPollQuestion] = useState('')
+    const [pollOptions, setPollOptions] = useState<string[]>(['', ''])
+    const [isMultipleChoice, setIsMultipleChoice] = useState(false)
+    const [includesPoll, setIncludesPoll] = useState(false)
+    const [participants, setParticipants] = useState<string[]>([])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+        const { name, value } = e.target
 
         if (name === 'participants') {
-            setParticipants(value.split(',').map((_id) => _id.trim()));
+            setParticipants(value.split(',').map((_id) => _id.trim()))
         } else if (name === 'includesPoll') {
-            setIncludesPoll(e.target.checked);
+            setIncludesPoll(e.target.checked)
         } else if (name === 'pollQuestion') {
-            setPollQuestion(value);
+            setPollQuestion(value)
         } else if (name === 'isMultipleChoice') {
-            setIsMultipleChoice(e.target.checked);
+            setIsMultipleChoice(e.target.checked)
         } else {
-            setEvent(prevEvent => ({
+            setEvent((prevEvent) => ({
                 ...prevEvent,
-                [name]: value
-            }));
+                [name]: value,
+            }))
         }
-    };
+    }
 
     const handleFileUpload = (photo: File[]) => {
-        setEventPhotos(photo);
-    };
+        setEventPhotos(photo)
+    }
 
     const handleOptionChange = (index: number, value: string) => {
-        const newOptions = [...pollOptions];
-        newOptions[index] = value;
-        setPollOptions(newOptions);
-    };
+        const newOptions = [...pollOptions]
+        newOptions[index] = value
+        setPollOptions(newOptions)
+    }
 
     const handleAddOption = () => {
         if (pollOptions.length < 3) {
-            setPollOptions([...pollOptions, '']);
+            setPollOptions([...pollOptions, ''])
         }
-    };
+    }
 
     const createEvent = async (e: React.FormEvent<HTMLButtonElement>) => {
-        e.preventDefault();
+        e.preventDefault()
 
-        const formData = new FormData();
-        formData.append('title', event.title);
-        formData.append('description', event.description);
-        formData.append('startDate', event.startDate);
-        formData.append('endDate', event.endDate);
-        formData.append('location', event.location);
-        formData.append('type', event.type);
+        const formData = new FormData()
+        formData.append('title', event.title)
+        formData.append('description', event.description)
+        formData.append('startDate', event.startDate)
+        formData.append('endDate', event.endDate)
+        formData.append('location', event.location)
+        formData.append('type', event.type)
         participants.forEach((participant, index) => {
-            formData.append(`participants[${index}]`, participant);
-        });
+            formData.append(`participants[${index}]`, participant)
+        })
 
         if (includesPoll) {
-            formData.append('poll', JSON.stringify({
-                question: pollQuestion,
-                options: pollOptions.filter(option => option.trim() !== '').map(option => ({ option, votes: 0, voters: [] })),
-                isMultipleVote: isMultipleChoice
-            }));
+            formData.append(
+                'poll',
+                JSON.stringify({
+                    question: pollQuestion,
+                    options: pollOptions
+                        .filter((option) => option.trim() !== '')
+                        .map((option) => ({ option, votes: 0, voters: [] })),
+                    isMultipleVote: isMultipleChoice,
+                }),
+            )
         }
 
-       eventPhotos.forEach((photo,) => {
-    formData.append('photo', photo);
-});
+        eventPhotos.forEach((photo) => {
+            formData.append('photo', photo)
+        })
 
-        console.log('Form data:', formData);
+        console.log('Form data:', formData)
         try {
             const response = await AxiosInstance.post('/event', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-            });
-            setToastMessage('Event created successfully');
-            setToastOpen(true);
-            setToastSeverity('success');
-            setEvents(prevEvents => [...prevEvents, response.data]);
+            })
+            setToastMessage('Event created successfully')
+            setToastOpen(true)
+            setToastSeverity('success')
+            setEvents((prevEvents) => [...prevEvents, response.data])
             setEvent({
                 title: '',
                 description: '',
@@ -162,27 +170,27 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
                 endDate: '',
                 location: '',
                 type: '',
-                photo:[],
+                photo: [],
                 participants: [],
-                poll: { question: '', options: [], isMultipleVote: false }
-            });
-            setPollQuestion('');
-            setPollOptions(['', '']);
-            setIsMultipleChoice(false);
-            setParticipants([]);
-            setEventPhotos([]);
+                poll: { question: '', options: [], isMultipleVote: false },
+            })
+            setPollQuestion('')
+            setPollOptions(['', ''])
+            setIsMultipleChoice(false)
+            setParticipants([])
+            setEventPhotos([])
             setEventPhotos([])
         } catch (error) {
-            console.error('Error creating event:', error);
-            setToastMessage('Error creating event');
-            setToastSeverity('error');
-            setToastOpen(true);
+            console.error('Error creating event:', error)
+            setToastMessage('Error creating event')
+            setToastSeverity('error')
+            setToastOpen(true)
         }
-    };
+    }
 
     const handleToastClose = () => {
-        setToastOpen(false);
-    };
+        setToastOpen(false)
+    }
 
     return {
         createEvent,
@@ -202,113 +210,117 @@ export const useCreateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
         toastMessage,
         handleToastClose,
         toastSeverity,
-        handleFileUpload, 
-        eventPhotos
-    };
+        handleFileUpload,
+        eventPhotos,
+    }
 }
 
-export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>) => {
-    const [editingEvent, setEditingEvent] = useState<EventsData | null>(null);
-    const [showEditDrawer, setEditDrawer] = useState(false);
-    const [includePollInEdit, setIncludePollInEdit] = useState(false);
-    const [editPollQuestion, setEditPollQuestion] = useState('');
-    const [editPollOptions, setEditPollOptions] = useState<string[]>(['', '']);
-    const [editIsMultipleChoice, setEditIsMultipleChoice] = useState(false);
-    const [updateToastOpen, setUpdateToastOpen] = useState(false);
-    const [updateToastMessage, setUpdateToastMessage] = useState('');
-    const [updateToastSeverity, setUpdateToastSeverity] = useState<'success' | 'error'>('success');
-    const [editParticipants, setEditParticipants] = useState<string[]>([]);
-    const [editType, setEditType] = useState<string>('');
-    
+export const useUpdateEvent = (
+    setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>,
+) => {
+    const [editingEvent, setEditingEvent] = useState<EventsData | null>(null)
+    const [showEditDrawer, setEditDrawer] = useState(false)
+    const [includePollInEdit, setIncludePollInEdit] = useState(false)
+    const [editPollQuestion, setEditPollQuestion] = useState('')
+    const [editPollOptions, setEditPollOptions] = useState<string[]>(['', ''])
+    const [editIsMultipleChoice, setEditIsMultipleChoice] = useState(false)
+    const [updateToastOpen, setUpdateToastOpen] = useState(false)
+    const [updateToastMessage, setUpdateToastMessage] = useState('')
+    const [updateToastSeverity, setUpdateToastSeverity] = useState<
+        'success' | 'error'
+    >('success')
+    const [editParticipants, setEditParticipants] = useState<string[]>([])
+    const [editType, setEditType] = useState<string>('')
 
     const toggleForm = () => {
-        setEditDrawer(!showEditDrawer);
-        setEditingEvent(null);
-        resetEditPollState();
-    };
+        setEditDrawer(!showEditDrawer)
+        setEditingEvent(null)
+        resetEditPollState()
+    }
 
     const resetEditPollState = () => {
-        setIncludePollInEdit(false);
-        setEditPollQuestion('');
-        setEditPollOptions(['', '']);
-        setEditIsMultipleChoice(false);
-    };
+        setIncludePollInEdit(false)
+        setEditPollQuestion('')
+        setEditPollOptions(['', ''])
+        setEditIsMultipleChoice(false)
+    }
 
-    const handleEditClick = (eventToEdit: EventsData["_id"]) => {
-        AxiosInstance.get(`/event/${eventToEdit}`).then(response => {
-            setEditingEvent(response.data);
-            setEditParticipants(response.data.participants);
-            setEditType(response.data.type);
-            setIncludePollInEdit(!!response.data.poll);
+    const handleEditClick = (eventToEdit: EventsData['_id']) => {
+        AxiosInstance.get(`/event/${eventToEdit}`).then((response) => {
+            setEditingEvent(response.data)
+            setEditParticipants(response.data.participants)
+            setEditType(response.data.type)
+            setIncludePollInEdit(!!response.data.poll)
             if (response.data.poll) {
-                setEditPollQuestion(response.data.poll.question);
-                setEditPollOptions(response.data.poll.options.map((opt: { option: string[]; }) => opt.option));
-                setEditIsMultipleChoice(response.data.poll.isMultipleVote);
+                setEditPollQuestion(response.data.poll.question)
+                setEditPollOptions(
+                    response.data.poll.options.map(
+                        (opt: { option: string[] }) => opt.option,
+                    ),
+                )
+                setEditIsMultipleChoice(response.data.poll.isMultipleVote)
             } else {
-                resetEditPollState();
+                resetEditPollState()
             }
-            setEditDrawer(true);
+            setEditDrawer(true)
         })
-
-    };
+    }
 
     const handleToggleForm = () => {
-        toggleForm();
-    };
-
-
+        toggleForm()
+    }
 
     const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value, type, checked } = e.target;
+        const { name, value, type, checked } = e.target
 
         if (name === 'startDate' || name === 'endDate') {
-            setEditingEvent(prevEvent => ({
+            setEditingEvent((prevEvent) => ({
                 ...prevEvent!,
-                [name]: value
-            }));
+                [name]: value,
+            }))
         } else if (name === 'includesPoll') {
-            setIncludePollInEdit(checked);
+            setIncludePollInEdit(checked)
         } else if (name === 'pollQuestion') {
-            setEditPollQuestion(value);
+            setEditPollQuestion(value)
         } else if (name === 'isMultipleChoice') {
-            setEditIsMultipleChoice(checked);
+            setEditIsMultipleChoice(checked)
         } else if (name === 'participants') {
-            setEditParticipants(value.split(',').map((_id) => _id.trim()));
+            setEditParticipants(value.split(',').map((_id) => _id.trim()))
         } else if (name === 'type') {
-            setEditType(value);
+            setEditType(value)
         } else {
-            setEditingEvent(prevEvent => ({
+            setEditingEvent((prevEvent) => ({
                 ...prevEvent!,
-                [name]: type === 'checkbox' ? checked : value
-            }));
+                [name]: type === 'checkbox' ? checked : value,
+            }))
         }
-    };
+    }
 
     const handleEditOptionChange = (index: number, value: string) => {
-        const newOptions = [...editPollOptions];
-        newOptions[index] = value;
-        setEditPollOptions(newOptions);
-    };
+        const newOptions = [...editPollOptions]
+        newOptions[index] = value
+        setEditPollOptions(newOptions)
+    }
 
     const handleAddEditOption = () => {
         if (editPollOptions.length < 3) {
-            setEditPollOptions([...editPollOptions, '']);
+            setEditPollOptions([...editPollOptions, ''])
         }
-    };
+    }
 
     const setEventForEditing = (event: EventsData) => {
         setEditingEvent({
             ...event,
             startDate: new Date(event.startDate).toISOString().slice(0, 16),
-            endDate: new Date(event.endDate).toISOString().slice(0, 16)
-        });
-        setEditParticipants(event.participants);
-        setEditType(event.type);
-    };
+            endDate: new Date(event.endDate).toISOString().slice(0, 16),
+        })
+        setEditParticipants(event.participants)
+        setEditType(event.type)
+    }
 
     const updateEvent = (e: React.FormEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        if (!editingEvent) return;
+        e.preventDefault()
+        if (!editingEvent) return
 
         const fieldsToUpdate = {
             title: editingEvent.title,
@@ -318,40 +330,43 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
             location: editingEvent.location,
             participants: editParticipants,
             type: editType,
-            poll: includePollInEdit ? {
-                question: editPollQuestion,
-                options: editPollOptions.filter(option => option.trim() !== '').map(option => ({ option, votes: 0, voters: [] })),
-                isMultipleVote: editIsMultipleChoice
-            } : null
-        };
-        console.log(fieldsToUpdate, "iuegfyugwegf")
+            poll: includePollInEdit
+                ? {
+                      question: editPollQuestion,
+                      options: editPollOptions
+                          .filter((option) => option.trim() !== '')
+                          .map((option) => ({ option, votes: 0, voters: [] })),
+                      isMultipleVote: editIsMultipleChoice,
+                  }
+                : null,
+        }
+        console.log(fieldsToUpdate, 'iuegfyugwegf')
         AxiosInstance.patch(`/event/${editingEvent._id}`, fieldsToUpdate)
 
             .then((response) => {
-
-                setUpdateToastMessage('Event updated successfully');
-                setUpdateToastOpen(true);
-                setUpdateToastSeverity('success');
-                setEvents(prevEvents =>
-                    prevEvents.map(event =>
-                        event._id === editingEvent._id ? response.data : event
-                    )
-                );
-                setEditingEvent(null);
-                resetEditPollState();
-                setEditDrawer(false);
+                setUpdateToastMessage('Event updated successfully')
+                setUpdateToastOpen(true)
+                setUpdateToastSeverity('success')
+                setEvents((prevEvents) =>
+                    prevEvents.map((event) =>
+                        event._id === editingEvent._id ? response.data : event,
+                    ),
+                )
+                setEditingEvent(null)
+                resetEditPollState()
+                setEditDrawer(false)
             })
-            .catch(error => {
-                console.error('Error updating event:', error);
-                setUpdateToastMessage('Error updating event');
-                setUpdateToastOpen(true);
-                setUpdateToastSeverity('error');
-            });
+            .catch((error) => {
+                console.error('Error updating event:', error)
+                setUpdateToastMessage('Error updating event')
+                setUpdateToastOpen(true)
+                setUpdateToastSeverity('error')
+            })
     }
 
     const handleUpdateToastClose = () => {
-        setUpdateToastOpen(false);
-    };
+        setUpdateToastOpen(false)
+    }
 
     return {
         editingEvent,
@@ -377,34 +392,42 @@ export const useUpdateEvent = (setEvents: React.Dispatch<React.SetStateAction<Ev
         setEditParticipants,
         editType,
         setEditType,
-    };
+    }
 }
 
-export const useDeleteEvent = (setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>) => {
-
-    const [showModal, setShowModal] = useState(false);
-    const [eventToDeleteId, setEventToDeleteId] = useState<string | number>('');
+export const useDeleteEvent = (
+    setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>,
+) => {
+    const [showModal, setShowModal] = useState(false)
+    const [eventToDeleteId, setEventToDeleteId] = useState<string | number>('')
     const handleDeleteEventModal = (eventToDeleteId: string | number) => {
-        setEventToDeleteId(eventToDeleteId);
-        setShowModal(true);
-    };
+        setEventToDeleteId(eventToDeleteId)
+        setShowModal(true)
+    }
 
     const closeModal = () => {
-        setShowModal(false);
-        setEventToDeleteId('');
-    };
+        setShowModal(false)
+        setEventToDeleteId('')
+    }
 
     const handleDelete = (id: string | number) => {
         AxiosInstance.delete(`/event/${id}`)
             .then(() => {
-                console.log('Event deleted successfully');
-                setEvents(prevEvents => prevEvents.filter(event => event._id !== id));
+                console.log('Event deleted successfully')
+                setEvents((prevEvents) =>
+                    prevEvents.filter((event) => event._id !== id),
+                )
             })
-            .catch(error => {
-                console.error('Error deleting event:', error);
-            });
-    };
+            .catch((error) => {
+                console.error('Error deleting event:', error)
+            })
+    }
 
-    return { handleDelete, closeModal, showModal, handleDeleteEventModal, eventToDeleteId };
-};
-
+    return {
+        handleDelete,
+        closeModal,
+        showModal,
+        handleDeleteEventModal,
+        eventToDeleteId,
+    }
+}

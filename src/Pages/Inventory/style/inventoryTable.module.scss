@@ -1,12 +1,20 @@
-@import "@/Helpers/_base.scss";
+@import '@/Helpers/_base.scss';
+
 .spanStyleA {
     font-weight: 700;
 }
+
 .spanStyleNA {
-    color: "gray";
+    color: 'gray';
 }
 
 .divStyle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.itemDiv {
     display: flex;
     align-items: center;
     gap: 0.5rem;

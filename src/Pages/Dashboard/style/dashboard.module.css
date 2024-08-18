@@ -1,106 +1,108 @@
-
 .dashboardContainer {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; 
-  background-color: #F0F5FF;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f0f5ff;
+    width: 100%;
 }
 
 .mainContent {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
+    display: flex;
+    flex: 1;
+    overflow: hidden;
 }
 
 .rightContent {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .welcome {
-  background-image: url('/Images/blue.jpg');
-  color: #2457A3;
-  border-radius: 15px;
-  padding: 2.5rem   2rem;
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.333rem;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.075);
-  & h2{
-    font-size: 1.5rem;
-    font-weight: 600;
-  }
+    background-image: url('/Images/blue.jpg');
+    color: #2457a3;
+    border-radius: 15px;
+    padding: 2.5rem 2rem;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.333rem;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.075);
+    & h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
 
-
-
-
-  * {
-    margin: 0;
-  }
+    * {
+        margin: 0;
+    }
 }
 
 .cardContainer {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
-  flex-wrap: wrap; }
-
-.cardGreen, .cardBlue, .cardYellow, .cardPurple {
-  border-radius: 15px;
-  padding: 1.25rem;
-  flex: 1 1 200px; 
-  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.1);
-  color: #2457A3;
-  text-align: center;
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
+.cardGreen,
+.cardBlue,
+.cardYellow,
+.cardPurple {
+    border-radius: 15px;
+    padding: 1.25rem;
+    flex: 1 1 200px;
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.1);
+    color: #2457a3;
+    text-align: center;
+}
 
 .cardGreen {
-  background-image: linear-gradient(180deg, #E0F2F7, #A8E0F0);
+    background-image: linear-gradient(180deg, #e0f2f7, #a8e0f0);
 }
 
 .cardBlue {
-  background-image: linear-gradient(180deg, #EDE5EF, #C5B3E6);
+    background-image: linear-gradient(180deg, #ede5ef, #c5b3e6);
 }
 
 .cardYellow {
-  background-image: linear-gradient(180deg, #D8B4F2, #B68CE6);
+    background-image: linear-gradient(180deg, #d8b4f2, #b68ce6);
 }
 
 .cardPurple {
-  background-image: linear-gradient(180deg, #ECE4F1, #A8C4F2);
+    background-image: linear-gradient(180deg, #ece4f1, #a8c4f2);
 }
 
 .infoSection {
-  word-break: break-word;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .middleRow {
-  display: flex;
-  gap: 20px;
-  flex: 1;
+    display: flex;
+    gap: 20px;
+    flex: 1;
 }
 
-.calendar, .infoSection, .pieChartDiv {
-  min-width: 250px; 
+.calendar,
+.infoSection,
+.pieChartDiv {
+    min-width: 250px;
 }
 
 .employeeProfile {
-  background-color: white;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  flex-grow: 1;
-  min-height: 300px;
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex-grow: 1;
+    min-height: 300px;
 }
 
-h2, h3 {
-  color: #2457A3;
-  margin-bottom: 0;
-  margin-top: 0;
+h2,
+h3 {
+    color: #2457a3;
+    margin-bottom: 0;
+    margin-top: 0;
 }

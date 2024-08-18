@@ -4,16 +4,16 @@
     padding: 20px;
     gap: 32px;
     background-color: transparent;
-    font-family: "Outfit", sans-serif;
+    font-family: 'Outfit', sans-serif;
 }
 
-.columContanier{
+.columContanier {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
 
-.column{
+.column {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -25,7 +25,7 @@
     margin: 15px 0;
 }
 
-.centerStatus{
+.centerStatus {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -47,32 +47,32 @@
 }
 
 a {
-    color: #1B5FF4;
+    color: #1b5ff4;
     text-decoration: none;
 }
 
 .statusAccepted {
     background-color: #02a700;
-    color: #FFFFFF;
+    color: #ffffff;
     padding: 5px 20px 5px 20px;
     border-radius: 60px;
-  }
-  
-  .statusRejected {
-    background-color: #d32f2f;
-    color: #FFFFFF;
-    padding: 5px 20px 5px 20px;
-    border-radius: 60px;
-  }
-  
-  .statusPending {
-    background-color: orange;
-    color: #FFFFFF;
-    padding: 5px 20px 5px 20px;
-    border-radius: 60px;
-  }
+}
 
-.title{
+.statusRejected {
+    background-color: #d32f2f;
+    color: #ffffff;
+    padding: 5px 20px 5px 20px;
+    border-radius: 60px;
+}
+
+.statusPending {
+    background-color: orange;
+    color: #ffffff;
+    padding: 5px 20px 5px 20px;
+    border-radius: 60px;
+}
+
+.title {
     font-weight: bold;
     color: #333;
     font-size: 18px;

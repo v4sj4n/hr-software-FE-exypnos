@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write \"src/**/*.{ts,tsx,scss,css}\"",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -36,7 +37,7 @@
     "react-router-dom": "^6.24.1",
     "react-spinners": "^0.14.1",
     "styled-components": "^6.1.12",
-    "zod": "^3.23.8"
+    "valibot": "^0.37.0"
   },
   "devDependencies": {
     "@hookform/devtools": "^4.3.1",
@@ -52,6 +53,7 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
+    "prettier": "^3.3.3",
     "sass": "^1.77.8",
     "typescript": "^5.5.4",
     "vite": "^5.4.0"

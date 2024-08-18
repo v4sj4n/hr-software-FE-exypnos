@@ -1,36 +1,48 @@
-@import "@/Helpers/_base.scss";
+@import '@/Helpers/_base.scss';
 
 .selectedUserDetails {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     padding: 2rem;
     height: 100%;
     background-color: #f0f7ff !important;
 
-    >img {
-        width: 7.5rem;
-        height: 7.5rem;
-        border-radius: 50%;
-        margin-bottom: 0.5rem;
-    }
-
-    >h3 {
-        font-weight: 600;
-        color: #0062d1;
-        margin-bottom: 0.3rem;
-        text-transform: uppercase;
-    }
-
-    .selectedUserSimpleBio {
+    > div {
         display: flex;
-        gap: 0.5rem;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        > img {
+            width: 7.5rem;
+            height: 7.5rem;
+            border-radius: 50%;
+            margin-bottom: 0.5rem;
+        }
+
+        > h3 {
+            font-weight: 600;
+            color: #0062d1;
+            margin-top: 1rem;
+            margin-bottom: 0.25rem;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .selectedUserSimpleBio {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            * {
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+        }
     }
 }
-
-
-
 
 .assetsContainer {
     margin-top: 1rem;
@@ -74,7 +86,7 @@
             }
 
             button {
-                color: darken($color: #F87275, $amount: 10);
+                color: darken($color: #f87275, $amount: 10);
                 background-color: transparent;
                 border: none;
                 padding: 0rem;
@@ -100,12 +112,12 @@
                     line-height: 115%;
                 }
 
-                >span:nth-of-type(1) button {
-                    color: #7D7D7D;
+                > span:nth-of-type(1) button {
+                    color: #7d7d7d;
                 }
 
-                >span:nth-of-type(2) button {
-                    color: #45A557;
+                > span:nth-of-type(2) button {
+                    color: #45a557;
                 }
             }
 
@@ -120,14 +132,13 @@
     }
 }
 
-
 .assignAssetForm {
     margin-top: 2.5rem;
     display: flex;
     width: 100%;
     gap: 0.5rem;
 
-    >span button {
+    > span button {
         color: white;
         background-color: #0072f5;
         border: none;
@@ -137,9 +148,14 @@
     }
 }
 
-.loading{
+.loading {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
+}
+
+.closeIcon {
+    align-self: end;
+    cursor: pointer;
 }
