@@ -4,15 +4,14 @@ import Input from '../../Components/Input/Index'
 import style from './style/Recruitment.module.css'
 import logo from '/Images/image_1-removebg-preview.png'
 import image from '/Images/Vector-illustration-of-communication-Graphics-69695603-1-removebg-preview.png'
-import { useCreateAplicant } from './Context/Recruitment.Provider'
+// import { useCreateAplicant } from './Context/Recruitment.Provider'
 import Card from '../../Components/Card/Card'
-import { VisuallyHiddenInput } from '@/Components/Input/Styles'
 import Button from '@mui/material/Button'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
-import { ModalComponent } from '@/Components/Modal/Modal'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import {
     RecruitmentFormFields,
+    RecruitmentFormFieldsDefaultValues,
     RecruitmentSchema,
 } from '@/Schemas/Recruitment/Recruitment.schema'
 import { AxiosError } from 'axios'
@@ -23,23 +22,14 @@ import { valibotResolver } from '@hookform/resolvers/valibot'
 
 export default function Recruitment() {
     const {
-        // handleChange,
-        aplicantFormData,
-        // handleTechnologiesChange,
-        // handleFileChange,
-        // handleCreateAplicant,
-        showModal,
-        closeModal,
-        resetForm,
-    } = useCreateAplicant()
-
-    const {
         control,
         register,
         handleSubmit,
         setError,
+        reset,
         formState: { errors, isSubmitting },
     } = useForm<RecruitmentFormFields>({
+        defaultValues: RecruitmentFormFieldsDefaultValues,
         resolver: valibotResolver(RecruitmentSchema),
     })
     const technologies = ['Angular', 'jQuery', 'Polymer', 'React', 'Vue.js']
@@ -47,20 +37,28 @@ export default function Recruitment() {
     const onSubmit: SubmitHandler<RecruitmentFormFields> = async (
         data: RecruitmentFormFields,
     ) => {
-        console.log(data)
         try {
             const formData = new FormData()
             Object.keys(data).forEach((key) => {
-              console.log(key, data[key])
-              if (key === 'technologiesUsed') {
-                  formData.append('technologiesUsed', JSON.stringify(data.technologiesUsed))
-              } else if (key === 'file' && data.file instanceof FileList && data.file.length > 0) {
-                  formData.append('file', data.file[0])
-              } else {
-                  formData.append(key, data[key as keyof RecruitmentFormFields] as string)
-              }
-          })
-  
+                if (key === 'technologiesUsed') {
+                    formData.append(
+                        'technologiesUsed',
+                        JSON.stringify(data.technologiesUsed),
+                    )
+                } else if (
+                    key === 'file' &&
+                    data.file instanceof FileList &&
+                    data.file.length > 0
+                ) {
+                    formData.append('file', data.file[0])
+                } else {
+                    formData.append(
+                        key,
+                        data[key as keyof RecruitmentFormFields] as string,
+                    )
+                }
+            })
+
             const res = await AxiosInstance.post('/applicant', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -68,7 +66,7 @@ export default function Recruitment() {
             })
             console.log(res)
         } catch (err: unknown) {
-          console.log(err)
+            console.log(err)
             if (err instanceof AxiosError) {
                 if (err?.response?.data?.message) {
                     setError('root', {
@@ -109,8 +107,6 @@ export default function Recruitment() {
                                     register={register('firstName')}
                                     IsUsername
                                     width="300px"
-                                    // value={aplicantFormData.firstName}
-                                    // onChange={handleChange}
                                 />
                                 {errors.firstName && (
                                     <ErrorText>
@@ -125,8 +121,6 @@ export default function Recruitment() {
                                     register={register('lastName')}
                                     IsUsername
                                     width="300px"
-                                    // value={aplicantFormData.lastName}
-                                    // onChange={handleChange}
                                 />
                                 {errors.lastName && (
                                     <ErrorText>
@@ -144,8 +138,6 @@ export default function Recruitment() {
                                     IsUsername
                                     width="300px"
                                     type="date"
-                                    // onChange={handleChange}
-                                    // value={aplicantFormData.age}
                                 />
                                 {errors.dob && (
                                     <ErrorText>{errors.dob.message}</ErrorText>
@@ -159,8 +151,6 @@ export default function Recruitment() {
                                     IsUsername
                                     width="300px"
                                     register={register('phoneNumber')}
-                                    // onChange={handleChange}
-                                    // value={aplicantFormData.phoneNumber}
                                 />
                                 {errors.phoneNumber && (
                                     <ErrorText>
@@ -177,8 +167,6 @@ export default function Recruitment() {
                                     register={register('email')}
                                     IsUsername
                                     width="300px"
-                                    // onChange={handleChange}
-                                    // value={aplicantFormData.email}
                                 />
                                 {errors.email && (
                                     <ErrorText>
@@ -193,8 +181,6 @@ export default function Recruitment() {
                                     IsUsername
                                     width="300px"
                                     register={register('applicationMethod')}
-                                    // onChange={handleChange}
-                                    // value={aplicantFormData.applicationMethod}
                                 />
                                 {errors.applicationMethod && (
                                     <ErrorText>
@@ -211,8 +197,6 @@ export default function Recruitment() {
                                     IsUsername
                                     width="300px"
                                     register={register('positionApplied')}
-                                    // onChange={handleChange}
-                                    // value={aplicantFormData.positionApplied}
                                 />
                                 {errors.positionApplied && (
                                     <ErrorText>
@@ -227,8 +211,6 @@ export default function Recruitment() {
                                     IsUsername
                                     width="300px"
                                     register={register('salaryExpectations')}
-                                    // onChange={handleChange}
-                                    // value={aplicantFormData.salaryExpectations}
                                 />
                                 {errors.salaryExpectations && (
                                     <ErrorText>
@@ -245,8 +227,6 @@ export default function Recruitment() {
                                     IsUsername
                                     register={register('experience')}
                                     width="620px"
-                                    // onChange={handleChange}
-                                    // value={aplicantFormData.experience}
                                 />
                                 {errors.experience && (
                                     <ErrorText>
@@ -264,17 +244,8 @@ export default function Recruitment() {
                                 <Controller
                                     name="technologiesUsed"
                                     control={control}
-                                    rules={{
-                                        required: 'This field is required',
-                                    }}
-                                    render={({
-                                        field,
-                                        fieldState: { error },
-                                    }) => (
+                                    render={({ field }) => (
                                         <Autocomplete
-                                            sx={{
-                                                width: '100%',
-                                            }}
                                             {...field}
                                             multiple
                                             options={technologies}
@@ -283,13 +254,19 @@ export default function Recruitment() {
                                                 <TextField
                                                     {...params}
                                                     label="Technologies Used"
-                                                    error={!!error}
-                                                    helperText={error?.message}
+                                                    error={
+                                                        !!errors.technologiesUsed
+                                                    }
+                                                    helperText={
+                                                        errors.technologiesUsed
+                                                            ?.message
+                                                    }
                                                 />
                                             )}
                                             onChange={(_, data) =>
                                                 field.onChange(data)
                                             }
+                                            value={field.value || []}
                                         />
                                     )}
                                 />
@@ -317,11 +294,6 @@ export default function Recruitment() {
                                         {...register('file')}
                                     />
                                 </Button>
-                                {/* <input
-                                    type="file"
-                                    id=""
-                                    {...register('file')}
-                                /> */}
                                 {errors.file && errors.file.message && (
                                     <ErrorText>
                                         {errors.file.message as string}
@@ -334,22 +306,24 @@ export default function Recruitment() {
                                 type={ButtonTypes.SECONDARY}
                                 btnText="Reset"
                                 width="100%"
-                                onClick={resetForm}
+                                onClick={() => {
+                                    console.log('Resetting form')
+                                    reset()
+                                }}
                             />
-                            {/* <Button1
-              type={ButtonTypes.TERTIARY}
-              btnText="Apply"
-              onClick={handleCreateAplicant}
-            /> */}
-                            <button type="submit">
-                                {isSubmitting ? 'Submitting' : 'Submit'}
-                            </button>
+                            <Button1
+                                type={ButtonTypes.TERTIARY}
+                                btnText={
+                                    isSubmitting ? 'Submitting...' : 'Submit'
+                                }
+                                disabled={isSubmitting}
+                                onClick={() => console.log('Submitting form')}
+                                isSubmit
+                            />
                         </div>
                         {errors.root && (
-                                    <ErrorText>
-                                        {errors.root.message }
-                                    </ErrorText>
-                                )}
+                            <ErrorText>{errors.root.message}</ErrorText>
+                        )}
                     </Card>
                 </form>
             </div>
@@ -358,11 +332,6 @@ export default function Recruitment() {
                 src={image}
                 style={{ width: '600px', height: 'auto' }}
             />
-            {showModal && (
-                <ModalComponent open={showModal} handleClose={closeModal}>
-                    <div>Your email was sent successfully</div>
-                </ModalComponent>
-            )}
         </div>
     )
 }
