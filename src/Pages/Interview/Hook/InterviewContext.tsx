@@ -51,15 +51,19 @@ interface InterviewContextType {
 
 }
 
-const InterviewContext = createContext<InterviewContextType | undefined>(undefined);
+const InterviewContext = createContext<InterviewContextType | undefined>(
+    undefined,
+)
 
 export const useInterviewContext = () => {
-  const context = useContext(InterviewContext);
-  if (!context) {
-    throw new Error('useInterviewContext must be used within an InterviewProvider');
-  }
-  return context;
-};
+    const context = useContext(InterviewContext)
+    if (!context) {
+        throw new Error(
+            'useInterviewContext must be used within an InterviewProvider',
+        )
+    }
+    return context
+}
 
 export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { data: interviewsData, error, loading } = useGetAllInterviews();
@@ -110,10 +114,10 @@ const handleOpenModal = (interview: Interview, isReschedule = false) => {
   };
   
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedInterview(null);
-  };
+    const handleCloseModal = () => {
+        setIsModalOpen(false)
+        setSelectedInterview(null)
+    }
 
 
  
@@ -292,9 +296,9 @@ const handleAccept = async (interview: Interview) => {
     setInterviews(newInterviews);
   };
 
-  const handleNavigateToProfile = (CandidateViewId: string) => {
-    navigate(`/view/${CandidateViewId}`);
-  };
+    const handleNavigateToProfile = (CandidateViewId: string) => {
+        navigate(`/view/${CandidateViewId}`)
+    }
 
   return (
     <InterviewContext.Provider

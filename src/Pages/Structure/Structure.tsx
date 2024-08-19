@@ -155,7 +155,7 @@ export default function ColoredDemo() {
                 <div>{error}</div>
             ) : (
                 <div className={styles.organizationChart}>
-                    <OrganizationChart value={data} nodeTemplate={nodeTemplate} />
+                    <OrganizationChart style={{padding:0}} value={data} nodeTemplate={nodeTemplate} />
                 </div>
             )}
         </Card>

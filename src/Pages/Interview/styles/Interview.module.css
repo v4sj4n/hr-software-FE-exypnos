@@ -1,90 +1,90 @@
 /* 
 .kanbanBoard {
-  padding: 20px;
-  background-color: #f0f5ff;
-  min-height: 100vh;
-  box-sizing: border-box;
+    background-color: #f0f5ff;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 .kanbanColumn h2 {
-  font-size: 18px;
-  color: #2457A3;
-  padding-bottom: 12px;
-  border-bottom: 2px solid #e0e0e0;
-  margin-bottom: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    font-size: 18px;
+    color: #2457a3;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-   .kanbanColumns {
+.kanbanColumns {
     display: flex;
     justify-content: space-between;
     gap: 20px;
-  }
-  .kanbanColumn {
+}
+.kanbanColumn {
     flex: 1;
     min-width: 250px;
     background-color: white;
     border-radius: 13px;
     padding: 10px;
-  }
-  
-  .kanbanList {
+}
+
+.kanbanList {
     min-height: 300px;
-  }
-  
-  .kanbanItem {
+}
+
+.kanbanItem {
     background-color: rgb(240, 245, 255);
     border-radius: 13px;
     padding: 10px;
     margin-bottom: 10px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
     border: 1px solid #e0e0e0;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    transition:
+        background-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
 
-  }
-  
-  .kanbanItem:hover {
+.kanbanItem:hover {
     background-color: #e6eeff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  }
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
 
-  .kanbanItem h6 {
+.kanbanItem h6 {
     margin: 0 0 5px 0;
-    color:#2457A3 ;
-  }
-  
-  .kanbanItem p {
+    color: #2457a3;
+}
+
+.kanbanItem p {
     margin: 0;
     font-size: 14px;
     color: #666;
-  }
+}
 
-  .buttonContainer {
+.buttonContainer {
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
     gap: 10px;
-  }
-  
-  .buttonContainer button {
+}
+
+.buttonContainer button {
     transition: transform 0.1s ease;
-  }
-  
-  .buttonContainer button:hover {
+}
+
+.buttonContainer button:hover {
     transform: scale(1.05);
-  }
-  
-  .buttonContainer button:active {
+}
+
+.buttonContainer button:active {
     transform: scale(0.95);
-  }
-  
-  .candidateName:hover {
+}
+
+.candidateName:hover {
     text-decoration: underline;
-  }
-  .applicantCount {
+}
+.applicantCount {
     font-size: 14px;
     color: #fff;
-    background-color: #2457A3;
+    background-color: #2457a3;
     padding: 4px 8px;
     border-radius: 12px;
     font-weight: normal;

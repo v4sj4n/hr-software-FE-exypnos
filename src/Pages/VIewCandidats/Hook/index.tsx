@@ -1,7 +1,7 @@
-import { useEffect, useState, useCallback } from "react"
-import AxiosInstance from "../../../Helpers/Axios";
-import { useParams } from "react-router-dom";
-import { CandidateView, ModalAction } from "../interfaces/ViewCandidate";
+import { useEffect, useState, useCallback } from 'react'
+import AxiosInstance from '../../../Helpers/Axios'
+import { useParams } from 'react-router-dom'
+import { CandidateView, ModalAction } from '../interfaces/ViewCandidate'
 
 export const useApplicantById = () => {
     const [applicant, setApplicant] = useState<CandidateView | null>(null)
@@ -12,41 +12,43 @@ export const useApplicantById = () => {
     const [customMessage, setCustomMessage] = useState('');
     const [customSubject, setCustomSubject] = useState('');
 
-    const { id } = useParams<{ id: string }>();
+    const { id } = useParams<{ id: string }>()
 
     const fetchApplicant = useCallback(async () => {
         try {
-            const response = await AxiosInstance.get<CandidateView>(`/applicant/${id}`);
-            setApplicant(response.data);
-            console.log('Applicant fetched:', response.data);
+            const response = await AxiosInstance.get<CandidateView>(
+                `/applicant/${id}`,
+            )
+            setApplicant(response.data)
+            console.log('Applicant fetched:', response.data)
         } catch (error) {
-            console.error('Error fetching data:', error);
-            setApplicant(null);
+            console.error('Error fetching data:', error)
+            setApplicant(null)
         }
-    }, [id]);
+    }, [id])
 
     useEffect(() => {
-        fetchApplicant();
-    }, [fetchApplicant]);
+        fetchApplicant()
+    }, [fetchApplicant])
 
     const handleConfirm = () => {
         if (modalAction === 'accept') {
             handleAccept();
             setShowConfirmationModal(true);
         } else if (modalAction === 'reject') {
-            handleReject();
+            handleReject()
         }
-        setShowModal(false);
-    };
+        setShowModal(false)
+    }
 
     const handleReject = async () => {
         try {
             await AxiosInstance.patch(`/applicant/${id}`, {
-                status: 'rejected'
-            });
-            fetchApplicant();
+                status: 'rejected',
+            })
+            fetchApplicant()
         } catch (error) {
-            console.error('Error rejecting applicant:', error);
+            console.error('Error rejecting applicant:', error)
         }
     };
     const handleAccept = async () => {
@@ -61,20 +63,20 @@ export const useApplicantById = () => {
     };
 
     const handleCloseModal = () => {
-        setShowModal(false);
+        setShowModal(false)
     }
 
     const handleCloseConfirmationModal = () => {
-        setShowConfirmationModal(false);
-    };
+        setShowConfirmationModal(false)
+    }
 
     const handleOpenModal = (action: ModalAction) => {
-        setModalAction(action);
-        setShowModal(true);
+        setModalAction(action)
+        setShowModal(true)
     }
 
     const handleSend = async () => {
-        if (!applicant) return;
+        if (!applicant) return
 
         try {
             await AxiosInstance.patch(`/applicant/${id}`, {
@@ -87,18 +89,18 @@ export const useApplicantById = () => {
             fetchApplicant();
             setShowConfirmationModal(false);
         } catch (error) {
-            console.error('Error updating applicant:', error);
+            console.error('Error updating applicant:', error)
         }
-    };
+    }
 
-    return { 
-        applicant,  
-        showModal, 
-        handleCloseModal, 
-        handleOpenModal, 
-        modalAction, 
-        handleCloseConfirmationModal, 
-        showConfirmationModal, 
+    return {
+        applicant,
+        showModal,
+        handleCloseModal,
+        handleOpenModal,
+        modalAction,
+        handleCloseConfirmationModal,
+        showConfirmationModal,
         handleConfirm,
         firstInterviewDate,
         setFirstInterviewDate,

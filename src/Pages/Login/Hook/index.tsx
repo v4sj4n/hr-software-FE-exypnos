@@ -1,17 +1,16 @@
-import { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import useInput, { InputHookReturn } from '../../../Hooks/use-inpute';
-import { useAuth } from '../../../Context/AuthProvider';
-import { LoginErrorType } from '../../../Helpers/AuthMessages';
-import AxiosInstance from '../../../Helpers/Axios';
-
+import { useState } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import useInput, { InputHookReturn } from '../../../Hooks/use-inpute'
+import { useAuth } from '../../../Context/AuthProvider'
+import { LoginErrorType } from '../../../Helpers/AuthMessages'
+import AxiosInstance from '../../../Helpers/Axios'
 
 export const useLogin = () => {
-    const { login } = useAuth();
-    const [userRole, setUserRole] = useState<string | null>(null);
-    const navigate = useNavigate();
-    
+    const { login } = useAuth()
+    const [userRole, setUserRole] = useState<string | null>(null)
+    const navigate = useNavigate()
+
     const {
         enteredValue: enteredEmail,
         hasError: emailInputHasError,
@@ -19,7 +18,7 @@ export const useLogin = () => {
         InputBlurHandler: emailBlurHandler,
         reset: resetEmail,
         isValid: emailInputIsValid,
-    } = useInput((value: string) => value.includes("@")) as InputHookReturn;
+    } = useInput((value: string) => value.includes('@')) as InputHookReturn
 
     const {
         enteredValue: enteredPassword,
@@ -31,55 +30,57 @@ export const useLogin = () => {
         reset: resetPassword,
         handleClickShowPassword,
         handleMouseDownPassword,
-    } = useInput((value: string) => value.trim().length >= 8 && /[A-Z0-9]/.test(value)) as InputHookReturn;
+    } = useInput(
+        (value: string) => value.trim().length >= 8 && /[A-Z0-9]/.test(value),
+    ) as InputHookReturn
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
- 
-    const formIsValid = emailInputIsValid && passwordInputIsValid;
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+
+    const formIsValid = emailInputIsValid && passwordInputIsValid
 
     const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
+        event.preventDefault()
 
         if (!formIsValid) {
-            setError(LoginErrorType.InvalidCredentials);
-            return;
+            setError(LoginErrorType.InvalidCredentials)
+            return
         }
 
-        setIsLoading(true);
-        setError(null);
+        setIsLoading(true)
+        setError(null)
 
         const formData = {
             email: enteredEmail,
-            password: enteredPassword
-        };
+            password: enteredPassword,
+        }
 
         try {
-            const res = await AxiosInstance.post('/auth/signin', formData);
-            const user = res.data.data.user;
-            const role = user.role;
-            const access_token = res.data.data.access_token;
+            const res = await AxiosInstance.post('/auth/signin', formData)
+            const user = res.data.data.user
+            const role = user.role
+            const access_token = res.data.data.access_token
 
-            setUserRole(role);
+            setUserRole(role)
 
-            login(access_token, role, user);
-            navigate("/dashboard");
+            login(access_token, role, user)
+            navigate('/dashboard')
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 if (error.response.status === 404) {
-                    setError(LoginErrorType.EmailNotFound);
+                    setError(LoginErrorType.EmailNotFound)
                 } else if (error.response.status === 401) {
-                    setError(LoginErrorType.IncorrectPassword);
+                    setError(LoginErrorType.IncorrectPassword)
                 } else {
-                    setError(LoginErrorType.UnexpectedError);
+                    setError(LoginErrorType.UnexpectedError)
                 }
             } else {
-                setError(LoginErrorType.UnexpectedError);
+                setError(LoginErrorType.UnexpectedError)
             }
         } finally {
-            setIsLoading(false);
+            setIsLoading(false)
         }
-    };
+    }
 
     return {
         isLoading,
@@ -102,5 +103,5 @@ export const useLogin = () => {
         handleSubmit,
         error,
         userRole,
-    };
-};
+    }
+}

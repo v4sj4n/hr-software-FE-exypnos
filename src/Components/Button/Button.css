@@ -11,7 +11,7 @@
     display: block;
     background: #2469ff;
     border: 2px solid #2469ff;
-    font-family: "Outfit", sans-serif;
+    font-family: 'Outfit', sans-serif;
 }
 
 .primaryBtn:hover {
@@ -30,7 +30,7 @@
     font-size: 16px;
     text-align: center;
     display: block;
-    font-family: "Outfit", sans-serif;
+    font-family: 'Outfit', sans-serif;
 }
 
 .tertiaryBtn {

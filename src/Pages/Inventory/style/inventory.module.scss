@@ -1,4 +1,4 @@
-@import "@/Helpers/_base.scss";
+@import '@/Helpers/_base.scss';
 
 .heading {
     @include pageHeading;
@@ -9,5 +9,5 @@
 }
 
 .main {
-    @include mainPage
+    @include mainPage;
 }

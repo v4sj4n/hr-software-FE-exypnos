@@ -1,153 +1,96 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-  }
-  
-  .icon {
-    width: 10px;
-    height:10px;
-  }
-  
-  .section {
-    margin-top: 2.5rem;
-  }
-  
-  .flexRow {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  
-  .title {
-    font-size: 16px;
-    font-weight: 600;
-  }
-  
-  .removeAllBtn,
-  .uploadBtn {
-    margin-top: 0.25rem;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #6b7280;
-    border: 1px solid #a1a1aa;
-    border-radius: 0.375rem;
-    padding: 0.75rem;
-    transition: background-color 0.2s, color 0.2s;
-  }
-  
-  .removeAllBtn:hover,
-  .uploadBtn:hover {
-    background-color: #a1a1aa;
-    color: white;
-  }
-  
-  .previewList {
-    margin-top: 1.5rem;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2.5rem;
-  }
-  
-  .previewItem {
-    position: relative;
-    height: 8rem;
-    border-radius: 0.375rem;
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  }
-  
+/* Dropzone.module.css */
+.dropzone {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
 
-  .image{
-    width: 70%;
-    height: 70%;
-    object-fit: cover;
-    border-radius: 0.375rem;
-  }
- 
-  
-  .removeBtn {
-    width: 1.75rem;
-    height: 1.75rem;
-    border: 1px solid #a1a1aa;
-    background-color: #a1a1aa;
-    border-radius: 9999px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: -0.75rem;
-    right: -0.75rem;
-    transition: background-color 0.2s, color 0.2s;
-  }
-  
-  .removeBtn:hover {
-    background-color: white;
-  }
-  
-  .iconClose {
-    width: 1.25rem;
-    height: 1.25rem;
-    fill: white;
-  }
-  
-  .iconClose:hover {
-    fill: #a1a1aa;
-  }
-  
-  .fileName {
-    margin-top: 0.5rem;
-    color: #6b7280;
-    font-size: 0.75rem;
-    font-weight: 500;
-  }
-  
-  .rejectedSection {
-    margin-top: 6rem;
-    border-bottom: 1px solid #e5e7eb;
-    padding-bottom: 0.75rem;
-  }
-  
-  .rejectedList {
-    margin-top: 1.5rem;
+.dropzoneContent {
+    border: 2px dashed #0087f7;
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+    background-color: #f6f8fa;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    min-height: 100px;
     display: flex;
     flex-direction: column;
-  }
-  
-  .rejectedItem {
+    justify-content: center;
+    align-items: center;
+}
+
+.dropzoneContent:hover {
+    background-color: #e1e8ed;
+}
+
+.fileIcon {
+    font-size: 48px;
+    color: #0087f7;
+    margin-bottom: 10px;
+}
+
+.dropzoneContent p {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.previewGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: 100%;
+}
+
+.previewItem {
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
     display: flex;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fileName {
+    font-size: 12px;
+    margin-top: 5px;
+    max-width: 30%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.removeButton {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    border-radius: 50%;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.controls {
+    display: flex;
     justify-content: space-between;
-  }
-  
-  .rejectedFileName {
-    margin-top: 0.5rem;
-    color: #6b7280;
-    font-size: 0.875rem;
-    font-weight: 500;
-  }
-  
-  .errorList {
-    font-size: 0.75rem;
-    color: #f87171;
-  }
-  
-  .removeRejectedBtn {
-    margin-top: 0.25rem;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #6b7280;
-    border: 1px solid #a1a1aa;
-    border-radius: 0.375rem;
-    padding: 0.75rem;
-    transition: background-color 0.2s, color 0.2s;
-  }
-  
-  .removeRejectedBtn:hover {
-    background-color: #a1a1aa;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.removeAllButton {
+    background-color: #ff4136;
     color: white;
-  }
-  
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.fileCount {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+}

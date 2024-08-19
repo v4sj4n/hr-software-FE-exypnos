@@ -1,27 +1,44 @@
-import { z } from 'zod'
-
-export const VacationSchema = z
-  .object({
-    type: z
-      .enum(['vacation', 'sick', 'personal', 'maternity'])
-      .refine(
-        (value) =>
-          ['vacation', 'sick', 'personal', 'maternity'].includes(value),
-        {
-          message: `Vacations should be one of 'vacation', 'sick', 'personal', 'maternity'`,
-        }
-      ),
-    status: z
-      .enum(['pending', 'accepted', 'rejected'])
-      .refine((value) => ['pending', 'accepted', 'rejected'].includes(value), {
-        message: `Status should be one of 'pending', 'accepted', 'rejected'`,
-      }),
-    description: z.string().optional(),
-    startDate: z.string().date(),
-    endDate: z.string().date(),
-  })
-  .refine((data) => data.startDate < data.endDate, {
-    message: 'End date should be after start date',
-    path: ['endDate'],
-  })
-export type VacationFormFields = z.infer<typeof VacationSchema>
+import dayjs from 'dayjs'
+import {
+    forward,
+    InferInput,
+    isoDate,
+    object,
+    optional,
+    partialCheck,
+    picklist,
+    pipe,
+    string,
+} from 'valibot'
+export const VacationSchema = pipe(
+    object({
+        type: picklist(
+            ['vacation', 'sick', 'personal', 'maternity'],
+            "Please select a vacation type of the following 'vacation' or 'sick' or 'personal' or'maternity'",
+        ),
+        status: picklist(
+            ['pending', 'accepted', 'rejected'],
+            "Please select a status of the following 'pending', 'accepted', or 'rejected'",
+        ),
+        description: optional(string()),
+        startDate: pipe(
+            string('Please enter a date'),
+            isoDate('Please enter a date.'),
+        ),
+        endDate: pipe(
+            string('Please enter a date'),
+            isoDate('Please enter a date.'),
+        ),
+    }),
+    forward(
+        partialCheck(
+            [['startDate'], ['endDate']],
+            (input) =>
+                dayjs(input.startDate).isBefore(dayjs(input.endDate)) ||
+                dayjs(input.endDate).isSame(dayjs()),
+            'The ending date should be after the startdate',
+        ),
+        ['endDate'],
+    ),
+)
+export type VacationFormfields = InferInput<typeof VacationSchema>

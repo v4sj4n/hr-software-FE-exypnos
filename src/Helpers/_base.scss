@@ -3,8 +3,6 @@ $green-color: #02a700;
 $gray-color: gray;
 
 @mixin mainPage {
-    padding: 2rem;
-
 }
 
 @mixin pageHeading {
@@ -17,18 +15,17 @@ $gray-color: gray;
     gap: 0.75rem;
 }
 
-
 @mixin pageTitle {
     color: #000000;
     display: flex;
     font-size: 1.333rem;
     font-weight: 700;
     margin: 0;
-    font-family: "Outfit", sans-serif;
+    font-family: 'Outfit', sans-serif;
 }
 
 @mixin employeeContainer {
-    width: 70%;
+    flex: 5;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;

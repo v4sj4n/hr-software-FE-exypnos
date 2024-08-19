@@ -6,7 +6,7 @@
     height: 100vh;
     gap: 150px;
     min-height: 100%;
-    background-image: url("/Images/background\ \(1\).png");
+    background-image: url('/Images/background\ \(1\).png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -44,7 +44,7 @@
     color: #000000;
     font-weight: bolder;
     font-size: 20px;
-    font-family: "Outfit", sans-serif;
+    font-family: 'Outfit', sans-serif;
 }
 
 .error {
@@ -59,8 +59,8 @@
     text-align: center;
     text-decoration: none;
     color: black;
-    margin-top: "10px";
-    font-family: "Outfit", sans-serif;
+    margin-top: '10px';
+    font-family: 'Outfit', sans-serif;
 }
 .forgotPassword:hover {
     text-decoration: underline;

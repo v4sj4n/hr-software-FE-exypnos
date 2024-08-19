@@ -1,9 +1,9 @@
 import { Interview } from './InterviewContext';
 
 export const formatDate = (dateString: string | number | Date) => {
-  if (!dateString) {
-    return "No Date Provided";
-  }
+    if (!dateString) {
+        return 'No Date Provided'
+    }
 
   const date = new Date(dateString);
   if (isNaN(date.getTime())) {

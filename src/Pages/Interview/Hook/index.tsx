@@ -98,4 +98,5 @@ export const useGetAllInterviews = () => {
     )
 
     return { data, error, loading }
+    return { data, error, loading }
 }

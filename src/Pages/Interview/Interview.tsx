@@ -31,8 +31,9 @@ function InterviewKanbanContent() {
 
 
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error loading interviews: {error || 'Unknown error'}</div>;
+    if (loading) return <div>Loading...</div>
+    if (error)
+        return <div>Error loading interviews: {error || 'Unknown error'}</div>
 
   return (
     <div className={style.kanbanBoard}>
@@ -168,9 +169,9 @@ function InterviewKanbanContent() {
 
 
 export default function InterviewKanban() {
-  return (
-    <InterviewProvider>
-      <InterviewKanbanContent />
-    </InterviewProvider>
-  );
+    return (
+        <InterviewProvider>
+            <InterviewKanbanContent />
+        </InterviewProvider>
+    )
 }

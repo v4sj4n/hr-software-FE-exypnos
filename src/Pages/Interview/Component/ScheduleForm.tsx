@@ -164,4 +164,4 @@ const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
   );
 };
 
-export default RescheduleModal;
+export default RescheduleModal
