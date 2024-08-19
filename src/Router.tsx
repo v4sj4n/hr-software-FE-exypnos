@@ -18,6 +18,7 @@ import VacationProvider from './Pages/Vacation/VacationContext.tsx'
 import Inventory from './Pages/Inventory/Inventory.tsx'
 import Career from './Pages/Career/Career.tsx'
 import Holdings from './Pages/Holdings/Holdings.tsx'
+import About from './Pages/About/About.tsx'
 
 export default function Router() {
     const router = createBrowserRouter([
@@ -89,6 +90,10 @@ export default function Router() {
                 {
                     path: 'interview',
                     element: <Interview />,
+                },
+                {
+                    path: 'historic',
+                    element: <About />,
                 },
                 {
                     path: 'inventory',

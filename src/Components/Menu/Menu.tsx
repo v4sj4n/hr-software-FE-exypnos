@@ -4,20 +4,28 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import ListItemIcon from '@mui/material/ListItemIcon'
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useEvents } from '@/Pages/Events/Context/EventsContext'
 
 const ITEM_HEIGHT = 32
 
-export default function LongMenu(props) {
-    const [anchorEl, setAnchorEl] = React.useState(null)
-    const open = Boolean(anchorEl)
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget)
-    }
-    const handleClose = () => {
-        setAnchorEl(null)
-    }
-    const Icon = (props) => <div onClick={props.onClick}>{<props.Icon />}</div>
+export default function LongMenu({event}) {
 
+    const {handleOpenDrawer,
+        handleDeleteEventModal}  = useEvents()
+
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget as HTMLElement); 
+    }
+    
+    const handleClose = () => {
+        setAnchorEl(null);
+    }
+    
     return (
         <div>
             <IconButton
@@ -28,7 +36,7 @@ export default function LongMenu(props) {
                 aria-haspopup="true"
                 onClick={handleClick}
             >
-                <MoreVertIcon style={props.style} />
+                <MoreVertIcon />
             </IconButton>
             <Menu
                 id="long-menu"
@@ -57,14 +65,10 @@ export default function LongMenu(props) {
                 }}
             >
                 <div>
-                    <MenuItem>
+                    <MenuItem onClick={() => handleOpenDrawer('edit', event)}>
                         <ListItemIcon>
-                            {
-                                <Icon
-                                    onClick={props.onClickEdit}
-                                    Icon={props.EditIcon}
-                                />
-                            }
+                            <EditIcon
+                            />
                         </ListItemIcon>
                         <button
                             style={{
@@ -75,22 +79,16 @@ export default function LongMenu(props) {
                                 fontFamily: 'Outfit, sans-serif',
                                 fontSize: '18px',
                             }}
-                            onClick={props.onClickEdit}
                         >
-                            {props.name}
+                            Edit
                         </button>
                     </MenuItem>
-                    <MenuItem>
+                    <MenuItem onClick={() => handleDeleteEventModal(event._id)}>
                         <ListItemIcon>
-                            {
-                                <Icon
-                                    onClick={props.onClickDelete}
-                                    Icon={props.Delete}
-                                />
-                            }
+                            <DeleteIcon
+                            />
                         </ListItemIcon>
                         <button
-                            onClick={props.onClickDelete}
                             style={{
                                 textDecoration: 'none',
                                 color: '#3C3A3B',
@@ -100,7 +98,7 @@ export default function LongMenu(props) {
                                 fontSize: '18px',
                             }}
                         >
-                            {props.name2}
+                            Delete
                         </button>
                     </MenuItem>
                 </div>

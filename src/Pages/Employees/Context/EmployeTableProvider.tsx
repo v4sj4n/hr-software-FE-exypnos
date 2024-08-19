@@ -1,18 +1,14 @@
 import React from 'react'
 import { useGetAllUsers } from '../Hook'
-import { GridRenderCellParams } from '@mui/x-data-grid'
-import { Link } from 'react-router-dom'
-import EmailIcon from '@mui/icons-material/Email'
-import PersonIcon from '@mui/icons-material/Person'
-import PhoneIcon from '@mui/icons-material/Phone'
-import DateRangeIcon from '@mui/icons-material/DateRange'
-import ComputerIcon from '@mui/icons-material/Computer'
+import { GridRenderCellParams, GridRowParams } from '@mui/x-data-grid'
+import { Link, useNavigate } from 'react-router-dom'
 import { EmployeeContext, EmployeeRow } from '../interfaces/Employe'
 
 export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-    const { users } = useGetAllUsers()
+    const { users } = useGetAllUsers();
+    const navigate = useNavigate()
 
     const rows: EmployeeRow[] = users.map((user, index) => ({
         id: index + 1,
@@ -44,28 +40,25 @@ export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({
         },
     ]
 
-    const headerIcons = {
-        email: EmailIcon,
-        fullName: PersonIcon,
-        phone: PhoneIcon,
-        date: DateRangeIcon,
-        position: ComputerIcon,
-    }
-
     const headerTextColors = {
         firstName: '#0000FF',
     }
 
-    const getRowId = (row: EmployeeRow) => row.id
+    const getRowId = (row: EmployeeRow) => row.id;
+
+const handleRowClick = (params: GridRowParams) => {
+        navigate(`/profile/${params.row.originalId}`)
+    }
 
     const contextValue = {
         rows,
         columns,
-        headerIcons,
         headerTextColors,
         getRowId,
+        handleRowClick
     }
 
+    
     return (
         <EmployeeContext.Provider value={contextValue}>
             {children}

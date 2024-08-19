@@ -11,17 +11,7 @@ import { useEvents } from '@/Pages/Events/Context/EventsContext'
 import Dropzone from '@/Dropzone/Dropzone'
 import CloseIcon from '@mui/icons-material/Close'
 
-interface AnchorTemporaryDrawerProps {
-    open: boolean
-    onClose: () => void
-    endDate: string
-}
-
-function DrawerComponent({
-    open,
-    onClose,
-    endDate,
-}: AnchorTemporaryDrawerProps) {
+function DrawerComponent() {
     const {
         editingEvent,
         editPollQuestion,
@@ -49,10 +39,13 @@ function DrawerComponent({
         setEditParticipants,
         editType,
         setEditType,
+        endDate,
+        drawerOpen,
+        handleCloseDrawer
     } = useEvents()
 
     return (
-        <Drawer anchor="right" open={open} onClose={onClose}>
+        <Drawer anchor="right" open={drawerOpen} onClose={handleCloseDrawer}>
             <Box
                 sx={{
                     width: 400,
@@ -65,7 +58,7 @@ function DrawerComponent({
                 <div className={style.create}>
                     {editingEvent ? 'Edit Event' : 'Create New Event'}
                     <CloseIcon
-                        onClick={onClose}
+                        onClick={handleCloseDrawer}
                         style={{ cursor: 'pointer' }}
                     />
                 </div>
