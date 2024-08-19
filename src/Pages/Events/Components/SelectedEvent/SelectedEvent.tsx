@@ -2,28 +2,31 @@ import EventPoll from '../EventPoll/EventsPoll'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import style from '../../styles/Events.module.css'
-import { EventsData } from '../../Interface/Events'
 import { useAuth } from '@/Context/AuthProvider'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import Example from '@/Components/Carosel/Carosel'
+import { useEvents } from '../../Context/EventsContext'
 
 interface SelectedEventCardProps {
-    event: EventsData
-    onClose?: () => void
     showVotersButton?: boolean
     onSeeVoters?: () => void
 }
 
 const SelectedEventCard = ({
-    event,
-    onClose,
     showVotersButton = false,
 }: SelectedEventCardProps) => {
     const { currentUser } = useAuth()
 
+    const { selectedEvent, setSelectedEvent } = useEvents()
+
+    if (!selectedEvent) {
+        return null
+    }
+
+    
     return (
         <div className={style.Wrap}>
-            <Example images={event.photo} />
+            <Example images={selectedEvent.photo} />
             <div
                 style={{
                     gap: '10px',
@@ -38,22 +41,22 @@ const SelectedEventCard = ({
                         alignItems: 'center',
                     }}
                 >
-                    <div className={style.title}>{event.title}</div>
+                    <div className={style.title}>{selectedEvent.title}</div>
                     {
                         <CloseOutlinedIcon
                             style={{ cursor: 'pointer' }}
-                            onClick={onClose}
+                            onClick={() => setSelectedEvent(null)}
                         />
                     }
                 </div>
-                <div className={style.description}>{event.description}</div>
+                <div className={style.description}>{selectedEvent.description}</div>
                 <div className={style.dataContainer}>
                     <div className={style.dateContainer}>
                         <div className={style.data}>
                             <CalendarTodayIcon
                                 sx={{ height: 20, width: 20, color: '#6b7280' }}
                             />
-                            {new Date(event.startDate).toLocaleDateString(
+                            {new Date(selectedEvent.startDate).toLocaleDateString(
                                 'en-US',
                                 {
                                     month: 'long',
@@ -66,7 +69,7 @@ const SelectedEventCard = ({
                             <CalendarTodayIcon
                                 sx={{ height: 20, width: 20, color: '#6b7280' }}
                             />
-                            {new Date(event.endDate).toLocaleDateString(
+                            {new Date(selectedEvent.endDate).toLocaleDateString(
                                 'en-US',
                                 {
                                     month: 'long',
@@ -84,13 +87,13 @@ const SelectedEventCard = ({
                         <LocationOnOutlinedIcon
                             sx={{ height: 20, width: 20, color: '#6b7280' }}
                         />
-                        <div>{event.location}</div>
+                        <div>{selectedEvent.location}</div>
                     </div>
                 </div>
-                {!showVotersButton && event.poll && (
+                {!showVotersButton && selectedEvent.poll && (
                     <EventPoll
-                        poll={event.poll}
-                        eventId={event._id}
+                        poll={selectedEvent.poll}
+                        eventId={selectedEvent._id}
                         userId={currentUser?._id}
                     />
                 )}

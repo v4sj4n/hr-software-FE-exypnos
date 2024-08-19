@@ -2,7 +2,7 @@ import DataTable from '../../Components/Table/Table'
 import { useEmployeeContext } from './Context/EmployeTableContext'
 import { EmployeeProvider } from './Context/EmployeTableProvider'
 function EmployeesContent() {
-    const { rows, columns, headerIcons, getRowId } = useEmployeeContext()
+    const { rows, columns,  getRowId, handleRowClick } = useEmployeeContext()
 
     return (
         <>
@@ -18,7 +18,7 @@ function EmployeesContent() {
                     rows={rows}
                     columns={columns}
                     getRowId={getRowId}
-                    headerIcons={headerIcons}
+                    handleRowClick={handleRowClick}
                 />
             </div>
         </>

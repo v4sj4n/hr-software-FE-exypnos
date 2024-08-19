@@ -26,26 +26,22 @@ export default function DataTable<T extends GridValidRowModel>({
     height = 'auto',
     initialPageSize = 5,
     pageSizeOptions = [5, 10, 20, 30],
-    headerIcons,
+   
     handleRowClick,
 }: DataTableProps<T>) {
     const getRowClassName = (params: GridRowParams) => {
         return Number(params.id) % 2 === 0 ? 'colored-row' : ''
     }
     const columnsWithIcons = columns.map((column) => {
-        if (headerIcons && headerIcons[column.field]) {
-            const Icon = headerIcons[column.field]
+ 
             return {
                 ...column,
                 renderHeader: () => (
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Icon style={{ marginRight: '8px' }} />
                         {column.headerName}
                     </div>
                 ),
             }
-        }
-        return column
     })
     return (
         <div style={{ height, width: '100%' }}>
