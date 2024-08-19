@@ -1,4 +1,3 @@
-
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import CheckIcon from '@mui/icons-material/Check';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -16,19 +15,21 @@ function InterviewKanbanContent() {
     error,
     selectedInterview,
     isModalOpen,
-    allPhasesPassed,
+    
     handleOpenModal,
     handleCloseModal,
     handleReschedule,
     handleSchedule,
     handleCancel,
-    handleAccept,
     onDragEnd,
     handleNavigateToProfile,
     getInterviewsByPhase,
     formatDate,
     phases,
+    handleAccept,
   } = useInterviewContext();
+
+
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error loading interviews: {error || 'Unknown error'}</div>;
@@ -37,21 +38,21 @@ function InterviewKanbanContent() {
     <div className={style.kanbanBoard}>
       <DragDropContext onDragEnd={onDragEnd}>
         <div className={style.kanbanColumns}>
-          {phases.map(phase => (
-            <div key={phase} className={style.kanbanColumn}>
-              <h2>{phase}
+          {phases.map(currentPhase => (
+            <div key={currentPhase} className={style.kanbanColumn}>
+              <h2>{currentPhase.toUpperCase()}
                 <span className={style.applicantCount}>
-                  ({getInterviewsByPhase(phase).length})
+                  ({getInterviewsByPhase(currentPhase).length})
                 </span>
               </h2>
-              <Droppable droppableId={phase}>
+              <Droppable droppableId={currentPhase}>
                 {(provided) => (
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                     className={style.kanbanList}
                   >
-                    {getInterviewsByPhase(phase).map((interview, index) => (
+                       {getInterviewsByPhase(currentPhase).map((interview, index) => (
                       <Draggable key={interview._id.toString()} draggableId={interview._id.toString()} index={index}>
                         {(provided) => (
                           <div
@@ -64,72 +65,81 @@ function InterviewKanbanContent() {
                               onClick={() => handleNavigateToProfile(interview._id.toString())}
                               className={style.candidateName}
                             >
-                              {interview.fullName}
+                              {interview.fullName}   <p>{interview.positionApplied}</p>
+
                             </h6>
-                            <p>{interview.positionApplied}</p>
-                            {phase !== 'Employed' && (
-                              <p>Interview Date: {formatDate(interview.interviewDate)}</p>
+                            {currentPhase !== 'applicant' && (
+                              <>
+
+                           <p>Interview Date: {
+                             interview.currentPhase === 'second_interview' 
+                             ? formatDate(interview.secondInterviewDate) 
+                             : formatDate(interview.firstInterviewDate)
+                               }</p>                                                                                                                                                                                               
+                                 <p>Email: {interview.email}</p>
+                                <p>Phone: {interview.phoneNumber}</p>
+                                <p>Notes: {interview.notes}</p>
+                              </>
                             )}
-                            <p>Email: {interview.email}</p>
-                            <p>Phone: {interview.phoneNumber}</p>
-                            <p>Notes: {interview.notes}</p>
-                            <div className={style.buttonContainer}>
-                              <Tooltip title="Edit" placement="top">
-                                <span>
-                                  <Button
-                                    type={ButtonTypes.SECONDARY}
-                                    btnText=""
-                                    width="40px"
-                                    height="30px"
-                                    display='flex'
-                                    justifyContent='center'
-                                    alignItems='center'
-                                    color='#2457A3'
-                                    borderColor='#2457A3'
-                                    icon={<EditIcon />}
-                                    onClick={() => handleOpenModal(interview, true)}
-                                  />
-                                </span>
-                              </Tooltip>
-                              <div style={{display:"flex", justifyContent:"flex-end", gap:'10px'}}>    
-                                <Tooltip title="Delete" placement="top">
+                            {currentPhase !== 'applicant' && (
+                              <div className={style.buttonContainer}>
+                                <Tooltip title="Edit" placement="top">
                                   <span>
                                     <Button
-                                      btnText=" " 
                                       type={ButtonTypes.SECONDARY}
-                                      width="35px"
+                                      btnText=""
+                                      width="40px"
                                       height="30px"
-                                      color="#C70039"
-                                      borderColor="#C70039"
-                                      display="flex"
-                                      justifyContent="center"
-                                      alignItems="center"
-                                      icon={<DeleteIcon />}
-                                      onClick={() => handleCancel(interview)}
+                                      display='flex'
+                                      justifyContent='center'
+                                      alignItems='center'
+                                      color='#2457A3'
+                                      borderColor='#2457A3'
+                                      icon={<EditIcon />}
+                                      onClick={() => handleOpenModal(interview, true)}
                                     />
                                   </span>
                                 </Tooltip>
-                                {phase !== 'Employed' && (
-                                  <Tooltip title="Accept" placement="top">
+                                <div style={{display:"flex", justifyContent:"flex-end", gap:'10px'}}>    
+                                  <Tooltip title="Delete" placement="top">
                                     <span>
                                       <Button
-                                        btnText=''
+                                        btnText=" " 
                                         type={ButtonTypes.SECONDARY}
                                         width="35px"
                                         height="30px"
-                                        color='rgb(2, 167, 0)'
-                                        borderColor='rgb(2, 167, 0)'
-                                        display='flex'
-                                        justifyContent='center'
-                                        alignItems='center'
-                                        icon={<CheckIcon />}
-                                        onClick={() => handleAccept(interview)}
+                                        color="#C70039"
+                                        borderColor="#C70039"
+                                        display="flex"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        icon={<DeleteIcon />}
+                                        onClick={() => handleCancel(interview)}
                                       />
                                     </span>
                                   </Tooltip>
-                                )}
+                                  {currentPhase !== 'applicant' && (
+                                    <Tooltip title="Accept" placement="top">
+                                      <span>
+                                        <Button
+                                          btnText=''
+                                          type={ButtonTypes.SECONDARY}
+                                          width="35px"
+                                          height="30px"
+                                          color='rgb(2, 167, 0)'
+                                          borderColor='rgb(2, 167, 0)'
+                                          display='flex'
+                                          justifyContent='center'
+                                          alignItems='center'
+                                          icon={<CheckIcon />}
+                                          onClick={() => handleAccept(interview)}
+                                        />
+                                      </span>
+                                    </Tooltip>
+                                  )}
+                                </div>
                               </div>
-                            </div>
+                            )}
                           </div>
                         )}
                       </Draggable>
@@ -142,20 +152,20 @@ function InterviewKanbanContent() {
           ))}
         </div>
       </DragDropContext>
+
       {isModalOpen && selectedInterview && (
         <RescheduleModal
           open={isModalOpen}
           handleClose={handleCloseModal}
           handleReschedule={handleReschedule}
+          handleSchedule={handleSchedule}
           selectedInterview={selectedInterview}
-          allPhasesPassed={allPhasesPassed}
-          handleSchedule={ handleSchedule}
-          // message={''}
-        />
+          isReschedule={false}        />
       )}
     </div>
   );
 }
+
 
 export default function InterviewKanban() {
   return (

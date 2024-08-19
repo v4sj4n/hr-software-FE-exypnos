@@ -45,11 +45,11 @@ export default function Recruitment() {
                     <div style={{ display: "flex", gap: "20px" }}>
                         <Input
                             label="Age"
-                            name='age'
+                            name='dob'
                             IsUsername
                             width="300px"
                             onChange={handleChange}
-                            value={aplicantFormData.age}
+                            value={aplicantFormData.dob}
                         />
                         <Input
                             label="Phone Number"

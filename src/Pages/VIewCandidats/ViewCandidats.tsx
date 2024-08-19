@@ -15,12 +15,15 @@ export default function ViewCandidats() {
         handleConfirm, 
         modalAction, 
         showConfirmationModal, 
-        interviewDate,
-        setInterviewDate,
-        message,
-        setMessage,
+        firstInterviewDate,
+        setFirstInterviewDate,
+        customMessage,
+        setCustomMessage,
         handleSend, 
-        handleCloseConfirmationModal  
+        handleCloseConfirmationModal  ,
+        handleAccept,
+        customSubject,
+        setCustomSubject
     } = useApplicantById()
 
     return (
@@ -154,6 +157,7 @@ export default function ViewCandidats() {
                 </ModalComponent>
             )}
 
+
             {showConfirmationModal && (
                 <ModalComponent open={showConfirmationModal} handleClose={handleCloseConfirmationModal}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: "20px" }}>
@@ -163,18 +167,28 @@ export default function ViewCandidats() {
                             type="datetime-local" 
                             name='interviewDate' 
                             label='Date'
-                            value={interviewDate}
-                            onChange={(e) => setInterviewDate(e.target.value)}
+                            value={firstInterviewDate}
+                            onChange={(e) => setFirstInterviewDate(e.target.value)}
                         />
                         <Input 
                             IsUsername 
                             type="textarea" 
-                            name='message' 
+                            name='costumMessage' 
                             label='Message' 
                             multiline 
                             rows={3} 
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
+                            value={customMessage}
+                            onChange={(e) => setCustomMessage(e.target.value)}
+                        />
+                            <Input 
+                            IsUsername 
+                            type="textarea" 
+                            name='customSubject' 
+                            label='Message' 
+                            multiline 
+                            rows={3} 
+                            value={customSubject}
+                            onChange={(e) => setCustomSubject(e.target.value)}
                         />
                         <div style={{ display: 'flex', gap: "10px", marginTop: "20px" }}>
                             <Button

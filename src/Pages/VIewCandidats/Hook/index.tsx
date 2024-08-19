@@ -8,8 +8,9 @@ export const useApplicantById = () => {
     const [showModal, setShowModal] = useState(false);
     const [modalAction, setModalAction] = useState<ModalAction | ''>('');
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-    const [interviewDate, setInterviewDate] = useState('');
-    const [message, setMessage] = useState('');
+    const [firstInterviewDate, setFirstInterviewDate] = useState('');
+    const [customMessage, setCustomMessage] = useState('');
+    const [customSubject, setCustomSubject] = useState('');
 
     const { id } = useParams<{ id: string }>();
 
@@ -30,6 +31,7 @@ export const useApplicantById = () => {
 
     const handleConfirm = () => {
         if (modalAction === 'accept') {
+            handleAccept();
             setShowConfirmationModal(true);
         } else if (modalAction === 'reject') {
             handleReject();
@@ -41,6 +43,16 @@ export const useApplicantById = () => {
         try {
             await AxiosInstance.patch(`/applicant/${id}`, {
                 status: 'rejected'
+            });
+            fetchApplicant();
+        } catch (error) {
+            console.error('Error rejecting applicant:', error);
+        }
+    };
+    const handleAccept = async () => {
+        try {
+            await AxiosInstance.patch(`/applicant/${id}`, {
+                status: 'accepted'
             });
             fetchApplicant();
         } catch (error) {
@@ -66,9 +78,11 @@ export const useApplicantById = () => {
 
         try {
             await AxiosInstance.patch(`/applicant/${id}`, {
-                status: 'accepted',
-                interviewDate: interviewDate,
-                message: message
+                // status: 'accepted',
+                firstInterviewDate: firstInterviewDate,
+                customMessage: customMessage,
+                customSubject:customSubject
+
             });
             fetchApplicant();
             setShowConfirmationModal(false);
@@ -86,10 +100,13 @@ export const useApplicantById = () => {
         handleCloseConfirmationModal, 
         showConfirmationModal, 
         handleConfirm,
-        interviewDate,
-        setInterviewDate,
-        message,
-        setMessage,
-        handleSend
+        firstInterviewDate,
+        setFirstInterviewDate,
+        customMessage,
+        setCustomMessage,
+        handleSend,
+        handleAccept,
+        customSubject,
+        setCustomSubject
     };
 }

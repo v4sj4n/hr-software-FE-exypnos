@@ -2,7 +2,6 @@ import DataTable from "../../Components/Table/Table";
 import style from "./styles/Candidates.module.css"
 import { useCandidateContext } from "./Context/CandidateTableContext";
 import { CandidateProvider } from "./Context/CandidateTableProvider";
-
 function CandidatesCoontext() {
 
   const { getRowId, headerIcons, columns, rows, handleRowClick } = useCandidateContext();
@@ -15,7 +14,6 @@ function CandidatesCoontext() {
   )
 }
 
-
 const Candidates: React.FC = () => {
   return (
     <CandidateProvider>
@@ -24,6 +22,5 @@ const Candidates: React.FC = () => {
   )
 
 }
-
 
 export default Candidates;
