@@ -6,20 +6,24 @@ import { ButtonTypes } from '../../Components/Button/ButtonTypes'
 import { ModalComponent } from '../../Components/Modal/Modal'
 import Input from '@/Components/Input/Index'
 export default function ViewCandidats() {
-    const {
-        applicant,
-        showModal,
-        handleCloseModal,
-        handleOpenModal,
-        handleConfirm,
-        modalAction,
-        showConfirmationModal,
-        interviewDate,
-        setInterviewDate,
-        message,
-        setMessage,
-        handleSend,
-        handleCloseConfirmationModal,
+
+    const {      
+        applicant, 
+        showModal, 
+        handleCloseModal, 
+        handleOpenModal, 
+        handleConfirm, 
+        modalAction, 
+        showConfirmationModal, 
+        firstInterviewDate,
+        setFirstInterviewDate,
+        customMessage,
+        setCustomMessage,
+        handleSend, 
+        handleCloseConfirmationModal  ,
+        handleAccept,
+        customSubject,
+        setCustomSubject
     } = useApplicantById()
 
     return (
@@ -217,6 +221,7 @@ export default function ViewCandidats() {
                 </ModalComponent>
             )}
 
+
             {showConfirmationModal && (
                 <ModalComponent
                     open={showConfirmationModal}
@@ -230,23 +235,33 @@ export default function ViewCandidats() {
                         }}
                     >
                         <div className={style.title}>Notify Applicant.</div>
-                        <Input
-                            IsUsername
-                            type="datetime-local"
-                            name="interviewDate"
-                            label="Date"
-                            value={interviewDate}
-                            onChange={(e) => setInterviewDate(e.target.value)}
+                        <Input 
+                            IsUsername 
+                            type="datetime-local" 
+                            name='interviewDate' 
+                            label='Date'
+                            value={firstInterviewDate}
+                            onChange={(e) => setFirstInterviewDate(e.target.value)}
                         />
-                        <Input
-                            IsUsername
-                            type="textarea"
-                            name="message"
-                            label="Message"
-                            multiline
-                            rows={3}
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
+                        <Input 
+                            IsUsername 
+                            type="textarea" 
+                            name='costumMessage' 
+                            label='Message' 
+                            multiline 
+                            rows={3} 
+                            value={customMessage}
+                            onChange={(e) => setCustomMessage(e.target.value)}
+                        />
+                            <Input 
+                            IsUsername 
+                            type="textarea" 
+                            name='customSubject' 
+                            label='Message' 
+                            multiline 
+                            rows={3} 
+                            value={customSubject}
+                            onChange={(e) => setCustomSubject(e.target.value)}
                         />
                         <div
                             style={{
