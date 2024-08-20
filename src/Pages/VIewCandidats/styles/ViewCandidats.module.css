@@ -1,7 +1,6 @@
 .container {
     display: flex;
     width: 100%;
-    padding: 20px;
     gap: 32px;
     background-color: transparent;
     font-family: 'Outfit', sans-serif;
@@ -28,12 +27,9 @@
 .centerStatus {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    gap: 50px;
+    margin-bottom: 10px;
     align-items: center;
-}
-
-.section {
-    margin-bottom: 20px;
 }
 
 .label {

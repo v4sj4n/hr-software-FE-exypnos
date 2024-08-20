@@ -1,0 +1,6 @@
+.payroll{
+    display: flex;
+    flex-direction: column;
+    background-color: "#F0F5FF";
+    width: 100%;
+}

@@ -1,19 +1,12 @@
 import DataTable from '../../Components/Table/Table'
 import { useEmployeeContext } from './Context/EmployeTableContext'
 import { EmployeeProvider } from './Context/EmployeTableProvider'
+import style from "./style/Employees.module.css"
 function EmployeesContent() {
-    const { rows, columns,  getRowId, handleRowClick } = useEmployeeContext()
+    const { rows, columns, getRowId, handleRowClick } = useEmployeeContext()
 
     return (
-        <>
-            <div
-                style={{
-                    display: 'flex',
-                    width: '100%',
-                    flexDirection: 'column',
-                    backgroundColor: '#F0F5FF',
-                }}
-            >
+            <div className={style.employe}>
                 <DataTable
                     rows={rows}
                     columns={columns}
@@ -21,7 +14,6 @@ function EmployeesContent() {
                     handleRowClick={handleRowClick}
                 />
             </div>
-        </>
     )
 }
 
