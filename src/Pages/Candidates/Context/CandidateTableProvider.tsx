@@ -1,19 +1,14 @@
 import React from 'react'
-import { CandidateContext, CandidateRow } from '../Interfaces/Candidate'
+import {  CandidateContext, CandidateRow } from '../Interfaces/Candidate'
 import { useGetAllApplicants } from '../Hook'
 import { GridRenderCellParams, GridRowParams } from '@mui/x-data-grid'
 import { Link, useNavigate } from 'react-router-dom'
-import EmailIcon from '@mui/icons-material/Email'
-import PersonIcon from '@mui/icons-material/Person'
-import PhoneIcon from '@mui/icons-material/Phone'
-import DateRangeIcon from '@mui/icons-material/DateRange'
-import ComputerIcon from '@mui/icons-material/Computer'
 import { StatusBadge } from '@/Components/StatusBadge/StatusBadge'
 
 export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-    const { applicants } = useGetAllApplicants()
+    const {  data: applicants = [] } = useGetAllApplicants()
     const navigate = useNavigate()
 
     const rows: CandidateRow[] = applicants.map((applicant, index) => ({
@@ -76,14 +71,6 @@ export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({
         },
     ]
 
-    const headerIcons = {
-        email: EmailIcon,
-        fullName: PersonIcon,
-        phone: PhoneIcon,
-        date: DateRangeIcon,
-        position: ComputerIcon,
-    }
-
     const headerTextColors = {
         firstName: '#0000FF',
     }
@@ -97,7 +84,6 @@ export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({
     const contextValue = {
         rows,
         columns,
-        headerIcons,
         headerTextColors,
         getRowId,
         handleRowClick,

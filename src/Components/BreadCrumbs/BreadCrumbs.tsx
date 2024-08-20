@@ -21,6 +21,7 @@ const routeStructure: Record<string, Route> = {
     '/interview': { name: 'Interviews', parent: 'Recruiting' },
     '/employees': { name: 'Employees', parent: 'Employee' },
     '/payroll': { name: 'Payroll', parent: 'Employee' },
+    '/payroll/user/:id': { name: 'Historic Payroll', parent: 'Payroll' },
     '/vacation': { name: 'Vacation', parent: 'Employee' },
     '/promotion': { name: 'Promotion', parent: 'Employee' },
     '/holdings': { name: 'Holdings', parent: 'Assets' },
@@ -29,7 +30,7 @@ const routeStructure: Record<string, Route> = {
     '/activities': { name: 'Activities', parent: 'Events' },
     '/career': { name: 'Career', parent: 'Events' },
     '/structure': { name: 'Structure', parent: null },
-    '/historic': { name: 'About', parent: null },
+    '/historic': { name: 'About Hr-System', parent: null },
     '/view/:id': { name: 'View Candidate Details', parent: 'Employees' },
     '/profile/:id': { name: 'Profile', parent: 'Employee' },
 }
@@ -88,6 +89,7 @@ export const BreadcrumbComponent = () => {
                                 color: '#000000',
                                 fontWeight: 'bolder',
                                 fontSize: '18px',
+                                fontFamily:'Outfit, sans-serif'
                             }}
                             key={crumb.path}
                         >
@@ -100,6 +102,7 @@ export const BreadcrumbComponent = () => {
                             key={crumb.path}
                             color="inherit"
                             to={crumb.path}
+                            style={{fontFamily:'Outfit, sans-serif'}}
                         >
                             {crumb.name}
                         </Link>

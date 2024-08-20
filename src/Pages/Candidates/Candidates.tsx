@@ -3,12 +3,11 @@ import { useCandidateContext } from './Context/CandidateTableContext'
 import { CandidateProvider } from './Context/CandidateTableProvider'
 
 function CandidatesCoontext() {
-    const { getRowId, headerIcons, columns, rows, handleRowClick } =
+    const { getRowId, columns, rows, handleRowClick } =
         useCandidateContext()
     return (
         <DataTable
             getRowId={getRowId}
-            headerIcons={headerIcons}
             columns={columns}
             rows={rows}
             handleRowClick={handleRowClick}
