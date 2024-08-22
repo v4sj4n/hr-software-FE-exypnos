@@ -1,4 +1,6 @@
 export interface EventsData {
+    latitude: any
+    longitude: any
     _id: number
     title: string
     description: string
@@ -8,8 +10,11 @@ export interface EventsData {
     time: string
     creatingTime: string
     file: string
-    location: string
-    type: string
+    location: {
+        latitude: number;
+        longitude: number;
+    } | null;
+        type: string
     photo: string[]
     participants: string[]
     poll: {
@@ -29,8 +34,11 @@ export interface EventsCreationData {
     description: string
     startDate: string
     endDate: string
-    location: string
-    participants: string[]
+    location: {
+        latitude: number;
+        longitude: number;
+    } | null;
+        participants: string[]
     photo: File[]
     type: string
     poll: {
@@ -43,6 +51,12 @@ export interface EventsCreationData {
         isMultipleVote: boolean
     }
 }
+
+interface Geolocation {
+    [x: string]: any
+    lat: number;
+    lng: number;
+  }
 
 export interface EventsContextProps {
     events: EventsData[]
@@ -103,4 +117,4 @@ export interface EventsContextProps {
     editType: string
     handleFileUpload: (files: File[]) => void
     eventPhotos: File[]
-}
+ setLocation: React.Dispatch<React.SetStateAction<Geolocation>>}

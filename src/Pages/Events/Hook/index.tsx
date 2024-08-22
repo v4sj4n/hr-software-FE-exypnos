@@ -55,21 +55,23 @@ export const useGetAllEvents = () => {
     }
 }
 
-export const useCreateEvent = (
+export interface Geolocation {
+    lat: number;
+    lng: number;
+  }
+  export const useCreateEvent = (
     setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>,
 ) => {
-    const [toastOpen, setToastOpen] = useState(false)
-    const [toastMessage, setToastMessage] = useState('')
-    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
-        'success',
-    )
-    const [eventPhotos, setEventPhotos] = useState<File[]>([])
+    const [toastOpen, setToastOpen] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>('success');
+    const [eventPhotos, setEventPhotos] = useState<File[]>([]);
     const [event, setEvent] = useState<EventsCreationData>({
         title: '',
         description: '',
         endDate: '',
         startDate: '',
-        location: '',
+        location: null, 
         photo: [],
         participants: [],
         type: '',
@@ -78,62 +80,78 @@ export const useCreateEvent = (
             options: [],
             isMultipleVote: false,
         },
-    })
+    });
+    // const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null)
 
-    const [pollQuestion, setPollQuestion] = useState('')
-    const [pollOptions, setPollOptions] = useState<string[]>(['', ''])
-    const [isMultipleChoice, setIsMultipleChoice] = useState(false)
-    const [includesPoll, setIncludesPoll] = useState(false)
-    const [participants, setParticipants] = useState<string[]>([])
+    const [pollQuestion, setPollQuestion] = useState('');
+    const [pollOptions, setPollOptions] = useState<string[]>(['', '']);
+    const [isMultipleChoice, setIsMultipleChoice] = useState(false);
+    const [includesPoll, setIncludesPoll] = useState(false);
+    const [participants, setParticipants] = useState<string[]>([]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
+        const { name, value } = e.target;
 
+      
         if (name === 'participants') {
-            setParticipants(value.split(',').map((_id) => _id.trim()))
+            setParticipants(value.split(',').map((_id) => _id.trim()));
         } else if (name === 'includesPoll') {
-            setIncludesPoll(e.target.checked)
+            setIncludesPoll(e.target.checked);
         } else if (name === 'pollQuestion') {
-            setPollQuestion(value)
+            setPollQuestion(value);
         } else if (name === 'isMultipleChoice') {
-            setIsMultipleChoice(e.target.checked)
+            setIsMultipleChoice(e.target.checked);
+        } else if (name === 'location') {
+            setEvent((prevEvent) => ({
+                ...prevEvent,
+                location: JSON.parse(value),
+            }));
         } else {
             setEvent((prevEvent) => ({
                 ...prevEvent,
                 [name]: value,
-            }))
+            }));
         }
-    }
+    };
 
     const handleFileUpload = (photo: File[]) => {
-        setEventPhotos(photo)
-    }
+        setEventPhotos(photo);
+    };
 
     const handleOptionChange = (index: number, value: string) => {
-        const newOptions = [...pollOptions]
-        newOptions[index] = value
-        setPollOptions(newOptions)
-    }
+        const newOptions = [...pollOptions];
+        newOptions[index] = value;
+        setPollOptions(newOptions);
+    };
 
     const handleAddOption = () => {
         if (pollOptions.length < 3) {
-            setPollOptions([...pollOptions, ''])
+            setPollOptions([...pollOptions, '']);
         }
-    }
+    };
 
     const createEvent = async (e: React.FormEvent<HTMLButtonElement>) => {
-        e.preventDefault()
+        e.preventDefault();
 
-        const formData = new FormData()
-        formData.append('title', event.title)
-        formData.append('description', event.description)
-        formData.append('startDate', event.startDate)
-        formData.append('endDate', event.endDate)
-        formData.append('location', event.location)
-        formData.append('type', event.type)
+        const formData = new FormData();
+        formData.append('title', event.title);
+        formData.append('description', event.description);
+        formData.append('startDate', event.startDate);
+        formData.append('endDate', event.endDate);
+        formData.append('type', event.type);
         participants.forEach((participant, index) => {
-            formData.append(`participants[${index}]`, participant)
-        })
+            formData.append(`participants[${index}]`, participant);
+        });
+        
+    if (event.location) {
+        formData.append('location', JSON.stringify(event.location));
+    }
+
+    if (event.locationAddress) {
+        formData.append('locationAddress', event.locationAddress);
+    }if (location) {
+            formData.append('location', JSON.stringify(location));
+        }
 
         if (includesPoll) {
             formData.append(
@@ -145,52 +163,53 @@ export const useCreateEvent = (
                         .map((option) => ({ option, votes: 0, voters: [] })),
                     isMultipleVote: isMultipleChoice,
                 }),
-            )
+            );
         }
 
         eventPhotos.forEach((photo) => {
-            formData.append('photo', photo)
-        })
+            formData.append('photo', photo);
+        });
 
-        console.log('Form data:', formData)
+        console.log('Form data:', formData);
         try {
             const response = await AxiosInstance.post('/event', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-            })
-            setToastMessage('Event created successfully')
-            setToastOpen(true)
-            setToastSeverity('success')
-            setEvents((prevEvents) => [...prevEvents, response.data])
+            });
+            setToastMessage('Event created successfully');
+            setToastOpen(true);
+            setToastSeverity('success');
+            setEvents((prevEvents) => [...prevEvents, response.data]);
             setEvent({
                 title: '',
-                description: '',
+                description: '', 
                 startDate: '',
                 endDate: '',
-                location: '',
+                location: null, 
                 type: '',
                 photo: [],
                 participants: [],
                 poll: { question: '', options: [], isMultipleVote: false },
-            })
-            setPollQuestion('')
-            setPollOptions(['', ''])
-            setIsMultipleChoice(false)
-            setParticipants([])
-            setEventPhotos([])
-            setEventPhotos([])
+            });
+            setPollQuestion('');
+            setPollOptions(['', '']);
+            setIsMultipleChoice(false);
+            setParticipants([]);
+            setEventPhotos([]);
+            // setLocation(null); 
+
         } catch (error) {
-            console.error('Error creating event:', error)
-            setToastMessage('Error creating event')
-            setToastSeverity('error')
-            setToastOpen(true)
+            console.error('Error creating event:', error);
+            setToastMessage('Error creating event');
+            setToastSeverity('error');
+            setToastOpen(true);
         }
-    }
+    };
 
     const handleToastClose = () => {
-        setToastOpen(false)
-    }
+        setToastOpen(false);
+    };
 
     return {
         createEvent,
@@ -212,8 +231,10 @@ export const useCreateEvent = (
         toastSeverity,
         handleFileUpload,
         eventPhotos,
-    }
-}
+        location,
+    // setLocation,
+    };
+};
 
 export const useUpdateEvent = (
     setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>,
@@ -431,3 +452,12 @@ export const useDeleteEvent = (
         eventToDeleteId,
     }
 }
+
+
+
+// export const LocationForm = () => {
+//   const [location, setLocation] = useState({ lat: 0, lng: 0 });
+
+//  export const handleLocationSelect = (lat: number, lng: number) => {
+//     setLocation({ lat, lng });
+//   }

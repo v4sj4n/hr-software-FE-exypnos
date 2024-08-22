@@ -13,6 +13,8 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import Toast from '@/Components/Toast/Toast';
 import DrawerComponent from '@/Components/Drawer/Drawer';
 import { EventsProvider, useEvents } from './Context/EventsContext';
+
+
  function EventsContentAndComponents() {
 
   const {
@@ -36,7 +38,14 @@ import { EventsProvider, useEvents } from './Context/EventsContext';
     eventToDeleteId,
     handleSeeVoters,
     handleOpenDrawer,
+    setLocation,
   } = useEvents();
+
+
+  // const handleSetLocation = (location: { lat: number; lng: number } | null) => {
+  //   setLocation(location);
+  // };
+
 
   return (
     <>
@@ -46,8 +55,8 @@ import { EventsProvider, useEvents } from './Context/EventsContext';
           message={toastOpen ? toastMessage : updateToastMessage}
           onClose={toastOpen ? handleToastClose : handleUpdateToastClose}
         />
-        <DrawerComponent/>
-        <div style={{ display: 'flex', alignItems: "center", gap: "10px", alignSelf:"flex-end" }}>
+      <DrawerComponent  />
+      <div style={{ display: 'flex', alignItems: "center", gap: "10px", alignSelf:"flex-end" }}>
           <Input IsUsername type='search' label='search' name='Search' width={220} iconPosition="end" icon={<SearchOutlinedIcon />} onChange={onSearchChange} />
           {isAdmin ? <Button btnText='Create Event' padding='12px 24px' type={ButtonTypes.PRIMARY} onClick={() => handleOpenDrawer('create')} /> : ''}
         </div>
@@ -75,10 +84,16 @@ import { EventsProvider, useEvents } from './Context/EventsContext';
                     </div>
                   </div>
                   <div className={style.data}>
-                    <LocationSearchingIcon sx={{ height: 20, width: 20, color: "#6b7280" }} />
-                    <div>{event.location}</div>
-                  </div>
-                  <Button
+                 <LocationSearchingIcon sx={{ height: 20, width: 20, color: "#6b7280" }} />
+                      <div>
+                      {event.location ? (
+            `${event.location.latitude}, ${event.location.longitude}`
+        ) : (
+            'Location not available'
+        )}
+    </div>
+    </div>
+      <Button
                     btnText={isAdmin ? "See voters" : 'Vote'}
                     type={ButtonTypes.SECONDARY}
                     onClick={() => handleSeeVoters(event)}
@@ -121,6 +136,7 @@ import { EventsProvider, useEvents } from './Context/EventsContext';
             <SelectedEventCard />
           </ModalComponent>
         )}
+
       </div>
     </>
   );

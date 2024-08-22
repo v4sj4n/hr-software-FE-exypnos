@@ -3,7 +3,7 @@ export interface InputProps {
   initialValue?: string
   helperText?: string
   id?: string
-  value?: string | Date
+  value?: string | Date|Geolocation|null
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
   label?: string
   variant?: 'outlined'
@@ -31,4 +31,5 @@ export interface InputProps {
   flex?: number | string;
   iconPosition?: 'start' | 'end';
   shrink?: boolean;
+  Geolocation?: object;
 }

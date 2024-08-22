@@ -1,3 +1,333 @@
+// import * as React from 'react'
+// import Drawer from '@mui/material/Drawer'
+// import Button1 from '../Button/Button'
+// import { Box } from '@mui/material'
+// import Input from '../Input/Index'
+// import { ButtonTypes } from '../Button/ButtonTypes'
+// import Switch from '@mui/material/Switch'
+// import style from '../../../src/Pages/Events/styles/Events.module.css'
+// import Selecter from '../Input/components/Select/Selecter'
+// import { useEvents } from '@/Pages/Events/Context/EventsContext'
+// import Dropzone from '@/Dropzone/Dropzone'
+// import CloseIcon from '@mui/icons-material/Close'
+// import MapPicker from '@/Pages/Events/Components/GoogleMap'
+// import { useEffect, useState } from 'react'
+// import { reverseGeocode } from '@/Pages/Events/Components/MapUtils'
+
+
+// function DrawerComponent() {
+//     const {
+//         editingEvent,
+//         editPollQuestion,
+//         editPollOptions,
+//         handleOptionChange,
+//         handleEditOptionChange,
+//         handleAddOption,
+//         handleAddEditOption,
+//         createEvent,
+//         updateEvent,
+//         pollQuestion,
+//         pollOptions,
+//         isMultipleChoice,
+//         includePollInEdit,
+//         includesPoll,
+//         editIsMultipleChoice,
+//         handleChange,
+//         handleEditChange,
+//         event,
+//         setParticipants,
+//         participants,
+//         allEmails,
+//         typesofEvent,
+//         editParticipants,
+//         setEditParticipants,
+//         editType,
+//         setEditType,
+//         endDate,
+//         drawerOpen,
+//         handleCloseDrawer,
+//         setLocation
+//     } = useEvents()
+
+//     const [selectedLocation, setSelectedLocation] = React.useState<string>('')
+//     const [address, setAddress] = useState('');
+    
+//     useEffect(() => {
+//         if (selectedLocation) {
+//           const [lat, lng] = selectedLocation.split(', ').map(coord => parseFloat(coord));
+//           reverseGeocode(lat, lng).then(setAddress);
+//         }
+//       }, [selectedLocation]);
+
+//     function handleLocationSelect(lat: number, lng: number) {
+//         const locationString = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+//         setSelectedLocation(locationString);
+//         setLocation({ lat, lng });
+    
+//         const handleChangeFn = editingEvent ? handleEditChange : handleChange;
+//         handleChangeFn({
+//             target: {
+//                 name: 'location',
+//                 value: locationString,
+//             },
+//         } as React.ChangeEvent<HTMLInputElement>);
+//     }
+
+//     return (
+//         <Drawer anchor="right" open={drawerOpen} onClose={handleCloseDrawer}>
+//             <Box
+//                 sx={{
+//                     width: 400,
+//                     display: 'flex',
+//                     flexDirection: 'column',
+//                     gap: 2,
+//                     padding: 2,
+//                 }}
+//             >
+//                 <div className={style.create}>
+//                     {editingEvent ? 'Edit Event' : 'Create New Event'}
+//                     <CloseIcon
+//                         onClick={handleCloseDrawer}
+//                         style={{ cursor: 'pointer' }}
+//                     />
+//                 </div>
+//                 <Input
+//                     IsUsername
+//                     label="Event Title"
+//                     name="title"
+//                     onChange={editingEvent ? handleEditChange : handleChange}
+//                     value={editingEvent ? editingEvent.title : event.title}
+//                 />
+//                 <div style={{ display: 'flex', width: '100%', gap: 15 }}>
+//                     <Input
+//                         IsUsername
+//                         label="Start Date and Time"
+//                         shrink={true}
+//                         name="startDate"
+//                         type="datetime-local"
+//                         onChange={
+//                             editingEvent ? handleEditChange : handleChange
+//                         }
+//                         value={
+//                             editingEvent
+//                                 ? editingEvent.startDate.slice(0, 16)
+//                                 : event.startDate
+//                         }
+//                         width={178}
+//                     />
+
+//                     <Input
+//                         IsUsername
+//                         label="End Date and Time"
+//                         shrink={true}
+//                         name="endDate"
+//                         type="datetime-local"
+//                         width={173}
+//                         onChange={
+//                             editingEvent ? handleEditChange : handleChange
+//                         }
+//                         value={
+//                             editingEvent
+//                                 ? editingEvent.endDate.slice(0, 16)
+//                                 : endDate
+//                         }
+//                     />
+//                 </div>
+//                 <Input
+//                     IsUsername
+//                     width="100%"
+//                     label="Location"
+//                     name="location"
+//                     value={editingEvent ? editingEvent.location : selectedLocation || event.location}
+//                 />
+//                 <MapPicker onLocationSelect={handleLocationSelect} />
+
+//                 <Input
+//                     IsUsername
+//                     label="Description"
+//                     type="textarea"
+//                     name="description"
+//                     multiline
+//                     rows={4}
+//                     onChange={editingEvent ? handleEditChange : handleChange}
+//                     value={
+//                         editingEvent
+//                             ? editingEvent.description
+//                             : event.description
+//                     }
+//                 />
+//                 <Selecter
+//                     value={editingEvent ? editParticipants : participants}
+//                     onChange={(newValue) => {
+//                         if (editingEvent) {
+//                             setEditParticipants(
+//                                 Array.isArray(newValue) ? newValue : [newValue],
+//                             )
+//                         } else {
+//                             setParticipants(
+//                                 Array.isArray(newValue) ? newValue : [newValue],
+//                             )
+//                         }
+//                     }}
+//                     options={allEmails}
+//                     multiple={true}
+//                     name="participants"
+//                     label="Participants"
+//                 />
+
+//                 <Selecter
+//                     value={editingEvent ? editType : event.type}
+//                     onChange={(newValue) => {
+//                         if (editingEvent) {
+//                             setEditType(
+//                                 Array.isArray(newValue)
+//                                     ? newValue[0]
+//                                     : newValue,
+//                             )
+//                         } else {
+//                             handleChange({
+//                                 target: {
+//                                     name: 'type',
+//                                     value: Array.isArray(newValue)
+//                                         ? newValue[0]
+//                                         : newValue,
+//                                 },
+//                             } as React.ChangeEvent<HTMLInputElement>)
+//                         }
+//                     }}
+//                     options={typesofEvent}
+//                     multiple={false}
+//                     name="type"
+//                     label="Event Type"
+//                 />
+//                 <div> Add Event Images</div>
+//                 <Dropzone />
+//                 <div style={{ display: 'flex', alignItems: 'center' }}>
+//                     <Switch
+//                         checked={
+//                             editingEvent ? includePollInEdit : includesPoll
+//                         }
+//                         onChange={(e) =>
+//                             editingEvent ? handleEditChange(e) : handleChange(e)
+//                         }
+//                         name="includesPoll"
+//                         sx={{ color: '#2469FF' }}
+//                     />
+//                     <div>
+//                         {editingEvent
+//                             ? 'Include poll in event'
+//                             : 'Add poll to event'}
+//                     </div>
+//                 </div>
+
+//                 {(editingEvent ? includePollInEdit : includesPoll) && (
+//                     <div
+//                         style={{
+//                             display: 'flex',
+//                             flexDirection: 'column',
+//                             gap: '20px',
+//                         }}
+//                     >
+//                         <Input
+//                             label="Poll Question"
+//                             name="pollQuestion"
+//                             IsUsername
+//                             value={
+//                                 editingEvent ? editPollQuestion : pollQuestion
+//                             }
+//                             onChange={
+//                                 editingEvent ? handleEditChange : handleChange
+//                             }
+//                         />
+//                         <div
+//                             style={{
+//                                 display: 'flex',
+//                                 alignItems: 'center',
+//                                 justifyContent: 'space-between',
+//                             }}
+//                         >
+//                             Options
+//                             <div
+//                                 style={{
+//                                     display: 'flex',
+//                                     alignItems: 'center',
+//                                 }}
+//                             >
+//                                 <Switch
+//                                     checked={
+//                                         editingEvent
+//                                             ? editIsMultipleChoice
+//                                             : isMultipleChoice
+//                                     }
+//                                     onChange={(e) =>
+//                                         editingEvent
+//                                             ? handleEditChange(e)
+//                                             : handleChange(e)
+//                                     }
+//                                     name="isMultipleChoice"
+//                                 />
+//                                 <div>Multiple choice</div>
+//                             </div>
+//                         </div>
+//                         {(editingEvent ? editPollOptions : pollOptions).map(
+//                             (option, index) => (
+//                                 <Input
+//                                     key={index}
+//                                     IsUsername
+//                                     label={`Option ${index + 1}`}
+//                                     name={`option${index + 1}`}
+//                                     value={option}
+//                                     onChange={(e) =>
+//                                         editingEvent
+//                                             ? handleEditOptionChange(
+//                                                   index,
+//                                                   e.target.value,
+//                                               )
+//                                             : handleOptionChange(
+//                                                   index,
+//                                                   e.target.value,
+//                                               )
+//                                     }
+//                                 />
+//                             ),
+//                         )}
+//                         <Button1
+//                             onClick={
+//                                 editingEvent
+//                                     ? handleAddEditOption
+//                                     : handleAddOption
+//                             }
+//                             btnText="Add new option"
+//                             type={ButtonTypes.SECONDARY}
+//                             color="#2469FF"
+//                             borderColor="#2469FF"
+//                             disabled={
+//                                 (editingEvent ? editPollOptions : pollOptions)
+//                                     .length >= 3
+//                             }
+//                         />
+//                         {(editingEvent ? editPollOptions : pollOptions)
+//                             .length >= 3 && (
+//                             <div style={{ color: 'red', fontSize: '14px' }}>
+//                                 Maximum of 3 options allowed.
+//                             </div>
+//                         )}
+//                     </div>
+//                 )}
+//                 <div className={style.border}></div>
+//                 <Button1
+//                     btnText={editingEvent ? 'Update' : 'Save event'}
+//                     type={ButtonTypes.PRIMARY}
+//                     backgroundColor="#2469FF"
+//                     border="none"
+//                     onClick={editingEvent ? updateEvent : createEvent}
+//                 />
+//             </Box>
+//         </Drawer>
+//     )
+// }
+
+// export default DrawerComponent
 import * as React from 'react'
 import Drawer from '@mui/material/Drawer'
 import Button1 from '../Button/Button'
@@ -10,6 +340,9 @@ import Selecter from '../Input/components/Select/Selecter'
 import { useEvents } from '@/Pages/Events/Context/EventsContext'
 import Dropzone from '@/Dropzone/Dropzone'
 import CloseIcon from '@mui/icons-material/Close'
+import MapPicker from '@/Pages/Events/Components/GoogleMap'
+import { useEffect } from 'react'
+import { reverseGeocode } from '@/Pages/Events/Components/MapUtils'
 
 function DrawerComponent() {
     const {
@@ -41,8 +374,48 @@ function DrawerComponent() {
         setEditType,
         endDate,
         drawerOpen,
-        handleCloseDrawer
+        handleCloseDrawer,
+        setLocation
     } = useEvents()
+
+    const [selectedLocation, setSelectedLocation] = React.useState<string>('')
+
+    useEffect(() => {
+        if (selectedLocation) {
+            const [lat, lng] = selectedLocation.split(', ').map(coord => parseFloat(coord));
+            reverseGeocode(lat, lng).then(setLocation);
+        }
+    }, [selectedLocation]);
+
+
+    
+    function handleLocationSelect(lat: number, lng: number) {
+        const locationString = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+        setSelectedLocation(locationString);
+    
+        // Update the location in the form data
+        const handleChangeFn = editingEvent ? handleEditChange : handleChange;
+        handleChangeFn({
+            target: {
+                name: 'location',
+                value: JSON.stringify({ lat, lng }),
+            },
+        } as React.ChangeEvent<HTMLInputElement>);
+    
+        // Reverse geocode to get the human-readable address
+        reverseGeocode(lat, lng).then((address) => {
+            console.log('Human-readable address:', address);
+            
+            handleChangeFn({
+                target: {
+                    name: 'locationAddress',
+                    value: address,
+                } as HTMLInputElement,
+            } as React.ChangeEvent<HTMLInputElement>);
+        }).catch(error => {
+            console.error('Error fetching address:', error);
+        });
+    }
 
     return (
         <Drawer anchor="right" open={drawerOpen} onClose={handleCloseDrawer}>
@@ -76,17 +449,10 @@ function DrawerComponent() {
                         shrink={true}
                         name="startDate"
                         type="datetime-local"
-                        onChange={
-                            editingEvent ? handleEditChange : handleChange
-                        }
-                        value={
-                            editingEvent
-                                ? editingEvent.startDate.slice(0, 16)
-                                : event.startDate
-                        }
+                        onChange={editingEvent ? handleEditChange : handleChange}
+                        value={editingEvent ? editingEvent.startDate.slice(0, 16) : event.startDate}
                         width={178}
                     />
-
                     <Input
                         IsUsername
                         label="End Date and Time"
@@ -94,27 +460,18 @@ function DrawerComponent() {
                         name="endDate"
                         type="datetime-local"
                         width={173}
-                        onChange={
-                            editingEvent ? handleEditChange : handleChange
-                        }
-                        value={
-                            editingEvent
-                                ? editingEvent.endDate.slice(0, 16)
-                                : endDate
-                        }
+                        onChange={editingEvent ? handleEditChange : handleChange}
+                        value={editingEvent ? editingEvent.endDate.slice(0, 16) : endDate}
                     />
                 </div>
-
                 <Input
                     IsUsername
                     width="100%"
                     label="Location"
                     name="location"
-                    onChange={editingEvent ? handleEditChange : handleChange}
-                    value={
-                        editingEvent ? editingEvent.location : event.location
-                    }
+                    value={ (editingEvent ? editingEvent.location : event.location)}
                 />
+                <MapPicker onLocationSelect={handleLocationSelect} onAddressChange={setLocation} />
                 <Input
                     IsUsername
                     label="Description"
@@ -123,23 +480,15 @@ function DrawerComponent() {
                     multiline
                     rows={4}
                     onChange={editingEvent ? handleEditChange : handleChange}
-                    value={
-                        editingEvent
-                            ? editingEvent.description
-                            : event.description
-                    }
+                    value={editingEvent ? editingEvent.description : event.description}
                 />
                 <Selecter
                     value={editingEvent ? editParticipants : participants}
                     onChange={(newValue) => {
                         if (editingEvent) {
-                            setEditParticipants(
-                                Array.isArray(newValue) ? newValue : [newValue],
-                            )
+                            setEditParticipants(Array.isArray(newValue) ? newValue : [newValue]);
                         } else {
-                            setParticipants(
-                                Array.isArray(newValue) ? newValue : [newValue],
-                            )
+                            setParticipants(Array.isArray(newValue) ? newValue : [newValue]);
                         }
                     }}
                     options={allEmails}
@@ -147,25 +496,18 @@ function DrawerComponent() {
                     name="participants"
                     label="Participants"
                 />
-
                 <Selecter
                     value={editingEvent ? editType : event.type}
                     onChange={(newValue) => {
                         if (editingEvent) {
-                            setEditType(
-                                Array.isArray(newValue)
-                                    ? newValue[0]
-                                    : newValue,
-                            )
+                            setEditType(Array.isArray(newValue) ? newValue[0] : newValue);
                         } else {
                             handleChange({
                                 target: {
                                     name: 'type',
-                                    value: Array.isArray(newValue)
-                                        ? newValue[0]
-                                        : newValue,
+                                    value: Array.isArray(newValue) ? newValue[0] : newValue,
                                 },
-                            } as React.ChangeEvent<HTMLInputElement>)
+                            } as React.ChangeEvent<HTMLInputElement>);
                         }
                     }}
                     options={typesofEvent}
@@ -173,114 +515,58 @@ function DrawerComponent() {
                     name="type"
                     label="Event Type"
                 />
-                <div> Add Event Images</div>
+                <div>Add Event Images</div>
                 <Dropzone />
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Switch
-                        checked={
-                            editingEvent ? includePollInEdit : includesPoll
-                        }
-                        onChange={(e) =>
-                            editingEvent ? handleEditChange(e) : handleChange(e)
-                        }
+                        checked={editingEvent ? includePollInEdit : includesPoll}
+                        onChange={(e) => editingEvent ? handleEditChange(e) : handleChange(e)}
                         name="includesPoll"
                         sx={{ color: '#2469FF' }}
                     />
                     <div>
-                        {editingEvent
-                            ? 'Include poll in event'
-                            : 'Add poll to event'}
+                        {editingEvent ? 'Include poll in event' : 'Add poll to event'}
                     </div>
                 </div>
-
                 {(editingEvent ? includePollInEdit : includesPoll) && (
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '20px',
-                        }}
-                    >
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                         <Input
                             label="Poll Question"
                             name="pollQuestion"
                             IsUsername
-                            value={
-                                editingEvent ? editPollQuestion : pollQuestion
-                            }
-                            onChange={
-                                editingEvent ? handleEditChange : handleChange
-                            }
+                            value={editingEvent ? editPollQuestion : pollQuestion}
+                            onChange={editingEvent ? handleEditChange : handleChange}
                         />
-                        <div
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                            }}
-                        >
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                             Options
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                }}
-                            >
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <Switch
-                                    checked={
-                                        editingEvent
-                                            ? editIsMultipleChoice
-                                            : isMultipleChoice
-                                    }
-                                    onChange={(e) =>
-                                        editingEvent
-                                            ? handleEditChange(e)
-                                            : handleChange(e)
-                                    }
+                                    checked={editingEvent ? editIsMultipleChoice : isMultipleChoice}
+                                    onChange={(e) => editingEvent ? handleEditChange(e) : handleChange(e)}
                                     name="isMultipleChoice"
                                 />
                                 <div>Multiple choice</div>
                             </div>
                         </div>
-                        {(editingEvent ? editPollOptions : pollOptions).map(
-                            (option, index) => (
-                                <Input
-                                    key={index}
-                                    IsUsername
-                                    label={`Option ${index + 1}`}
-                                    name={`option${index + 1}`}
-                                    value={option}
-                                    onChange={(e) =>
-                                        editingEvent
-                                            ? handleEditOptionChange(
-                                                  index,
-                                                  e.target.value,
-                                              )
-                                            : handleOptionChange(
-                                                  index,
-                                                  e.target.value,
-                                              )
-                                    }
-                                />
-                            ),
-                        )}
+                        {(editingEvent ? editPollOptions : pollOptions).map((option, index) => (
+                            <Input
+                                key={index}
+                                IsUsername
+                                label={`Option ${index + 1}`}
+                                name={`option${index + 1}`}
+                                value={option}
+                                onChange={(e) => editingEvent ? handleEditOptionChange(index, e.target.value) : handleOptionChange(index, e.target.value)}
+                            />
+                        ))}
                         <Button1
-                            onClick={
-                                editingEvent
-                                    ? handleAddEditOption
-                                    : handleAddOption
-                            }
+                            onClick={editingEvent ? handleAddEditOption : handleAddOption}
                             btnText="Add new option"
                             type={ButtonTypes.SECONDARY}
                             color="#2469FF"
                             borderColor="#2469FF"
-                            disabled={
-                                (editingEvent ? editPollOptions : pollOptions)
-                                    .length >= 3
-                            }
+                            disabled={(editingEvent ? editPollOptions : pollOptions).length >= 3}
                         />
-                        {(editingEvent ? editPollOptions : pollOptions)
-                            .length >= 3 && (
+                        {(editingEvent ? editPollOptions : pollOptions).length >= 3 && (
                             <div style={{ color: 'red', fontSize: '14px' }}>
                                 Maximum of 3 options allowed.
                             </div>
