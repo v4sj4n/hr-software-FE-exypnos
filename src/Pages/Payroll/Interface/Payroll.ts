@@ -7,6 +7,8 @@ export interface PayrollContextType {
     headerTextColors: { [key: string]: string }
     handleRowClick: (params: GridRowParams) => void
     getRowId: (row: PayrollRow) => number
+    setMonth: (month: number) => void
+    setYear: (year: number) => void
 }
 
 export const PayrollContext = React.createContext<PayrollContextType | undefined>(undefined)

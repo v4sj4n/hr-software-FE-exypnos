@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { PayrollContextSpecific, PayrollRowSpecifc } from "../interface";
 import { usePayrollUserId } from "../../Hook";
 
-export const PayrollProviderSpecific: React.FC<{ children: React.ReactNode }> = ({children}) => {
+export const PayrollProviderSpecific: React.FC<{ children: React.ReactNode; }> = ({
+    children,
+}) => {
 
-    const { data: payrollId = [] } = usePayrollUserId();
+    const [month, setMonth] = useState<number | undefined>(undefined);
+    const [year, setYear] = useState<number | undefined>(undefined);
 
+    const { data: payrollId = [] } = usePayrollUserId(month, year);
 
     const rows: PayrollRowSpecifc[] = payrollId.map((payrollData, index) => ({
         id: index + 1,
@@ -46,6 +50,8 @@ export const PayrollProviderSpecific: React.FC<{ children: React.ReactNode }> = 
         columns,
         headerTextColors,
         getRowId,
+        setMonth,
+        setYear,
     }
 
     return (

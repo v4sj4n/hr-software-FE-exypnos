@@ -21,7 +21,6 @@ export default function ViewCandidats() {
         setCustomMessage,
         handleSend, 
         handleCloseConfirmationModal  ,
-        handleAccept,
         customSubject,
         setCustomSubject
     } = useApplicantById()
