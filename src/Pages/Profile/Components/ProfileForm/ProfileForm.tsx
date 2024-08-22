@@ -5,27 +5,18 @@ import Button from '../../../../Components/Button/Button'
 import style from './ProfileForm.module.css'
 import Image from '../../../../Components/uploads/uploadImage'
 import { useFileUpload } from '../../Context/Hook'
-import { useProfile } from './Context/Hook'
+import { useProfile } from './Context/ProfileContext'
 
 const ProfileForm = () => {
     const { uploadImage, previewImage } = useFileUpload()
     const {
         user,
-        error,
-        isLoading,
         isCurrentUser,
         isAdmin,
         handleChange,
         handleUpdate,
     } = useProfile()
 
-    if (isLoading) {
-        return <div>Loading...</div>
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>
-    }
 
     if (!user) {
         return <div>No user data available</div>
@@ -46,7 +37,7 @@ const ProfileForm = () => {
                 <div className={style.inputWidth}>
                     <Input
                         IsUsername
-                        label="firstName"
+                        label="FirstName"
                         width="350px"
                         disabled={!isAdmin}
                         name="firstName"
@@ -75,7 +66,7 @@ const ProfileForm = () => {
                         name="lastName"
                         width="350px"
                         disabled={!isAdmin}
-                        label="lastName"
+                        label="LastName"
                         onChange={handleChange}
                         value={user.lastName}
                     />

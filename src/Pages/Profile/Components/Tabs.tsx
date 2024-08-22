@@ -31,7 +31,7 @@ export default function Tabs() {
         switch (activeTab) {
             case 'MyProfile':
                 return <MyProfile />
-            case 'Contract':
+            case 'Payroll':
                 return <Contract />
             case 'ChangePassword':
                 return <ChangePassword />
@@ -41,7 +41,7 @@ export default function Tabs() {
     }
 
     return (
-        <Card>
+        <Card flex='1'>
             <div className={style.tabs}>
                 <button
                     className={`${style.tab} ${activeTab === 'MyProfile' ? style.activetab : ''} actions`}
@@ -50,10 +50,10 @@ export default function Tabs() {
                     My Profile
                 </button>
                 <button
-                    className={`${style.tab} ${activeTab === 'Contract' ? style.activetab : ''} actions`}
-                    onClick={() => setActiveTab('Contract')}
+                    className={`${style.tab} ${activeTab === 'Payroll' ? style.activetab : ''} actions`}
+                    onClick={() => setActiveTab('Payroll')}
                 >
-                    Contract
+                    Payroll
                 </button>
                 <button
                     className={`${style.tab} ${activeTab === 'ChangePassword' ? style.activetab : ''} actions`}

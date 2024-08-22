@@ -11,8 +11,9 @@ import LongMenu from '@/Components/Menu/Menu';
 import SelectedEventCard from './Components/SelectedEvent/SelectedEvent';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import Toast from '@/Components/Toast/Toast';
-import DrawerComponent from '@/Components/Drawer/Drawer';
 import { EventsProvider, useEvents } from './Context/EventsContext';
+import Forms from './Forms/Forms';
+
  function EventsContentAndComponents() {
 
   const {
@@ -46,7 +47,7 @@ import { EventsProvider, useEvents } from './Context/EventsContext';
           message={toastOpen ? toastMessage : updateToastMessage}
           onClose={toastOpen ? handleToastClose : handleUpdateToastClose}
         />
-        <DrawerComponent />
+       <Forms/>
         <div style={{ display: 'flex', alignItems: "center", gap: "10px", alignSelf:"flex-end" }}>
           <Input IsUsername type='search' label='search' name='Search' width={220} iconPosition="end" icon={<SearchOutlinedIcon />} onChange={onSearchChange} />
           {isAdmin ? <Button btnText='Create Event' padding='12px 24px' type={ButtonTypes.PRIMARY} onClick={() => handleOpenDrawer('create')} /> : ''}

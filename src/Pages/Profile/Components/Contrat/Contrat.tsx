@@ -2,21 +2,29 @@ import Input from '../../../../Components/Input/Index'
 import { ButtonTypes } from '../../../../Components/Button/ButtonTypes'
 import Button from '../../../../Components/Button/Button'
 import style from '../ProfileForm/ProfileForm.module.css'
+// import Selecter from '@/Components/Input/components/Select/Selecter'
+import { ProfileProvider } from '../ProfileForm/Context/ProfileProvider'
+import { useCreatePayroll } from '../ProfileForm/Context/Hook'
 
-const Contrat = () => {
+const ContratContent = () => {
+
+    // const typesofCurrentcy = ['USD', 'EUR', 'GBP']
+
+    const {payroll, handleChangePayroll, handleCreatePayroll} = useCreatePayroll()
+
     return (
         <div className={style.container}>
-            <div className={style.title}>Contract Information</div>
-
+            <div className={style.title}>Payroll Information</div>
             <div className={style.forms}>
-                <div className={style.inputWidth}>
-                    <Input IsUsername label="Pay company" name="Pay company" />
-                </div>
+        
                 <div className={style.inputWidth}>
                     <Input
                         IsUsername
-                        label="Company department"
-                        name="Company department"
+                        type='number'
+                        label="WorkingDays"
+                        name="workingDays"
+                        value={payroll.workingDays}
+                        onChange={handleChangePayroll}
                     />
                 </div>
             </div>
@@ -25,37 +33,33 @@ const Contrat = () => {
                 <div className={style.inputWidth}>
                     <Input
                         IsUsername
-                        label="Contract type"
-                        name="Contract type"
+                        label="Social Security"
+                        name="socialSecurity"
+                        value={payroll.socialSecurity}
+                        onChange={handleChangePayroll}
                     />
                 </div>
             </div>
             <div className={style.border}></div>
 
             <div className={style.forms}>
-                <div style={{ display: 'flex', width: '350px', gap: '20px' }}>
-                    <Input IsUsername label="Start date" name="Start date" />
-                    <Input IsUsername label="End date" name="End date" />
-                </div>
                 <div className={style.inputWidth}>
-                    <Input
+                <Input
                         IsUsername
-                        label="Weekly duration"
-                        name="Weekly duration"
+                        label="Health Insurance"
+                        name="healthInsurance"
+                        value={payroll.healthInsurance}
+                        onChange={handleChangePayroll}
                     />
                 </div>
-            </div>
-
-            <div className={style.forms}>
                 <div className={style.inputWidth}>
-                    <Input IsUsername label="Hours" name="Hours" />
-                </div>
-                <div className={style.inputWidth}>
-                    <Input
-                        IsUsername
-                        label="Trial Period"
-                        name="Trial Period"
-                    />
+                {/* <Selecter
+                   
+                   options={typesofCurrentcy}
+                   multiple={false}
+                   name="currency"
+                   label="Currency"
+               /> */}
                 </div>
             </div>
 
@@ -70,55 +74,41 @@ const Contrat = () => {
                         gap: '20px',
                     }}
                 >
-                    <Input
+                    {/* <Input
                         IsUsername
                         label="Work Position"
                         name="Work Position"
+                        value={payroll.workingDays}
+                        onChange={handleChangePayroll}
                     />
-                    <Input
-                        IsUsername
-                        label="Annual gross salary"
-                        name="Annual gross salary"
-                    />
+                */}
                 </div>
                 <div className={style.inputWidth}>
                     <Input
                         IsUsername
-                        name="Hourly gross salary"
-                        label="Hourly gross salary"
-                    />
-                </div>
-            </div>
-
-            <div className={style.border}></div>
-            <div className={style.title}>End of Contract</div>
-
-            <div className={style.forms}>
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '350px',
-                        gap: '20px',
-                    }}
-                >
-                    <Input IsUsername label="Reason" name="Reason" />
-                </div>
-                <div className={style.inputWidth}>
-                    <Input
-                        IsUsername
-                        name="Other details"
-                        label="Other details"
+                        name="grossSalary"
+                        label="Gross salary"
+                        value={payroll.grossSalary}
+                        onChange={handleChangePayroll}
                     />
                 </div>
             </div>
 
             <div className={style.border}></div>
             <div className={style.inputWidth}>
-                <Button type={ButtonTypes.PRIMARY} btnText="Save Changes" />
+                <Button type={ButtonTypes.PRIMARY} btnText="Save Changes" onClick={handleCreatePayroll}/>
             </div>
         </div>
     )
 }
+
+const Contrat: React.FC = () => {
+    return (
+        <ProfileProvider  >
+            <ContratContent />
+        </ProfileProvider>
+    )
+}
+
 
 export default Contrat
