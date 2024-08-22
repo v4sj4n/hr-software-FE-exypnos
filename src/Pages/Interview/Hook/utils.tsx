@@ -1,4 +1,5 @@
 import { Interview } from './InterviewContext';
+export type DateFilterType = 'custom' | 'monthly' | 'yearly';
 
 export const formatDate = (dateString: string | number | Date) => {
     if (!dateString) {
@@ -18,7 +19,7 @@ export const formatDate = (dateString: string | number | Date) => {
 export const getInterviewsByPhase = (interviews: Interview[], phase: string) => {
   return interviews.filter(interview => 
     phase === 'applicant' 
-      ? interview.currentPhase === 'applicant' || interview.status === 'accepted'
+      ? interview.currentPhase === 'applicant' || interview.status === 'active'
       : interview.currentPhase === phase
   );
 };

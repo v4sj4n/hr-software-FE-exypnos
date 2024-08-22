@@ -41,7 +41,7 @@ export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({
             width: 130,
             renderCell: (params: GridRenderCellParams) => {
                 const color =
-                    params.value === 'accepted'
+                    params.value === 'active'
                         ? 'green'
                         : params.value === 'pending'
                           ? 'orange'
