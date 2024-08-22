@@ -46,7 +46,7 @@ import { EventsProvider, useEvents } from './Context/EventsContext';
           message={toastOpen ? toastMessage : updateToastMessage}
           onClose={toastOpen ? handleToastClose : handleUpdateToastClose}
         />
-        <DrawerComponent/>
+        <DrawerComponent />
         <div style={{ display: 'flex', alignItems: "center", gap: "10px", alignSelf:"flex-end" }}>
           <Input IsUsername type='search' label='search' name='Search' width={220} iconPosition="end" icon={<SearchOutlinedIcon />} onChange={onSearchChange} />
           {isAdmin ? <Button btnText='Create Event' padding='12px 24px' type={ButtonTypes.PRIMARY} onClick={() => handleOpenDrawer('create')} /> : ''}

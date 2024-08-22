@@ -6,6 +6,8 @@ export interface PayrollContextType {
     columns: GridColDef[]
     headerTextColors: { [key: string]: string }
     getRowId: (row: PayrollRowSpecifc) => number
+    setMonth: (month: number) => void
+    setYear: (year: number) => void
 }
 
 export const PayrollContextSpecific = React.createContext<PayrollContextType | undefined>(undefined)

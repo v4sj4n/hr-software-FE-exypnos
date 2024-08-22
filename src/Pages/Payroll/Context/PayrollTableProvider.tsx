@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { PayrollContext, PayrollRow } from "../Interface/Payroll";
 import { usePayroll } from "../Hook";
 import { GridRowParams } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 
 export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
+    const [month, setMonth] = useState<number | undefined>(undefined);
+    const [year, setYear] = useState<number | undefined>(undefined);
+    const { data: payrollData = [] } = usePayroll(month, year)
 
-    const { data: payrollData = [] } = usePayroll()
  
     const navigate = useNavigate()
 
@@ -53,7 +55,9 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({childr
         columns,
         headerTextColors,
         getRowId,
-        handleRowClick
+        handleRowClick,
+        setMonth,
+        setYear
     }
 
     return (
