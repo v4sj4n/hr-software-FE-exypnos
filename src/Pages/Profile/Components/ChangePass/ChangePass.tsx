@@ -16,7 +16,7 @@ export default function ChangePass() {
 
     return (
         <>
-            <div>
+            <div style={{margin:'20px 0'}}>
                 To change your password add your current password then your new
                 password.
             </div>
@@ -25,10 +25,11 @@ export default function ChangePass() {
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '15px',
-                    maxWidth: '350px',
+    
                 }}
             >
                 {success && <div style={{ color: 'green' }}>{success}</div>}
+                <div style={{display:"flex", gap:"16px" }}>
                 <Input
                     label="Current Password"
                     name="currentPassword"
@@ -45,6 +46,8 @@ export default function ChangePass() {
                     onChange={handleChange}
                     value={newPassword}
                 />
+                </div>
+                
                 <Input
                     label="Confirm Password"
                     name="confirmPassword"
@@ -52,14 +55,16 @@ export default function ChangePass() {
                     type="password"
                     onChange={handleChange}
                     value={confirmPassword}
+                    width='260px'
                 />
                 {error && <div style={{ color: '#d32f2f' }}>{error}</div>}
                 <Button
                     type={ButtonTypes.PRIMARY}
                     btnText="Update Pass"
                     onClick={handleUpdatePassword}
+                    width='260px'
                 />
-            </div>{' '}
+            </div>
         </>
     )
 }
