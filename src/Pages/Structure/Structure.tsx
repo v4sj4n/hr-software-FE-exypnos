@@ -40,38 +40,29 @@ export default function ColoredDemo() {
                         title: 'HR',
                     },
                 },
-                {
+                ...projects.map((project) => ({
                     expanded: true,
                     type: 'person',
-                    className: styles.bgTeal500,
+                    className: styles.bgPurple500,
                     data: {
-                        name: 'Project Managers',
-                        title: 'Department',
+                        name: `${project.projectManager.firstName} ${project.projectManager.lastName}`,
+                        title: 'Project Manager',
+                        teamMembers: project.teamMembers,
                     },
-                    children: projects.map((project) => ({
-                        expanded: true,
-                        type: 'person',
-                        className: styles.bgPurple500,
-                        data: {
-                            name: `${project.projectManager.firstName} ${project.projectManager.lastName}`,
-                            title: 'Project Manager',
-                            teamMembers: project.teamMembers,
-                        },
-                        children: [
-                            {
-                                expanded: true,
-                                type: 'team',
-                                className: styles.bgTeal500,
-                                data: {
-                                    teamMembers: project.teamMembers,
-                                },
+                    children: [
+                        {
+                            expanded: true,
+                            type: 'team',
+                            className: styles.bgTeal500,
+                            data: {
+                                teamMembers: project.teamMembers,
                             },
-                        ],
-                    })),
-                },
+                        },
+                    ],
+                })),
             ],
         }
-
+    
         return [rootNode]
     }
 
@@ -92,7 +83,7 @@ export default function ColoredDemo() {
                         <span className={styles.nodeName}>
                             {node.data.name}
                         </span>
-                        <span>{node.data.title}</span>
+                        <span style={{fontSize:'12px'}}>{node.data.title}</span>
                     </div>
                 </div>
             )
@@ -100,7 +91,7 @@ export default function ColoredDemo() {
             return (
                 <div className={styles.flexColumn}>
                     <div className={styles.alignItemsCenter}>
-                        <strong>Team Members:</strong>
+                        <strong style={{fontSize:"14px"}}>Team Members:</strong>
                         <ul className={styles.verticalList}>
                             {node.data.teamMembers?.map((member, index) => (
                                 <li
@@ -118,7 +109,10 @@ export default function ColoredDemo() {
     const transformedData = data ? transformProjectData(data) : []
 
     return (
-        <Card border="1px solid #ebebeb" borderRadius="5px" height="100%">
+        <div className={styles.container}>
+        <Card borderRadius="5px"
+                padding="32px"
+                border="1px solid #ebebeb">
             {isLoading ? (
                 <div>Loading...</div>
             ) : error ? (
@@ -130,7 +124,8 @@ export default function ColoredDemo() {
                         nodeTemplate={nodeTemplate}
                     />
                 </div>
-            )}
+            )} 
         </Card>
+        </div>
     )
 }

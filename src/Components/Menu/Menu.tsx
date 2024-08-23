@@ -40,7 +40,7 @@ export default function LongMenu({event}) {
                     aria-haspopup="true"
                     onClick={handleClick}
                 >
-                    <MoreVertIcon />
+                    <MoreVertIcon sx={{margin:0, padding:0}}/>
                 </IconButton>
                 <Menu
                     id="long-menu"

@@ -76,7 +76,7 @@ export const BreadcrumbComponent = () => {
     const breadcrumbs = generateBreadcrumbs(currentPath)
 
     return (
-        <Stack sx={{ marginBottom: '16px' }}>
+        <Stack sx={{ marginBottom: '16px', maxWidth:"50%" }}>
             <Breadcrumbs
                 separator={<NavigateNextIcon fontSize="medium" />}
                 aria-label="breadcrumb"
