@@ -76,9 +76,9 @@ import Forms from './Forms/Forms';
                     </div>
                   </div>
                   <div className={style.data}>
-                    <LocationSearchingIcon sx={{ height: 20, width: 20, color: "#6b7280" }} />
-                    <div>{event.location}</div>
-                  </div>
+          <LocationSearchingIcon sx={{ height: 20, width: 20, color: "#6b7280" }} />
+          <div>{event.location.address || `${event.location.latitude}, ${event.location.longitude}`}</div>
+        </div>
                   <Button
                     btnText={isAdmin ? "See voters" : 'Vote'}
                     type={ButtonTypes.SECONDARY}

@@ -1,48 +1,56 @@
+export interface Geolocation {
+    latitude: number;
+    longitude: number;
+    address?: string; // Optional property if needed
+}
+
+
 export interface EventsData {
-    _id: number
-    title: string
-    description: string
-    startDate: string
-    endDate: string
-    email: string[]
-    time: string
-    creatingTime: string
-    file: string
-    location: string
-    type: string
-    photo: string[]
-    participants: string[]
+    _id: number;
+    title: string;
+    description: string;
+    startDate: string;
+    endDate: string;
+    email: string[];
+    time: string;
+    creatingTime: string;
+    file: string;
+    location: Geolocation; 
+    type: string;
+    photo: string[];
+    participants: string[];
     poll: {
-        question: string
+        question: string;
         options: {
-            option: string
-            votes: number
-            voters: { _id: string; firstName: string; lastName: string }[]
-        }[]
-        isMultipleVote: boolean
-    }
-    onClose: () => void
+            option: string;
+            votes: number;
+            voters: { _id: string; firstName: string; lastName: string }[];
+        }[];
+        isMultipleVote: boolean;
+    };
+    onClose: () => void;
 }
 
 export interface EventsCreationData {
-    title: string
-    description: string
-    startDate: string
-    endDate: string
-    location: string
-    participants: string[]
-    photo: File[]
-    type: string
+    title: string;
+    description: string;
+    startDate: string;
+    endDate: string;
+    location: Geolocation; // Updated to use Geolocation
+    participants: string[];
+    photo: File[];
+    type: string;
     poll: {
-        question: string
+        question: string;
         options: {
-            option: string
-            votes: number
-            voters: { _id: string; firstName: string; lastName: string }[]
-        }[]
-        isMultipleVote: boolean
-    }
+            option: string;
+            votes: number;
+            voters: { _id: string; firstName: string; lastName: string }[];
+        }[];
+        isMultipleVote: boolean;
+    };
 }
+
 
 export interface EventsContextProps {
     events: EventsData[]

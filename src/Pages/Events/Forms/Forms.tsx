@@ -1,5 +1,5 @@
-import React from 'react'
-import CloseIcon from '@mui/icons-material/Close'
+import React, { useState } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
 import Selecter from '@/Components/Input/components/Select/Selecter';
 import Dropzone from '@/Dropzone/Dropzone';
 import { Switch } from '@mui/material';
@@ -8,11 +8,13 @@ import Input from '@/Components/Input/Index';
 import Button from '@/Components/Button/Button';
 import { ButtonTypes } from '@/Components/Button/ButtonTypes';
 import { useEvents } from '../Context/EventsContext';
-import style from '../styles/Events.module.css'
-
+import style from '../styles/Events.module.css';
+import MapPicker from '../Components/MapPicker';
 export default function Forms() {
+    const [selectedLocation, setSelectedLocation] = useState('');
 
-    const { editingEvent,
+    const {
+        editingEvent,
         editPollQuestion,
         editPollOptions,
         handleOptionChange,
@@ -40,11 +42,27 @@ export default function Forms() {
         setEditType,
         endDate,
         handleCloseDrawer,
-        drawerOpen,} = useEvents();
-  return (
-    <div>
-       <DrawerComponent open={drawerOpen} onClose={handleCloseDrawer} >
-        <div className={style.create}>
+        drawerOpen,
+    } = useEvents();
+
+    const handleLocationSelect = (location: { lat: any; lng: any; }) => {
+        setSelectedLocation(`Lat: ${location.lat}, Lng: ${location.lng}`);
+        handleChange({
+            target: {
+                name: 'location',
+                value: {
+                    latitude: location.lat,
+                    longitude: location.lng,
+                },
+            },
+        });
+    };
+    
+
+    return (
+        <div>
+            <DrawerComponent open={drawerOpen} onClose={handleCloseDrawer}>
+                <div className={style.create}>
                     {editingEvent ? 'Edit Event' : 'Create New Event'}
                     <CloseIcon
                         onClick={handleCloseDrawer}
@@ -75,7 +93,6 @@ export default function Forms() {
                         }
                         width={178}
                     />
-
                     <Input
                         IsUsername
                         label="End Date and Time"
@@ -101,9 +118,12 @@ export default function Forms() {
                     name="location"
                     onChange={editingEvent ? handleEditChange : handleChange}
                     value={
-                        editingEvent ? editingEvent.location : event.location
+                        selectedLocation ||
+                        (editingEvent ? editingEvent.location : event.location)
                     }
                 />
+
+                <MapPicker onLocationSelect={handleLocationSelect} />
                 <Input
                     IsUsername
                     label="Description"
