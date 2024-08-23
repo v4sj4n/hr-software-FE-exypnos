@@ -1,4 +1,3 @@
-import { SvgIconProps } from '@mui/material'
 import {
     DataGrid,
     GridColDef,
@@ -16,7 +15,6 @@ interface DataTableProps<T extends GridValidRowModel> {
     initialPageSize?: number
     pageSizeOptions?: number[]
     additionalStyles?: React.CSSProperties
-    headerIcons?: { [key: string]: React.ComponentType<SvgIconProps> }
     handleRowClick?: (params: GridRowParams) => void
 }
 export default function DataTable<T extends GridValidRowModel>({
@@ -29,9 +27,7 @@ export default function DataTable<T extends GridValidRowModel>({
    
     handleRowClick,
 }: DataTableProps<T>) {
-    const getRowClassName = (params: GridRowParams) => {
-        return Number(params.id) % 2 === 0 ? 'colored-row' : ''
-    }
+   
     const columnsWithIcons = columns.map((column) => {
  
             return {
@@ -49,7 +45,6 @@ export default function DataTable<T extends GridValidRowModel>({
                 rows={rows}
                 columns={columnsWithIcons}
                 getRowId={getRowId}
-                getRowClassName={getRowClassName}
                 onRowClick={handleRowClick}
                 sx={{
                     ...TableStyles,
@@ -67,7 +62,6 @@ export default function DataTable<T extends GridValidRowModel>({
                     },
                 }}
                 pageSizeOptions={pageSizeOptions}
-                checkboxSelection
             />
         </div>
     )

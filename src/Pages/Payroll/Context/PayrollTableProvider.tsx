@@ -9,7 +9,6 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({childr
     const [year, setYear] = useState<number | undefined>(undefined);
     const { data: payrollData = [] } = usePayroll(month, year)
 
- 
     const navigate = useNavigate()
 
     const rows: PayrollRow[] = payrollData.map((payrollData, index) => ({
@@ -30,16 +29,16 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({childr
     }))
 
     const columns = [
-        { field: 'id', headerName: 'No', maxWidth: 70, flex: 1 },
-        { field: 'fullName', headerName: 'Full Name', width: 150, flex: 1 },
-        { field: 'netSalary', headerName: 'netSalary', width: 150, flex: 1 },
-        { field: 'healthInsurance', headerName: 'healthInsurance', width: 150, flex: 1 },
-        { field: 'month', headerName: 'month', width: 50, flex: 1 },
-        { field: 'workingDays', headerName: 'workingDays', width: 50, flex: 1 },
-        { field: 'socialSecurity', headerName: 'socialSecurity', width: 100, flex: 1 },
-        { field: 'grossSalary', headerName: 'grossSalary', width: 100, flex: 1 },
-        { field: 'year', headerName: 'year', width: 100, flex: 1 },
-        { field: 'bonusDescription', headerName: 'bonusDescription', width: 100, flex: 1 },
+        { field: 'id', headerName: 'No',  flex: 0.5 },
+        { field: 'fullName', headerName: 'Full Name',  flex: 1.7 },
+        { field: 'netSalary', headerName: 'netSalary',  flex: 1.7 },
+        { field: 'healthInsurance', headerName: 'healthInsurance',  flex: 1.7},
+        { field: 'month', headerName: 'month', flex: 1 },
+        { field: 'workingDays', headerName: 'workingDays', flex: 1.5 },
+        { field: 'socialSecurity', headerName: 'socialSecurity',  flex: 1.5 },
+        { field: 'grossSalary', headerName: 'grossSalary',  flex: 1 },
+        { field: 'year', headerName: 'year', flex: 1.5 },
+        { field: 'bonusDescription', headerName: 'bonusDescription',  flex: 2 },
     ]
 
     const headerTextColors = { firstName: '#0000FF' }

@@ -8,6 +8,7 @@ export interface PayrollContextType {
     getRowId: (row: PayrollRowSpecifc) => number
     setMonth: (month: number) => void
     setYear: (year: number) => void
+    fullName: string | undefined;
 }
 
 export const PayrollContextSpecific = React.createContext<PayrollContextType | undefined>(undefined)

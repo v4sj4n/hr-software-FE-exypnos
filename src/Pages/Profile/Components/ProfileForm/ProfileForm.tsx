@@ -6,8 +6,10 @@ import style from './ProfileForm.module.css'
 import Image from '../../../../Components/uploads/uploadImage'
 import { useFileUpload } from '../../Context/Hook'
 import { useProfile } from './Context/ProfileContext'
+import { FileUploadProvider } from '../../Context/FileUpoadProvider'
+import { ProfileProvider } from './Context/ProfileProvider'
 
-const ProfileForm = () => {
+const ProfileFormContext = () => {
     const { uploadImage, previewImage } = useFileUpload()
     const {
         user,
@@ -30,8 +32,13 @@ const ProfileForm = () => {
                 <div className={style.profile}>
                     <Avatar
                         src={previewImage || user.imageUrl}
-                        style={{ width: '50px', height: '50px' }}
+                        style={{ width: '70px', height: '70px' }}
                     />
+                    <div style={{display:'flex', flexDirection:"column"}}>
+                    <div style={{fontSize:"20px", color:"#000000"}}>{`${user.firstName} ${user.lastName}`}</div>
+                    <div style={{ color:"#000000"}}>{user.auth.email}</div>
+                    </div>
+                  
                     {isCurrentUser && <Image onChange={uploadImage} />}
                 </div>
                 <div className={style.inputWidth}>
@@ -150,6 +157,7 @@ const ProfileForm = () => {
                         onClick={handleUpdate}
                         type={ButtonTypes.PRIMARY}
                         btnText="Save Changes"
+                              width="350px"
                     />
                 </div>
             ) : (
@@ -159,6 +167,7 @@ const ProfileForm = () => {
                             onClick={handleUpdate}
                             type={ButtonTypes.PRIMARY}
                             btnText="Change Picture"
+                            width="350px"
                         />
                     </div>
                 )
@@ -166,5 +175,17 @@ const ProfileForm = () => {
         </div>
     )
 }
+
+
+const ProfileForm: React.FC = () => {
+    return (
+        <FileUploadProvider>
+        <ProfileProvider>
+            <ProfileFormContext />
+        </ProfileProvider>
+    </FileUploadProvider>
+    );
+  };
+
 
 export default ProfileForm

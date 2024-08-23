@@ -27,13 +27,13 @@ export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({
     }))
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 10 },
-        { field: 'fullName', headerName: 'FullName', width: 130, flex: 1 },
-        { field: 'email', headerName: 'Email', width: 230, flex: 1 },
+        { field: 'id', headerName: 'ID', flex:0.5},
+        { field: 'fullName', headerName: 'FullName',  flex: 1.2 },
+        { field: 'email', headerName: 'Email',  flex: 2 },
         {
             field: 'status',
             headerName: 'Status',
-            width: 130,
+            flex:1.3,
             renderCell: (params: GridRenderCellParams) => {
                 const color =
                     params.value === 'accepted'
@@ -46,19 +46,19 @@ export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({
                 return <StatusBadge status={params.value} color={color} />
             },
         },
-        { field: 'phoneNumber', headerName: 'Phone', width: 200, flex: 1 },
+        { field: 'phoneNumber', headerName: 'Phone',  flex: 1.8 },
         {
             field: 'positionApplied',
             headerName: 'Position',
-            width: 270,
-            flex: 1,
+      
+            flex: 1.8,
         },
-        { field: 'experience', headerName: 'Experience', width: 120, flex: 1 },
+        { field: 'experience', headerName: 'Experience',  flex: 1.3 },
         {
             field: 'actions',
             headerName: 'Actions',
-            width: 120,
-            flex: 1,
+        
+            flex: 1.3,
             renderCell: (params: GridRenderCellParams) => (
                 <Link
                     style={{ textDecoration: 'none', color: '#4C556B' }}

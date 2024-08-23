@@ -4,14 +4,9 @@ import style from '../styles/Payroll.module.css'
 import { usePayrollContextSpecific } from './Context/SpecificUserPayrollContext'
 import Input from '@/Components/Input/Index'
 import { EventsProvider } from '@/Pages/Events/Context/EventsContext'
-import Button from '@/Components/Button/Button'
-import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-import DrawerComponent from '@/Components/Drawer/Drawer'
-import { useState } from 'react'
-import CloseIcon from '@mui/icons-material/Close'
 
 function SpecificUserPayrollContent() {
-    const { rows, columns, getRowId, setMonth, setYear } = usePayrollContextSpecific();
+    const { rows, columns, getRowId, setMonth, setYear, fullName } = usePayrollContextSpecific();
 
     const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const date = event.target.value;
@@ -20,44 +15,14 @@ function SpecificUserPayrollContent() {
         setMonth(parseInt(monthString));
     };
 
-    const [drawerOpen, setDrawerOpen] = useState(false);
-
-    const handleOpenDrawer = () => {
-        setDrawerOpen(true);
-    };
-
-    const handleCloseDrawer = () => {
-        setDrawerOpen(false);
-    };
-
     return (
         <div className={style.payroll}>
-            <div style={{display:'flex', gap:"10px", alignSelf:"flex-end"}}>
-                <Button btnText='Create Payroll' type={ButtonTypes.PRIMARY} onClick={handleOpenDrawer}/>
-             <Input width={250} name='Filter' type='month' label='Month & Year' IsUsername onChange={handleDateChange} />
+           
+           <div style={{ display:"flex", gap:"25px",alignItems:"center", alignSelf: "flex-end", position:"absolute", top:77  }}>
+           <div style={{fontSize:"20px", fontWeight:"bold"}}>{fullName}</div>
+                <Input width={250} name='Filter' type='month' label='Month & Year' IsUsername onChange={handleDateChange} />
+                   
             </div>
-            <DrawerComponent open={drawerOpen} onClose={handleCloseDrawer}>
-                <div style={{display:"flex", justifyContent:"space-between"}}>
-                <div>Update Payroll</div> 
-                <CloseIcon
-                        onClick={handleCloseDrawer}
-                        style={{ cursor: 'pointer' }}
-                    />
-                </div>
-                <Input name='netSalary'label='NetSalary' IsUsername/>
-                <Input name='workingDays'label='WorkingDays' IsUsername/>
-                <Input name='bonus'label='Bonus' IsUsername/>
-                <Input
-                    IsUsername
-                    label="Bonus Description"
-                    type="textarea"
-                    name="bonusDescription"
-                    multiline
-                    rows={4}
-                    
-                />
-                <Button btnText='Create Payroll' type={ButtonTypes.PRIMARY}/>
-            </DrawerComponent>
             <DataTable
                 rows={rows}
                 columns={columns}

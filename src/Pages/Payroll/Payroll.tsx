@@ -15,8 +15,8 @@ function PayrollContent() {
 
     return (
         <div className={style.payroll}>
-            <div style={{ alignSelf: "flex-end" }}>
-                <Input width={350} name='Filter' type='month' label='Month & Year' IsUsername onChange={handleDateChange} />
+            <div style={{ alignSelf: "flex-end", position:"absolute", top:77  }}>
+                <Input width={250} name='Filter' type='month' label='Month & Year' IsUsername onChange={handleDateChange} />
             </div>
             <DataTable
                 rows={rows}
