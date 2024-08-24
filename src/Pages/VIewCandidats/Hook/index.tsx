@@ -5,12 +5,12 @@ import { CandidateView, ModalAction } from '../interfaces/ViewCandidate'
 
 export const useApplicantById = () => {
     const [applicant, setApplicant] = useState<CandidateView | null>(null)
-    const [showModal, setShowModal] = useState(false);
-    const [modalAction, setModalAction] = useState<ModalAction | ''>('');
-    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-    const [firstInterviewDate, setFirstInterviewDate] = useState('');
-    const [customMessage, setCustomMessage] = useState('');
-    const [customSubject, setCustomSubject] = useState('');
+    const [showModal, setShowModal] = useState(false)
+    const [modalAction, setModalAction] = useState<ModalAction | ''>('')
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false)
+    const [firstInterviewDate, setFirstInterviewDate] = useState('')
+    const [customMessage, setCustomMessage] = useState('')
+    const [customSubject, setCustomSubject] = useState('')
 
     const { id } = useParams<{ id: string }>()
 
@@ -33,8 +33,8 @@ export const useApplicantById = () => {
 
     const handleConfirm = () => {
         if (modalAction === 'accept') {
-            handleAccept();
-            setShowConfirmationModal(true);
+            handleAccept()
+            setShowConfirmationModal(true)
         } else if (modalAction === 'reject') {
             handleReject()
         }
@@ -50,17 +50,17 @@ export const useApplicantById = () => {
         } catch (error) {
             console.error('Error rejecting applicant:', error)
         }
-    };
+    }
     const handleAccept = async () => {
         try {
             await AxiosInstance.patch(`/applicant/${id}`, {
-                status: 'accepted'
-            });
-            fetchApplicant();
+                status: 'accepted',
+            })
+            fetchApplicant()
         } catch (error) {
-            console.error('Error rejecting applicant:', error);
+            console.error('Error rejecting applicant:', error)
         }
-    };
+    }
 
     const handleCloseModal = () => {
         setShowModal(false)
@@ -83,11 +83,10 @@ export const useApplicantById = () => {
                 // status: 'accepted',
                 firstInterviewDate: firstInterviewDate,
                 customMessage: customMessage,
-                customSubject:customSubject
-
-            });
-            fetchApplicant();
-            setShowConfirmationModal(false);
+                customSubject: customSubject,
+            })
+            fetchApplicant()
+            setShowConfirmationModal(false)
         } catch (error) {
             console.error('Error updating applicant:', error)
         }
@@ -109,6 +108,6 @@ export const useApplicantById = () => {
         handleSend,
         handleAccept,
         customSubject,
-        setCustomSubject
-    };
+        setCustomSubject,
+    }
 }

@@ -4,31 +4,31 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
 import { useEvents } from '@/Pages/Events/Context/EventsContext'
-import ClickAwayListener from '@mui/material/ClickAwayListener';
+import ClickAwayListener from '@mui/material/ClickAwayListener'
 
 const ITEM_HEIGHT = 32
 
-export default function LongMenu({event}) {
-    const {handleOpenDrawer, handleDeleteEventModal}  = useEvents()
+export default function LongMenu({ event }) {
+    const { handleOpenDrawer, handleDeleteEventModal } = useEvents()
 
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+    const open = Boolean(anchorEl)
+
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
+        setAnchorEl(event.currentTarget)
     }
-    
+
     const handleClose = () => {
-        setAnchorEl(null);
+        setAnchorEl(null)
     }
 
     const handleClickAway = () => {
-        handleClose();
+        handleClose()
     }
-    
+
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
             <div>
@@ -40,7 +40,7 @@ export default function LongMenu({event}) {
                     aria-haspopup="true"
                     onClick={handleClick}
                 >
-                    <MoreVertIcon sx={{margin:0, padding:0}}/>
+                    <MoreVertIcon sx={{ margin: 0, padding: 0 }} />
                 </IconButton>
                 <Menu
                     id="long-menu"
@@ -69,7 +69,9 @@ export default function LongMenu({event}) {
                     }}
                 >
                     <div>
-                        <MenuItem onClick={() => handleOpenDrawer('edit', event)}>
+                        <MenuItem
+                            onClick={() => handleOpenDrawer('edit', event)}
+                        >
                             <ListItemIcon>
                                 <EditIcon />
                             </ListItemIcon>
@@ -86,7 +88,9 @@ export default function LongMenu({event}) {
                                 Edit
                             </button>
                         </MenuItem>
-                        <MenuItem onClick={() => handleDeleteEventModal(event._id)}>
+                        <MenuItem
+                            onClick={() => handleDeleteEventModal(event._id)}
+                        >
                             <ListItemIcon>
                                 <DeleteIcon />
                             </ListItemIcon>

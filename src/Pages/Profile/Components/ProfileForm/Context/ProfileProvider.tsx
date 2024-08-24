@@ -1,6 +1,10 @@
 import React, { ReactNode } from 'react'
 import { ProfileContext } from './Interface'
-import { useCreatePayroll, useGetAndUpdateUserById, useUpdatePayroll } from './Hook'
+import {
+    useCreatePayroll,
+    useGetAndUpdateUserById,
+    useUpdatePayroll,
+} from './Hook'
 
 interface ProfileProviderProps {
     children: ReactNode
@@ -9,10 +13,17 @@ interface ProfileProviderProps {
 export const ProfileProvider: React.FC<ProfileProviderProps> = ({
     children,
 }) => {
-
-    const { user, error, isLoading, isCurrentUser, isAdmin, handleChange, handleUpdate } = useGetAndUpdateUserById()
+    const {
+        user,
+        error,
+        isLoading,
+        isCurrentUser,
+        isAdmin,
+        handleChange,
+        handleUpdate,
+    } = useGetAndUpdateUserById()
     const { payroll, handleCreatePayroll } = useCreatePayroll()
-    const { payrollId, handleChangePayroll} = useUpdatePayroll()
+    const { payrollId, handleChangePayroll } = useUpdatePayroll()
 
     const value = {
         user,
@@ -25,7 +36,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
         handleChangePayroll,
         payroll,
         handleCreatePayroll,
-        payrollId
+        payrollId,
     }
 
     return (

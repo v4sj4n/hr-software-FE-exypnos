@@ -25,8 +25,6 @@
 //    const {data,error,loading} = useFetch<applicantsData>("applicant")
 //      const [searchParams, setSearchParams] = useSearchParams();
 
-
-
 //     const debouncedSetSearchParams = debounce((value: string) => {
 //         setSearchParams((prev) => {
 //             const newParams = new URLSearchParams(prev);
@@ -43,7 +41,6 @@
 //         debouncedSetSearchParams(e.target.value);
 //         fetchApplicantsData();
 //     };
-
 
 //     const fetchApplicantsData = () => {
 //         setIsLoading(true);
@@ -69,33 +66,29 @@
 //    return {data, error, loading,onSearchChange}
 // }
 
-
-
-import { useFetch } from '@/Hooks/useFetch';
+import { useFetch } from '@/Hooks/useFetch'
 
 export interface applicantsData {
-    customMessage: string;
-    customSubject: string;
-    forEach(arg0: (applicant: applicantsData) => void): unknown;
-    firstName: string;
-    lastName: string;
-    phoneNumber: string;
-    email: string;
-    positionApplied: string;
-    status: string;
-    _id: string;
-    firstInterviewDate?: string;
-    secondInterviewDate?: string;
-    notes: string;
-    message: string;
-    currentPhase: string;
-    isDeleted?: boolean;
+    customMessage: string
+    customSubject: string
+    forEach(arg0: (applicant: applicantsData) => void): unknown
+    firstName: string
+    lastName: string
+    phoneNumber: string
+    email: string
+    positionApplied: string
+    status: string
+    _id: string
+    firstInterviewDate?: string
+    secondInterviewDate?: string
+    notes: string
+    message: string
+    currentPhase: string
+    isDeleted?: boolean
 }
 
 export const useGetAllInterviews = () => {
-    const { data, error, loading } = useFetch<applicantsData>(
-        'applicant',
-    )
+    const { data, error, loading } = useFetch<applicantsData>('applicant')
 
     return { data, error, loading }
     return { data, error, loading }

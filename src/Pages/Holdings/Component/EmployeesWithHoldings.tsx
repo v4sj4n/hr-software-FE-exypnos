@@ -5,7 +5,11 @@ import { CircularProgress } from '@mui/material'
 import { UserWithHoldings } from '../TAsset'
 import Card from '@/Components/Card/Card'
 import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
-import { LaptopOutlined, MonitorOutlined } from '@mui/icons-material'
+import {
+    ArrowForwardIos,
+    LaptopOutlined,
+    MonitorOutlined,
+} from '@mui/icons-material'
 import style from '../style/employeesWithHoldings.module.scss'
 
 export const EmployeesWithHoldings = () => {
@@ -41,50 +45,92 @@ export const EmployeesWithHoldings = () => {
             imageUrl,
             assets,
             role,
-        }: UserWithHoldings) => (
-            <Card
-                key={_id}
-                className={style.userDiv}
-                onClick={() => userClickHandler(_id)}
-            >
-                <div className={style.imageAndName}>
-                    <img
-                        src={imageUrl}
-                        alt={`${firstName}'s profile picture`}
-                    />
-                    <div>
-                        <TooltipImproved
-                            text={`Click to view ${firstName}'s holdings`}
-                            placement="right"
-                            offset={[0, 5]}
-                        >
-                            <h3>
-                                {firstName} {lastName}
-                            </h3>
-                        </TooltipImproved>
-                        <p style={{ fontSize: '0.8rem' }}>{role}</p>
-                    </div>
-                </div>
-
-                <div className={style.userAssets}>
-                    {assets.map((asset) => {
-                        return (
-                            <IconBasedOnAssetType
-                                key={asset._id}
-                                asset={asset.type}
+            email,
+        }: UserWithHoldings) => {
+            console.log(email)
+            return (
+                <Card
+                    key={_id}
+                    className={style.userDiv}
+                    onClick={() => userClickHandler(_id)}
+                    padding="1rem 2rem"
+                >
+                    <div className={style.leftContainer}>
+                        <div>
+                            <img
+                                src={imageUrl}
+                                alt={`${firstName}'s profile picture`}
                             />
-                        )
-                    })}
-                </div>
-            </Card>
-        ),
+                            <div>
+                                <h3>
+                                    {firstName} {lastName}
+                                </h3>
+                                <p>username@email.com</p>
+                            </div>
+                        </div>
+                        <div>
+                            {assets.map((asset) => {
+                                return (
+                                    <IconBasedOnAssetType
+                                        key={asset._id}
+                                        asset={asset.type}
+                                    />
+                                )
+                            })}
+                        </div>
+                    </div>
+                    <div className={style.rightContainer}>
+                        <div>
+                            <p>{role}</p>
+                            <ArrowForwardIos />
+                        </div>
+                        <p>{assets.length} items</p>
+                    </div>
+                    {/* <div className={style.imageAndName}>
+                        <img
+                            src={imageUrl}
+                            alt={`${firstName}'s profile picture`}
+                        />
+                        <div>
+                            <TooltipImproved
+                                text={`Click to view ${firstName}'s holdings`}
+                                placement="right"
+                                offset={[0, 5]}
+                            >
+                                <h3>
+                                    {firstName} {lastName}
+                                </h3>
+             
+                            </TooltipImproved>
+                            <p>
+                                    {email}
+                                </p>
+                            <p style={{ fontSize: '0.8rem' }}>{role}</p>
+                        </div>
+                    </div>
+    
+                    <div className={style.userAssets}>
+                        {assets.map((asset) => {
+                            return (
+                                <IconBasedOnAssetType
+                                    key={asset._id}
+                                    asset={asset.type}
+                                />
+                            )
+                        })}
+                    </div> */}
+                </Card>
+            )
+        },
     )
 
     return <div className={style.employeesContainer}>{users}</div>
 }
 
 const IconBasedOnAssetType = ({ asset }: { asset: string }) => {
-    if (asset === 'laptop') return <LaptopOutlined />
-    if (asset === 'monitor') return <MonitorOutlined />
-    return null
+    return (
+        <div className={style.assetContainer}>
+            {asset === 'laptop' ? <LaptopOutlined /> : <MonitorOutlined />}
+        </div>
+    )
 }

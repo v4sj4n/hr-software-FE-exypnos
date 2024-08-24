@@ -12,7 +12,7 @@ import {
 import { debounce } from 'lodash'
 import HoldingsProvider, { HoldingsContext } from './HoldingsContext.tsx'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
-import { UserHoldings } from './Component/UserHoldings.tsx'
+// import { UserHoldings } from './Component/UserHoldings.tsx'
 import { ChangeEvent, useContext } from 'react'
 import style from './style/holdings.module.scss'
 
@@ -60,7 +60,17 @@ function HoldingsComponent() {
 
     return (
         <main className={style.main}>
-        <div style={{ display:"flex", gap:"10px",alignItems:"center", alignSelf: "flex-end", position:"absolute", top:77, right:20  }}>
+            <div
+                style={{
+                    display: 'flex',
+                    gap: '10px',
+                    alignItems: 'center',
+                    alignSelf: 'flex-end',
+                    position: 'absolute',
+                    top: 77,
+                    right: 20,
+                }}
+            >
                 <Input
                     type="search"
                     iconPosition="end"
@@ -71,11 +81,10 @@ function HoldingsComponent() {
                     initialValue={searchParams.get('search') || ''}
                     onChange={onSearchChange}
                 />
-                  <Box sx={{ display: 'flex', gap: 2 }}>
+                <Box sx={{ display: 'flex', gap: 2 }}>
                     <FormLabel
                         id="filter-user-choices"
                         sx={{
-                           
                             fontWeight: 'xl',
                             textTransform: 'uppercase',
                             fontSize: 'xs',
@@ -93,7 +102,7 @@ function HoldingsComponent() {
                         }
                         sx={{
                             gap: 1,
-                           
+
                             flexWrap: 'wrap',
                             flexDirection: 'row',
                         }}
@@ -161,11 +170,11 @@ function HoldingsComponent() {
                     </RadioGroup>
                 </Box>
             </div>
-            
+
             <div className={style.mainContainer}>
                 <EmployeesWithHoldings />
 
-                <div className={style.selectedUserContainer}>
+                {/* <div className={style.selectedUserContainer}>
                     {searchParams.get('selectedHolding') ? (
                         <UserHoldings />
                     ) : (
@@ -173,7 +182,7 @@ function HoldingsComponent() {
                             <p>No User selected</p>
                         </div>
                     )}
-                </div>
+                </div> */}
             </div>
         </main>
     )

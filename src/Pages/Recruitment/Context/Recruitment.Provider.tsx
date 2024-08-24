@@ -8,12 +8,12 @@ export const useCreateAplicant = () => {
     }
     const [showModal, setShowModal] = useState<boolean>(false)
     const [aplicantFormData, setAplicantFormData] = useState({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phoneNumber: "",
-        experience: "",
-        applicationMethod: "",
+        firstName: '',
+        lastName: '',
+        email: '',
+        phoneNumber: '',
+        experience: '',
+        applicationMethod: '',
         dob: new Date().toISOString().split('T')[0],
         positionApplied: '',
         technologiesUsed: [] as string[],
@@ -50,12 +50,12 @@ export const useCreateAplicant = () => {
 
     const resetForm = () => {
         setAplicantFormData({
-            firstName: "",
-            lastName: "",
-            email: "",
-            phoneNumber: "",
-            experience: "",
-            applicationMethod: "",
+            firstName: '',
+            lastName: '',
+            email: '',
+            phoneNumber: '',
+            experience: '',
+            applicationMethod: '',
             dob: new Date().toISOString().split('T')[0],
             positionApplied: '',
             technologiesUsed: [],

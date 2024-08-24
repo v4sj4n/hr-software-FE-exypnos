@@ -1,5 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { getAllVacations, getVacation, updateVacation } from './queries'
+import {
+    getAllVacations,
+    getUsersWithVacations,
+    getVacation,
+    updateVacation,
+} from './queries'
 import { useContext } from 'react'
 import { VacationContext } from '../VacationContext'
 import { VacationFormFields } from '@/Schemas/Vacations/Vacation.schema'
@@ -16,6 +21,13 @@ export const useGetVacation = () => {
     return useQuery({
         queryKey: ['vacation', searchParams.get('selectedVacation')],
         queryFn: () => getVacation(searchParams.get('selectedVacation')!),
+    })
+}
+
+export const useGetUsersWithVacations = () => {
+    return useQuery({
+        queryKey: ['usersWithVacations'],
+        queryFn: () => getUsersWithVacations(),
     })
 }
 

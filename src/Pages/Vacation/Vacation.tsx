@@ -1,17 +1,25 @@
-import style from './style/vacation.module.scss'
-import { useState } from 'react'
-import { ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { useContext, useEffect } from 'react'
+import { VacationContext } from './VacationContext'
 import { VacationTable } from './components/VacationTable'
+import style from './style/vacation.module.scss'
+import { ToggleButton, ToggleButtonGroup } from '@mui/material'
+import UsersVacations from './components/UsersVacations'
 
 export default function Vacation() {
-    const [alignment, setAlignment] = useState('requests')
+    const { searchParams, setSearchParams } = useContext(VacationContext)
     const handleChange = (
         event: React.MouseEvent<HTMLElement>,
         newAlignment: string,
     ) => {
         event.preventDefault()
-        setAlignment(newAlignment)
+        setSearchParams(new URLSearchParams({ vacationType: newAlignment }))
     }
+
+    useEffect(() => {
+        if (!searchParams.get('vacationType')) {
+            setSearchParams(new URLSearchParams({ vacationType: 'requests' }))
+        }
+    }, [])
     const pageToggleChoices = [
         {
             value: 'requests',
@@ -22,10 +30,15 @@ export default function Vacation() {
             label: 'User Leaves',
         },
     ]
+
     return (
         <main className={style.main}>
             <div>
-                <VacationTable />
+                {searchParams.get('vacationType') === 'requests' ? (
+                    <VacationTable />
+                ) : (
+                    <UsersVacations />
+                )}
             </div>
             <div
                 style={{
@@ -36,7 +49,7 @@ export default function Vacation() {
             >
                 <ToggleButtonGroup
                     color="primary"
-                    value={alignment}
+                    value={searchParams.get('vacationType')}
                     exclusive
                     onChange={handleChange}
                     aria-label="Leave"

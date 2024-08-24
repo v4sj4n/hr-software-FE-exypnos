@@ -6,23 +6,22 @@ import { ButtonTypes } from '../../Components/Button/ButtonTypes'
 import { ModalComponent } from '../../Components/Modal/Modal'
 import Input from '@/Components/Input/Index'
 export default function ViewCandidats() {
-
-    const {      
-        applicant, 
-        showModal, 
-        handleCloseModal, 
-        handleOpenModal, 
-        handleConfirm, 
-        modalAction, 
-        showConfirmationModal, 
+    const {
+        applicant,
+        showModal,
+        handleCloseModal,
+        handleOpenModal,
+        handleConfirm,
+        modalAction,
+        showConfirmationModal,
         firstInterviewDate,
         setFirstInterviewDate,
         customMessage,
         setCustomMessage,
-        handleSend, 
-        handleCloseConfirmationModal  ,
+        handleSend,
+        handleCloseConfirmationModal,
         customSubject,
-        setCustomSubject
+        setCustomSubject,
     } = useApplicantById()
 
     return (
@@ -106,24 +105,22 @@ export default function ViewCandidats() {
                             </div>
                         </div>
                         <div className={style.border}></div>
-                         <div className={style.centerStatus}>
-                        <div className={style.label}>Status</div>
-                        <div
-                            className={`${style.value} ${
-                                applicant?.status === 'accepted'
-                                    ? style.statusAccepted
-                                    : applicant?.status === 'rejected'
-                                      ? style.statusRejected
-                                      : style.statusPending
-                            }`}
-                        >
-                            {applicant?.status}
+                        <div className={style.centerStatus}>
+                            <div className={style.label}>Status</div>
+                            <div
+                                className={`${style.value} ${
+                                    applicant?.status === 'accepted'
+                                        ? style.statusAccepted
+                                        : applicant?.status === 'rejected'
+                                          ? style.statusRejected
+                                          : style.statusPending
+                                }`}
+                            >
+                                {applicant?.status}
+                            </div>
                         </div>
-                        
+                        <div className={style.border}></div>
                     </div>
-                    <div className={style.border}></div>
-                    </div>
-                    
                 </div>
             </Card>
             <Card
@@ -133,7 +130,6 @@ export default function ViewCandidats() {
                 border="1px solid #ebebeb"
             >
                 <div className={style.section}>
-                   
                     <div className={style.section}>
                         <div className={style.label}>Technologies Used</div>
                         <div className={style.value}>
@@ -223,7 +219,6 @@ export default function ViewCandidats() {
                 </ModalComponent>
             )}
 
-
             {showConfirmationModal && (
                 <ModalComponent
                     open={showConfirmationModal}
@@ -237,31 +232,33 @@ export default function ViewCandidats() {
                         }}
                     >
                         <div className={style.title}>Notify Applicant.</div>
-                        <Input 
-                            IsUsername 
-                            type="datetime-local" 
-                            name='interviewDate' 
-                            label='Date'
+                        <Input
+                            IsUsername
+                            type="datetime-local"
+                            name="interviewDate"
+                            label="Date"
                             value={firstInterviewDate}
-                            onChange={(e) => setFirstInterviewDate(e.target.value)}
+                            onChange={(e) =>
+                                setFirstInterviewDate(e.target.value)
+                            }
                         />
-                        <Input 
-                            IsUsername 
-                            type="textarea" 
-                            name='costumMessage' 
-                            label='Message' 
-                            multiline 
-                            rows={3} 
+                        <Input
+                            IsUsername
+                            type="textarea"
+                            name="costumMessage"
+                            label="Message"
+                            multiline
+                            rows={3}
                             value={customMessage}
                             onChange={(e) => setCustomMessage(e.target.value)}
                         />
-                            <Input 
-                            IsUsername 
-                            type="textarea" 
-                            name='customSubject' 
-                            label='Message' 
-                            multiline 
-                            rows={3} 
+                        <Input
+                            IsUsername
+                            type="textarea"
+                            name="customSubject"
+                            label="Message"
+                            multiline
+                            rows={3}
                             value={customSubject}
                             onChange={(e) => setCustomSubject(e.target.value)}
                         />

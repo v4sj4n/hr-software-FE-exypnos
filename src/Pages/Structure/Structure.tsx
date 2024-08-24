@@ -14,12 +14,15 @@ export default function ColoredDemo() {
     const { data, isLoading, error } = useQuery<ProjectData[], Error>({
         queryKey: ['projects'],
         queryFn: async () => {
-            const response = await AxiosInstance.get<ProjectData[]>('/project/structure')
+            const response =
+                await AxiosInstance.get<ProjectData[]>('/project/structure')
             return response.data
-        }
+        },
     })
 
-    const transformProjectData = (projects: ProjectData[]): CustomTreeNode[] => {
+    const transformProjectData = (
+        projects: ProjectData[],
+    ): CustomTreeNode[] => {
         const rootNode: CustomTreeNode = {
             expanded: true,
             type: 'person',
@@ -62,7 +65,7 @@ export default function ColoredDemo() {
                 })),
             ],
         }
-    
+
         return [rootNode]
     }
 
@@ -83,7 +86,9 @@ export default function ColoredDemo() {
                         <span className={styles.nodeName}>
                             {node.data.name}
                         </span>
-                        <span style={{fontSize:'12px'}}>{node.data.title}</span>
+                        <span style={{ fontSize: '12px' }}>
+                            {node.data.title}
+                        </span>
                     </div>
                 </div>
             )
@@ -91,7 +96,9 @@ export default function ColoredDemo() {
             return (
                 <div className={styles.flexColumn}>
                     <div className={styles.alignItemsCenter}>
-                        <strong style={{fontSize:"14px"}}>Team Members:</strong>
+                        <strong style={{ fontSize: '14px' }}>
+                            Team Members:
+                        </strong>
                         <ul className={styles.verticalList}>
                             {node.data.teamMembers?.map((member, index) => (
                                 <li
@@ -110,22 +117,20 @@ export default function ColoredDemo() {
 
     return (
         <div className={styles.container}>
-        <Card borderRadius="5px"
-                padding="32px"
-                border="1px solid #ebebeb">
-            {isLoading ? (
-                <div>Loading...</div>
-            ) : error ? (
-                <div>{error.message}</div>
-            ) : (
-                <div className={styles.organizationChart}>
-                    <OrganizationChart
-                        value={transformedData}
-                        nodeTemplate={nodeTemplate}
-                    />
-                </div>
-            )} 
-        </Card>
+            <Card borderRadius="5px" padding="32px" border="1px solid #ebebeb">
+                {isLoading ? (
+                    <div>Loading...</div>
+                ) : error ? (
+                    <div>{error.message}</div>
+                ) : (
+                    <div className={styles.organizationChart}>
+                        <OrganizationChart
+                            value={transformedData}
+                            nodeTemplate={nodeTemplate}
+                        />
+                    </div>
+                )}
+            </Card>
         </div>
     )
 }

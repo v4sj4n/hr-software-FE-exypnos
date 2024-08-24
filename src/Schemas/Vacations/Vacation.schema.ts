@@ -41,4 +41,4 @@ export const VacationSchema = pipe(
         ['endDate'],
     ),
 )
-export type VacationFormfields = InferInput<typeof VacationSchema>
+export type VacationFormFields = InferInput<typeof VacationSchema>

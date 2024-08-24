@@ -76,7 +76,7 @@ export const BreadcrumbComponent = () => {
     const breadcrumbs = generateBreadcrumbs(currentPath)
 
     return (
-        <Stack sx={{ marginBottom: '16px', maxWidth:"50%" }}>
+        <Stack sx={{ marginBottom: '16px', maxWidth: '50%' }}>
             <Breadcrumbs
                 separator={<NavigateNextIcon fontSize="medium" />}
                 aria-label="breadcrumb"
@@ -89,7 +89,7 @@ export const BreadcrumbComponent = () => {
                                 color: '#000000',
                                 fontWeight: 'bolder',
                                 fontSize: '18px',
-                                fontFamily:'Outfit, sans-serif'
+                                fontFamily: 'Outfit, sans-serif',
                             }}
                             key={crumb.path}
                         >
@@ -102,7 +102,7 @@ export const BreadcrumbComponent = () => {
                             key={crumb.path}
                             color="inherit"
                             to={crumb.path}
-                            style={{fontFamily:'Outfit, sans-serif'}}
+                            style={{ fontFamily: 'Outfit, sans-serif' }}
                         >
                             {crumb.name}
                         </Link>
