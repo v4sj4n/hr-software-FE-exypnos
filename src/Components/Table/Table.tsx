@@ -24,20 +24,18 @@ export default function DataTable<T extends GridValidRowModel>({
     height = 'auto',
     initialPageSize = 5,
     pageSizeOptions = [5, 10, 20, 30],
-   
+
     handleRowClick,
 }: DataTableProps<T>) {
-   
     const columnsWithIcons = columns.map((column) => {
- 
-            return {
-                ...column,
-                renderHeader: () => (
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        {column.headerName}
-                    </div>
-                ),
-            }
+        return {
+            ...column,
+            renderHeader: () => (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    {column.headerName}
+                </div>
+            ),
+        }
     })
     return (
         <div style={{ height, width: '100%' }}>

@@ -6,15 +6,16 @@ import { ProfileProvider } from '../ProfileForm/Context/ProfileProvider'
 import { useUpdatePayroll } from '../ProfileForm/Context/Hook'
 
 const ContratContent = () => {
-    const { payrollId, handleChangePayroll, handleUpdatePayroll } = useUpdatePayroll()
- 
+    const { payrollId, handleChangePayroll, handleUpdatePayroll } =
+        useUpdatePayroll()
+
     return (
         <div className={style.container}>
             <div className={style.title}>Payroll Information</div>
             <div className={style.forms}>
                 <Input
                     IsUsername
-                    type='number'
+                    type="number"
                     label="WorkingDays"
                     name="workingDays"
                     shrink={true}
@@ -33,37 +34,34 @@ const ContratContent = () => {
                 />
             </div>
             <div className={style.border}></div>
-           
-              <div className={style.title}>Add Bonus</div>
-               
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            width: '350px',
-                            gap: '20px',
-                        }}
-                    >
-                        <Input
-                            IsUsername
-                            label="Bonus"
-                            name="bonus"
-                           
-                        />
-                        <Input
-                            IsUsername
-                            label="Bonus Description"
-                            name="bonusDescription"
-                            type='textarea'
-                            multiline={true}
-                            rows={3}
-                        />
-                    </div>
-                
-        
+
+            <div className={style.title}>Add Bonus</div>
+
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: '350px',
+                    gap: '20px',
+                }}
+            >
+                <Input IsUsername label="Bonus" name="bonus" />
+                <Input
+                    IsUsername
+                    label="Bonus Description"
+                    name="bonusDescription"
+                    type="textarea"
+                    multiline={true}
+                    rows={3}
+                />
+            </div>
 
             <div className={style.inputWidth}>
-                <Button type={ButtonTypes.PRIMARY} btnText="Save Changes" onClick={handleUpdatePayroll}/>
+                <Button
+                    type={ButtonTypes.PRIMARY}
+                    btnText="Save Changes"
+                    onClick={handleUpdatePayroll}
+                />
             </div>
         </div>
     )

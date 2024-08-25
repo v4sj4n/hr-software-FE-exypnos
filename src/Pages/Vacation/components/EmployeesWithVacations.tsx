@@ -1,6 +1,6 @@
-import { useEmployeesWithHoldings } from '../Hook/index.ts'
+import { useGetUsersWithVacations } from '../Hook/index.ts'
 import { CircularProgress } from '@mui/material'
-import { UserWithHoldings } from '../TAsset'
+import { UserWithVacations } from '../TVacation.ts'
 import Card from '@/Components/Card/Card'
 // import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
 import {
@@ -8,15 +8,15 @@ import {
     LaptopOutlined,
     MonitorOutlined,
 } from '@mui/icons-material'
-import style from '../style/employeesWithHoldings.module.scss'
+import style from '../style/employeesWithVacations.module.scss'
 import { useNavigate } from 'react-router-dom'
 
-export const EmployeesWithHoldings = () => {
-    const { isError, error, data, isLoading } = useEmployeesWithHoldings()
+export const EmployeesWithVacations = () => {
+    const { isError, error, data, isLoading } = useGetUsersWithVacations()
     const navigate = useNavigate()
 
     const goToUserWithId = (id: string) => {
-        navigate(`/holdings/${id}`)
+        navigate(`/vacation/${id}`)
     }
 
     if (isError) return <div>Error: {error.message}</div>
@@ -33,10 +33,10 @@ export const EmployeesWithHoldings = () => {
             firstName,
             lastName,
             imageUrl,
-            assets,
+            vacations,
             role,
             email,
-        }: UserWithHoldings) => {
+        }: UserWithVacations) => {
             console.log(email)
             return (
                 <Card
@@ -59,7 +59,7 @@ export const EmployeesWithHoldings = () => {
                             </div>
                         </div>
                         <div>
-                            {assets.map((asset) => {
+                            {vacations.map((asset) => {
                                 return (
                                     <IconBasedOnAssetType
                                         key={asset._id}
@@ -79,7 +79,8 @@ export const EmployeesWithHoldings = () => {
                             <ArrowForwardIos />
                         </div>
                         <p>
-                            {assets.length} item{assets.length === 1 ? '' : 's'}
+                            {vacations.length} item
+                            {vacations.length === 1 ? '' : 's'}
                         </p>
                     </div>
                 </Card>

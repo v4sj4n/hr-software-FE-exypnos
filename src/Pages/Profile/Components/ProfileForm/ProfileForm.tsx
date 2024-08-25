@@ -11,14 +11,8 @@ import { ProfileProvider } from './Context/ProfileProvider'
 
 const ProfileFormContext = () => {
     const { uploadImage, previewImage } = useFileUpload()
-    const {
-        user,
-        isCurrentUser,
-        isAdmin,
-        handleChange,
-        handleUpdate,
-    } = useProfile()
-
+    const { user, isCurrentUser, isAdmin, handleChange, handleUpdate } =
+        useProfile()
 
     if (!user) {
         return <div>No user data available</div>
@@ -34,11 +28,15 @@ const ProfileFormContext = () => {
                         src={previewImage || user.imageUrl}
                         style={{ width: '70px', height: '70px' }}
                     />
-                    <div style={{display:'flex', flexDirection:"column"}}>
-                    <div style={{fontSize:"20px", color:"#000000"}}>{`${user.firstName} ${user.lastName}`}</div>
-                    <div style={{ color:"#000000"}}>{user.auth.email}</div>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <div
+                            style={{ fontSize: '20px', color: '#000000' }}
+                        >{`${user.firstName} ${user.lastName}`}</div>
+                        <div style={{ color: '#000000' }}>
+                            {user.auth.email}
+                        </div>
                     </div>
-                  
+
                     {isCurrentUser && <Image onChange={uploadImage} />}
                 </div>
                 <div className={style.inputWidth}>
@@ -157,7 +155,7 @@ const ProfileFormContext = () => {
                         onClick={handleUpdate}
                         type={ButtonTypes.PRIMARY}
                         btnText="Save Changes"
-                              width="350px"
+                        width="350px"
                     />
                 </div>
             ) : (
@@ -176,16 +174,14 @@ const ProfileFormContext = () => {
     )
 }
 
-
 const ProfileForm: React.FC = () => {
     return (
         <FileUploadProvider>
-        <ProfileProvider>
-            <ProfileFormContext />
-        </ProfileProvider>
-    </FileUploadProvider>
-    );
-  };
-
+            <ProfileProvider>
+                <ProfileFormContext />
+            </ProfileProvider>
+        </FileUploadProvider>
+    )
+}
 
 export default ProfileForm

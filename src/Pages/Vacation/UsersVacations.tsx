@@ -1,4 +1,4 @@
-import { useEmployeesWithHoldings } from '../Hook/index.ts'
+import { useGetUsersWithVacations } from '../Hook/index.ts'
 import { CircularProgress } from '@mui/material'
 import { UserWithHoldings } from '../TAsset'
 import Card from '@/Components/Card/Card'
@@ -12,7 +12,7 @@ import style from '../style/employeesWithHoldings.module.scss'
 import { useNavigate } from 'react-router-dom'
 
 export const EmployeesWithHoldings = () => {
-    const { isError, error, data, isLoading } = useEmployeesWithHoldings()
+    const { isError, error, data, isLoading } = useGetUsersWithVacations()
     const navigate = useNavigate()
 
     const goToUserWithId = (id: string) => {
@@ -33,7 +33,7 @@ export const EmployeesWithHoldings = () => {
             firstName,
             lastName,
             imageUrl,
-            assets,
+            vacations,
             role,
             email,
         }: UserWithHoldings) => {
@@ -59,7 +59,7 @@ export const EmployeesWithHoldings = () => {
                             </div>
                         </div>
                         <div>
-                            {assets.map((asset) => {
+                            {vacations.map((asset) => {
                                 return (
                                     <IconBasedOnAssetType
                                         key={asset._id}

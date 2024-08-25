@@ -5,12 +5,12 @@ import { CandidateView, ModalAction } from '../interfaces/ViewCandidate'
 
 export const useApplicantById = () => {
     const [applicant, setApplicant] = useState<CandidateView | null>(null)
-    const [showModal, setShowModal] = useState(false);
-    const [modalAction, setModalAction] = useState<ModalAction | ''>('');
-    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-    const [firstInterviewDate, setFirstInterviewDate] = useState('');
-    const [customMessage, setCustomMessage] = useState('');
-    const [customSubject, setCustomSubject] = useState('');
+    const [showModal, setShowModal] = useState(false)
+    const [modalAction, setModalAction] = useState<ModalAction | ''>('')
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false)
+    const [firstInterviewDate, setFirstInterviewDate] = useState('')
+    const [customMessage, setCustomMessage] = useState('')
+    const [customSubject, setCustomSubject] = useState('')
 
     const { id } = useParams<{ id: string }>()
 
@@ -61,7 +61,7 @@ export const useApplicantById = () => {
         } catch (error) {
             console.error('Error accepting applicant:', error);
         }
-    };
+    }
 
     const handleCloseModal = () => {
         setShowModal(false)
@@ -84,11 +84,10 @@ export const useApplicantById = () => {
                 // status: 'accepted',
                 firstInterviewDate: firstInterviewDate,
                 customMessage: customMessage,
-                customSubject:customSubject
-
-            });
-            fetchApplicant();
-            setShowConfirmationModal(false);
+                customSubject: customSubject,
+            })
+            fetchApplicant()
+            setShowConfirmationModal(false)
         } catch (error) {
             console.error('Error updating applicant:', error)
         }
@@ -110,6 +109,6 @@ export const useApplicantById = () => {
         handleSend,
         handleAccept,
         customSubject,
-        setCustomSubject
-    };
+        setCustomSubject,
+    }
 }

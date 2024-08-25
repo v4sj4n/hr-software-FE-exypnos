@@ -3,10 +3,12 @@ import { HoldingsContext } from '../HoldingsContext'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
     getHoldings,
+    getItem,
     getUserHoldings,
     handleItemAssign,
     handleItemReturn,
 } from './queries'
+import { useParams } from 'react-router-dom'
 
 export const useEmployeesWithHoldings = () => {
     const { searchParams } = useContext(HoldingsContext)
@@ -25,11 +27,20 @@ export const useEmployeesWithHoldings = () => {
 }
 
 export const useGetUserHoldings = () => {
-    const { searchParams } = useContext(HoldingsContext)
+    const { id } = useParams()
+
     return useQuery({
-        queryKey: ['userHoldings', searchParams.get('selectedHolding')],
-        queryFn: () =>
-            getUserHoldings(searchParams.get('selectedHolding') as string),
+        queryKey: ['userHoldings', id],
+        queryFn: () => getUserHoldings(id as string),
+    })
+}
+
+export const useGetItem = () => {
+    const { searchParams } = useContext(HoldingsContext)
+
+    return useQuery({
+        queryKey: ['userHoldingsItem', searchParams.get('selectedOwnedItem')],
+        queryFn: () => getItem(searchParams.get('selectedOwnedItem') as string),
     })
 }
 
@@ -63,11 +74,13 @@ export const useHandleItemReturner = () => {
             event,
             assetId,
             status,
+            returnDate,
         }: {
             event: FormEvent<HTMLFormElement>
             assetId: string
             status: string
-        }) => handleItemReturn(event, assetId, status),
+            returnDate: string
+        }) => handleItemReturn(event, assetId, status, returnDate),
         onSettled: () => {
             queryClient.invalidateQueries({
                 queryKey: ['usersWithHoldings'],

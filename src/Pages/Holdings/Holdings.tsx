@@ -10,14 +10,13 @@ import {
     radioClasses,
 } from '@mui/joy'
 import { debounce } from 'lodash'
-import HoldingsProvider, { HoldingsContext } from './HoldingsContext.tsx'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
-import { UserHoldings } from './Component/UserHoldings.tsx'
 import { ChangeEvent, useContext } from 'react'
 import style from './style/holdings.module.scss'
+import HoldingsProvider, { HoldingsContext } from './HoldingsContext.tsx'
 
 function HoldingsComponent() {
-    const { setSearchParams, searchParams } = useContext(HoldingsContext)
+    const { searchParams, setSearchParams } = useContext(HoldingsContext)
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchParams((prev) => {
@@ -60,7 +59,13 @@ function HoldingsComponent() {
 
     return (
         <main className={style.main}>
-        <div style={{ display:"flex", gap:"10px",alignItems:"center", alignSelf: "flex-end", position:"absolute", top:77, right:20  }}>
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginBottom: '1rem',
+                }}
+            >
                 <Input
                     type="search"
                     iconPosition="end"
@@ -71,11 +76,10 @@ function HoldingsComponent() {
                     initialValue={searchParams.get('search') || ''}
                     onChange={onSearchChange}
                 />
-                  <Box sx={{ display: 'flex', gap: 2 }}>
+                <Box sx={{ display: 'flex', gap: 2 }}>
                     <FormLabel
                         id="filter-user-choices"
                         sx={{
-                           
                             fontWeight: 'xl',
                             textTransform: 'uppercase',
                             fontSize: 'xs',
@@ -93,7 +97,7 @@ function HoldingsComponent() {
                         }
                         sx={{
                             gap: 1,
-                           
+
                             flexWrap: 'wrap',
                             flexDirection: 'row',
                         }}
@@ -161,19 +165,9 @@ function HoldingsComponent() {
                     </RadioGroup>
                 </Box>
             </div>
-            
+
             <div className={style.mainContainer}>
                 <EmployeesWithHoldings />
-
-                <div className={style.selectedUserContainer}>
-                    {searchParams.get('selectedHolding') ? (
-                        <UserHoldings />
-                    ) : (
-                        <div className={style.noItemsOnSelectedUser}>
-                            <p>No User selected</p>
-                        </div>
-                    )}
-                </div>
             </div>
         </main>
     )

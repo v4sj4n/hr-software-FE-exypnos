@@ -41,7 +41,7 @@ export default function Tabs() {
     }
 
     return (
-        <Card flex='1'>
+        <Card flex="1">
             <div className={style.tabs}>
                 <button
                     className={`${style.tab} ${activeTab === 'MyProfile' ? style.activetab : ''} actions`}

@@ -1,9 +1,9 @@
-import Button from '@/Components/Button/Button';
-import { ButtonTypes } from '@/Components/Button/ButtonTypes';
-import Input from '@/Components/Input/Index';
-import { Box } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { ModalComponent } from '../../../Components/Modal/Modal';
+import Button from '@/Components/Button/Button'
+import { ButtonTypes } from '@/Components/Button/ButtonTypes'
+import Input from '@/Components/Input/Index'
+import { Box } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { ModalComponent } from '../../../Components/Modal/Modal'
 
 interface Interview {
   firstName: string;

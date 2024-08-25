@@ -13,14 +13,15 @@ import Payroll from './Pages/Payroll/Payroll.tsx'
 import Profile from './Pages/Profile/Profile'
 import Recruitment from './Pages/Recruitment/Recruitment.tsx'
 import Structure from './Pages/Structure/Structure.tsx'
-import Vacation from './Pages/Vacation/Vacation.tsx'
-import VacationProvider from './Pages/Vacation/VacationContext.tsx'
 import Inventory from './Pages/Inventory/Inventory.tsx'
 import Career from './Pages/Career/Career.tsx'
 import Holdings from './Pages/Holdings/Holdings.tsx'
-import About from './Pages/About/About.tsx'
+import UserHoldings from './Pages/Holdings/Component/UserHoldings.tsx'
+import Vacation from './Pages/Vacation/Vacation.tsx'
 import Pagination from './Pages/PaginationExample/Main.tsx'
 import SpecificUserPayroll from './Pages/Payroll/SpecificUser/SpecificUserPayroll.tsx'
+import About from './Pages/About/About.tsx'
+import UserVacations from './Pages/Vacation/UserVacations.tsx'
 
 export default function Router() {
     const router = createBrowserRouter([
@@ -49,12 +50,12 @@ export default function Router() {
             element: <PrivateRoute />,
             children: [
                 {
-                    path: 'employees',
+                    path: '/employees',
                     element: <Employees />,
                 },
                 { path: '/dashboard', element: <Dashboard />, index: false },
                 {
-                    path: 'profile/:id',
+                    path: '/profile/:id',
                     element: <Profile />,
                 },
                 {
@@ -62,51 +63,55 @@ export default function Router() {
                     element: <ViewCandidats />,
                 },
                 {
-                    path: 'holdings',
+                    path: '/holdings',
                     element: <Holdings />,
+                },
+                {
+                    path: '/holdings/:id',
+                    element: <UserHoldings />,
+                },
+                {
+                    path: '/vacation',
+                    element: <Vacation />,
+                },
+                {
+                    path: '/vacation/:id',
+                    element: <UserVacations />,
                 },
                 {
                     path: '/payroll/user/:id',
                     element: <SpecificUserPayroll />,
                 },
                 {
-                    path: 'payroll',
+                    path: '/payroll',
                     element: <Payroll />,
                 },
                 {
-                    path: 'createEmplye',
+                    path: '/createEmplye',
                     element: <CreateEmplye />,
                 },
                 {
-                    path: 'structure',
+                    path: '/structure',
                     element: <Structure />,
                 },
                 {
-                    path: 'candidates',
+                    path: '/candidates',
                     element: <Candidates />,
                 },
                 {
-                    path: 'vacation',
-                    element: (
-                        <VacationProvider>
-                            <Vacation />
-                        </VacationProvider>
-                    ),
-                },
-                {
-                    path: 'events',
+                    path: '/events',
                     element: <Events />,
                 },
                 {
-                    path: 'interview',
+                    path: '/interview',
                     element: <Interview />,
                 },
                 {
-                    path: 'historic',
+                    path: '/historic',
                     element: <About />,
                 },
                 {
-                    path: 'inventory',
+                    path: '/inventory',
                     element: <Inventory />,
                 },
             ],

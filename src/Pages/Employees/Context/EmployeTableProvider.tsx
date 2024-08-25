@@ -2,22 +2,27 @@ import React from 'react'
 import { useGetAllUsers } from '../Hook'
 import { GridRenderCellParams, GridRowParams } from '@mui/x-data-grid'
 import { Link, useNavigate } from 'react-router-dom'
-import { EmployeeContext, EmployeeRow, UserProfileData } from '../interfaces/Employe'
+import {
+    EmployeeContext,
+    EmployeeRow,
+    UserProfileData,
+} from '../interfaces/Employe'
 
 export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-    const { data: users } = useGetAllUsers();
+    const { data: users } = useGetAllUsers()
     const navigate = useNavigate()
 
-    const rows: EmployeeRow[] = users?.map((user: UserProfileData, index) => ({
-        id: index + 1,
-        originalId: user._id,
-        role: user.role,
-        phone: user.phone,
-        email: user.auth?.email,
-        fullName: `${user.firstName} ${user.lastName}`,
-    })) || []
+    const rows: EmployeeRow[] =
+        users?.map((user: UserProfileData, index) => ({
+            id: index + 1,
+            originalId: user._id,
+            role: user.role,
+            phone: user.phone,
+            email: user.auth?.email,
+            fullName: `${user.firstName} ${user.lastName}`,
+        })) || []
 
     const columns = [
         { field: 'id', headerName: 'No', maxWidth: 70, flex: 1 },
@@ -44,9 +49,9 @@ export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({
         firstName: '#0000FF',
     }
 
-    const getRowId = (row: EmployeeRow) => row.id;
+    const getRowId = (row: EmployeeRow) => row.id
 
-const handleRowClick = (params: GridRowParams) => {
+    const handleRowClick = (params: GridRowParams) => {
         navigate(`/profile/${params.row.originalId}`)
     }
 
@@ -55,9 +60,9 @@ const handleRowClick = (params: GridRowParams) => {
         columns,
         headerTextColors,
         getRowId,
-        handleRowClick
+        handleRowClick,
     }
-    
+
     return (
         <EmployeeContext.Provider value={contextValue}>
             {children}
