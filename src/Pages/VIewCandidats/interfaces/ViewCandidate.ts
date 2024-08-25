@@ -15,4 +15,4 @@ export interface CandidateView {
     cvAttachment: string
 }
 
-export type ModalAction = 'accept' | 'reject'
+export type ModalAction = 'active' | 'reject'

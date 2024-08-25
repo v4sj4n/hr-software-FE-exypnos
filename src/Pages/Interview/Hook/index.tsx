@@ -71,7 +71,9 @@
 
 
 
+import AxiosInstance from '@/Helpers/Axios';
 import { useFetch } from '@/Hooks/useFetch';
+import { useState } from 'react';
 
 export interface applicantsData {
     customMessage: string;
@@ -98,5 +100,36 @@ export const useGetAllInterviews = () => {
     )
 
     return { data, error, loading }
-    return { data, error, loading }
+
 }
+
+
+
+export const useHandleReject = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleReject = async (interviewId: string) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await AxiosInstance.patch(`/applicant/${interviewId}`, {
+        status: 'rejected',
+      });
+
+      if (response.status === 200) {
+      }
+    } catch (err) {
+      console.error('Failed to reject interview:', err);
+      setError('Failed to reject interview');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { handleReject, loading, error };
+};
+
+
+
