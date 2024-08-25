@@ -6,7 +6,7 @@ export interface EmployeeRow {
     originalId: number
     role: string
     phone: string
-    email: string | undefined
+    email: string
     fullName: string
 }
 
@@ -34,6 +34,4 @@ export interface UserProfileData {
     _id: number
 }
 
-export const EmployeeContext = React.createContext<
-    EmployeeContextType | undefined
->(undefined)
+export const EmployeeContext = React.createContext<EmployeeContextType | undefined>(undefined)

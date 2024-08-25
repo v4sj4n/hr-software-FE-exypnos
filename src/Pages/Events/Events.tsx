@@ -1,7 +1,7 @@
 import Card from '@/Components/Card/Card';
 import style from './styles/Events.module.css';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes';
 import Input from '@/Components/Input/Index';
 import Button from '@/Components/Button/Button';
@@ -11,9 +11,11 @@ import LongMenu from '@/Components/Menu/Menu';
 import SelectedEventCard from './Components/SelectedEvent/SelectedEvent';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import Toast from '@/Components/Toast/Toast';
-import DrawerComponent from '@/Components/Drawer/Drawer';
 import { EventsProvider, useEvents } from './Context/EventsContext';
- function EventsContentAndComponents() {
+import Forms from './Forms/Forms';
+import { Tooltip } from '@mui/material';
+
+function EventsContentAndComponents() {
 
   const {
     events,
@@ -39,50 +41,62 @@ import { EventsProvider, useEvents } from './Context/EventsContext';
   } = useEvents();
 
   return (
-    <>
-        <Toast
-          severity={toastOpen ? toastSeverity : updateToastSeverity}
-          open={toastOpen || updateToastOpen}
-          message={toastOpen ? toastMessage : updateToastMessage}
-          onClose={toastOpen ? handleToastClose : handleUpdateToastClose}
-        />
-        <DrawerComponent/>
-        <div style={{ display: 'flex', alignItems: "center", gap: "10px", alignSelf:"flex-end" }}>
-          <Input IsUsername type='search' label='search' name='Search' width={220} iconPosition="end" icon={<SearchOutlinedIcon />} onChange={onSearchChange} />
-          {isAdmin ? <Button btnText='Create Event' padding='12px 24px' type={ButtonTypes.PRIMARY} onClick={() => handleOpenDrawer('create')} /> : ''}
-        </div>
+    <div style={{ display: 'flex', flexDirection: 'column', }}>
+      <Toast
+        severity={toastOpen ? toastSeverity : updateToastSeverity}
+        open={toastOpen || updateToastOpen}
+        message={toastOpen ? toastMessage : updateToastMessage}
+        onClose={toastOpen ? handleToastClose : handleUpdateToastClose}
+      />
+      <Forms />
+      <div style={{ display: 'flex', gap: "10px", alignSelf: "flex-end", alignItems: "center", position: "absolute", top: 77 }}>
+        <Input IsUsername type='search' label='search' name='Search' width={250} iconPosition="end" icon={<SearchOutlinedIcon />} onChange={onSearchChange} />
+        {isAdmin ? <Button btnText='Create Event' padding='10px' width='150px' type={ButtonTypes.PRIMARY} onClick={() => handleOpenDrawer('create')} /> : ''}
+      </div>
       <div className={style.contanier}>
         <div className={style.grid}>
           {isLoading ? (
             events.map((event) => <EventsContent key={event._id} />)
           ) : (
             events.map((event) => (
-              <Card key={event._id} backgroundColor='#FFFFFF' borderRadius='5px' border='1px solid #ebebeb' padding='20px' flex='1' position='relative' height='auto'>
+              <Card key={event._id} borderRadius='5px' border='1px solid #ebebeb' padding='20px'  >
                 <div className={style.titleContainer}>
                   <div className={style.title}>{event.title}</div>
-                  {isAdmin && ( <LongMenu event={event}/> )}
+                  {isAdmin && (
+                    <Tooltip title="Menu Item">
+                      <div>
+                        <LongMenu event={event} />
+                      </div>
+                    </Tooltip>
+                  )}
                 </div>
                 <div className={style.description}>{event.description}</div>
                 <div className={style.dataContainer}>
                   <div className={style.dateContainer}>
                     <div className={style.data}>
-                      <CalendarTodayIcon sx={{ height: 20, width: 20, color: "#6b7280" }} />
-                      {new Date(event.startDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                    </div>
-                    <div className={style.data}>
-                      <CalendarTodayIcon sx={{ height: 20, width: 20, color: "#6b7280" }} />
-                      {new Date(event.endDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                      <Tooltip title='Date'>
+                        <div>
+                        <CalendarTodayIcon sx={{ height: 20, width: 20, color: '#6b7280' }} />
+                        </div>
+                      </Tooltip>
+                      
+                      {new Date(event.startDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} - {new Date(event.endDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                     </div>
                   </div>
                   <div className={style.data}>
-                    <LocationSearchingIcon sx={{ height: 20, width: 20, color: "#6b7280" }} />
+                  <Tooltip title='Location'>
+                        <div>
+                        <LocationOnOutlinedIcon sx={{ height: 20, width: 20, color: '#6b7280' }} />
+                        </div>
+                      </Tooltip>
                     <div>{event.location}</div>
                   </div>
                   <Button
-                    btnText={isAdmin ? "See voters" : 'Vote'}
+                    btnText={isAdmin ? "See Details" : 'Vote'}
                     type={ButtonTypes.SECONDARY}
                     onClick={() => handleSeeVoters(event)}
                     cursor='pointer'
+                    padding='8px'
                   />
                 </div>
               </Card>
@@ -116,13 +130,13 @@ import { EventsProvider, useEvents } from './Context/EventsContext';
             </div>
           </ModalComponent>
         )}
-        {showEventModal &&  (
+        {showEventModal && (
           <ModalComponent height='100%' width='400px' padding='0' open={showEventModal} handleClose={() => setShowEventModal(false)}>
             <SelectedEventCard />
           </ModalComponent>
         )}
       </div>
-    </>
+    </div>
   );
 }
 

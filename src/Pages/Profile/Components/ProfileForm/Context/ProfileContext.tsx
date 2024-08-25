@@ -1,16 +1,15 @@
-import React, { createContext } from 'react'
-import { UserProfileData } from '../../../../Employees/interfaces/Employe'
+import { ProfileContext } from './Interface'
+import { useContext } from 'react'
 
-export interface ProfileContextType {
-    user: UserProfileData | null
-    error: string | null
-    isLoading: boolean
-    isCurrentUser: boolean
-    isAdmin: boolean
-    handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-    handleUpdate: (event: React.FormEvent<HTMLButtonElement>) => Promise<void>
+export const useProfile = () => {
+    const context = useContext(ProfileContext)
+    if (!context) {
+        throw new Error('useProfile must be used within a ProfileProvider')
+    }
+    return context
 }
 
-export const ProfileContext = createContext<ProfileContextType | undefined>(
-    undefined,
-)
+
+
+
+

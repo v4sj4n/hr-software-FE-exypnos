@@ -21,7 +21,6 @@ export default function ViewCandidats() {
         setCustomMessage,
         handleSend, 
         handleCloseConfirmationModal  ,
-        handleAccept,
         customSubject,
         setCustomSubject
     } = useApplicantById()
@@ -107,17 +106,7 @@ export default function ViewCandidats() {
                             </div>
                         </div>
                         <div className={style.border}></div>
-                    </div>
-                </div>
-            </Card>
-            <Card
-                flex="1"
-                borderRadius="5px"
-                padding="32px"
-                border="1px solid #ebebeb"
-            >
-                <div className={style.section}>
-                    <div className={style.centerStatus}>
+                         <div className={style.centerStatus}>
                         <div className={style.label}>Status</div>
                         <div
                             className={`${style.value} ${
@@ -131,8 +120,21 @@ export default function ViewCandidats() {
                         >
                             {applicant?.status}
                         </div>
+                        
                     </div>
                     <div className={style.border}></div>
+                    </div>
+                    
+                </div>
+            </Card>
+            <Card
+                flex="1"
+                borderRadius="5px"
+                padding="32px"
+                border="1px solid #ebebeb"
+            >
+                <div className={style.section}>
+                   
                     <div className={style.section}>
                         <div className={style.label}>Technologies Used</div>
                         <div className={style.value}>

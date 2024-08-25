@@ -2,122 +2,78 @@ import Input from '../../../../Components/Input/Index'
 import { ButtonTypes } from '../../../../Components/Button/ButtonTypes'
 import Button from '../../../../Components/Button/Button'
 import style from '../ProfileForm/ProfileForm.module.css'
+import { ProfileProvider } from '../ProfileForm/Context/ProfileProvider'
+import { useUpdatePayroll } from '../ProfileForm/Context/Hook'
 
-const Contrat = () => {
+const ContratContent = () => {
+    const { payrollId, handleChangePayroll, handleUpdatePayroll } = useUpdatePayroll()
+ 
     return (
         <div className={style.container}>
-            <div className={style.title}>Contract Information</div>
-
+            <div className={style.title}>Payroll Information</div>
             <div className={style.forms}>
-                <div className={style.inputWidth}>
-                    <Input IsUsername label="Pay company" name="Pay company" />
-                </div>
-                <div className={style.inputWidth}>
-                    <Input
-                        IsUsername
-                        label="Company department"
-                        name="Company department"
-                    />
-                </div>
-            </div>
-
-            <div className={style.forms}>
-                <div className={style.inputWidth}>
-                    <Input
-                        IsUsername
-                        label="Contract type"
-                        name="Contract type"
-                    />
-                </div>
+                <Input
+                    IsUsername
+                    type='number'
+                    label="WorkingDays"
+                    name="workingDays"
+                    shrink={true}
+                    width={350}
+                    value={payrollId?.workingDays || ''}
+                    onChange={handleChangePayroll}
+                />
+                <Input
+                    IsUsername
+                    shrink={true}
+                    name="grossSalary"
+                    label="Gross salary"
+                    width={350}
+                    value={payrollId?.grossSalary}
+                    onChange={handleChangePayroll}
+                />
             </div>
             <div className={style.border}></div>
+           
+              <div className={style.title}>Add Bonus</div>
+               
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            width: '350px',
+                            gap: '20px',
+                        }}
+                    >
+                        <Input
+                            IsUsername
+                            label="Bonus"
+                            name="bonus"
+                           
+                        />
+                        <Input
+                            IsUsername
+                            label="Bonus Description"
+                            name="bonusDescription"
+                            type='textarea'
+                            multiline={true}
+                            rows={3}
+                        />
+                    </div>
+                
+        
 
-            <div className={style.forms}>
-                <div style={{ display: 'flex', width: '350px', gap: '20px' }}>
-                    <Input IsUsername label="Start date" name="Start date" />
-                    <Input IsUsername label="End date" name="End date" />
-                </div>
-                <div className={style.inputWidth}>
-                    <Input
-                        IsUsername
-                        label="Weekly duration"
-                        name="Weekly duration"
-                    />
-                </div>
-            </div>
-
-            <div className={style.forms}>
-                <div className={style.inputWidth}>
-                    <Input IsUsername label="Hours" name="Hours" />
-                </div>
-                <div className={style.inputWidth}>
-                    <Input
-                        IsUsername
-                        label="Trial Period"
-                        name="Trial Period"
-                    />
-                </div>
-            </div>
-
-            <div className={style.border}></div>
-
-            <div className={style.forms}>
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '350px',
-                        gap: '20px',
-                    }}
-                >
-                    <Input
-                        IsUsername
-                        label="Work Position"
-                        name="Work Position"
-                    />
-                    <Input
-                        IsUsername
-                        label="Annual gross salary"
-                        name="Annual gross salary"
-                    />
-                </div>
-                <div className={style.inputWidth}>
-                    <Input
-                        IsUsername
-                        name="Hourly gross salary"
-                        label="Hourly gross salary"
-                    />
-                </div>
-            </div>
-
-            <div className={style.border}></div>
-            <div className={style.title}>End of Contract</div>
-
-            <div className={style.forms}>
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '350px',
-                        gap: '20px',
-                    }}
-                >
-                    <Input IsUsername label="Reason" name="Reason" />
-                </div>
-                <div className={style.inputWidth}>
-                    <Input
-                        IsUsername
-                        name="Other details"
-                        label="Other details"
-                    />
-                </div>
-            </div>
-
-            <div className={style.border}></div>
             <div className={style.inputWidth}>
-                <Button type={ButtonTypes.PRIMARY} btnText="Save Changes" />
+                <Button type={ButtonTypes.PRIMARY} btnText="Save Changes" onClick={handleUpdatePayroll}/>
             </div>
         </div>
+    )
+}
+
+const Contrat: React.FC = () => {
+    return (
+        <ProfileProvider>
+            <ContratContent />
+        </ProfileProvider>
     )
 }
 

@@ -60,7 +60,7 @@ function HoldingsComponent() {
 
     return (
         <main className={style.main}>
-            <div className={style.heading}>
+        <div style={{ display:"flex", gap:"10px",alignItems:"center", alignSelf: "flex-end", position:"absolute", top:77, right:20  }}>
                 <Input
                     type="search"
                     iconPosition="end"
@@ -71,11 +71,11 @@ function HoldingsComponent() {
                     initialValue={searchParams.get('search') || ''}
                     onChange={onSearchChange}
                 />
-                <Box sx={{ display: 'flex', gap: 2 }}>
+                  <Box sx={{ display: 'flex', gap: 2 }}>
                     <FormLabel
                         id="filter-user-choices"
                         sx={{
-                            mb: 1.5,
+                           
                             fontWeight: 'xl',
                             textTransform: 'uppercase',
                             fontSize: 'xs',
@@ -93,7 +93,7 @@ function HoldingsComponent() {
                         }
                         sx={{
                             gap: 1,
-                            mb: 2,
+                           
                             flexWrap: 'wrap',
                             flexDirection: 'row',
                         }}
@@ -161,6 +161,7 @@ function HoldingsComponent() {
                     </RadioGroup>
                 </Box>
             </div>
+            
             <div className={style.mainContainer}>
                 <EmployeesWithHoldings />
 

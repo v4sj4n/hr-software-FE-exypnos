@@ -19,6 +19,8 @@ import Inventory from './Pages/Inventory/Inventory.tsx'
 import Career from './Pages/Career/Career.tsx'
 import Holdings from './Pages/Holdings/Holdings.tsx'
 import About from './Pages/About/About.tsx'
+import Pagination from './Pages/PaginationExample/Main.tsx'
+import SpecificUserPayroll from './Pages/Payroll/SpecificUser/SpecificUserPayroll.tsx'
 
 export default function Router() {
     const router = createBrowserRouter([
@@ -37,6 +39,10 @@ export default function Router() {
         {
             path: 'career',
             element: <Career />,
+        },
+        {
+            path: 'pagination',
+            element: <Pagination />,
         },
         {
             path: '/',
@@ -58,6 +64,10 @@ export default function Router() {
                 {
                     path: 'holdings',
                     element: <Holdings />,
+                },
+                {
+                    path: '/payroll/user/:id',
+                    element: <SpecificUserPayroll />,
                 },
                 {
                     path: 'payroll',

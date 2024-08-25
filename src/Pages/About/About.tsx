@@ -5,14 +5,16 @@ export default function About() {
     return (
         <>
             <Card >
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div style={{ display: "flex", justifyContent: "space-around" }}>
                     <div style={{display:"flex", flexDirection:"column"}}>
                     <h1>
                         Tiutull
                     </h1>
                     <div style={{maxWidth:"500px"}}>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    CodeVider is an Albanian-based web development outsourcing company that offers full-stack development services. They specialize in building commercial-grade web applications using technologies like React, Angular, Node.js, and Python. CodeVider provides services in front-end, back-end, and database development, emphasizing cost savings, time efficiency, and flexibility. They follow an agile methodology and offer seamless communication with dedicated project managers. Their services cater to businesses looking to outsource software development to reduce costs and time-to-market.
+                    
                     </div>
+                    <div style={{marginTop:10}}> For more details, visit <span><a href='https://www.codevider.com/' target="_blank">CodeVider</a></span>.</div>
                     </div>
                     <div>
                         <img alt='photo' style={{height:"auto", width:450}} src={image}/>

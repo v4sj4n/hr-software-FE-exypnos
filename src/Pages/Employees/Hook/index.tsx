@@ -1,22 +1,13 @@
-import { useState, useEffect } from 'react'
-import AxiosInstance from '../../../Helpers/Axios'
+import AxiosInstance from "@/Helpers/Axios"
+import { useQuery } from "@tanstack/react-query"
 import { UserProfileData } from '../interfaces/Employe'
 
 export const useGetAllUsers = () => {
-    const [users, setUsers] = useState<UserProfileData[]>([])
-    const [error, setError] = useState<string | null>(null)
-
-    useEffect(() => {
-        AxiosInstance.get<UserProfileData[]>('/user')
-            .then((response) => {
-                setUsers(response.data)
-                console.log(response.data)
-            })
-            .catch((error) => {
-                console.error('Error fetching data:', error)
-                setError('Failed to fetch users. Please try again later.')
-            })
-    }, [])
-
-    return { users, error }
+    return useQuery<UserProfileData[], Error>({
+        queryKey: ["users"],
+        queryFn: async () => {
+            const response = await AxiosInstance.get<UserProfileData[]>('/user');
+            return response.data;
+        }
+    })
 }

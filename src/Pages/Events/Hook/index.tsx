@@ -34,7 +34,6 @@ export const useGetAllEvents = () => {
                 console.log('Fetched events:', response.data)
                 console.log('Event data: ', events)
                 setIsLoading(false)
-
                 setEvents(response.data)
             })
             .catch((error) => {

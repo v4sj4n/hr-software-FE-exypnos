@@ -76,7 +76,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         'training',
         'other',
     ]
-    const { users } = useGetAllUsers()
+    const { data: users = [] } = useGetAllUsers()
     const allEmails = users.map((user) => user.auth.email)
 
     const handleSeeVoters = (event: EventsData) => {

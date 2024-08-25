@@ -23,7 +23,7 @@ const SelectedEventCard = ({
         return null
     }
 
-    
+
     return (
         <div className={style.Wrap}>
             <Example images={selectedEvent.photo} />
@@ -56,27 +56,7 @@ const SelectedEventCard = ({
                             <CalendarTodayIcon
                                 sx={{ height: 20, width: 20, color: '#6b7280' }}
                             />
-                            {new Date(selectedEvent.startDate).toLocaleDateString(
-                                'en-US',
-                                {
-                                    month: 'long',
-                                    day: 'numeric',
-                                    year: 'numeric',
-                                },
-                            )}
-                        </div>
-                        <div className={style.data}>
-                            <CalendarTodayIcon
-                                sx={{ height: 20, width: 20, color: '#6b7280' }}
-                            />
-                            {new Date(selectedEvent.endDate).toLocaleDateString(
-                                'en-US',
-                                {
-                                    month: 'long',
-                                    day: 'numeric',
-                                    year: 'numeric',
-                                },
-                            )}
+                            {new Date(selectedEvent.startDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} - {new Date(selectedEvent.endDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                         </div>
                     </div>
 

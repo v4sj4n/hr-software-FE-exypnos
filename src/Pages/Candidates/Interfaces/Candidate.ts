@@ -1,6 +1,5 @@
 import React from 'react'
 import { GridColDef, GridRowParams } from '@mui/x-data-grid'
-import { SvgIconProps } from '@mui/material'
 
 export interface CandidateRow {
     id: number
@@ -35,7 +34,6 @@ export interface applicantsData {
 export interface CandidateContextType {
     rows: CandidateRow[]
     columns: GridColDef[]
-    headerIcons: { [key: string]: React.ComponentType<SvgIconProps> }
     headerTextColors: { [key: string]: string }
     getRowId: (row: CandidateRow) => number
     handleRowClick: (params: GridRowParams) => void

@@ -1,19 +1,14 @@
 import React from 'react'
-import { CandidateContext, CandidateRow } from '../Interfaces/Candidate'
+import {  CandidateContext, CandidateRow } from '../Interfaces/Candidate'
 import { useGetAllApplicants } from '../Hook'
 import { GridRenderCellParams, GridRowParams } from '@mui/x-data-grid'
 import { Link, useNavigate } from 'react-router-dom'
-import EmailIcon from '@mui/icons-material/Email'
-import PersonIcon from '@mui/icons-material/Person'
-import PhoneIcon from '@mui/icons-material/Phone'
-import DateRangeIcon from '@mui/icons-material/DateRange'
-import ComputerIcon from '@mui/icons-material/Computer'
 import { StatusBadge } from '@/Components/StatusBadge/StatusBadge'
 
 export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-    const { applicants } = useGetAllApplicants()
+    const {  data: applicants = [] } = useGetAllApplicants()
     const navigate = useNavigate()
 
     const rows: CandidateRow[] = applicants.map((applicant, index) => ({
@@ -32,13 +27,13 @@ export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({
     }))
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 10 },
-        { field: 'fullName', headerName: 'FullName', width: 130, flex: 1 },
-        { field: 'email', headerName: 'Email', width: 230, flex: 1 },
+        { field: 'id', headerName: 'ID', flex:0.5},
+        { field: 'fullName', headerName: 'FullName',  flex: 1.2 },
+        { field: 'email', headerName: 'Email',  flex: 2 },
         {
             field: 'status',
             headerName: 'Status',
-            width: 130,
+            flex:1.3,
             renderCell: (params: GridRenderCellParams) => {
                 const color =
                     params.value === 'active'
@@ -51,19 +46,19 @@ export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({
                 return <StatusBadge status={params.value} color={color} />
             },
         },
-        { field: 'phoneNumber', headerName: 'Phone', width: 200, flex: 1 },
+        { field: 'phoneNumber', headerName: 'Phone',  flex: 1.8 },
         {
             field: 'positionApplied',
             headerName: 'Position',
-            width: 270,
-            flex: 1,
+      
+            flex: 1.8,
         },
-        { field: 'experience', headerName: 'Experience', width: 120, flex: 1 },
+        { field: 'experience', headerName: 'Experience',  flex: 1.3 },
         {
             field: 'actions',
             headerName: 'Actions',
-            width: 120,
-            flex: 1,
+        
+            flex: 1.3,
             renderCell: (params: GridRenderCellParams) => (
                 <Link
                     style={{ textDecoration: 'none', color: '#4C556B' }}
@@ -75,14 +70,6 @@ export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({
             ),
         },
     ]
-
-    const headerIcons = {
-        email: EmailIcon,
-        fullName: PersonIcon,
-        phone: PhoneIcon,
-        date: DateRangeIcon,
-        position: ComputerIcon,
-    }
 
     const headerTextColors = {
         firstName: '#0000FF',
@@ -97,7 +84,6 @@ export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({
     const contextValue = {
         rows,
         columns,
-        headerIcons,
         headerTextColors,
         getRowId,
         handleRowClick,
