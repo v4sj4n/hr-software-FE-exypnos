@@ -10,14 +10,13 @@ import {
     radioClasses,
 } from '@mui/joy'
 import { debounce } from 'lodash'
-import HoldingsProvider, { HoldingsContext } from './HoldingsContext.tsx'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
-// import { UserHoldings } from './Component/UserHoldings.tsx'
 import { ChangeEvent, useContext } from 'react'
 import style from './style/holdings.module.scss'
+import HoldingsProvider, { HoldingsContext } from './HoldingsContext.tsx'
 
 function HoldingsComponent() {
-    const { setSearchParams, searchParams } = useContext(HoldingsContext)
+    const { searchParams, setSearchParams } = useContext(HoldingsContext)
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchParams((prev) => {
@@ -169,16 +168,6 @@ function HoldingsComponent() {
 
             <div className={style.mainContainer}>
                 <EmployeesWithHoldings />
-
-                {/* <div className={style.selectedUserContainer}>
-                    {searchParams.get('selectedHolding') ? (
-                        <UserHoldings />
-                    ) : (
-                        <div className={style.noItemsOnSelectedUser}>
-                            <p>No User selected</p>
-                        </div>
-                    )}
-                </div> */}
             </div>
         </main>
     )

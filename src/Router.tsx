@@ -20,7 +20,7 @@ import Career from './Pages/Career/Career.tsx'
 import Holdings from './Pages/Holdings/Holdings.tsx'
 import Pagination from './Pages/PaginationExample/Main.tsx'
 import SpecificUserPayroll from './Pages/Payroll/SpecificUser/SpecificUserPayroll.tsx'
-import { UserHoldings } from './Pages/Holdings/Component/UserHoldings.tsx'
+import UserHoldings from './Pages/Holdings/Component/UserHoldings.tsx'
 import About from './Pages/About/About.tsx'
 
 export default function Router() {

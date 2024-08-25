@@ -8,10 +8,10 @@ import {
     handleItemAssign,
     handleItemReturn,
 } from './queries'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 export const useEmployeesWithHoldings = () => {
-    const { searchParams } = useContext(HoldingsContext)
+    const {searchParams} = useContext(HoldingsContext)
     return useQuery({
         queryKey: [
             'usersWithHoldings',
@@ -36,7 +36,8 @@ export const useGetUserHoldings = () => {
 }
 
 export const useGetItem = () => {
-    const [searchParams, setSearchParams] = useSearchParams()
+    const {searchParams} = useContext(HoldingsContext)
+
     return useQuery({
         queryKey: ['userHoldingsItem', searchParams.get('selectedOwnedItem')],
         queryFn: () => getItem(searchParams.get('selectedOwnedItem') as string),
@@ -73,11 +74,13 @@ export const useHandleItemReturner = () => {
             event,
             assetId,
             status,
+            returnDate
         }: {
             event: FormEvent<HTMLFormElement>
             assetId: string
             status: string
-        }) => handleItemReturn(event, assetId, status),
+            returnDate: string
+        }) => handleItemReturn(event, assetId, status, returnDate),
         onSettled: () => {
             queryClient.invalidateQueries({
                 queryKey: ['usersWithHoldings'],

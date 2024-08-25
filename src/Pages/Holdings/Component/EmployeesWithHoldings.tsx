@@ -1,6 +1,4 @@
-import { useContext } from 'react'
 import { useEmployeesWithHoldings } from '../Hook/index.ts'
-import { HoldingsContext } from '../HoldingsContext'
 import { CircularProgress } from '@mui/material'
 import { UserWithHoldings } from '../TAsset'
 import Card from '@/Components/Card/Card'
@@ -14,7 +12,6 @@ import style from '../style/employeesWithHoldings.module.scss'
 import { useNavigate } from 'react-router-dom'
 
 export const EmployeesWithHoldings = () => {
-    const { setSearchParams } = useContext(HoldingsContext)
 
     const { isError, error, data, isLoading } = useEmployeesWithHoldings()
     const navigate = useNavigate()
@@ -86,39 +83,6 @@ export const EmployeesWithHoldings = () => {
                             {assets.length} item{assets.length === 1 ? '' : 's'}
                         </p>
                     </div>
-                    {/* <div className={style.imageAndName}>
-                        <img
-                            src={imageUrl}
-                            alt={`${firstName}'s profile picture`}
-                        />
-                        <div>
-                            <TooltipImproved
-                                text={`Click to view ${firstName}'s holdings`}
-                                placement="right"
-                                offset={[0, 5]}
-                            >
-                                <h3>
-                                    {firstName} {lastName}
-                                </h3>
-             
-                            </TooltipImproved>
-                            <p>
-                                    {email}
-                                </p>
-                            <p style={{ fontSize: '0.8rem' }}>{role}</p>
-                        </div>
-                    </div>
-    
-                    <div className={style.userAssets}>
-                        {assets.map((asset) => {
-                            return (
-                                <IconBasedOnAssetType
-                                    key={asset._id}
-                                    asset={asset.type}
-                                />
-                            )
-                        })}
-                    </div> */}
                 </Card>
             )
         },

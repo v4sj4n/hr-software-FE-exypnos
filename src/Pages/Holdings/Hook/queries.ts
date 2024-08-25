@@ -12,6 +12,7 @@ export const getUserHoldings = async (userId: string) => {
 }
 
 export const getItem = async (itemId: string) => {
+    console.log('Getting item:', itemId)
     return (await AxiosInstance.get(`/asset/${itemId}`)).data
 }
 
@@ -19,11 +20,12 @@ export const handleItemReturn = async (
     event: FormEvent<HTMLFormElement>,
     assetId: string,
     status: string,
+    returnDate: string,
 ) => {
     event.preventDefault()
     const payload = {
         userId: null,
-        returnDate: new Date().toISOString(),
+        returnDate: returnDate,
         status,
     }
     await AxiosInstance.patch(`/asset/${assetId}`, payload)
