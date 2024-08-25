@@ -63,12 +63,8 @@ function HoldingsComponent() {
             <div
                 style={{
                     display: 'flex',
-                    gap: '10px',
-                    alignItems: 'center',
-                    alignSelf: 'flex-end',
-                    position: 'absolute',
-                    top: 77,
-                    right: 20,
+                    justifyContent: 'space-between',
+                    marginBottom: '1rem',
                 }}
             >
                 <Input

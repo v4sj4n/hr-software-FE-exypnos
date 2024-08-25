@@ -1,5 +1,5 @@
 import Card from '@/Components/Card/Card'
-import image from '../../../public/Images/HeroImage.png'
+import image from '/public/Images/HeroImage.png'
 
 export default function About() {
     return (

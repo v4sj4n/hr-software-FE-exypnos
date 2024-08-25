@@ -3,10 +3,12 @@ import { HoldingsContext } from '../HoldingsContext'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
     getHoldings,
+    getItem,
     getUserHoldings,
     handleItemAssign,
     handleItemReturn,
 } from './queries'
+import { useParams, useSearchParams } from 'react-router-dom'
 
 export const useEmployeesWithHoldings = () => {
     const { searchParams } = useContext(HoldingsContext)
@@ -25,11 +27,19 @@ export const useEmployeesWithHoldings = () => {
 }
 
 export const useGetUserHoldings = () => {
-    const { searchParams } = useContext(HoldingsContext)
+    const { id } = useParams()
+
     return useQuery({
-        queryKey: ['userHoldings', searchParams.get('selectedHolding')],
-        queryFn: () =>
-            getUserHoldings(searchParams.get('selectedHolding') as string),
+        queryKey: ['userHoldings', id],
+        queryFn: () => getUserHoldings(id as string),
+    })
+}
+
+export const useGetItem = () => {
+    const [searchParams, setSearchParams] = useSearchParams()
+    return useQuery({
+        queryKey: ['userHoldingsItem', searchParams.get('selectedOwnedItem')],
+        queryFn: () => getItem(searchParams.get('selectedOwnedItem') as string),
     })
 }
 

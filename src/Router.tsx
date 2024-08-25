@@ -18,9 +18,10 @@ import VacationProvider from './Pages/Vacation/VacationContext.tsx'
 import Inventory from './Pages/Inventory/Inventory.tsx'
 import Career from './Pages/Career/Career.tsx'
 import Holdings from './Pages/Holdings/Holdings.tsx'
-import About from './Pages/About/About.tsx'
 import Pagination from './Pages/PaginationExample/Main.tsx'
 import SpecificUserPayroll from './Pages/Payroll/SpecificUser/SpecificUserPayroll.tsx'
+import { UserHoldings } from './Pages/Holdings/Component/UserHoldings.tsx'
+import About from './Pages/About/About.tsx'
 
 export default function Router() {
     const router = createBrowserRouter([
@@ -49,12 +50,12 @@ export default function Router() {
             element: <PrivateRoute />,
             children: [
                 {
-                    path: 'employees',
+                    path: '/employees',
                     element: <Employees />,
                 },
                 { path: '/dashboard', element: <Dashboard />, index: false },
                 {
-                    path: 'profile/:id',
+                    path: '/profile/:id',
                     element: <Profile />,
                 },
                 {
@@ -62,31 +63,35 @@ export default function Router() {
                     element: <ViewCandidats />,
                 },
                 {
-                    path: 'holdings',
+                    path: '/holdings',
                     element: <Holdings />,
+                },
+                {
+                    path: '/holdings/:id',
+                    element: <UserHoldings />,
                 },
                 {
                     path: '/payroll/user/:id',
                     element: <SpecificUserPayroll />,
                 },
                 {
-                    path: 'payroll',
+                    path: '/payroll',
                     element: <Payroll />,
                 },
                 {
-                    path: 'createEmplye',
+                    path: '/createEmplye',
                     element: <CreateEmplye />,
                 },
                 {
-                    path: 'structure',
+                    path: '/structure',
                     element: <Structure />,
                 },
                 {
-                    path: 'candidates',
+                    path: '/candidates',
                     element: <Candidates />,
                 },
                 {
-                    path: 'vacation',
+                    path: '/vacation',
                     element: (
                         <VacationProvider>
                             <Vacation />
@@ -94,19 +99,19 @@ export default function Router() {
                     ),
                 },
                 {
-                    path: 'events',
+                    path: '/events',
                     element: <Events />,
                 },
                 {
-                    path: 'interview',
+                    path: '/interview',
                     element: <Interview />,
                 },
                 {
-                    path: 'historic',
+                    path: '/historic',
                     element: <About />,
                 },
                 {
-                    path: 'inventory',
+                    path: '/inventory',
                     element: <Inventory />,
                 },
             ],

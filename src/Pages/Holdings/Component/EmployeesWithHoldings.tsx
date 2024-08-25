@@ -4,29 +4,23 @@ import { HoldingsContext } from '../HoldingsContext'
 import { CircularProgress } from '@mui/material'
 import { UserWithHoldings } from '../TAsset'
 import Card from '@/Components/Card/Card'
-import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
+// import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
 import {
     ArrowForwardIos,
     LaptopOutlined,
     MonitorOutlined,
 } from '@mui/icons-material'
 import style from '../style/employeesWithHoldings.module.scss'
+import { useNavigate } from 'react-router-dom'
 
 export const EmployeesWithHoldings = () => {
     const { setSearchParams } = useContext(HoldingsContext)
 
     const { isError, error, data, isLoading } = useEmployeesWithHoldings()
+    const navigate = useNavigate()
 
-    const userClickHandler = (userId: string) => {
-        setSearchParams((prevParams) => {
-            const newParams = new URLSearchParams(prevParams)
-            if (userId) {
-                newParams.set('selectedHolding', userId)
-            } else {
-                newParams.delete('selectedHolding')
-            }
-            return newParams
-        })
+    const goToUserWithId = (id: string) => {
+        navigate(`/holdings/${id}`)
     }
 
     if (isError) return <div>Error: {error.message}</div>
@@ -52,7 +46,7 @@ export const EmployeesWithHoldings = () => {
                 <Card
                     key={_id}
                     className={style.userDiv}
-                    onClick={() => userClickHandler(_id)}
+                    onClick={() => goToUserWithId(_id)}
                     padding="1rem 2rem"
                 >
                     <div className={style.leftContainer}>
@@ -80,11 +74,17 @@ export const EmployeesWithHoldings = () => {
                         </div>
                     </div>
                     <div className={style.rightContainer}>
-                        <div>
+                        <div
+                            onClick={() => {
+                                goToUserWithId(_id)
+                            }}
+                        >
                             <p>{role}</p>
                             <ArrowForwardIos />
                         </div>
-                        <p>{assets.length} items</p>
+                        <p>
+                            {assets.length} item{assets.length === 1 ? '' : 's'}
+                        </p>
                     </div>
                     {/* <div className={style.imageAndName}>
                         <img
