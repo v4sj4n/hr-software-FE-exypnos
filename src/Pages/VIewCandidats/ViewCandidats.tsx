@@ -105,21 +105,23 @@ export default function ViewCandidats() {
                             </div>
                         </div>
                         <div className={style.border}></div>
-                        <div className={style.centerStatus}>
-                            <div className={style.label}>Status</div>
-                            <div
-                                className={`${style.value} ${
-                                    applicant?.status === 'accepted'
-                                        ? style.statusAccepted
-                                        : applicant?.status === 'rejected'
-                                          ? style.statusRejected
-                                          : style.statusPending
-                                }`}
-                            >
-                                {applicant?.status}
-                            </div>
+                         <div className={style.centerStatus}>
+                        <div className={style.label}>Status</div>
+                        <div
+                            className={`${style.value} ${
+                                applicant?.status === 'active'
+                                    ? style.statusActive
+                                     : applicant?.status === 'rejected'
+                                      ? style.statusRejected
+                                    //   : style.statusPending
+                                    :''
+                            }`}
+                        >
+                            {applicant?.status}
                         </div>
-                        <div className={style.border}></div>
+                        
+                    </div>
+                    <div className={style.border}></div>
                     </div>
                 </div>
             </Card>
@@ -161,23 +163,23 @@ export default function ViewCandidats() {
                         flexDirection: 'column',
                     }}
                 >
-                    <div className={style.label}>Select Status:</div>
-                    {applicant?.status !== 'accepted' && (
-                        <Button
-                            type={ButtonTypes.PRIMARY}
-                            btnText="Accept"
-                            width="100%"
-                            onClick={() => handleOpenModal('accept')}
-                        />
-                    )}
-                    {applicant?.status !== 'rejected' && (
+                    <div className={style.label}>Create Interview:</div>
+{/* {applicant?.status !== 'active' && (  */}
+    <Button
+        type={ButtonTypes.PRIMARY}
+        btnText="Create Interview"
+        width="100%"
+        onClick={() => handleOpenModal('active')}
+    />
+
+                    {/* {applicant?.status !== 'rejected' && (
                         <Button
                             type={ButtonTypes.PRIMARY}
                             btnText="Reject"
                             width="100%"
                             onClick={() => handleOpenModal('reject')}
                         />
-                    )}
+                    )} */}
                 </div>
             </Card>
             {showModal && (
@@ -189,11 +191,11 @@ export default function ViewCandidats() {
                             gap: '15px',
                         }}
                     >
-                        <div className={style.title}>Confirm Action.</div>
+                        <div className={style.title}>Confirm Action</div>
                         <div>
                             {' '}
-                            Are you sure you want to {modalAction} this
-                            candidate?{' '}
+                           Are you sure you want to confirm interview with this candidate?
+
                         </div>
                         <div
                             style={{
