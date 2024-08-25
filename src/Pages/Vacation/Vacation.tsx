@@ -1,11 +1,11 @@
 import { useContext, useEffect } from 'react'
-import { VacationContext } from './VacationContext'
+import VacationProvider, { VacationContext } from './VacationContext'
 import { VacationTable } from './components/VacationTable'
 import style from './style/vacation.module.scss'
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
-import UsersVacations from './components/UsersVacations'
+import { EmployeesWithVacations } from './components/EmployeesWithVacations'
 
-export default function Vacation() {
+function VacationComponent() {
     const { searchParams, setSearchParams } = useContext(VacationContext)
     const handleChange = (
         event: React.MouseEvent<HTMLElement>,
@@ -19,7 +19,7 @@ export default function Vacation() {
         if (!searchParams.get('vacationType')) {
             setSearchParams(new URLSearchParams({ vacationType: 'requests' }))
         }
-    }, [])
+    }, [searchParams, setSearchParams])
     const pageToggleChoices = [
         {
             value: 'requests',
@@ -33,13 +33,6 @@ export default function Vacation() {
 
     return (
         <main className={style.main}>
-            <div>
-                {searchParams.get('vacationType') === 'requests' ? (
-                    <VacationTable />
-                ) : (
-                    <UsersVacations />
-                )}
-            </div>
             <div
                 style={{
                     display: 'flex',
@@ -68,6 +61,21 @@ export default function Vacation() {
                     ))}
                 </ToggleButtonGroup>
             </div>
+            <div>
+                {searchParams.get('vacationType') === 'requests' ? (
+                    <VacationTable />
+                ) : (
+                    <EmployeesWithVacations />
+                )}
+            </div>
         </main>
+    )
+}
+
+export default function Vacation() {
+    return (
+        <VacationProvider>
+            <VacationComponent />
+        </VacationProvider>
     )
 }

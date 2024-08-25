@@ -8,6 +8,9 @@ export const getAllVacations = async () => {
 export const getUsersWithVacations = async () => {
     return (await AxiosInstance.get('/vacation/user')).data
 }
+export const getUserWithVacations = async (id: string) => {
+    return (await AxiosInstance.get(`/vacation/user/${id}`)).data
+}
 
 export const getVacation = async (id: string) => {
     return (await AxiosInstance.get(`/vacation/${id}`)).data

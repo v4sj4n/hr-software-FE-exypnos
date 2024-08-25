@@ -89,7 +89,7 @@ const UserHoldingsComponent = () => {
             <div className={style.itemsDiv}>
                 <h4>Assigned items</h4>
                 <div className={style.itemsListingContainer}>
-                    {data.assets.map((item) => {
+                    {data.assets.map((item: Asset) => {
                         return (
                             <IconBasedOnAssetType
                                 key={item._id}

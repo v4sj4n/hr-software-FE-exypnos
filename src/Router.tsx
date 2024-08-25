@@ -13,15 +13,15 @@ import Payroll from './Pages/Payroll/Payroll.tsx'
 import Profile from './Pages/Profile/Profile'
 import Recruitment from './Pages/Recruitment/Recruitment.tsx'
 import Structure from './Pages/Structure/Structure.tsx'
-import Vacation from './Pages/Vacation/Vacation.tsx'
-import VacationProvider from './Pages/Vacation/VacationContext.tsx'
 import Inventory from './Pages/Inventory/Inventory.tsx'
 import Career from './Pages/Career/Career.tsx'
 import Holdings from './Pages/Holdings/Holdings.tsx'
+import UserHoldings from './Pages/Holdings/Component/UserHoldings.tsx'
+import Vacation from './Pages/Vacation/Vacation.tsx'
 import Pagination from './Pages/PaginationExample/Main.tsx'
 import SpecificUserPayroll from './Pages/Payroll/SpecificUser/SpecificUserPayroll.tsx'
-import UserHoldings from './Pages/Holdings/Component/UserHoldings.tsx'
 import About from './Pages/About/About.tsx'
+import UserVacations from './Pages/Vacation/UserVacations.tsx'
 
 export default function Router() {
     const router = createBrowserRouter([
@@ -71,6 +71,14 @@ export default function Router() {
                     element: <UserHoldings />,
                 },
                 {
+                    path: '/vacation',
+                    element: <Vacation />,
+                },
+                {
+                    path: '/vacation/:id',
+                    element: <UserVacations />,
+                },
+                {
                     path: '/payroll/user/:id',
                     element: <SpecificUserPayroll />,
                 },
@@ -89,14 +97,6 @@ export default function Router() {
                 {
                     path: '/candidates',
                     element: <Candidates />,
-                },
-                {
-                    path: '/vacation',
-                    element: (
-                        <VacationProvider>
-                            <Vacation />
-                        </VacationProvider>
-                    ),
                 },
                 {
                     path: '/events',

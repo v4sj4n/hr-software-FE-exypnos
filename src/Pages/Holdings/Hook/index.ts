@@ -11,7 +11,7 @@ import {
 import { useParams } from 'react-router-dom'
 
 export const useEmployeesWithHoldings = () => {
-    const {searchParams} = useContext(HoldingsContext)
+    const { searchParams } = useContext(HoldingsContext)
     return useQuery({
         queryKey: [
             'usersWithHoldings',
@@ -36,7 +36,7 @@ export const useGetUserHoldings = () => {
 }
 
 export const useGetItem = () => {
-    const {searchParams} = useContext(HoldingsContext)
+    const { searchParams } = useContext(HoldingsContext)
 
     return useQuery({
         queryKey: ['userHoldingsItem', searchParams.get('selectedOwnedItem')],
@@ -74,7 +74,7 @@ export const useHandleItemReturner = () => {
             event,
             assetId,
             status,
-            returnDate
+            returnDate,
         }: {
             event: FormEvent<HTMLFormElement>
             assetId: string
