@@ -19,7 +19,7 @@ const Selecter = ({
     multiple,
     label,
     name,
-    width,
+    width ,
 }: SelecterProps) => {
     const [isOpen, setIsOpen] = useState(false)
 

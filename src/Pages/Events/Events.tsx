@@ -14,6 +14,7 @@ import Toast from '@/Components/Toast/Toast'
 import { EventsProvider, useEvents } from './Context/EventsContext'
 import Forms from './Forms/Forms'
 import { Tooltip } from '@mui/material'
+
 function EventsContentAndComponents() {
     const {
         events,
@@ -37,6 +38,7 @@ function EventsContentAndComponents() {
         handleSeeVoters,
         handleOpenDrawer,
     } = useEvents()
+
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Toast
@@ -66,7 +68,7 @@ function EventsContentAndComponents() {
                     icon={<SearchOutlinedIcon />}
                     onChange={onSearchChange}
                 />
-                {isAdmin ? (
+                {isAdmin && (
                     <Button
                         btnText="Create Event"
                         padding="10px"
@@ -74,8 +76,6 @@ function EventsContentAndComponents() {
                         type={ButtonTypes.PRIMARY}
                         onClick={() => handleOpenDrawer('create')}
                     />
-                ) : (
-                    ''
                 )}
             </div>
             <div className={style.contanier}>
@@ -147,9 +147,8 @@ function EventsContentAndComponents() {
                                                           color: '#6B7280',
                                                       }}
                                                   />
-                                              </div>
+<div> {event.location.toString()}</div>                                             </div>
                                           </Tooltip>
-                                          <div>{event.location}</div>
                                       </div>
                                       <Button
                                           btnText={
@@ -220,6 +219,7 @@ function EventsContentAndComponents() {
         </div>
     )
 }
+
 const Events: React.FC = () => {
     return (
         <EventsProvider>
@@ -227,4 +227,5 @@ const Events: React.FC = () => {
         </EventsProvider>
     )
 }
+
 export default Events

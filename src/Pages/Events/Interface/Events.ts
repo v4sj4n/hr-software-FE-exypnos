@@ -8,7 +8,7 @@ export interface EventsData {
     time: string
     creatingTime: string
     file: string
-    location: string
+    location: {latitude: number; longitude: number }
     type: string
     photo: string[]
     participants: string[]
@@ -29,7 +29,7 @@ export interface EventsCreationData {
     description: string
     startDate: string
     endDate: string
-    location: string
+    location: {latitude: number; longitude: number }
     participants: string[]
     photo: File[]
     type: string
@@ -103,4 +103,5 @@ export interface EventsContextProps {
     editType: string
     handleFileUpload: (files: File[]) => void
     eventPhotos: File[]
+    handleLocationChange: (e: any) => void
 }

@@ -54,21 +54,21 @@ export const useGetAllEvents = () => {
     }
 }
 
+
+
 export const useCreateEvent = (
     setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>,
 ) => {
     const [toastOpen, setToastOpen] = useState(false)
     const [toastMessage, setToastMessage] = useState('')
-    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
-        'success',
-    )
+    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>('success')
     const [eventPhotos, setEventPhotos] = useState<File[]>([])
     const [event, setEvent] = useState<EventsCreationData>({
         title: '',
         description: '',
         endDate: '',
         startDate: '',
-        location: '',
+        location: { latitude: 0, longitude: 0 }, 
         photo: [],
         participants: [],
         type: '',
@@ -86,16 +86,22 @@ export const useCreateEvent = (
     const [participants, setParticipants] = useState<string[]>([])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
+        const { name, value,  checked } = e.target
 
         if (name === 'participants') {
-            setParticipants(value.split(',').map((_id) => _id.trim()))
+            setParticipants(value.split(',').map(_id => _id.trim()))
         } else if (name === 'includesPoll') {
-            setIncludesPoll(e.target.checked)
+            setIncludesPoll(checked)
         } else if (name === 'pollQuestion') {
             setPollQuestion(value)
         } else if (name === 'isMultipleChoice') {
-            setIsMultipleChoice(e.target.checked)
+            setIsMultipleChoice(checked)
+        } else if (name === 'location') {
+            const locationObject = JSON.parse(value);
+            setEvent((prevEvent) => ({
+                ...prevEvent,
+                location: locationObject,
+            }))
         } else {
             setEvent((prevEvent) => ({
                 ...prevEvent,
@@ -103,6 +109,14 @@ export const useCreateEvent = (
             }))
         }
     }
+
+    const handleLocationChange = (newLocation: { latitude: number; longitude: number; name?: string }) => {
+        setEvent((prevEvent) => ({
+            ...prevEvent,
+            location: newLocation,
+        }))
+    }
+
 
     const handleFileUpload = (photo: File[]) => {
         setEventPhotos(photo)
@@ -128,7 +142,7 @@ export const useCreateEvent = (
         formData.append('description', event.description)
         formData.append('startDate', event.startDate)
         formData.append('endDate', event.endDate)
-        formData.append('location', event.location)
+        formData.append('location', JSON.stringify(event.location))  // Convert location to JSON string
         formData.append('type', event.type)
         participants.forEach((participant, index) => {
             formData.append(`participants[${index}]`, participant)
@@ -151,7 +165,6 @@ export const useCreateEvent = (
             formData.append('photo', photo)
         })
 
-        console.log('Form data:', formData)
         try {
             const response = await AxiosInstance.post('/event', formData, {
                 headers: {
@@ -167,7 +180,7 @@ export const useCreateEvent = (
                 description: '',
                 startDate: '',
                 endDate: '',
-                location: '',
+                location: { latitude: 0, longitude: 0 },  
                 type: '',
                 photo: [],
                 participants: [],
@@ -177,7 +190,6 @@ export const useCreateEvent = (
             setPollOptions(['', ''])
             setIsMultipleChoice(false)
             setParticipants([])
-            setEventPhotos([])
             setEventPhotos([])
         } catch (error) {
             console.error('Error creating event:', error)
@@ -211,6 +223,7 @@ export const useCreateEvent = (
         toastSeverity,
         handleFileUpload,
         eventPhotos,
+        handleLocationChange,
     }
 }
 

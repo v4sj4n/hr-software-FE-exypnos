@@ -1,21 +1,23 @@
-import React, { createContext, useContext, useState } from 'react'
-import { EventsData, EventsContextProps } from '../Interface/Events'
+import React, { createContext, useContext, useState } from 'react';
+import { EventsData, EventsContextProps } from '../Interface/Events';
 import {
     useGetAllEvents,
     useCreateEvent,
     useUpdateEvent,
     useDeleteEvent,
-} from '../Hook/index'
-import { useAuth } from '@/Context/AuthProvider'
-import { useGetAllUsers } from '@/Pages/Employees/Hook'
+} from '../Hook/index';
+import { useAuth } from '@/Context/AuthProvider';
+import { useGetAllUsers } from '@/Pages/Employees/Hook';
 
-const EventsContext = createContext<EventsContextProps | undefined>(undefined)
+const EventsContext = createContext<EventsContextProps | undefined>(undefined);
 
 export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-    const { events, setEvents, isLoading, onSearchChange } = useGetAllEvents()
+    const { events, setEvents, isLoading, onSearchChange } = useGetAllEvents();
     const {
+        handleLocationChange,
+
         handleChange,
         event,
         createEvent,
@@ -33,7 +35,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         toastSeverity,
         handleFileUpload,
         eventPhotos,
-    } = useCreateEvent(setEvents)
+    } = useCreateEvent(setEvents);
 
     const {
         editingEvent,
@@ -56,7 +58,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         setEditParticipants,
         editType,
         setEditType,
-    } = useUpdateEvent(setEvents)
+    } = useUpdateEvent(setEvents);
 
     const {
         handleDelete,
@@ -64,52 +66,54 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         showModal,
         handleDeleteEventModal,
         eventToDeleteId,
-    } = useDeleteEvent(setEvents)
-    const [showEventModal, setShowEventModal] = useState<boolean>(false)
-    const [selectedEvent, setSelectedEvent] = useState<EventsData | null>(null)
-    const { currentUser } = useAuth()
-    const isAdmin = currentUser?.role === 'admin'
+    } = useDeleteEvent(setEvents);
+
+    const [showEventModal, setShowEventModal] = useState<boolean>(false);
+    const [selectedEvent, setSelectedEvent] = useState<EventsData | null>(null);
+    const { currentUser } = useAuth();
+    const isAdmin = currentUser?.role === 'admin';
+
     const typesofEvent = [
         'sports',
-        'carier',
+        'career',
         'teambuilding',
         'training',
         'other',
-    ]
-    const { data: users = [] } = useGetAllUsers()
-    const allEmails = users.map((user) => user.auth.email)
+    ];
+
+    const { data: users = [] } = useGetAllUsers();
+    const allEmails = users.map((user) => user.auth.email);
 
     const handleSeeVoters = (event: EventsData) => {
-        setSelectedEvent(event)
-        setShowEventModal(true)
-    }
+        setSelectedEvent(event);
+        setShowEventModal(true);
+    };
 
-    const [drawerOpen, setDrawerOpen] = useState(false)
-    const [drawerAction, setDrawerAction] = useState<'create' | 'edit'>(
-        'create',
-    )
+    const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+    const [drawerAction, setDrawerAction] = useState<'create' | 'edit'>('create');
 
     const handleOpenDrawer = (
         action: 'create' | 'edit',
         event?: EventsData,
     ) => {
-        setDrawerAction(action)
+        setDrawerAction(action);
         if (action === 'edit' && event) {
-            handleEditClick(event._id)
+            handleEditClick(event._id);
         }
-        setDrawerOpen(true)
-    }
+        setDrawerOpen(true);
+    };
 
     const handleCloseDrawer = () => {
-        setDrawerOpen(false)
+        setDrawerOpen(false);
         if (drawerAction === 'edit') {
-            handleToggleForm()
+            handleToggleForm();
         }
-    }
+    };
 
     return (
         <EventsContext.Provider
             value={{
+                handleLocationChange,
                 events,
                 isLoading,
                 onSearchChange,
@@ -168,17 +172,18 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
                 setEditType,
                 handleFileUpload,
                 eventPhotos,
+                // handleLocationChange
             }}
         >
             {children}
         </EventsContext.Provider>
-    )
-}
+    );
+};
 
 export const useEvents = () => {
-    const context = useContext(EventsContext)
+    const context = useContext(EventsContext);
     if (context === undefined) {
-        throw new Error('useEvents must be used within an EventsProvider')
+        throw new Error('useEvents must be used within an EventsProvider');
     }
-    return context
-}
+    return context;
+};
