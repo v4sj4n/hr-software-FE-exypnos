@@ -112,7 +112,13 @@ export default function Forms() {
                             IsUsername
                             label="Event Title"
                             name="title"
-                            {...register('title')}
+                            register={register('title')}
+                            // onChange={
+                            //     editingEvent ? handleEditChange : handleChange
+                            // }
+                            // value={
+                            //     editingEvent ? editingEvent.title : event.title
+                            // }
                         />
                         {errors.title && (
                             <ErrorText>{errors.title.message}</ErrorText>
@@ -126,7 +132,14 @@ export default function Forms() {
                                 shrink={true}
                                 name="startDate"
                                 type="datetime-local"
-                                {...register('startDate')}
+                                // onChange={
+                                //     editingEvent ? handleEditChange : handleChange
+                                // }
+                                // value={
+                                //     editingEvent
+                                //         ? editingEvent.startDate.slice(0, 16)
+                                //         : event.startDate
+                                // }
                                 width={178}
                             />
                             {errors.startDate && (
@@ -143,8 +156,15 @@ export default function Forms() {
                                 shrink={true}
                                 name="endDate"
                                 type="datetime-local"
-                                {...register('endDate')}
                                 width={173}
+                                // onChange={
+                                //     editingEvent ? handleEditChange : handleChange
+                                // }
+                                // value={
+                                //     editingEvent
+                                //         ? editingEvent.endDate.slice(0, 16)
+                                //         : endDate
+                                // }
                             />
                             {errors.endDate && (
                                 <ErrorText>{errors.endDate.message}</ErrorText>
@@ -152,24 +172,23 @@ export default function Forms() {
                         </div>
                     </div>
 
-                    <div>
-                        <Input
-                            IsUsername
-                            width="100%"
-                            label="Location"
-                            name="location"
-                            value={address}
-                            onChange={handleLocationInputChange}
-                        />
-                        {errors.location && (
-                            <ErrorText>{errors.location.message}</ErrorText>
-                        )}
-                    </div>
-                    <MapPicker
-                        location={location}
-                        onLocationChange={handleMapLocationChange}
-                    />
-                    
+                    {
+                        <div>
+                            <Input
+                                IsUsername
+                                width="100%"
+                                label="Location"
+                                name="location"
+                                // onChange={editingEvent ? handleEditChange : handleChange}
+                                // value={
+                                //     editingEvent ? editingEvent.location : event.location
+                                // }
+                            />
+                            {errors.location && (
+                                <ErrorText>{errors.location.message}</ErrorText>
+                            )}
+                        </div>
+                    }
                     <div>
                         <Input
                             IsUsername
@@ -178,7 +197,12 @@ export default function Forms() {
                             name="description"
                             multiline
                             rows={4}
-                            {...register('description')}
+                            // onChange={editingEvent ? handleEditChange : handleChange}
+                            // value={
+                            //     editingEvent
+                            //         ? editingEvent.description
+                            //         : event.description
+                            // }
                         />
                         {errors.description && (
                             <ErrorText>{errors.description.message}</ErrorText>
@@ -366,6 +390,7 @@ export default function Forms() {
                         type={ButtonTypes.PRIMARY}
                         backgroundColor="#2469FF"
                         border="none"
+                        // onClick={editingEvent ? updateEvent : createEvent}
                         isSubmit
                     />
                 </form>
