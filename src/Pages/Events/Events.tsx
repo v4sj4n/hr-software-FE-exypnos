@@ -149,9 +149,7 @@ function EventsContentAndComponents() {
                                                   />
                                               </div>
                                           </Tooltip>
-                                          <div>
-                                              {JSON.stringify(event.location)}
-                                          </div>
+                                          <div>{event.location.toString()}</div>
                                       </div>
                                       <Button
                                           btnText={

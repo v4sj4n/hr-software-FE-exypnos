@@ -9,6 +9,8 @@ import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { useEvents } from '../Context/EventsContext'
 import style from '../styles/Events.module.css'
+import MapPicker from '../Components/GoogleMap/MapPicker'
+
 export default function Forms() {
     const {
         editingEvent,
@@ -92,7 +94,7 @@ export default function Forms() {
                         }
                     />
                 </div>
-                <Input
+                {/* <Input
                     IsUsername
                     width="100%"
                     label="Location"
@@ -101,7 +103,9 @@ export default function Forms() {
                     value={
                         editingEvent ? editingEvent.location : event.location
                     }
-                />
+                /> */}
+
+                <MapPicker />
                 <Input
                     IsUsername
                     label="Description"
