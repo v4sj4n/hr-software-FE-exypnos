@@ -15,7 +15,12 @@ export default function Toast({
     severity,
 }: ToastProps) {
     return (
-        <Snackbar open={open} autoHideDuration={2000} onClose={onClose}>
+        <Snackbar
+            open={open}
+            autoHideDuration={2000}
+            onClose={onClose}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        >
             <Alert
                 onClose={onClose}
                 severity={severity}

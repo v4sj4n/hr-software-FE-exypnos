@@ -14,7 +14,6 @@ import Toast from '@/Components/Toast/Toast'
 import { EventsProvider, useEvents } from './Context/EventsContext'
 import Forms from './Forms/Forms'
 import { Tooltip } from '@mui/material'
-
 function EventsContentAndComponents() {
     const {
         events,
@@ -38,7 +37,6 @@ function EventsContentAndComponents() {
         handleSeeVoters,
         handleOpenDrawer,
     } = useEvents()
-
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Toast
@@ -90,7 +88,7 @@ function EventsContentAndComponents() {
                               <Card
                                   key={event._id}
                                   borderRadius="5px"
-                                  border="1px solid #ebebeb"
+                                  border="1px solid #EBEBEB"
                                   padding="20px"
                               >
                                   <div className={style.titleContainer}>
@@ -117,7 +115,7 @@ function EventsContentAndComponents() {
                                                           sx={{
                                                               height: 20,
                                                               width: 20,
-                                                              color: '#6b7280',
+                                                              color: '#6B7280',
                                                           }}
                                                       />
                                                   </div>
@@ -146,7 +144,7 @@ function EventsContentAndComponents() {
                                                       sx={{
                                                           height: 20,
                                                           width: 20,
-                                                          color: '#6b7280',
+                                                          color: '#6B7280',
                                                       }}
                                                   />
                                               </div>
@@ -188,8 +186,8 @@ function EventsContentAndComponents() {
                             >
                                 <Button
                                     type={ButtonTypes.PRIMARY}
-                                    backgroundColor="#d32f2f"
-                                    borderColor="#d32f2f"
+                                    backgroundColor="#D32F2F"
+                                    borderColor="#D32F2F"
                                     btnText="Confirm"
                                     width="100%"
                                     onClick={() => {
@@ -222,7 +220,6 @@ function EventsContentAndComponents() {
         </div>
     )
 }
-
 const Events: React.FC = () => {
     return (
         <EventsProvider>
@@ -230,5 +227,4 @@ const Events: React.FC = () => {
         </EventsProvider>
     )
 }
-
 export default Events

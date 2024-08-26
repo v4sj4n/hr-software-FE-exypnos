@@ -54,6 +54,9 @@
     text-decoration: none;
     justify-content: space-between;
     align-items: center;
+    margin-top: 0;
+    margin-bottom: 0;
+    cursor: pointer;
 }
 .dropdownMenu {
     display: flex;
