@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import Selecter from '@/Components/Input/components/Select/Selecter'
 import Dropzone from '@/Dropzone/Dropzone'
@@ -13,6 +13,8 @@ import { valibotResolver } from '@hookform/resolvers/valibot'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { EventFormFields, EventSchema } from '@/Schemas/Events/Event.schema'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
+
+import MapPicker from '../Components/GoogleMap/MapPicker'
 
 export default function Forms() {
     const {
@@ -45,14 +47,18 @@ export default function Forms() {
         endDate,
         handleCloseDrawer,
         drawerOpen,
+        handleLocationChange, 
     } = useEvents()
+
+    const [location, setLocation] = useState<{ latitude: number; longitude: number }>({ latitude: 0, longitude: 0 })
+    const [address, setAddress] = useState('')
 
     const defaultValues: EventFormFields = {
         title: editingEvent ? editingEvent.title : '',
         description: editingEvent ? editingEvent.description : '',
         startDate: editingEvent ? editingEvent.startDate : '',
         endDate: editingEvent ? editingEvent.endDate : '',
-        location: editingEvent ? editingEvent.location : '',
+        location: editingEvent ? editingEvent.location : { latitude: 0, longitude: 0 }, 
         participants: editingEvent ? editingEvent.participants : [],
         type: editingEvent ? editingEvent.type : 'other',
     }
@@ -70,10 +76,24 @@ export default function Forms() {
         resolver: valibotResolver(EventSchema),
     })
 
+    const handleLocationInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setAddress(e.target.value)
+    }
+
+    const handleMapLocationChange = (lat: number, lng: number) => {
+        setLocation({ latitude: lat, longitude: lng })
+        setAddress('') 
+    }
+
     const onSubmit: SubmitHandler<EventFormFields> = async (
         data: EventFormFields,
     ) => {
-        console.log('data', data)
+        console.log('data', data) 
+        if (editingEvent) {
+            await updateEvent(data)
+        } else {
+            await createEvent(data)
+        }
     }
 
     return (
@@ -92,13 +112,7 @@ export default function Forms() {
                             IsUsername
                             label="Event Title"
                             name="title"
-                            register={register('title')}
-                            // onChange={
-                            //     editingEvent ? handleEditChange : handleChange
-                            // }
-                            // value={
-                            //     editingEvent ? editingEvent.title : event.title
-                            // }
+                            {...register('title')}
                         />
                         {errors.title && (
                             <ErrorText>{errors.title.message}</ErrorText>
@@ -112,14 +126,7 @@ export default function Forms() {
                                 shrink={true}
                                 name="startDate"
                                 type="datetime-local"
-                                // onChange={
-                                //     editingEvent ? handleEditChange : handleChange
-                                // }
-                                // value={
-                                //     editingEvent
-                                //         ? editingEvent.startDate.slice(0, 16)
-                                //         : event.startDate
-                                // }
+                                {...register('startDate')}
                                 width={178}
                             />
                             {errors.startDate && (
@@ -136,15 +143,8 @@ export default function Forms() {
                                 shrink={true}
                                 name="endDate"
                                 type="datetime-local"
+                                {...register('endDate')}
                                 width={173}
-                                // onChange={
-                                //     editingEvent ? handleEditChange : handleChange
-                                // }
-                                // value={
-                                //     editingEvent
-                                //         ? editingEvent.endDate.slice(0, 16)
-                                //         : endDate
-                                // }
                             />
                             {errors.endDate && (
                                 <ErrorText>{errors.endDate.message}</ErrorText>
@@ -152,23 +152,24 @@ export default function Forms() {
                         </div>
                     </div>
 
-                    {
-                        <div>
-                            <Input
-                                IsUsername
-                                width="100%"
-                                label="Location"
-                                name="location"
-                                // onChange={editingEvent ? handleEditChange : handleChange}
-                                // value={
-                                //     editingEvent ? editingEvent.location : event.location
-                                // }
-                            />
-                            {errors.location && (
-                                <ErrorText>{errors.location.message}</ErrorText>
-                            )}
-                        </div>
-                    }
+                    <div>
+                        <Input
+                            IsUsername
+                            width="100%"
+                            label="Location"
+                            name="location"
+                            value={address}
+                            onChange={handleLocationInputChange}
+                        />
+                        {errors.location && (
+                            <ErrorText>{errors.location.message}</ErrorText>
+                        )}
+                    </div>
+                    <MapPicker
+                        location={location}
+                        onLocationChange={handleMapLocationChange}
+                    />
+                    
                     <div>
                         <Input
                             IsUsername
@@ -177,12 +178,7 @@ export default function Forms() {
                             name="description"
                             multiline
                             rows={4}
-                            // onChange={editingEvent ? handleEditChange : handleChange}
-                            // value={
-                            //     editingEvent
-                            //         ? editingEvent.description
-                            //         : event.description
-                            // }
+                            {...register('description')}
                         />
                         {errors.description && (
                             <ErrorText>{errors.description.message}</ErrorText>
@@ -370,7 +366,6 @@ export default function Forms() {
                         type={ButtonTypes.PRIMARY}
                         backgroundColor="#2469FF"
                         border="none"
-                        // onClick={editingEvent ? updateEvent : createEvent}
                         isSubmit
                     />
                 </form>
