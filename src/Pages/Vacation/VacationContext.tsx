@@ -14,6 +14,19 @@ interface VacationContextType {
     viewVacationModalOpen: boolean
     handleOpenViewVacationModalOpen: () => void
     handleCloseVacationModalOpen: () => void
+    toastConfigs: {
+        message: string | null
+        severity: 'success' | 'error'
+        isOpen: boolean
+    }
+    setToastConfigs: Dispatch<
+        SetStateAction<{
+            message: string | null
+            severity: 'success' | 'error'
+            isOpen: boolean
+        }>
+    >
+    handleToastClose: () => void
 }
 
 const defaultContextValue: VacationContextType = {
@@ -22,6 +35,13 @@ const defaultContextValue: VacationContextType = {
     viewVacationModalOpen: false,
     handleOpenViewVacationModalOpen: () => {},
     handleCloseVacationModalOpen: () => {},
+    toastConfigs: {
+        message: null,
+        severity: 'success',
+        isOpen: false,
+    },
+    setToastConfigs: () => {},
+    handleToastClose: () => {},
 }
 
 export const VacationContext =
@@ -41,6 +61,23 @@ const VacationProvider: FC<{ children: ReactNode }> = ({ children }) => {
             return newParams
         })
     }
+    const [toastConfigs, setToastConfigs] = useState<{
+        message: string | null
+        severity: 'success' | 'error'
+        isOpen: boolean
+    }>({
+        message: null,
+        severity: 'success',
+        isOpen: false,
+    })
+
+    const handleToastClose = () => {
+        setToastConfigs({
+            isOpen: false,
+            message: null,
+            severity: 'success',
+        })
+    }
 
     return (
         <VacationContext.Provider
@@ -50,6 +87,9 @@ const VacationProvider: FC<{ children: ReactNode }> = ({ children }) => {
                 viewVacationModalOpen,
                 handleOpenViewVacationModalOpen,
                 handleCloseVacationModalOpen,
+                toastConfigs,
+                setToastConfigs,
+                handleToastClose,
             }}
         >
             {children}

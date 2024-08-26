@@ -25,7 +25,6 @@ export const useApplicantById = () => {
             console.error('Error fetching data:', error)
             setApplicant(null)
         }
-        
     }, [id])
 
     useEffect(() => {
@@ -34,12 +33,12 @@ export const useApplicantById = () => {
 
     const handleConfirm = () => {
         if (modalAction === 'active') {
-            handleAccept();
-            setShowConfirmationModal(true);
-        // } else if (modalAction === 'reject') {
-        //     handleReject()
+            handleAccept()
+            setShowConfirmationModal(true)
+            // } else if (modalAction === 'reject') {
+            //     handleReject()
         }
-         setShowModal(false)
+        setShowModal(false)
     }
 
     // const handleReject = async () => {
@@ -55,11 +54,11 @@ export const useApplicantById = () => {
     const handleAccept = async () => {
         try {
             await AxiosInstance.patch(`/applicant/${id}`, {
-                status: 'active'
-            });
-            fetchApplicant();
+                status: 'active',
+            })
+            fetchApplicant()
         } catch (error) {
-            console.error('Error accepting applicant:', error);
+            console.error('Error accepting applicant:', error)
         }
     }
 

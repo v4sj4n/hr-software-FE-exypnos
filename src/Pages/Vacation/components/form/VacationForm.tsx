@@ -1,5 +1,5 @@
 import {
-    VacationFormfields,
+    VacationFormFields,
     VacationSchema,
 } from '@/Schemas/Vacations/Vacation.schema'
 import { UseQueryResult } from '@tanstack/react-query'
@@ -23,13 +23,15 @@ type MyComponentProps = {
 export const VacationForm: React.FC<MyComponentProps> = ({
     data: vacation,
 }) => {
+    const { handleCloseVacationModalOpen, setToastConfigs } =
+        useContext(VacationContext)
     const updater = useUpdateVacation()
     const {
         register,
         handleSubmit,
         setError,
         formState: { errors, isSubmitting },
-    } = useForm<VacationFormfields>({
+    } = useForm<VacationFormFields>({
         defaultValues: {
             status: vacation.data.status,
             type: vacation.data.type,
@@ -39,18 +41,31 @@ export const VacationForm: React.FC<MyComponentProps> = ({
         resolver: valibotResolver(VacationSchema),
     })
 
-    const onSubmit: SubmitHandler<VacationFormfields> = async (
-        data: VacationFormfields,
+    const onSubmit: SubmitHandler<VacationFormFields> = async (
+        data: VacationFormFields,
     ) => {
         data.endDate = dayjs(data.endDate).toISOString()
         data.startDate = dayjs(data.startDate).toISOString()
 
         updater.mutate({ vacation: data })
         if (updater.isError) {
+            setToastConfigs({
+                isOpen: true,
+                message: updater.error?.message || 'Failed to update vacation',
+                severity: 'error',
+            })
             if (updater.error instanceof AxiosError)
                 setError('root', { message: updater.error.response?.data })
+            else {
+                setError('root', { message: 'something happened' })
+            }
         } else {
-            setError('root', { message: 'something happened' })
+            setToastConfigs({
+                isOpen: true,
+                message: 'Vacation updated successfully',
+                severity: 'success',
+            })
+            handleCloseVacationModalOpen()
         }
     }
 
@@ -66,8 +81,6 @@ export const VacationForm: React.FC<MyComponentProps> = ({
         { value: 'accepted', label: 'Accepted' },
         { value: 'rejected', label: 'Rejected' },
     ]
-
-    const { handleCloseVacationModalOpen } = useContext(VacationContext)
 
     return (
         <div>
