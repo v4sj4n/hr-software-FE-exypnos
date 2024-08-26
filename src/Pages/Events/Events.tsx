@@ -1,7 +1,7 @@
 import Card from '@/Components/Card/Card';
 import style from './styles/Events.module.css';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import { ButtonTypes } from '@/Components/Button/ButtonTypes';
 import Input from '@/Components/Input/Index';
 import Button from '@/Components/Button/Button';
@@ -16,7 +16,6 @@ import Forms from './Forms/Forms';
 import { Tooltip } from '@mui/material';
 
 function EventsContentAndComponents() {
-
   const {
     events,
     isLoading,
@@ -41,7 +40,7 @@ function EventsContentAndComponents() {
   } = useEvents();
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', }}>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       <Toast
         severity={toastOpen ? toastSeverity : updateToastSeverity}
         open={toastOpen || updateToastOpen}
@@ -49,17 +48,34 @@ function EventsContentAndComponents() {
         onClose={toastOpen ? handleToastClose : handleUpdateToastClose}
       />
       <Forms />
-      <div style={{ display: 'flex', gap: "10px", alignSelf: "flex-end", alignItems: "center", position: "absolute", top: 77 }}>
-        <Input IsUsername type='search' label='search' name='Search' width={250} iconPosition="end" icon={<SearchOutlinedIcon />} onChange={onSearchChange} />
-        {isAdmin ? <Button btnText='Create Event' padding='10px' width='150px' type={ButtonTypes.PRIMARY} onClick={() => handleOpenDrawer('create')} /> : ''}
+      <div style={{ display: 'flex', gap: '10px', alignSelf: 'flex-end', alignItems: 'center', position: 'absolute', top: 77 }}>
+        <Input
+          IsUsername
+          type="search"
+          label="search"
+          name="Search"
+          width={250}
+          iconPosition="end"
+          icon={<SearchOutlinedIcon />}
+          onChange={onSearchChange}
+        />
+        {isAdmin && (
+          <Button
+            btnText="Create Event"
+            padding="10px"
+            width="150px"
+            type={ButtonTypes.PRIMARY}
+            onClick={() => handleOpenDrawer('create')}
+          />
+        )}
       </div>
       <div className={style.contanier}>
         <div className={style.grid}>
           {isLoading ? (
-            events.map((event) => <EventsContent key={event._id} />)
+            <EventsContent />
           ) : (
             events.map((event) => (
-              <Card key={event._id} borderRadius='5px' border='1px solid #ebebeb' padding='20px'  >
+              <Card key={event._id} borderRadius="5px" border="1px solid #ebebeb" padding="20px">
                 <div className={style.titleContainer}>
                   <div className={style.title}>{event.title}</div>
                   {isAdmin && (
@@ -74,29 +90,30 @@ function EventsContentAndComponents() {
                 <div className={style.dataContainer}>
                   <div className={style.dateContainer}>
                     <div className={style.data}>
-                      <Tooltip title='Date'>
-                        <div>
+                      <Tooltip title="Date">
                         <CalendarTodayIcon sx={{ height: 20, width: 20, color: '#6b7280' }} />
-                        </div>
                       </Tooltip>
-                      
                       {new Date(event.startDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} - {new Date(event.endDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                     </div>
                   </div>
                   <div className={style.data}>
-                  <Tooltip title='Location'>
-                        <div>
-                        <LocationOnOutlinedIcon sx={{ height: 20, width: 20, color: '#6b7280' }} />
-                        </div>
-                      </Tooltip>
-                    <div>{event.location}</div>
+                    <Tooltip title="Location">
+                      <LocationOnOutlinedIcon sx={{ height: 20, width: 20, color: '#6b7280' }} />
+                    </Tooltip>
+                    <div>
+                      {event.location ? (
+                        `${event.location.lat}, ${event.location.lng}`
+                      ) : (
+                        'Location not available'
+                      )}
+                    </div>
                   </div>
                   <Button
-                    btnText={isAdmin ? "See Details" : 'Vote'}
+                    btnText={isAdmin ? 'See Details' : 'Vote'}
                     type={ButtonTypes.SECONDARY}
                     onClick={() => handleSeeVoters(event)}
-                    cursor='pointer'
-                    padding='8px'
+                    cursor="pointer"
+                    padding="8px"
                   />
                 </div>
               </Card>
@@ -105,16 +122,16 @@ function EventsContentAndComponents() {
         </div>
         {showModal && (
           <ModalComponent open={showModal} handleClose={closeModal}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: "15px" }}>
-              <div className={style.title}>Confirm Action.</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+              <div className={style.title}>Confirm Action</div>
               <div>Are you sure you want to delete this event?</div>
-              <div style={{ display: 'flex', gap: "10px", marginTop: "20px" }}>
+              <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
                 <Button
                   type={ButtonTypes.PRIMARY}
-                  backgroundColor='#d32f2f'
-                  borderColor='#d32f2f'
-                  btnText='Confirm'
-                  width='100%'
+                  backgroundColor="#d32f2f"
+                  borderColor="#d32f2f"
+                  btnText="Confirm"
+                  width="100%"
                   onClick={() => {
                     handleDelete(eventToDeleteId);
                     closeModal();
@@ -122,8 +139,8 @@ function EventsContentAndComponents() {
                 />
                 <Button
                   type={ButtonTypes.SECONDARY}
-                  btnText='Cancel'
-                  width='100%'
+                  btnText="Cancel"
+                  width="100%"
                   onClick={closeModal}
                 />
               </div>
@@ -131,7 +148,7 @@ function EventsContentAndComponents() {
           </ModalComponent>
         )}
         {showEventModal && (
-          <ModalComponent height='100%' width='400px' padding='0' open={showEventModal} handleClose={() => setShowEventModal(false)}>
+          <ModalComponent height="100%" width="400px" padding="0" open={showEventModal} handleClose={() => setShowEventModal(false)}>
             <SelectedEventCard />
           </ModalComponent>
         )}
@@ -147,6 +164,5 @@ const Events: React.FC = () => {
     </EventsProvider>
   );
 };
-
 
 export default Events;

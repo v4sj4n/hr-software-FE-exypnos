@@ -3,7 +3,7 @@ export interface InputProps {
   initialValue?: string
   helperText?: string
   id?: string
-  value?: string | Date | number | undefined
+  value?: string | Date | number | undefined|Geolocation|null
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
   label?: string
   variant?: 'outlined'

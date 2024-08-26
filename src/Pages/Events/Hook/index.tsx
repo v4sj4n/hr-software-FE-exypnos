@@ -68,7 +68,7 @@ export const useCreateEvent = (
         description: '',
         endDate: '',
         startDate: '',
-        location: '',
+        location: null,
         photo: [],
         participants: [],
         type: '',
@@ -78,6 +78,7 @@ export const useCreateEvent = (
             isMultipleVote: false,
         },
     })
+    
 
     const [pollQuestion, setPollQuestion] = useState('')
     const [pollOptions, setPollOptions] = useState<string[]>(['', ''])
@@ -89,20 +90,25 @@ export const useCreateEvent = (
         const { name, value } = e.target
 
         if (name === 'participants') {
-            setParticipants(value.split(',').map((_id) => _id.trim()))
+            setParticipants(value.split(',').map((_id) => _id.trim()));
         } else if (name === 'includesPoll') {
-            setIncludesPoll(e.target.checked)
+            setIncludesPoll(e.target.checked);
         } else if (name === 'pollQuestion') {
-            setPollQuestion(value)
+            setPollQuestion(value);
         } else if (name === 'isMultipleChoice') {
-            setIsMultipleChoice(e.target.checked)
+            setIsMultipleChoice(e.target.checked);
+        } else if (name === 'location') {
+            setEvent((prevEvent) => ({
+                ...prevEvent,
+                location: JSON.parse(value),
+            }));
         } else {
             setEvent((prevEvent) => ({
                 ...prevEvent,
                 [name]: value,
-            }))
+            }));
         }
-    }
+    };
 
     const handleFileUpload = (photo: File[]) => {
         setEventPhotos(photo)
@@ -128,12 +134,18 @@ export const useCreateEvent = (
         formData.append('description', event.description)
         formData.append('startDate', event.startDate)
         formData.append('endDate', event.endDate)
-        formData.append('location', event.location)
+        // formData.append('location', event.location)
         formData.append('type', event.type)
         participants.forEach((participant, index) => {
             formData.append(`participants[${index}]`, participant)
         })
-
+        if (event.location) {
+            formData.append('location', JSON.stringify(event.location));
+        }
+    
+        if (location) {
+                formData.append('location', JSON.stringify(location));
+            }
         if (includesPoll) {
             formData.append(
                 'poll',
@@ -167,7 +179,7 @@ export const useCreateEvent = (
                 description: '',
                 startDate: '',
                 endDate: '',
-                location: '',
+                location: null, 
                 type: '',
                 photo: [],
                 participants: [],
@@ -211,6 +223,9 @@ export const useCreateEvent = (
         toastSeverity,
         handleFileUpload,
         eventPhotos,
+        location,
+        
+
     }
 }
 

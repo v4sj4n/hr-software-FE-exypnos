@@ -68,6 +68,8 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     const [showEventModal, setShowEventModal] = useState<boolean>(false)
     const [selectedEvent, setSelectedEvent] = useState<EventsData | null>(null)
     const { currentUser } = useAuth()
+const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null)
+
     const isAdmin = currentUser?.role === 'admin'
     const typesofEvent = [
         'sports',
@@ -168,6 +170,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
                 setEditType,
                 handleFileUpload,
                 eventPhotos,
+             location,
             }}
         >
             {children}

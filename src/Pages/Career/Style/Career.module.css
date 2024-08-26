@@ -1,5 +1,10 @@
 .body {
     background: url('/Images/background (1).png');
+    background-size: cover;
+  
+    
+
+    
 }
 
 .container {
