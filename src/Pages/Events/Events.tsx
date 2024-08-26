@@ -149,7 +149,7 @@ function EventsContentAndComponents() {
                                                   />
                                               </div>
                                           </Tooltip>
-                                          <div>{event.location}</div>
+                                          <div>{event.location.toString()}</div>
                                       </div>
                                       <Button
                                           btnText={
