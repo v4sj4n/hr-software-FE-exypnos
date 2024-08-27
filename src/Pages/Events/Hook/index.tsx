@@ -53,10 +53,7 @@ export const useGetAllEvents = () => {
         onSearchChange,
     }
 }
-//  export interface Geolocation{
-//      latitude: number;
-//      longitude: number;
-//  }
+
 
 export const useCreateEvent = (
     setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>,
@@ -99,7 +96,7 @@ export const useCreateEvent = (
         } else if (name === 'pollQuestion') {
             setPollQuestion(value)
         }  else if (name === 'location') {
-            const location = JSON.parse(value)
+            const location = value
             setEvent((prevEvent) => ({
                 ...prevEvent,
                 location,
@@ -174,13 +171,14 @@ export const useCreateEvent = (
             formData.append('photo', photo)
         })
 
-        console.log('Form data:', formData)
+        console.log('Form data:', JSON.stringify(formData))
         try {
             const response = await AxiosInstance.post('/event', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             })
+            
             setToastMessage('Event created successfully')
             setToastOpen(true)
             setToastSeverity('success')
