@@ -1,6 +1,6 @@
 import { FormEvent, useContext } from 'react'
 import { HoldingsContext } from '../HoldingsContext'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
     getHoldings,
     getItem,
@@ -10,20 +10,36 @@ import {
 } from './queries'
 import { useParams } from 'react-router-dom'
 
+// export const useEmployeesWithHoldings = () => {
+//     // const { searchParams } = useContext(HoldingsContext)
+//     return useQuery({
+//         queryKey: [
+//             'usersWithHoldings',
+//             // searchParams.get('users'),
+//             // searchParams.get('search'),
+//         ],
+//         queryFn: () =>
+//             getHoldings(
+//                 // searchParams.get('users') || '',
+//                 // searchParams.get('search') || '',
+//             ),
+//     })
+// }
+
 export const useEmployeesWithHoldings = () => {
     const { searchParams } = useContext(HoldingsContext)
-    return useQuery({
-        queryKey: [
-            'usersWithHoldings',
+
+    return useInfiniteQuery({
+        initialPageParam: 0,
+        queryKey: ['usersWithHoldings',
             searchParams.get('users'),
             searchParams.get('search'),
         ],
-        queryFn: () =>
-            getHoldings(
-                searchParams.get('users') || '',
-                searchParams.get('search') || '',
-            ),
-    })
+        queryFn: ({ pageParam }) => getHoldings({ pageParam, search: searchParams.get('search') || '', users: searchParams.get('users') || '' }),
+        getNextPageParam: (lastPage, allPages) => {
+            return lastPage.totalPages > allPages.length ? allPages.length + 1 : undefined;
+        },
+    });
 }
 
 export const useGetUserHoldings = () => {
