@@ -1,5 +1,6 @@
 .modalMainDiv {
     > div:nth-of-type(1) {
+        margin-bottom: 1.75rem;
         display: flex;
         justify-content: space-between;
 
@@ -23,7 +24,6 @@
         * {
             margin: 0;
         }
-        margin-bottom: 1.75rem;
     }
 }
 
