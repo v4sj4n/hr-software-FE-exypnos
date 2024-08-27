@@ -53,6 +53,10 @@ export const useGetAllEvents = () => {
         onSearchChange,
     }
 }
+//  export interface Geolocation{
+//      latitude: number;
+//      longitude: number;
+//  }
 
 export const useCreateEvent = (
     setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>,
@@ -68,7 +72,7 @@ export const useCreateEvent = (
         description: '',
         endDate: '',
         startDate: '',
-        location: '',
+        location: '' , 
         photo: [],
         participants: [],
         type: '',
@@ -104,6 +108,18 @@ export const useCreateEvent = (
         }
     }
 
+    const handleLocationChange = (address: string) => {
+        console.log('Selected address:', address);
+      
+         {
+          setEvent(prevEvent => ({
+            ...prevEvent,
+            location: address
+          }));
+        }
+      };
+      
+      
     const handleFileUpload = (photo: File[]) => {
         setEventPhotos(photo)
     }
@@ -128,7 +144,7 @@ export const useCreateEvent = (
         formData.append('description', event.description)
         formData.append('startDate', event.startDate)
         formData.append('endDate', event.endDate)
-        formData.append('location', event.location)
+        formData.append('location', event.location);
         formData.append('type', event.type)
         participants.forEach((participant, index) => {
             formData.append(`participants[${index}]`, participant)
@@ -167,7 +183,8 @@ export const useCreateEvent = (
                 description: '',
                 startDate: '',
                 endDate: '',
-                location: '',
+                location: '' , 
+
                 type: '',
                 photo: [],
                 participants: [],
@@ -211,6 +228,7 @@ export const useCreateEvent = (
         toastSeverity,
         handleFileUpload,
         eventPhotos,
+        handleLocationChange
     }
 }
 
@@ -326,7 +344,7 @@ export const useUpdateEvent = (
             description: editingEvent.description,
             startDate: editingEvent.startDate,
             endDate: editingEvent.endDate,
-            location: editingEvent.location,
+            location: editingEvent.location, 
             participants: editParticipants,
             type: editType,
             poll: includePollInEdit

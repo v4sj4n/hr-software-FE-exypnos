@@ -9,7 +9,8 @@ import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { useEvents } from '../Context/EventsContext'
 import style from '../styles/Events.module.css'
-import MapPicker from '../Components/GoogleMap/MapPicker'
+// import MapPicker from '../Components/GoogleMap/MapPicker'
+import MapComponent from '../Components/GoogleMap/MapPicker'
 
 export default function Forms() {
     const {
@@ -43,6 +44,26 @@ export default function Forms() {
         handleCloseDrawer,
         drawerOpen,
     } = useEvents()
+
+    const handleLocationChange = (address: string) => {
+        console.log('Selected address:', address);
+        
+        if (editingEvent) {
+          handleEditChange({
+            target: {
+              name: 'location',
+              value: address
+            }
+          } as React.ChangeEvent<HTMLInputElement>);
+        } else {
+          handleChange({
+            target: {
+              name: 'location',
+              value: address
+            }
+          } as React.ChangeEvent<HTMLInputElement>);
+        }
+      };
     return (
         <div>
             <DrawerComponent open={drawerOpen} onClose={handleCloseDrawer}>
@@ -104,8 +125,9 @@ export default function Forms() {
                         editingEvent ? editingEvent.location : event.location
                     }
                 /> */}
+      <MapComponent onLocationChange={handleLocationChange} />
 
-                <MapPicker />
+                {/* <MapPicker /> */}
                 <Input
                     IsUsername
                     label="Description"
@@ -140,6 +162,7 @@ export default function Forms() {
                     label="Participants"
                 />
                 <Selecter
+                    
                     value={editingEvent ? editType : event.type}
                     onChange={(newValue) => {
                         if (editingEvent) {
