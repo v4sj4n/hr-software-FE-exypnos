@@ -9,6 +9,7 @@ import Button from '@/Components/Button/Button';
 import { ButtonTypes } from '@/Components/Button/ButtonTypes';
 import { useEvents } from '../Context/EventsContext';
 import style from '../styles/Events.module.css'
+import MapPicker from '../Components/GoogleMap/MapPicker'
 
 export default function Forms() {
 
@@ -94,16 +95,10 @@ export default function Forms() {
                     />
                 </div>
 
-                <Input
-                    IsUsername
-                    width="100%"
-                    label="Location"
-                    name="location"
-                    // onChange={editingEvent ? handleEditChange : handleChange}
-                    // value={
-                    //     editingEvent ? editingEvent.location : event.location
-                    // }
-                />
+
+
+                <MapPicker />
+
                 <Input
                     IsUsername
                     label="Description"
@@ -119,6 +114,9 @@ export default function Forms() {
                     }
                 />
                 <Selecter
+
+                    width="100%"
+
                     value={editingEvent ? editParticipants : participants}
                     onChange={(newValue) => {
                         if (editingEvent) {
@@ -284,7 +282,9 @@ export default function Forms() {
                     border="none"
                     onClick={editingEvent ? updateEvent : createEvent}
                 />
-             </DrawerComponent>
-    </div>
-  )
+
+            </DrawerComponent>
+        </div>
+    )
 }
+

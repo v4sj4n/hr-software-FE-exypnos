@@ -105,23 +105,22 @@ export default function ViewCandidats() {
                             </div>
                         </div>
                         <div className={style.border}></div>
-                         <div className={style.centerStatus}>
-                        <div className={style.label}>Status</div>
-                        <div
-                            className={`${style.value} ${
-                                applicant?.status === 'active'
-                                    ? style.statusActive
-                                     : applicant?.status === 'rejected'
-                                      ? style.statusRejected
-                                    //   : style.statusPending
-                                    :''
-                            }`}
-                        >
-                            {applicant?.status}
+                        <div className={style.centerStatus}>
+                            <div className={style.label}>Status</div>
+                            <div
+                                className={`${style.value} ${
+                                    applicant?.status === 'active'
+                                        ? style.statusActive
+                                        : applicant?.status === 'rejected'
+                                          ? style.statusRejected
+                                          : //   : style.statusPending
+                                            ''
+                                }`}
+                            >
+                                {applicant?.status}
+                            </div>
                         </div>
-                        
-                    </div>
-                    <div className={style.border}></div>
+                        <div className={style.border}></div>
                     </div>
                 </div>
             </Card>
@@ -164,13 +163,13 @@ export default function ViewCandidats() {
                     }}
                 >
                     <div className={style.label}>Create Interview:</div>
-{/* {applicant?.status !== 'active' && (  */}
-    <Button
-        type={ButtonTypes.PRIMARY}
-        btnText="Create Interview"
-        width="100%"
-        onClick={() => handleOpenModal('active')}
-    />
+                    {/* {applicant?.status !== 'active' && (  */}
+                    <Button
+                        type={ButtonTypes.PRIMARY}
+                        btnText="Create Interview"
+                        width="100%"
+                        onClick={() => handleOpenModal('active')}
+                    />
 
                     {/* {applicant?.status !== 'rejected' && (
                         <Button
@@ -194,8 +193,8 @@ export default function ViewCandidats() {
                         <div className={style.title}>Confirm Action</div>
                         <div>
                             {' '}
-                           Are you sure you want to confirm interview with this candidate?
-
+                            Are you sure you want to confirm interview with this
+                            candidate?
                         </div>
                         <div
                             style={{

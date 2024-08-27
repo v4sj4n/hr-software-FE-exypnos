@@ -32,7 +32,18 @@ export default function Recruitment() {
         defaultValues: RecruitmentFormFieldsDefaultValues,
         resolver: valibotResolver(RecruitmentSchema),
     })
-    const technologies = ['Angular', 'jQuery', 'Javascript', 'React', 'Vue.js','MongoDb', 'Node.js','Python','Ruby','Java']
+    const technologies = [
+        'Angular',
+        'jQuery',
+        'Javascript',
+        'React',
+        'Vue.js',
+        'MongoDb',
+        'Node.js',
+        'Python',
+        'Ruby',
+        'Java',
+    ]
 
     const onSubmit: SubmitHandler<RecruitmentFormFields> = async (
         data: RecruitmentFormFields,

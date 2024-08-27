@@ -49,7 +49,7 @@ const Selecter = ({
                     label={label}
                     variant="filled"
                     size="small"
-                    sx={{ ...inputStyles  }}
+                    sx={{ ...inputStyles, width: width || '100%' }}
                     InputLabelProps={{
                         style: {
                             color: '#4C556B',

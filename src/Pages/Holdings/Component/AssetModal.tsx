@@ -1,37 +1,50 @@
 import { ModalComponent } from '@/Components/Modal/Modal'
-import { useSearchParams } from 'react-router-dom'
 import { useGetItem, useHandleItemReturner } from '../Hook'
 import style from '../style/assetModal.module.scss'
 import { TitleCaser } from '@/Helpers/TitleCaser'
 import dayjs from 'dayjs'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useContext } from 'react'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Input from '@/Components/Input/Index'
 import WarningIcon from '@mui/icons-material/Warning'
+import { HoldingsContext } from '../HoldingsContext'
 
 export const AssetModal = () => {
-    const { error, isError, isLoading, data } = useGetItem()
-    const [searchParams, setSearchParams] = useSearchParams()
-    const [returnState, setReturnState] = useState<string | null>(null)
-    const [returnDate, setReturnDate] = useState<string>(
-        new Date().toISOString(),
-    )
-    const handleClose = () => {
-        setReturnState(null)
-        setSearchParams(new URLSearchParams())
-    }
+    const {
+        searchParams,
+        itemReturnConfigs,
+        setItemReturnConfigs,
+        handleCloseOnModal: handleClose,
+        setToastConfigs,
+    } = useContext(HoldingsContext)
+    const itemGetter = useGetItem()
 
-    const handleItemAssigner = useHandleItemReturner()
+    const handleItemReturner = useHandleItemReturner()
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        handleItemAssigner.mutate({
+        handleItemReturner.mutate({
             event: e,
-            assetId: data._id as string,
-            status: returnState as string,
-            returnDate,
+            assetId: itemGetter.data._id as string,
+            status: itemReturnConfigs.state as string,
+            returnDate: itemReturnConfigs.date,
         })
+
+        if (handleItemReturner.isError) {
+            setToastConfigs({
+                isOpen: true,
+                message: 'Error returning item',
+                severity: 'error',
+            })
+        } else {
+            setToastConfigs({
+                isOpen: true,
+                message: 'Item returned successfully',
+                severity: 'success',
+            })
+        }
+
         handleClose()
     }
 
@@ -40,34 +53,46 @@ export const AssetModal = () => {
             open={!!searchParams.get('selectedOwnedItem')}
             handleClose={handleClose}
         >
-            {isLoading ? (
+            {itemGetter.isLoading ? (
                 <div>Loading...</div>
-            ) : isError ? (
-                <div>Error: {error.message}</div>
+            ) : itemGetter.isError ? (
+                <div>Error: {itemGetter.error.message}</div>
             ) : (
                 <div className={style.modalMainDiv}>
                     <div>
-                        <h3>{TitleCaser(data.type)}</h3>
+                        <h3>{TitleCaser(itemGetter.data.type)}</h3>
                         <div>
-                            <p>{data.serialNumber}</p>
+                            <p>{itemGetter.data.serialNumber}</p>
                             <p style={{ fontSize: '.75rem' }}>
-                                {dayjs(data.takenDate).format('DD MMM YYYY')}
+                                {dayjs(itemGetter.data.takenDate).format(
+                                    'DD MMM YYYY',
+                                )}
                             </p>
                         </div>
                     </div>
 
-                    {!returnState ? (
+                    {!itemReturnConfigs.state ? (
                         <div className={style.returnItemTypes}>
                             <h3>Return item:</h3>
                             <Button
                                 type={ButtonTypes.SECONDARY}
                                 btnText="Broken"
-                                onClick={() => setReturnState('broken')}
+                                onClick={() =>
+                                    setItemReturnConfigs((prev) => ({
+                                        ...prev,
+                                        state: 'broken',
+                                    }))
+                                }
                             />
                             <Button
                                 type={ButtonTypes.SECONDARY}
                                 btnText="Available"
-                                onClick={() => setReturnState('available')}
+                                onClick={() =>
+                                    setItemReturnConfigs((prev) => ({
+                                        ...prev,
+                                        state: 'available',
+                                    }))
+                                }
                             />
                         </div>
                     ) : (
@@ -87,8 +112,12 @@ export const AssetModal = () => {
                                 type="date"
                                 label="Return Date"
                                 shrink
-                                value={returnDate.split('T')[0]}
-                                onChange={(e) => setReturnDate(e.target.value)}
+                                value={itemReturnConfigs.date.split('T')[0]}
+                                onChange={(e) =>
+                                    setItemReturnConfigs((prev) => {
+                                        return { ...prev, date: e.target.value }
+                                    })
+                                }
                             />
                             <div>
                                 <Button

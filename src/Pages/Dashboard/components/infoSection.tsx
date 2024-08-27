@@ -9,6 +9,7 @@ const InfoSection: React.FC = () => {
     const [recentEvents, setRecentEvents] = useState<EventsData[]>([])
 
     useEffect(() => {
+        console.log(events)
         const sortedEvents = events.sort(
             (a, b) =>
                 new Date(b.creatingTime).getTime() -

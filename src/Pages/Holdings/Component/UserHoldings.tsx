@@ -13,11 +13,17 @@ import { inputStyles } from '@/Components/Input/Styles'
 import { useParams } from 'react-router-dom'
 import { AssetModal } from './AssetModal'
 import HoldingsProvider, { HoldingsContext } from '../HoldingsContext'
+import Toast from '@/Components/Toast/Toast'
 
 const UserHoldingsComponent = () => {
-    const { error, isError, isLoading, data } = useGetUserHoldings()
-    console.log(error, isError, isLoading, data)
-    const { searchParams, setSearchParams } = useContext(HoldingsContext)
+    const holdingsGetter = useGetUserHoldings()
+    const {
+        searchParams,
+        setSearchParams,
+        toastConfigs,
+        setToastConfigs,
+        handleToastClose,
+    } = useContext(HoldingsContext)
 
     const handleItemClick = (id: string) => {
         setSearchParams((prevParams) => {
@@ -32,7 +38,7 @@ const UserHoldingsComponent = () => {
     const [options, setOptions] = useState<Asset[]>([])
     const [autocompleteLoading, setAutocompleteLoading] = useState(false)
     const [assetId, setAssetId] = useState<string | null>(null)
-    const { mutate } = useHandleItemAssigner()
+    const itemAssigner = useHandleItemAssigner()
     const { id: userId } = useParams()
 
     useEffect(() => {
@@ -58,8 +64,8 @@ const UserHoldingsComponent = () => {
         }
     }, [isOpen])
 
-    if (isLoading) return <p>Loading...</p>
-    if (isError) return <p>{error.message}</p>
+    if (holdingsGetter.isLoading) return <p>Loading...</p>
+    if (holdingsGetter.isError) return <p>{holdingsGetter.error.message}</p>
     return (
         <Card
             border="1px solid gray"
@@ -67,29 +73,30 @@ const UserHoldingsComponent = () => {
             className={style.userCard}
         >
             <div className={style.userImageNameRole}>
-                <img src={data.imageUrl} alt="" />
+                <img src={holdingsGetter.data.imageUrl} alt="" />
                 <div>
                     <h3>
-                        {data.firstName} {data.lastName}
+                        {holdingsGetter.data.firstName}{' '}
+                        {holdingsGetter.data.lastName}
                     </h3>
-                    <p>{data.role}</p>
+                    <p>{holdingsGetter.data.role}</p>
                 </div>
             </div>
             <div className={style.generalInfo}>
                 <div>
                     <h4>Email</h4>
-                    <p>{data.email}</p>
+                    <p>{holdingsGetter.data.email}</p>
                 </div>
                 <div>
                     <h4>Phone</h4>
-                    <p>{data.phone}</p>
+                    <p>{holdingsGetter.data.phone}</p>
                 </div>
             </div>
 
             <div className={style.itemsDiv}>
                 <h4>Assigned items</h4>
                 <div className={style.itemsListingContainer}>
-                    {data.assets.map((item: Asset) => {
+                    {holdingsGetter.data.assets.map((item: Asset) => {
                         return (
                             <IconBasedOnAssetType
                                 key={item._id}
@@ -100,12 +107,25 @@ const UserHoldingsComponent = () => {
                     })}
                 </div>
                 <form
-                    onSubmit={(event: FormEvent<HTMLFormElement>) => {
-                        mutate({
+                    onSubmit={async (event: FormEvent<HTMLFormElement>) => {
+                        itemAssigner.mutate({
                             event,
                             assetId: assetId as string,
                             userId: userId as string,
                         })
+                        if (itemAssigner.isError) {
+                            setToastConfigs({
+                                isOpen: true,
+                                message: 'Error assigning item',
+                                severity: 'error',
+                            })
+                        } else {
+                            setToastConfigs({
+                                isOpen: true,
+                                message: 'Item assigned successfully',
+                                severity: 'success',
+                            })
+                        }
                         setAssetId(null)
                     }}
                     className={style.itemAssigner}
@@ -172,7 +192,7 @@ const UserHoldingsComponent = () => {
                         )}
                     />
                     <TooltipImproved
-                        text={`Assign the selected item as a possesion of ${data.firstName} ${data.lastName}`}
+                        text={`Assign the selected item as a possesion of ${holdingsGetter.data.firstName} ${holdingsGetter.data.lastName}`}
                         placement="right"
                         offset={[-10, 0]}
                     >
@@ -186,6 +206,13 @@ const UserHoldingsComponent = () => {
                     </TooltipImproved>
                 </form>
             </div>
+            <Toast
+                open={toastConfigs.isOpen}
+                onClose={handleToastClose}
+                message={toastConfigs.message || ''}
+                severity={toastConfigs.severity}
+            />
+
             {searchParams.get('selectedOwnedItem') && <AssetModal />}
         </Card>
     )

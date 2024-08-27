@@ -9,11 +9,11 @@ import {
     Box,
     radioClasses,
 } from '@mui/joy'
-import { debounce } from 'lodash'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import { ChangeEvent, useContext } from 'react'
 import style from './style/holdings.module.scss'
 import HoldingsProvider, { HoldingsContext } from './HoldingsContext.tsx'
+import { debounce } from '@/Helpers/debounce.ts'
 
 function HoldingsComponent() {
     const { searchParams, setSearchParams } = useContext(HoldingsContext)

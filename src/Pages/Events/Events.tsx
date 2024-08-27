@@ -14,7 +14,6 @@ import Toast from '@/Components/Toast/Toast'
 import { EventsProvider, useEvents } from './Context/EventsContext'
 import Forms from './Forms/Forms'
 import { Tooltip } from '@mui/material'
-
 function EventsContentAndComponents() {
     const {
         events,
@@ -38,7 +37,6 @@ function EventsContentAndComponents() {
         handleSeeVoters,
         handleOpenDrawer,
     } = useEvents()
-
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Toast
@@ -87,84 +85,85 @@ function EventsContentAndComponents() {
                             <EventsContent key={event._id} />
                         ))
                         : events.map((event) => (
-                            <Card
-                                key={event._id}
-                                borderRadius="5px"
-                                border="1px solid #ebebeb"
-                                padding="20px"
-                            >
-                                <div className={style.titleContainer}>
-                                    <div className={style.title}>
-                                        {event.title}
-                                    </div>
-                                    {isAdmin && (
-                                        <Tooltip title="Menu Item">
-                                            <div>
-                                                <LongMenu event={event} />
-                                            </div>
-                                        </Tooltip>
-                                    )}
-                                </div>
-                                <div className={style.description}>
-                                    {event.description}
-                                </div>
-                                <div className={style.dataContainer}>
-                                    <div className={style.dateContainer}>
-                                        <div className={style.data}>
-                                            <Tooltip title="Date">
-                                                <div>
-                                                    <CalendarTodayIcon
-                                                        sx={{
-                                                            height: 20,
-                                                            width: 20,
-                                                            color: '#6b7280',
-                                                        }}
-                                                    />
-                                                </div>
-                                            </Tooltip>
-                                            {new Date(
-                                                event.startDate,
-                                            ).toLocaleDateString('en-US', {
-                                                month: 'long',
-                                                day: 'numeric',
-                                                year: 'numeric',
-                                            })}
-                                            -
-                                            {new Date(
-                                                event.endDate,
-                                            ).toLocaleDateString('en-US', {
-                                                month: 'long',
-                                                day: 'numeric',
-                                                year: 'numeric',
-                                            })}
-                                        </div>
-                                    </div>
-                                    <div className={style.data}>
-                                        <Tooltip title="Location">
-                                            <div>
-                                                <LocationOnOutlinedIcon
-                                                    sx={{
-                                                        height: 20,
-                                                        width: 20,
-                                                        color: '#6b7280',
-                                                    }}
-                                                />
-                                            </div>
-                                        </Tooltip>
-                                        <div>{event.location.toString()}</div>
-                                    </div>
-                                    <Button
-                                        btnText={
-                                            isAdmin ? 'See Details' : 'Vote'
-                                        }
-                                        type={ButtonTypes.SECONDARY}
-                                        onClick={() => handleSeeVoters(event)}
-                                        cursor="pointer"
-                                        padding="8px"
-                                    />
-                                </div>
-                            </Card>
-                        ))}
+
+                              <Card
+                                  key={event._id}
+                                  borderRadius="5px"
+                                  border="1px solid #EBEBEB"
+                                  padding="20px"
+                              >
+                                  <div className={style.titleContainer}>
+                                      <div className={style.title}>
+                                          {event.title}
+                                      </div>
+                                      {isAdmin && (
+                                          <Tooltip title="Menu Item">
+                                              <div>
+                                                  <LongMenu event={event} />
+                                              </div>
+                                          </Tooltip>
+                                      )}
+                                  </div>
+                                  <div className={style.description}>
+                                      {event.description}
+                                  </div>
+                                  <div className={style.dataContainer}>
+                                      <div className={style.dateContainer}>
+                                          <div className={style.data}>
+                                              <Tooltip title="Date">
+                                                  <div>
+                                                      <CalendarTodayIcon
+                                                          sx={{
+                                                              height: 20,
+                                                              width: 20,
+                                                              color: '#6B7280',
+                                                          }}
+                                                      />
+                                                  </div>
+                                              </Tooltip>
+                                              {new Date(
+                                                  event.startDate,
+                                              ).toLocaleDateString('en-US', {
+                                                  month: 'long',
+                                                  day: 'numeric',
+                                                  year: 'numeric',
+                                              })}{' '}
+                                              -{' '}
+                                              {new Date(
+                                                  event.endDate,
+                                              ).toLocaleDateString('en-US', {
+                                                  month: 'long',
+                                                  day: 'numeric',
+                                                  year: 'numeric',
+                                              })}
+                                          </div>
+                                      </div>
+                                      <div className={style.data}>
+                                          <Tooltip title="Location">
+                                              <div>
+                                                  <LocationOnOutlinedIcon
+                                                      sx={{
+                                                          height: 20,
+                                                          width: 20,
+                                                          color: '#6B7280',
+                                                      }}
+                                                  />
+                                              </div>
+                                          </Tooltip>
+                                          <div>{event.location.toString()}</div>
+                                      </div>
+                                      <Button
+                                          btnText={
+                                              isAdmin ? 'See Details' : 'Vote'
+                                          }
+                                          type={ButtonTypes.SECONDARY}
+                                          onClick={() => handleSeeVoters(event)}
+                                          cursor="pointer"
+                                          padding="8px"
+                                      />
+                                  </div>
+                              </Card>
+                          ))}
                 </div>
                 {showModal && (
                     <ModalComponent open={showModal} handleClose={closeModal}>
@@ -188,8 +187,8 @@ function EventsContentAndComponents() {
                             >
                                 <Button
                                     type={ButtonTypes.PRIMARY}
-                                    backgroundColor="#d32f2f"
-                                    borderColor="#d32f2f"
+                                    backgroundColor="#D32F2F"
+                                    borderColor="#D32F2F"
                                     btnText="Confirm"
                                     width="100%"
                                     onClick={() => {
@@ -222,7 +221,6 @@ function EventsContentAndComponents() {
         </div>
     )
 }
-
 const Events: React.FC = () => {
     return (
         <EventsProvider>
@@ -230,5 +228,4 @@ const Events: React.FC = () => {
         </EventsProvider>
     )
 }
-
 export default Events

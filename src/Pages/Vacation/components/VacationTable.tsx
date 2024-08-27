@@ -9,12 +9,15 @@ import { useContext } from 'react'
 import { VacationContext } from '../VacationContext'
 import { SelectedVacation } from './form/SelectedVacation'
 import { StatusBadge } from '@/Components/StatusBadge/StatusBadge'
+import Toast from '@/Components/Toast/Toast'
 
 export const VacationTable = () => {
     const {
         setSearchParams,
         viewVacationModalOpen,
         handleOpenViewVacationModalOpen,
+        toastConfigs,
+        handleToastClose,
     } = useContext(VacationContext)
     const { data, error, isLoading } = useGetVacations()
 
@@ -91,6 +94,12 @@ export const VacationTable = () => {
         <>
             <DataTable rows={rows} columns={columns} getRowId={getRowId} />
             {viewVacationModalOpen && <SelectedVacation />}
+            <Toast
+                open={toastConfigs.isOpen}
+                onClose={handleToastClose}
+                message={toastConfigs.message || ''}
+                severity={toastConfigs.severity}
+            />
         </>
     )
 }

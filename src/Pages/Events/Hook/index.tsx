@@ -2,7 +2,7 @@ import { useState, useEffect, ChangeEvent } from 'react'
 import AxiosInstance from '@/Helpers/Axios'
 import { EventsCreationData, EventsData } from '../Interface/Events'
 import { useSearchParams } from 'react-router-dom'
-import { debounce } from 'lodash'
+import { debounce } from '@/Helpers/debounce.ts'
 
 export const useGetAllEvents = () => {
     const [events, setEvents] = useState<EventsData[]>([])
