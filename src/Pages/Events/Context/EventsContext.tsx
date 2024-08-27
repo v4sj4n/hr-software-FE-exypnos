@@ -33,6 +33,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         toastSeverity,
         handleFileUpload,
         eventPhotos,
+        handleLocationChange,
     } = useCreateEvent(setEvents)
 
     const {
@@ -56,6 +57,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         setEditParticipants,
         editType,
         setEditType,
+        
     } = useUpdateEvent(setEvents)
 
     const {
@@ -110,6 +112,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     return (
         <EventsContext.Provider
             value={{
+                handleLocationChange,
                 events,
                 isLoading,
                 onSearchChange,
@@ -168,6 +171,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
                 setEditType,
                 handleFileUpload,
                 eventPhotos,
+                
             }}
         >
             {children}

@@ -9,7 +9,8 @@ import Button from '@/Components/Button/Button';
 import { ButtonTypes } from '@/Components/Button/ButtonTypes';
 import { useEvents } from '../Context/EventsContext';
 import style from '../styles/Events.module.css'
-import MapPicker from '../Components/GoogleMap/MapPicker'
+// import MapPicker from '../Components/GoogleMap/MapPicker'
+import MapComponent from '../Components/GoogleMap/MapPicker'
 
 export default function Forms() {
 
@@ -41,11 +42,32 @@ export default function Forms() {
         setEditType,
         endDate,
         handleCloseDrawer,
-        drawerOpen,} = useEvents();
-  return (
-    <div>
-       <DrawerComponent open={drawerOpen} onClose={handleCloseDrawer} >
-        <div className={style.create}>
+        drawerOpen,
+    } = useEvents()
+
+    const handleLocationChange = (address: string) => {
+        console.log('Selected address:', address);
+        
+        if (editingEvent) {
+          handleEditChange({
+            target: {
+              name: 'location',
+              value: address
+            }
+          } as React.ChangeEvent<HTMLInputElement>);
+        } else {
+          handleChange({
+            target: {
+              name: 'location',
+              value: address
+            }
+          } as React.ChangeEvent<HTMLInputElement>);
+        }
+      };
+    return (
+        <div>
+            <DrawerComponent open={drawerOpen} onClose={handleCloseDrawer}>
+                <div className={style.create}>
                     {editingEvent ? 'Edit Event' : 'Create New Event'}
                     <CloseIcon
                         onClick={handleCloseDrawer}
@@ -94,11 +116,19 @@ export default function Forms() {
                         }
                     />
                 </div>
+                {/* <Input
+                    IsUsername
+                    width="100%"
+                    label="Location"
+                    name="location"
+                    onChange={editingEvent ? handleEditChange : handleChange}
+                    value={
+                        editingEvent ? editingEvent.location : event.location
+                    }
+                /> */}
+      <MapComponent onLocationChange={handleLocationChange} />
 
-
-
-                <MapPicker />
-
+                {/* <MapPicker /> */}
                 <Input
                     IsUsername
                     label="Description"
@@ -136,6 +166,7 @@ export default function Forms() {
                 />
 
                 <Selecter
+                    
                     value={editingEvent ? editType : event.type}
                     onChange={(newValue) => {
                         if (editingEvent) {
