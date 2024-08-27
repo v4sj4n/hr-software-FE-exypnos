@@ -98,7 +98,14 @@ export const useCreateEvent = (
             setIncludesPoll(e.target.checked)
         } else if (name === 'pollQuestion') {
             setPollQuestion(value)
-        } else if (name === 'isMultipleChoice') {
+        }  else if (name === 'location') {
+            const location = JSON.parse(value)
+            setEvent((prevEvent) => ({
+                ...prevEvent,
+                location,
+            }))
+        } 
+        else if (name === 'isMultipleChoice') {
             setIsMultipleChoice(e.target.checked)
         } else {
             setEvent((prevEvent) => ({

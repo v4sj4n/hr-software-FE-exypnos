@@ -2,7 +2,6 @@ import AxiosInstance from '@/Helpers/Axios'
 import { PayrollRow } from '../Interface/Payroll'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
-// import React, { useState } from "react"
 
 export const usePayroll = (month?: number, year?: number) => {
     return useQuery<PayrollRow[], Error>({
@@ -10,6 +9,7 @@ export const usePayroll = (month?: number, year?: number) => {
         queryFn: async () => {
             const url = `/salary${month !== undefined ? `?month=${month}` : ''}${year !== undefined ? `&year${year}` : ''}`
             const response = await AxiosInstance.get<PayrollRow[]>(url)
+            console.log(response.data)
             return response.data
         },
     })

@@ -12,6 +12,7 @@ import RescheduleModal from './Component/ScheduleForm'
 import Input from '@/Components/Input/Index'
 import Selecter from '@/Components/Input/components/Select/Selecter'
 
+
 function InterviewKanbanContent() {
     const {
         loading,

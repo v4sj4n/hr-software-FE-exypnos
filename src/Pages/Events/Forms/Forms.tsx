@@ -1,20 +1,20 @@
 import React from 'react'
 import CloseIcon from '@mui/icons-material/Close'
-import Selecter from '@/Components/Input/components/Select/Selecter'
-import Dropzone from '@/Dropzone/Dropzone'
-import { Switch } from '@mui/material'
-import DrawerComponent from '@/Components/Drawer/Drawer'
-import Input from '@/Components/Input/Index'
-import Button from '@/Components/Button/Button'
-import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-import { useEvents } from '../Context/EventsContext'
+import Selecter from '@/Components/Input/components/Select/Selecter';
+import Dropzone from '@/Dropzone/Dropzone';
+import { Switch } from '@mui/material';
+import DrawerComponent from '@/Components/Drawer/Drawer';
+import Input from '@/Components/Input/Index';
+import Button from '@/Components/Button/Button';
+import { ButtonTypes } from '@/Components/Button/ButtonTypes';
+import { useEvents } from '../Context/EventsContext';
 import style from '../styles/Events.module.css'
 // import MapPicker from '../Components/GoogleMap/MapPicker'
 import MapComponent from '../Components/GoogleMap/MapPicker'
 
 export default function Forms() {
-    const {
-        editingEvent,
+
+    const { editingEvent,
         editPollQuestion,
         editPollOptions,
         handleOptionChange,
@@ -98,6 +98,7 @@ export default function Forms() {
                         }
                         width={178}
                     />
+
                     <Input
                         IsUsername
                         label="End Date and Time"
@@ -143,7 +144,9 @@ export default function Forms() {
                     }
                 />
                 <Selecter
+
                     width="100%"
+
                     value={editingEvent ? editParticipants : participants}
                     onChange={(newValue) => {
                         if (editingEvent) {
@@ -161,6 +164,7 @@ export default function Forms() {
                     name="participants"
                     label="Participants"
                 />
+
                 <Selecter
                     
                     value={editingEvent ? editType : event.type}
@@ -206,6 +210,7 @@ export default function Forms() {
                             : 'Add poll to event'}
                     </div>
                 </div>
+
                 {(editingEvent ? includePollInEdit : includesPoll) && (
                     <div
                         style={{
@@ -308,7 +313,9 @@ export default function Forms() {
                     border="none"
                     onClick={editingEvent ? updateEvent : createEvent}
                 />
+
             </DrawerComponent>
         </div>
     )
 }
+

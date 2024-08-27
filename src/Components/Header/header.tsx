@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import {
     NotificationsOutlined as NotificationsIcon,
     SettingsOutlined as SettingsOutlinedIcon,
@@ -11,13 +11,25 @@ import style from './header.module.css'
 import { useAuth } from '../../Context/AuthProvider'
 import { Link, useNavigate } from 'react-router-dom'
 import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
+import AxiosInstance from '@/Helpers/Axios'
+
+interface NotificationData {
+    _id: string,
+        title: string,
+        content: string,
+        type: string,
+        typeId: string,
+
+}
 
 export const Header = () => {
     const { isSidebarOpen: isOpen, toggleSidebar } =
         useContext(SidebarHeaderContext)
     const [showDropdown, setShowDropdown] = useState(false)
+    const [showDropdownNotification, setShowDropdownNotification] = useState(false)
     const navigate = useNavigate()
     const toggleDropdown = () => setShowDropdown(!showDropdown)
+    const toggleDropdownNotification = () => setShowDropdownNotification(!showDropdownNotification)
 
     const { logout, currentUser } = useAuth()
 
@@ -26,6 +38,28 @@ export const Header = () => {
         navigate('/')
     }
 
+    const [notification, setNotification] = useState<NotificationData[]>([])
+    const currentUserId = currentUser?._id;
+    console.log(currentUserId)
+
+    useEffect(() => {
+      
+        AxiosInstance.get<NotificationData[]>(`notification/user/${currentUserId}`)
+            .then((response) => {
+                setNotification(response.data)
+                console.log('Notification fetch:', response.data)
+                setNotification(response.data)
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error)
+            })
+           
+    }, [currentUserId])
+
+
+    const updateSatusAndNvigate = () => {
+        AxiosInstance.patch(`notification/${notification[0]?._id}`)
+    }
     const handleProfileClick = () => {
         navigate(`/profile/${currentUser?._id}`)
     }
@@ -42,7 +76,6 @@ export const Header = () => {
                     style={{
                         width: '35px',
                         height: 'auto',
-                        // cursor: 'pointer',
                     }}
                 />
                 {isOpen && (
@@ -56,7 +89,7 @@ export const Header = () => {
             </div>
             <div className={style.headerRight}>
                 <div className={style.icon}>
-                    <NotificationsIcon style={{ cursor: 'pointer' }} />
+                    <NotificationsIcon onClick={toggleDropdownNotification} style={{ cursor: 'pointer' }} />
                     <span className={style.badge}>3</span>
                 </div>
                 <div className={style.icon} onClick={toggleDropdown}>
@@ -70,6 +103,19 @@ export const Header = () => {
                         }}
                     />
                     <div className={style.username}></div>
+                    {showDropdownNotification && (
+                        <div className={style.dropdown}>  
+                        <div> {notification.map(notification => (
+        <div key={notification._id}>
+            <Link onClick={updateSatusAndNvigate} to={`/${notification.type}`}>
+            <div>{notification.title}</div>
+            <div> {notification.type}</div>
+            </Link>
+        </div>
+      ))}</div>
+                        </div>
+
+                    )}
                     {showDropdown && (
                         <div className={style.dropdown}>
                             <div

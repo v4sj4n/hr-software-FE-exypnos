@@ -9,9 +9,10 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
     const [month, setMonth] = useState<number | undefined>(undefined)
     const [year, setYear] = useState<number | undefined>(undefined)
-    const { data: payrollData = [] } = usePayroll(month, year)
+    const { data: payrollData = [], isPending, isError } = usePayroll(month, year)
 
     const navigate = useNavigate()
+
 
     const rows: PayrollRow[] = payrollData.map((payrollData, index) => ({
         id: index + 1,
@@ -20,6 +21,7 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
         healthInsurance: `${payrollData.healthInsurance}${payrollData.currency}`,
         month: payrollData.month,
         workingDays: payrollData.workingDays,
+        tax: payrollData.tax,
         socialSecurity: payrollData.socialSecurity,
         fullName: `${payrollData.userId.firstName} ${payrollData.userId.lastName}`,
         grossSalary: payrollData.grossSalary,
@@ -41,6 +43,7 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
         { field: 'grossSalary', headerName: 'grossSalary', flex: 1 },
         { field: 'year', headerName: 'year', flex: 1.5 },
         { field: 'bonusDescription', headerName: 'bonusDescription', flex: 2 },
+        { field: 'tax', headerName: 'tax', flex: 2 },
     ]
 
     const headerTextColors = { firstName: '#0000FF' }
@@ -59,6 +62,8 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
         handleRowClick,
         setMonth,
         setYear,
+        isPending, 
+        isError
     }
 
     return (

@@ -9,7 +9,6 @@ interface SelecterProps {
     multiple: boolean
     label: string
     name: string
-    width: string
 }
 
 const Selecter = ({
@@ -19,7 +18,6 @@ const Selecter = ({
     multiple,
     label,
     name,
-    width,
 }: SelecterProps) => {
     const [isOpen, setIsOpen] = useState(false)
 
