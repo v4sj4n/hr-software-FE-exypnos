@@ -3,14 +3,23 @@ import { ButtonTypes } from '../../../../Components/Button/ButtonTypes'
 import Button from '../../../../Components/Button/Button'
 import style from '../ProfileForm/ProfileForm.module.css'
 import { ProfileProvider } from '../ProfileForm/Context/ProfileProvider'
-import { useUpdatePayroll } from '../ProfileForm/Context/Hook'
+import { useCreatePayroll, useUpdatePayroll } from '../ProfileForm/Context/Hook'
+import Toast from '@/Components/Toast/Toast'
 
 const ContratContent = () => {
-    const { payrollId, handleChangePayroll, handleUpdatePayroll } =
+    const { EditingPayroll, handleUpdateChangePayroll, handleUpdatePayroll, toastMessage, toastOpen, handleToastClose, toastSeverity } =
         useUpdatePayroll()
+
+    const { handleChangePayroll, payroll, handleCreatePayroll, createToastMessage, createToastSeverity, createToastOpen, handleCreateToastClose } = useCreatePayroll()
 
     return (
         <div className={style.container}>
+            <Toast
+                severity={ EditingPayroll ? toastSeverity : createToastSeverity}
+                open={EditingPayroll ? toastOpen : createToastOpen}
+                message={EditingPayroll ? toastMessage : createToastMessage}
+                onClose={EditingPayroll ? handleToastClose : handleCreateToastClose}
+            />
             <div className={style.title}>Payroll Information</div>
             <div className={style.forms}>
                 <Input
@@ -20,8 +29,8 @@ const ContratContent = () => {
                     name="workingDays"
                     shrink={true}
                     width={350}
-                    value={payrollId?.workingDays || ''}
-                    onChange={handleChangePayroll}
+                    value={EditingPayroll ? EditingPayroll?.workingDays : payroll.workingDays}
+                    onChange={EditingPayroll ? handleUpdateChangePayroll : handleChangePayroll}
                 />
                 <Input
                     IsUsername
@@ -29,8 +38,8 @@ const ContratContent = () => {
                     name="grossSalary"
                     label="Gross salary"
                     width={350}
-                    value={payrollId?.grossSalary}
-                    onChange={handleChangePayroll}
+                    value={EditingPayroll ? EditingPayroll?.grossSalary : payroll.grossSalary}
+                    onChange={EditingPayroll ? handleUpdateChangePayroll : handleChangePayroll}
                 />
             </div>
             <div className={style.border}></div>
@@ -59,8 +68,9 @@ const ContratContent = () => {
             <div className={style.inputWidth}>
                 <Button
                     type={ButtonTypes.PRIMARY}
-                    btnText="Save Changes"
-                    onClick={handleUpdatePayroll}
+                    btnText={EditingPayroll ? "Update Payroll" : "Create Payroll"}
+                    onClick={EditingPayroll ? handleUpdatePayroll : handleCreatePayroll}
+                    width='350px'
                 />
             </div>
         </div>

@@ -2,9 +2,9 @@ import Drawer from '@mui/material/Drawer'
 import { Box } from '@mui/material'
 
 interface DrawerComponentProps {
-    children: React.ReactNode
-    open: boolean
-    onClose: () => void
+    children: React.ReactNode;
+    open: boolean;
+    onClose: () => void;
 }
 
 function DrawerComponent({ children, open, onClose }: DrawerComponentProps) {

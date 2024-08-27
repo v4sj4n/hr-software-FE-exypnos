@@ -9,7 +9,6 @@ interface SelecterProps {
     multiple: boolean
     label: string
     name: string
-    width: string
 }
 
 const Selecter = ({
@@ -19,7 +18,6 @@ const Selecter = ({
     multiple,
     label,
     name,
-    width,
 }: SelecterProps) => {
     const [isOpen, setIsOpen] = useState(false)
 
@@ -51,7 +49,7 @@ const Selecter = ({
                     label={label}
                     variant="filled"
                     size="small"
-                    sx={{ ...inputStyles , width: width || '100%' }}
+                    sx={{ ...inputStyles  }}
                     InputLabelProps={{
                         style: {
                             color: '#4C556B',

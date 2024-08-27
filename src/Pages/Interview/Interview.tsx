@@ -3,7 +3,7 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import CheckIcon from '@mui/icons-material/Check';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Tooltip, Tabs, Tab, MenuItem } from '@mui/material';
+import { Tooltip, Tabs, Tab } from '@mui/material';
 import { ButtonTypes } from '@/Components/Button/ButtonTypes';
 import { InterviewProvider, useInterviewContext } from './Hook/InterviewContext';
 import style from './styles/Interview.module.css';
