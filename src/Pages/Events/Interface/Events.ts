@@ -8,7 +8,10 @@ export interface EventsData {
     time: string
     creatingTime: string
     file: string
-    location: string
+    location: {
+        longtitude: number,
+        latitude: number,
+    }
     type: string
     photo: string[]
     participants: string[]
@@ -29,7 +32,10 @@ export interface EventsCreationData {
     description: string
     startDate: string
     endDate: string
-    location: string
+    location: {
+        longtitude: number,
+        latitude: number,
+    }
     participants: string[]
     photo: File[]
     type: string

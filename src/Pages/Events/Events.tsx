@@ -82,9 +82,10 @@ function EventsContentAndComponents() {
                 <div className={style.grid}>
                     {isLoading
                         ? events.map((event) => (
-                              <EventsContent key={event._id} />
-                          ))
+                            <EventsContent key={event._id} />
+                        ))
                         : events.map((event) => (
+
                               <Card
                                   key={event._id}
                                   borderRadius="5px"

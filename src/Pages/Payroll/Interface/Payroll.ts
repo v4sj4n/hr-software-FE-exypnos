@@ -9,6 +9,7 @@ export interface PayrollContextType {
     getRowId: (row: PayrollRow) => number
     setMonth: (month: number) => void
     setYear: (year: number) => void
+    isPending: boolean
 }
 
 export const PayrollContext = React.createContext<
@@ -28,6 +29,7 @@ export interface PayrollRow {
     grossSalary: number
     month: number
     year: number
+    tax: number
     userId: {
         _id: string
         firstName: string

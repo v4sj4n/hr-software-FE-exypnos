@@ -68,7 +68,10 @@ export const useCreateEvent = (
         description: '',
         endDate: '',
         startDate: '',
-        location: '',
+        location: {
+            longtitude: 0,
+            latitude: 0,
+        },
         photo: [],
         participants: [],
         type: '',
@@ -94,7 +97,14 @@ export const useCreateEvent = (
             setIncludesPoll(e.target.checked)
         } else if (name === 'pollQuestion') {
             setPollQuestion(value)
-        } else if (name === 'isMultipleChoice') {
+        }  else if (name === 'location') {
+            const location = JSON.parse(value)
+            setEvent((prevEvent) => ({
+                ...prevEvent,
+                location,
+            }))
+        } 
+        else if (name === 'isMultipleChoice') {
             setIsMultipleChoice(e.target.checked)
         } else {
             setEvent((prevEvent) => ({
@@ -128,7 +138,7 @@ export const useCreateEvent = (
         formData.append('description', event.description)
         formData.append('startDate', event.startDate)
         formData.append('endDate', event.endDate)
-        formData.append('location', event.location)
+        formData.append('location', JSON.stringify(event.location) )
         formData.append('type', event.type)
         participants.forEach((participant, index) => {
             formData.append(`participants[${index}]`, participant)
@@ -167,7 +177,10 @@ export const useCreateEvent = (
                 description: '',
                 startDate: '',
                 endDate: '',
-                location: '',
+                location: {
+                    longtitude: 0,
+                    latitude: 0,
+                },
                 type: '',
                 photo: [],
                 participants: [],
