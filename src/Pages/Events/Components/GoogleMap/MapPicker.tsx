@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import Input from '@/Components/Input/Index';
+import SearchIcon from '@mui/icons-material/Search';
 
 const mapContainerStyle = {
   width: '100%',
@@ -76,12 +77,15 @@ const MapComponent: React.FC<MapComponentProps> = ({ onLocationChange }) => {
       <Input
         IsUsername
         type="text"
+        label='Location'
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
         placeholder="Enter location"
-        name={''}
+        name="location"
+        icon={<SearchIcon onClick={handleSearch}/>}
+        style={{marginBottom:"15px"}}
       />
-      <button onClick={handleSearch}>Search</button>
+      {/* <button onClick={handleSearch}>Search</button> */}
       <LoadScript googleMapsApiKey="AIzaSyBSyIgo2TtwzkihGKrRGcrWxW_k6zwkYOk">
         <GoogleMap
           mapContainerStyle={mapContainerStyle}

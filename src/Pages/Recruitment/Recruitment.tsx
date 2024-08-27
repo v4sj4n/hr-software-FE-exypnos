@@ -149,6 +149,7 @@ export default function Recruitment() {
                                     IsUsername
                                     width="300px"
                                     type="date"
+                                    shrink={true}
                                 />
                                 {errors.dob && (
                                     <ErrorText>{errors.dob.message}</ErrorText>
