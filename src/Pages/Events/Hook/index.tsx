@@ -54,7 +54,6 @@ export const useGetAllEvents = () => {
     }
 }
 
-
 export const useCreateEvent = (
     setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>,
 ) => {
@@ -69,7 +68,7 @@ export const useCreateEvent = (
         description: '',
         endDate: '',
         startDate: '',
-        location: '' , 
+        location: '',
         photo: [],
         participants: [],
         type: '',
@@ -95,14 +94,13 @@ export const useCreateEvent = (
             setIncludesPoll(e.target.checked)
         } else if (name === 'pollQuestion') {
             setPollQuestion(value)
-        }  else if (name === 'location') {
+        } else if (name === 'location') {
             const location = value
             setEvent((prevEvent) => ({
                 ...prevEvent,
                 location,
             }))
-        } 
-        else if (name === 'isMultipleChoice') {
+        } else if (name === 'isMultipleChoice') {
             setIsMultipleChoice(e.target.checked)
         } else {
             setEvent((prevEvent) => ({
@@ -113,17 +111,16 @@ export const useCreateEvent = (
     }
 
     const handleLocationChange = (address: string) => {
-        console.log('Selected address:', address);
-      
-         {
-          setEvent(prevEvent => ({
-            ...prevEvent,
-            location: address
-          }));
+        console.log('Selected address:', address)
+
+        {
+            setEvent((prevEvent) => ({
+                ...prevEvent,
+                location: address,
+            }))
         }
-      };
-      
-      
+    }
+
     const handleFileUpload = (photo: File[]) => {
         setEventPhotos(photo)
     }
@@ -148,7 +145,7 @@ export const useCreateEvent = (
         formData.append('description', event.description)
         formData.append('startDate', event.startDate)
         formData.append('endDate', event.endDate)
-        formData.append('location', event.location);
+        formData.append('location', event.location)
         formData.append('type', event.type)
         participants.forEach((participant, index) => {
             formData.append(`participants[${index}]`, participant)
@@ -178,7 +175,7 @@ export const useCreateEvent = (
                     'Content-Type': 'multipart/form-data',
                 },
             })
-            
+
             setToastMessage('Event created successfully')
             setToastOpen(true)
             setToastSeverity('success')
@@ -188,7 +185,7 @@ export const useCreateEvent = (
                 description: '',
                 startDate: '',
                 endDate: '',
-                location: '' , 
+                location: '',
 
                 type: '',
                 photo: [],
@@ -233,7 +230,7 @@ export const useCreateEvent = (
         toastSeverity,
         handleFileUpload,
         eventPhotos,
-        handleLocationChange
+        handleLocationChange,
     }
 }
 
@@ -349,7 +346,7 @@ export const useUpdateEvent = (
             description: editingEvent.description,
             startDate: editingEvent.startDate,
             endDate: editingEvent.endDate,
-            location: editingEvent.location, 
+            location: editingEvent.location,
             participants: editParticipants,
             type: editType,
             poll: includePollInEdit

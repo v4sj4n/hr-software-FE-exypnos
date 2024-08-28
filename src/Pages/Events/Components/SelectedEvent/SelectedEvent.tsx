@@ -81,18 +81,20 @@ const SelectedEventCard = ({
                         className={style.data}
                         style={{ marginBottom: '10px' }}
                     >
-                              <LocationOnOutlinedIcon
+                        <LocationOnOutlinedIcon
                             sx={{ height: 20, width: 20, color: '#6b7280' }}
                         />
                         <div>{selectedEvent.location}</div>
                     </div>
                 </div>
                 <div style={{ width: '100%', height: '400px' }}>
-                <MapComponent 
-    onLocationChange={(address, lat, lng) => console.log(address, lat, lng)}
-    savedLocation={selectedEvent.location} 
-    showInput={false}
-  />
+                    <MapComponent
+                        onLocationChange={(address, lat, lng) =>
+                            console.log(address, lat, lng)
+                        }
+                        savedLocation={selectedEvent.location}
+                        showInput={false}
+                    />
                 </div>
                 {!showVotersButton && selectedEvent.poll && (
                     <EventPoll

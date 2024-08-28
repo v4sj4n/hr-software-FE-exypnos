@@ -2,7 +2,7 @@ import { useEmployeesWithHoldings } from '../Hook/index.ts'
 import { CircularProgress } from '@mui/material'
 import { UserWithHoldings } from '../TAsset'
 import Card from '@/Components/Card/Card'
-import { useInView } from 'react-intersection-observer';
+import { useInView } from 'react-intersection-observer'
 
 // import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
 import {
@@ -12,10 +12,17 @@ import {
 } from '@mui/icons-material'
 import style from '../style/employeesWithHoldings.module.scss'
 import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 
 export const EmployeesWithHoldings = () => {
-    const { isError, error, data, isLoading, fetchNextPage, isFetchingNextPage } = useEmployeesWithHoldings()
+    const {
+        isError,
+        error,
+        data,
+        isLoading,
+        fetchNextPage,
+        isFetchingNextPage,
+    } = useEmployeesWithHoldings()
     const navigate = useNavigate()
     console.log(data)
 
@@ -23,14 +30,13 @@ export const EmployeesWithHoldings = () => {
         navigate(`/holdings/${id}`)
     }
 
-  const { ref, inView } = useInView();
-
+    const { ref, inView } = useInView()
 
     useEffect(() => {
         if (inView) {
-          fetchNextPage();
+            fetchNextPage()
         }
-      }, [fetchNextPage, inView]);
+    }, [fetchNextPage, inView])
 
     if (isError) return <div>Error: {error.message}</div>
     if (isLoading)
@@ -39,8 +45,6 @@ export const EmployeesWithHoldings = () => {
                 <CircularProgress />
             </div>
         )
-
-
 
     const users = data?.pages.map((page) =>
         page.data.map(
@@ -105,10 +109,12 @@ export const EmployeesWithHoldings = () => {
         ),
     )
 
-    return (<div className={style.employeesContainer}>{users}
-      <div ref={ref}>{isFetchingNextPage && 'Loading...'}</div>
-
-    </div>)
+    return (
+        <div className={style.employeesContainer}>
+            {users}
+            <div ref={ref}>{isFetchingNextPage && 'Loading...'}</div>
+        </div>
+    )
 }
 
 const IconBasedOnAssetType = ({ asset }: { asset: string }) => {

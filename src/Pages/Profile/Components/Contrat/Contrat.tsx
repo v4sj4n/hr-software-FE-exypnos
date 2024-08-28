@@ -7,18 +7,35 @@ import { useCreatePayroll, useUpdatePayroll } from '../ProfileForm/Context/Hook'
 import Toast from '@/Components/Toast/Toast'
 
 const ContratContent = () => {
-    const { EditingPayroll, handleUpdateChangePayroll, handleUpdatePayroll, toastMessage, toastOpen, handleToastClose, toastSeverity } =
-        useUpdatePayroll()
+    const {
+        EditingPayroll,
+        handleUpdateChangePayroll,
+        handleUpdatePayroll,
+        toastMessage,
+        toastOpen,
+        handleToastClose,
+        toastSeverity,
+    } = useUpdatePayroll()
 
-    const { handleChangePayroll, payroll, handleCreatePayroll, createToastMessage, createToastSeverity, createToastOpen, handleCreateToastClose } = useCreatePayroll()
+    const {
+        handleChangePayroll,
+        payroll,
+        handleCreatePayroll,
+        createToastMessage,
+        createToastSeverity,
+        createToastOpen,
+        handleCreateToastClose,
+    } = useCreatePayroll()
 
     return (
         <div className={style.container}>
             <Toast
-                severity={ EditingPayroll ? toastSeverity : createToastSeverity}
+                severity={EditingPayroll ? toastSeverity : createToastSeverity}
                 open={EditingPayroll ? toastOpen : createToastOpen}
                 message={EditingPayroll ? toastMessage : createToastMessage}
-                onClose={EditingPayroll ? handleToastClose : handleCreateToastClose}
+                onClose={
+                    EditingPayroll ? handleToastClose : handleCreateToastClose
+                }
             />
             <div className={style.title}>Payroll Information</div>
             <div className={style.forms}>
@@ -29,8 +46,16 @@ const ContratContent = () => {
                     name="workingDays"
                     shrink={true}
                     width={350}
-                    value={EditingPayroll ? EditingPayroll?.workingDays : payroll.workingDays}
-                    onChange={EditingPayroll ? handleUpdateChangePayroll : handleChangePayroll}
+                    value={
+                        EditingPayroll
+                            ? EditingPayroll?.workingDays
+                            : payroll.workingDays
+                    }
+                    onChange={
+                        EditingPayroll
+                            ? handleUpdateChangePayroll
+                            : handleChangePayroll
+                    }
                 />
                 <Input
                     IsUsername
@@ -38,8 +63,16 @@ const ContratContent = () => {
                     name="grossSalary"
                     label="Gross salary"
                     width={350}
-                    value={EditingPayroll ? EditingPayroll?.grossSalary : payroll.grossSalary}
-                    onChange={EditingPayroll ? handleUpdateChangePayroll : handleChangePayroll}
+                    value={
+                        EditingPayroll
+                            ? EditingPayroll?.grossSalary
+                            : payroll.grossSalary
+                    }
+                    onChange={
+                        EditingPayroll
+                            ? handleUpdateChangePayroll
+                            : handleChangePayroll
+                    }
                 />
             </div>
             <div className={style.border}></div>
@@ -68,9 +101,15 @@ const ContratContent = () => {
             <div className={style.inputWidth}>
                 <Button
                     type={ButtonTypes.PRIMARY}
-                    btnText={EditingPayroll ? "Update Payroll" : "Create Payroll"}
-                    onClick={EditingPayroll ? handleUpdatePayroll : handleCreatePayroll}
-                    width='350px'
+                    btnText={
+                        EditingPayroll ? 'Update Payroll' : 'Create Payroll'
+                    }
+                    onClick={
+                        EditingPayroll
+                            ? handleUpdatePayroll
+                            : handleCreatePayroll
+                    }
+                    width="350px"
                 />
             </div>
         </div>

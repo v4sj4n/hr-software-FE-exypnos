@@ -12,7 +12,6 @@ import RescheduleModal from './Component/ScheduleForm'
 import Input from '@/Components/Input/Index'
 import Selecter from '@/Components/Input/components/Select/Selecter'
 
-
 function InterviewKanbanContent() {
     const {
         loading,
@@ -38,23 +37,23 @@ function InterviewKanbanContent() {
     const [endDate, setEndDate] = useState<string | null>(null)
     const [currentTab, setCurrentTab] = useState<string>('first_interview')
     useEffect(() => {
-        console.log('Fetching interviews with default/current parameters:');
-        console.log('Current Phase:', currentPhase);
-        console.log('Start Date:', startDate);
-        console.log('End Date:', endDate);
-    
+        console.log('Fetching interviews with default/current parameters:')
+        console.log('Current Phase:', currentPhase)
+        console.log('Start Date:', startDate)
+        console.log('End Date:', endDate)
+
         fetchFilteredInterviews(
             currentPhase,
             startDate ? new Date(startDate) : undefined,
-            endDate ? new Date(endDate) : undefined
+            endDate ? new Date(endDate) : undefined,
         )
             .then(() => {
-                console.log('Interviews fetched successfully on mount');
+                console.log('Interviews fetched successfully on mount')
             })
             .catch((err) => {
-                console.error('Error fetching interviews:', err);
-            });
-    }, [currentPhase, startDate, endDate]);
+                console.error('Error fetching interviews:', err)
+            })
+    }, [currentPhase, startDate, endDate])
 
     useEffect(() => {
         setCurrentTab(currentPhase)
@@ -189,12 +188,22 @@ function InterviewKanbanContent() {
                                                         className={
                                                             style.kanbanItem
                                                         }
-                                                    ><h3
-                                                    onClick={() => handleNavigateToProfile(interview._id.toString())}
-                                                    className={style.candidateName}
-                                                >
-                                                    <b>{`${interview.firstName} ${interview.lastName}`}</b> {interview.positionApplied}
-                                                </h3>
+                                                    >
+                                                        <h3
+                                                            onClick={() =>
+                                                                handleNavigateToProfile(
+                                                                    interview._id.toString(),
+                                                                )
+                                                            }
+                                                            className={
+                                                                style.candidateName
+                                                            }
+                                                        >
+                                                            <b>{`${interview.firstName} ${interview.lastName}`}</b>{' '}
+                                                            {
+                                                                interview.positionApplied
+                                                            }
+                                                        </h3>
                                                         {currentTab !==
                                                             'employed' &&
                                                             currentTab !==

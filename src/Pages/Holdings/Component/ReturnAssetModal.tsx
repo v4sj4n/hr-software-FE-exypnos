@@ -10,7 +10,7 @@ import Input from '@/Components/Input/Index'
 import WarningIcon from '@mui/icons-material/Warning'
 import { HoldingsContext } from '../HoldingsContext'
 
-export const AssetModal = () => {
+export const ReturnAssetModal = () => {
     const {
         searchParams,
         itemReturnConfigs,

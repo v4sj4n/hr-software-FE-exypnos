@@ -8,9 +8,13 @@ export const PayrollProviderSpecific: React.FC<{
     const [month, setMonth] = useState<number | undefined>(undefined)
     const [year, setYear] = useState<number | undefined>(undefined)
 
-    const { data: payrollId = [], isPending, isError } = usePayrollUserId(month, year)
-    if(isPending) return <div>Loading...</div>
-    if(isError) return <div>Error: {isError}</div>
+    const {
+        data: payrollId = [],
+        isPending,
+        isError,
+    } = usePayrollUserId(month, year)
+    if (isPending) return <div>Loading...</div>
+    if (isError) return <div>Error: {isError}</div>
 
     const rows: PayrollRowSpecifc[] = payrollId.map((payrollData, index) => ({
         id: index + 1,

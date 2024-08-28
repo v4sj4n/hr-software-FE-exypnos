@@ -1,6 +1,11 @@
 import { FormEvent, useContext } from 'react'
 import { HoldingsContext } from '../HoldingsContext'
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+    useInfiniteQuery,
+    useMutation,
+    useQuery,
+    useQueryClient,
+} from '@tanstack/react-query'
 import {
     getHoldings,
     getItem,
@@ -31,15 +36,23 @@ export const useEmployeesWithHoldings = () => {
 
     return useInfiniteQuery({
         initialPageParam: 0,
-        queryKey: ['usersWithHoldings',
+        queryKey: [
+            'usersWithHoldings',
             searchParams.get('users'),
             searchParams.get('search'),
         ],
-        queryFn: ({ pageParam }) => getHoldings({ pageParam, search: searchParams.get('search') || '', users: searchParams.get('users') || '' }),
+        queryFn: ({ pageParam }) =>
+            getHoldings({
+                pageParam,
+                search: searchParams.get('search') || '',
+                users: searchParams.get('users') || '',
+            }),
         getNextPageParam: (lastPage, allPages) => {
-            return lastPage.totalPages > allPages.length ? allPages.length + 1 : undefined;
+            return lastPage.totalPages > allPages.length
+                ? allPages.length + 1
+                : undefined
         },
-    });
+    })
 }
 
 export const useGetUserHoldings = () => {
@@ -67,11 +80,13 @@ export const useHandleItemAssigner = () => {
             event,
             assetId,
             userId,
+            date,
         }: {
             event: FormEvent<HTMLFormElement>
             assetId: string
             userId: string
-        }) => handleItemAssign(event, assetId, userId),
+            date: string
+        }) => handleItemAssign(event, assetId, userId, date),
         onSettled: () => {
             queryClient.invalidateQueries({
                 queryKey: ['usersWithHoldings'],
