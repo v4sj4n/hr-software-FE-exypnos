@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { useState, useCallback, useEffect } from 'react';
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 import Input from '@/Components/Input/Index';
 
 const mapContainerStyle = {
@@ -16,10 +16,17 @@ type LatLngLiteral = google.maps.LatLngLiteral;
 type MapType = google.maps.Map;
 
 interface MapComponentProps {
-  onLocationChange: (address: string) => void;
+  onLocationChange: (address: string, lat: number, lng: number) => void;
+  savedLocation?: string;
+  showInput?: boolean;  
+
 }
 
-const MapComponent: React.FC<MapComponentProps> = ({ onLocationChange }) => {
+const MapComponent: React.FC<MapComponentProps> = ({ onLocationChange, savedLocation,showInput }) => {
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: 'AIzaSyBSyIgo2TtwzkihGKrRGcrWxW_k6zwkYOk',
+  });
+
   const [map, setMap] = useState<MapType | null>(null);
   const [searchValue, setSearchValue] = useState('');
   const [markerPosition, setMarkerPosition] = useState<LatLngLiteral | null>(null);
@@ -32,8 +39,27 @@ const MapComponent: React.FC<MapComponentProps> = ({ onLocationChange }) => {
     setMap(null);
   }, []);
 
+  useEffect(() => {
+    if (savedLocation && isLoaded) {
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ address: savedLocation }, (results, status) => {
+        if (status === google.maps.GeocoderStatus.OK && results && results[0]) {
+          const position = results[0].geometry.location.toJSON();
+          setMarkerPosition(position);
+          setSearchValue(savedLocation);
+          if (map) {
+            map.panTo(position);
+            map.setZoom(15);
+          }
+        } else {
+          console.error('Geocode was not successful for the following reason: ' + status);
+        }
+      });
+    }
+  }, [savedLocation, map, isLoaded]);
+
   const handleSearch = () => {
-    if (map) {
+    if (map && isLoaded) {
       const geocoder = new google.maps.Geocoder();
       geocoder.geocode({ address: searchValue }, (results, status) => {
         if (status === google.maps.GeocoderStatus.OK && results && results[0]) {
@@ -41,7 +67,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ onLocationChange }) => {
           setMarkerPosition(position);
           map.panTo(position);
           map.setZoom(15);
-          onLocationChange(results[0].formatted_address); 
+          onLocationChange(results[0].formatted_address, position.lat, position.lng); 
         } else {
           alert('Geocode was not successful for the following reason: ' + status);
         }
@@ -50,7 +76,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ onLocationChange }) => {
   };
 
   const handleMapClick = (e: google.maps.MapMouseEvent) => {
-    if (e.latLng && map) {
+    if (e.latLng && map && isLoaded) {
       const clickedPosition = e.latLng.toJSON();
       setMarkerPosition(clickedPosition);
 
@@ -59,11 +85,11 @@ const MapComponent: React.FC<MapComponentProps> = ({ onLocationChange }) => {
         if (status === google.maps.GeocoderStatus.OK && results && results[0]) {
           const address = results[0].formatted_address;
           setSearchValue(address); 
-          onLocationChange(address);
+          onLocationChange(address, clickedPosition.lat, clickedPosition.lng);
         } else {
           alert('Geocode was not successful for the following reason: ' + status);
           setSearchValue(`${clickedPosition.lat}, ${clickedPosition.lng}`); 
-          onLocationChange(`${clickedPosition.lat}, ${clickedPosition.lng}`); 
+          onLocationChange(`${clickedPosition.lat}, ${clickedPosition.lng}`, clickedPosition.lat, clickedPosition.lng); 
         }
       });
 
@@ -71,31 +97,44 @@ const MapComponent: React.FC<MapComponentProps> = ({ onLocationChange }) => {
     }
   };
 
+  if (loadError) {
+    return <div>Error loading maps</div>;
+  }
+
+  if (!isLoaded) {
+    return <div>Loading Maps...</div>;
+  }
+
   return (
     <div>
-      <Input
-        IsUsername
-        type="text"
-        value={searchValue}
-        onChange={(e) => setSearchValue(e.target.value)}
-        placeholder="Enter location"
-        name={''}
-      />
-      <button onClick={handleSearch}>Search</button>
-      <LoadScript googleMapsApiKey="AIzaSyBSyIgo2TtwzkihGKrRGcrWxW_k6zwkYOk">
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          center={center}
-          zoom={12}
-          onLoad={onLoad}
-          onUnmount={onUnmount}
-          onClick={handleMapClick} 
-        >
-          {markerPosition && <Marker position={markerPosition} />}
-        </GoogleMap>
-      </LoadScript>
+       {showInput && (  
+        <>
+          <Input
+            IsUsername
+            type="text"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            placeholder="Enter location"
+            name={''}
+          />
+          <button onClick={handleSearch}>Search</button>
+        </>
+       )}
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        center={markerPosition || center}
+        zoom={12}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
+        onClick={handleMapClick} 
+      >
+        {markerPosition && <Marker position={markerPosition} icon={{
+          url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+        }} />}
+      </GoogleMap>
     </div>
   );
-}
+};
 
 export default MapComponent;
+

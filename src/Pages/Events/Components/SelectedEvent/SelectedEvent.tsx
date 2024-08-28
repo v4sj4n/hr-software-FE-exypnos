@@ -6,6 +6,7 @@ import { useAuth } from '@/Context/AuthProvider'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import Example from '@/Components/Carosel/Carosel'
 import { useEvents } from '../../Context/EventsContext'
+import MapComponent from '../GoogleMap/MapPicker'
 
 interface SelectedEventCardProps {
     showVotersButton?: boolean
@@ -16,8 +17,7 @@ const SelectedEventCard = ({
     showVotersButton = false,
 }: SelectedEventCardProps) => {
     const { currentUser } = useAuth()
-
-    const { selectedEvent, setSelectedEvent } = useEvents()
+    const { selectedEvent, setSelectedEvent, setShowEventModal } = useEvents()
 
     if (!selectedEvent) {
         return null
@@ -41,12 +41,13 @@ const SelectedEventCard = ({
                     }}
                 >
                     <div className={style.title}>{selectedEvent.title}</div>
-                    {
-                        <CloseOutlinedIcon
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => setSelectedEvent(null)}
-                        />
-                    }
+                    <CloseOutlinedIcon
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                            setSelectedEvent(null)
+                            setShowEventModal(false)
+                        }}
+                    />
                 </div>
                 <div className={style.description}>
                     {selectedEvent.description}
@@ -80,11 +81,18 @@ const SelectedEventCard = ({
                         className={style.data}
                         style={{ marginBottom: '10px' }}
                     >
-                        <LocationOnOutlinedIcon
+                              <LocationOnOutlinedIcon
                             sx={{ height: 20, width: 20, color: '#6b7280' }}
                         />
-                        <div>{selectedEvent.location.toString()}</div>
+                        <div>{selectedEvent.location}</div>
                     </div>
+                </div>
+                <div style={{ width: '100%', height: '400px' }}>
+                <MapComponent 
+    onLocationChange={(address, lat, lng) => console.log(address, lat, lng)}
+    savedLocation={selectedEvent.location} 
+    showInput={false}
+  />
                 </div>
                 {!showVotersButton && selectedEvent.poll && (
                     <EventPoll
