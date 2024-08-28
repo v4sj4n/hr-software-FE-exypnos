@@ -116,9 +116,10 @@ const MapComponent: React.FC<MapComponentProps> = ({ onLocationChange, savedLoca
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             placeholder="Enter location"
-            name={''}
+            name='Location'
+            icon={<SearchIcon onClick={handleSearch}/>}
+            style={{marginBottom:"15px"}}
           />
-          <button onClick={handleSearch}>Search</button>
         </>
        )}
       <GoogleMap
