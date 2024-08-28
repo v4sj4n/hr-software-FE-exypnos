@@ -157,7 +157,7 @@ function EventsContentAndComponents() {
                                               </div>
                        
                                           </Tooltip>
-                                          <div>{event.location}</div>
+                                          <div className={style.location}>{event.location}</div>
                                       </div>
 
                                       

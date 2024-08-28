@@ -1,10 +1,29 @@
 import AxiosInstance from '@/Helpers/Axios'
 import { FormEvent } from 'react'
 
-export const getHoldings = async (users: string, search: string) => {
-    return (
-        await AxiosInstance.get(`/asset/user?users=${users}&search=${search}`)
-    ).data
+const LIMIT = 5
+
+export const getHoldings = async ({
+    pageParam,
+    users,
+    search,
+}: {
+    pageParam: number
+    users: string
+    search: string
+}) => {
+    console.log('Getting holdings:', pageParam)
+    return new Promise((resolve) => {
+        setTimeout(async () => {
+            const response = await AxiosInstance.get(
+                `/asset/user?users=${users}&search=${search}&page=${pageParam}&limit=${LIMIT}`,
+            )
+            resolve({
+                data: response.data.data,
+                totalPages: response.data.totalPages,
+            })
+        }, 1500)
+    })
 }
 
 export const getUserHoldings = async (userId: string) => {

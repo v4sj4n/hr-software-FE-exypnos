@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 import Input from '@/Components/Input/Index';
+import SearchIcon from '@mui/icons-material/Search';
 
 const mapContainerStyle = {
   width: '100%',
