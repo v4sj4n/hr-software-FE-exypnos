@@ -11,7 +11,6 @@ import { useGetAllInterviews, applicantsData } from '.'
 import { formatDate, getInterviewsByPhase } from './utils'
 import AxiosInstance from '@/Helpers/Axios'
 
-// Define the Interview interface
 export interface Interview extends applicantsData {
     firstName: string
     lastName: string
@@ -31,7 +30,6 @@ export interface Interview extends applicantsData {
     endDate: string
 }
 
-// Define the context type
 interface InterviewContextType {
     interviews: Interview[]
     loading: boolean

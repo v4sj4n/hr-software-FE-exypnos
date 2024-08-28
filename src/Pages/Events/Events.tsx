@@ -14,6 +14,9 @@ import Toast from '@/Components/Toast/Toast'
 import { EventsProvider, useEvents } from './Context/EventsContext'
 import Forms from './Forms/Forms'
 import { Tooltip } from '@mui/material'
+
+
+
 function EventsContentAndComponents() {
     const {
         events,
@@ -37,6 +40,9 @@ function EventsContentAndComponents() {
         handleSeeVoters,
         handleOpenDrawer,
     } = useEvents()
+
+  
+    
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Toast
@@ -149,9 +155,12 @@ function EventsContentAndComponents() {
                                                       }}
                                                   />
                                               </div>
+                       
                                           </Tooltip>
                                           <div className={style.location}>{event.location}</div>
                                       </div>
+
+                                      
                                       <Button
                                           btnText={
                                               isAdmin ? 'See Details' : 'Vote'
@@ -166,7 +175,7 @@ function EventsContentAndComponents() {
                           ))}
                 </div>
                 {showModal && (
-                    <ModalComponent open={showModal} handleClose={closeModal}>
+                    <ModalComponent open={showModal} handleClose={closeModal} >
                         <div
                             style={{
                                 display: 'flex',

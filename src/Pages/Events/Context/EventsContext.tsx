@@ -73,7 +73,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     const isAdmin = currentUser?.role === 'admin'
     const typesofEvent = [
         'sports',
-        'carier',
+        'career',
         'teambuilding',
         'training',
         'other',
