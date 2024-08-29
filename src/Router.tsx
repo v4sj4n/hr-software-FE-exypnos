@@ -22,6 +22,7 @@ import Pagination from './Pages/PaginationExample/Main.tsx'
 import SpecificUserPayroll from './Pages/Payroll/SpecificUser/SpecificUserPayroll.tsx'
 import About from './Pages/About/About.tsx'
 import UserVacations from './Pages/Vacation/UserVacations.tsx'
+import EmailConfirmation from './Pages/Recruitment/Component/EmailConfirmation.tsx'
 // import Notification from './Pages/Notification/Notification.tsx'
 
 export default function Router() {
@@ -50,6 +51,12 @@ export default function Router() {
             path: 'pagination',
             element: <Pagination />,
         },
+       {  
+        path: "/confirm-email/:token" ,
+         element:<EmailConfirmation />
+
+        } ,
+
         {
             path: '/',
             element: <PrivateRoute />,

@@ -19,8 +19,18 @@ import AxiosInstance from '@/Helpers/Axios'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import { Autocomplete, TextField } from '@mui/material'
 import { valibotResolver } from '@hookform/resolvers/valibot'
+import ConfirmationModal from './Component/ConfirmationModal'
+import { useCreateAplicant } from './Context/Recruitment.Provider'
 
 export default function Recruitment() {
+    const { 
+        
+        showConfirmationModal,
+        setShowConfirmationModal,
+        
+    } = useCreateAplicant();
+
+
     const {
         control,
         register,
@@ -343,6 +353,10 @@ export default function Recruitment() {
                 alt="image"
                 src={image}
                 style={{ width: '600px', height: 'auto' }}
+            />
+               <ConfirmationModal
+                open={showConfirmationModal}
+                onClose={() => setShowConfirmationModal(false)}
             />
         </div>
     )
