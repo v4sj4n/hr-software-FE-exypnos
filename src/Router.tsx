@@ -16,7 +16,6 @@ import Structure from './Pages/Structure/Structure.tsx'
 import Inventory from './Pages/Inventory/Inventory.tsx'
 import Career from './Pages/Career/Career.tsx'
 import Holdings from './Pages/Holdings/Holdings.tsx'
-import UserHoldings from './Pages/Holdings/Component/UserHoldings.tsx'
 import Vacation from './Pages/Vacation/Vacation.tsx'
 import Pagination from './Pages/PaginationExample/Main.tsx'
 import SpecificUserPayroll from './Pages/Payroll/SpecificUser/SpecificUserPayroll.tsx'
@@ -70,10 +69,6 @@ export default function Router() {
                 {
                     path: '/holdings',
                     element: <Holdings />,
-                },
-                {
-                    path: '/holdings/:id',
-                    element: <UserHoldings />,
                 },
                 {
                     path: '/vacation',

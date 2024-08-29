@@ -50,7 +50,11 @@ const UserVacationsComponent = () => {
     if (isError) return <div>Error: {error.message}</div>
     if (isLoading) return <div className={style.loading}>Loading...</div>
     return (
-        <Card border="2px solid rgb(211,211,211,.5)" padding="1.5rem" borderRadius='1.25rem'>
+        <Card
+            border="2px solid rgb(211,211,211,.5)"
+            padding="1.5rem"
+            borderRadius="1.25rem"
+        >
             <div className={style.userImageNameRole}>
                 <img src={data.imageUrl} alt="" />
                 <div>
@@ -89,8 +93,11 @@ const UserVacationsComponent = () => {
                 </div>
                 {takenLeaveDays} days taken this year
             </div>
-            <Button marginTop={".5rem"} btnText={"Add Vacation"} type={ButtonTypes.PRIMARY} /> 
-
+            <Button
+                marginTop={'.5rem'}
+                btnText={'Add Vacation'}
+                type={ButtonTypes.PRIMARY}
+            />
         </Card>
     )
 }

@@ -1,6 +1,6 @@
 import { ModalComponent } from '@/Components/Modal/Modal'
-import { useGetItem, useHandleItemReturner } from '../Hook'
-import style from '../style/assetModal.module.scss'
+import { useGetItem, useHandleItemReturner } from '../../Hook'
+import style from '../../style/returnAssetModal.module.scss'
 import { TitleCaser } from '@/Helpers/TitleCaser'
 import dayjs from 'dayjs'
 import { FormEvent, useContext } from 'react'
@@ -8,7 +8,7 @@ import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Input from '@/Components/Input/Index'
 import WarningIcon from '@mui/icons-material/Warning'
-import { HoldingsContext } from '../HoldingsContext'
+import { HoldingsContext } from '../../HoldingsContext'
 
 export const ReturnAssetModal = () => {
     const {
@@ -50,7 +50,7 @@ export const ReturnAssetModal = () => {
 
     return (
         <ModalComponent
-            open={!!searchParams.get('selectedOwnedItem')}
+            open={!!searchParams.get('ownedItem')}
             handleClose={handleClose}
         >
             {itemGetter.isLoading ? (

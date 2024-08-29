@@ -91,7 +91,12 @@ const HoldingsProvider: FC<{ children: ReactNode }> = ({ children }) => {
             state: null,
             date: new Date().toISOString(),
         })
-        setSearchParams(new URLSearchParams())
+        setSearchParams((prev) => {
+            const newParams = new URLSearchParams(prev)
+            newParams.delete('ownedItem')
+            newParams.delete('assignItem')
+            return newParams
+        })
     }
 
     return (

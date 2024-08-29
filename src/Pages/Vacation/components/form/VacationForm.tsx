@@ -16,7 +16,6 @@ import { AxiosError } from 'axios'
 import { valibotResolver } from '@hookform/resolvers/valibot'
 
 type MyComponentProps = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: UseQueryResult<any, Error>
 }
 

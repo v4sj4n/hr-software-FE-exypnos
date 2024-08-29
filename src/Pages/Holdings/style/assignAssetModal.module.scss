@@ -1,0 +1,20 @@
+.itemAssigner {
+    > h3 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .buttonContainer {
+        margin-top: 0.5rem;
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        justify-content: end;
+
+        > button {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            height: 2.5rem;
+        }
+    }
+}

@@ -1,18 +1,17 @@
 import { useEmployeesWithHoldings } from '../Hook/index.ts'
 import { CircularProgress } from '@mui/material'
 import { UserWithHoldings } from '../TAsset'
-import Card from '@/Components/Card/Card'
 import { useInView } from 'react-intersection-observer'
 
-// import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
-import {
-    ArrowForwardIos,
-    LaptopOutlined,
-    MonitorOutlined,
-} from '@mui/icons-material'
 import style from '../style/employeesWithHoldings.module.scss'
-import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
+import SimpleCollapsableCard from '@/Components/Vacation_Asset/SimpleCollapsableCard.tsx'
+import { HoldingsContext } from '../HoldingsContext.tsx'
+
+import Button from '@/Components/Button/Button.tsx'
+import { ButtonTypes } from '@/Components/Button/ButtonTypes.tsx'
+import { AssignAssetModal } from './Modals/AssignAssetModal.tsx'
+import { ReturnAssetModal } from './Modals/ReturnAssetModal.tsx'
 
 export const EmployeesWithHoldings = () => {
     const {
@@ -23,12 +22,7 @@ export const EmployeesWithHoldings = () => {
         fetchNextPage,
         isFetchingNextPage,
     } = useEmployeesWithHoldings()
-    const navigate = useNavigate()
-    console.log(data)
-
-    const goToUserWithId = (id: string) => {
-        navigate(`/holdings/${id}`)
-    }
+    const { searchParams, setSearchParams } = useContext(HoldingsContext)
 
     const { ref, inView } = useInView()
 
@@ -37,6 +31,21 @@ export const EmployeesWithHoldings = () => {
             fetchNextPage()
         }
     }, [fetchNextPage, inView])
+
+    const setClickedOnHolding = (itemId: string) => {
+        setSearchParams((prevParams) => {
+            const newParams = new URLSearchParams(prevParams)
+            newParams.set('ownedItem', itemId)
+            return newParams
+        })
+    }
+    const setClickedOnAssignItem = () => {
+        setSearchParams((prevParams) => {
+            const newParams = new URLSearchParams(prevParams)
+            newParams.set('assignItem', 'true')
+            return newParams
+        })
+    }
 
     if (isError) return <div>Error: {error.message}</div>
     if (isLoading)
@@ -49,75 +58,55 @@ export const EmployeesWithHoldings = () => {
     return (
         <div className={style.employeesContainer}>
             {data?.pages.map((page) =>
-                page.data.map(
-                    ({
-                        _id,
-                        firstName,
-                        lastName,
-                        imageUrl,
-                        assets,
-                        role,
-                        phone,
-                    }: UserWithHoldings) => (
-                        <Card
-                            key={_id}
-                            className={style.userDiv}
-                            onClick={() => goToUserWithId(_id)}
-                            padding="1rem 2rem"
-                        >
-                            <div className={style.leftContainer}>
+                page.data.map((user: UserWithHoldings) => (
+                    <SimpleCollapsableCard
+                        key={user._id}
+                        user={user}
+                        searchParams={searchParams}
+                        setSearchParams={setSearchParams}
+                        items={{
+                            type: 'Holding',
+                            itemArr: user.assets,
+                        }}
+                    >
+                        <div className={style.collapsedData}>
+                            <div className={style.collapseDataVacationList}>
+                                <h3>Occupied items</h3>
                                 <div>
-                                    <img
-                                        src={imageUrl}
-                                        alt={`${firstName}'s profile picture`}
-                                    />
                                     <div>
-                                        <h3>
-                                            {firstName} {lastName}
-                                        </h3>
-                                        <p>
-                                            {phone} - {role}
-                                        </p>
+                                        {user.assets.length > 0 ? (
+                                            user.assets.map(({ type, _id }) => (
+                                                <p
+                                                    onClick={() => {
+                                                        setClickedOnHolding(_id)
+                                                    }}
+                                                    key={_id}
+                                                >
+                                                    {type}
+                                                </p>
+                                            ))
+                                        ) : (
+                                            <p>No vacations this year</p>
+                                        )}
                                     </div>
-                                </div>
-                                <div>
-                                    {assets.map((asset) => {
-                                        return (
-                                            <IconBasedOnAssetType
-                                                key={asset._id}
-                                                asset={asset.type}
-                                            />
-                                        )
-                                    })}
+                                    <Button
+                                        btnText={'Assign asset'}
+                                        type={ButtonTypes.PRIMARY}
+                                        onClick={setClickedOnAssignItem}
+                                    />
+                                    {searchParams.get('assignItem') && (
+                                        <AssignAssetModal />
+                                    )}
+                                    {searchParams.get('ownedItem') && (
+                                        <ReturnAssetModal />
+                                    )}
                                 </div>
                             </div>
-                            <div className={style.rightContainer}>
-                                <div
-                                    onClick={() => {
-                                        goToUserWithId(_id)
-                                    }}
-                                >
-                                    <p>View More</p>
-                                    <ArrowForwardIos />
-                                </div>
-                                <p>
-                                    {assets.length} item
-                                    {assets.length === 1 ? '' : 's'}
-                                </p>
-                            </div>
-                        </Card>
-                    ),
-                ),
+                        </div>
+                    </SimpleCollapsableCard>
+                )),
             )}
             <div ref={ref}>{isFetchingNextPage && 'Loading...'}</div>
-        </div>
-    )
-}
-
-const IconBasedOnAssetType = ({ asset }: { asset: string }) => {
-    return (
-        <div className={style.assetContainer}>
-            {asset === 'laptop' ? <LaptopOutlined /> : <MonitorOutlined />}
         </div>
     )
 }

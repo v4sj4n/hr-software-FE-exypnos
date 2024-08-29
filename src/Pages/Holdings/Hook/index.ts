@@ -13,23 +13,6 @@ import {
     handleItemAssign,
     handleItemReturn,
 } from './queries'
-import { useParams } from 'react-router-dom'
-
-// export const useEmployeesWithHoldings = () => {
-//     // const { searchParams } = useContext(HoldingsContext)
-//     return useQuery({
-//         queryKey: [
-//             'usersWithHoldings',
-//             // searchParams.get('users'),
-//             // searchParams.get('search'),
-//         ],
-//         queryFn: () =>
-//             getHoldings(
-//                 // searchParams.get('users') || '',
-//                 // searchParams.get('search') || '',
-//             ),
-//     })
-// }
 
 export const useEmployeesWithHoldings = () => {
     const { searchParams } = useContext(HoldingsContext)
@@ -56,11 +39,12 @@ export const useEmployeesWithHoldings = () => {
 }
 
 export const useGetUserHoldings = () => {
-    const { id } = useParams()
+    const { searchParams } = useContext(HoldingsContext)
 
     return useQuery({
-        queryKey: ['userHoldings', id],
-        queryFn: () => getUserHoldings(id as string),
+        queryKey: ['userHoldings', searchParams.get('selectedUser')],
+        queryFn: () =>
+            getUserHoldings(searchParams.get('selectedUser') as string),
     })
 }
 
@@ -68,8 +52,8 @@ export const useGetItem = () => {
     const { searchParams } = useContext(HoldingsContext)
 
     return useQuery({
-        queryKey: ['userHoldingsItem', searchParams.get('selectedOwnedItem')],
-        queryFn: () => getItem(searchParams.get('selectedOwnedItem') as string),
+        queryKey: ['userHoldingsItem', searchParams.get('ownedItem')],
+        queryFn: () => getItem(searchParams.get('ownedItem') as string),
     })
 }
 

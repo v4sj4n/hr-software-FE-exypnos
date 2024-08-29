@@ -1,19 +1,18 @@
 import { ModalComponent } from '@/Components/Modal/Modal'
 import { FormEvent, useContext, useEffect, useState } from 'react'
-import { HoldingsContext } from '../HoldingsContext'
+import { HoldingsContext } from '../../HoldingsContext'
 import AxiosInstance from '@/Helpers/Axios'
-import { Asset } from '../TAsset'
-import { useParams } from 'react-router-dom'
-import { useHandleItemAssigner } from '../Hook'
+import { Asset } from '../../TAsset'
+import { useHandleItemAssigner } from '../../Hook'
 
-import style from '../style/userHoldings.module.scss'
+import style from '../../style/assignAssetModal.module.scss'
 import { Autocomplete, CircularProgress, TextField } from '@mui/material'
 import { inputStyles } from '@/Components/Input/Styles'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Input from '@/Components/Input/Index'
 
-export default function AssignAssetModal() {
+export const AssignAssetModal = () => {
     const {
         searchParams,
         handleCloseOnModal: handleClose,
@@ -30,7 +29,6 @@ export default function AssignAssetModal() {
     const [date, setDate] = useState<string>(new Date().toISOString())
 
     const itemAssigner = useHandleItemAssigner()
-    const { id: userId } = useParams()
 
     useEffect(() => {
         let active = true
@@ -64,7 +62,7 @@ export default function AssignAssetModal() {
                     itemAssigner.mutate({
                         event,
                         assetId: assetId as string,
-                        userId: userId as string,
+                        userId: searchParams.get('selectedUser') as string,
                         date,
                     })
                     if (itemAssigner.isError) {
