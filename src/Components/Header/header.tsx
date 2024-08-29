@@ -41,7 +41,6 @@ export const Header = () => {
 
     const [notification, setNotification] = useState<NotificationData[]>([])
     const currentUserId = currentUser?._id
-    console.log(currentUserId)
 
     useEffect(() => {
         AxiosInstance.get<NotificationData[]>(

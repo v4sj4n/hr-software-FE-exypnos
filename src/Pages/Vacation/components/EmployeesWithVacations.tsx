@@ -1,22 +1,35 @@
 import { useGetUsersWithVacations } from '../Hook/index.ts'
-import { CircularProgress } from '@mui/material'
+import {
+    CircularProgress,
+    Collapse,
+
+} from '@mui/material'
 import { UserWithVacations } from '../TVacation.ts'
 import Card from '@/Components/Card/Card'
-// import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
-import {
-    ArrowForwardIos,
-    LaptopOutlined,
-    MonitorOutlined,
-} from '@mui/icons-material'
+import { ExpandLess, ExpandMore } from '@mui/icons-material'
 import style from '../style/employeesWithVacations.module.scss'
-import { useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import { VacationContext } from '../VacationContext'
 
 export const EmployeesWithVacations = () => {
     const { isError, error, data, isLoading } = useGetUsersWithVacations()
-    const navigate = useNavigate()
+
+    const { searchParams, setSearchParams } = useContext(VacationContext)
 
     const goToUserWithId = (id: string) => {
-        navigate(`/vacation/${id}`)
+        setSearchParams((prev) => {
+            const newParams = new URLSearchParams(prev)
+            newParams.set('selectedUser', id)
+            return newParams
+        })
+    }
+
+    const collapse = () => {
+        setSearchParams((prev) => {
+            const newParams = new URLSearchParams(prev)
+            newParams.delete('selectedUser')
+            return newParams
+        })
     }
 
     if (isError) return <div>Error: {error.message}</div>
@@ -27,74 +40,119 @@ export const EmployeesWithVacations = () => {
             </div>
         )
 
-    const users = data.map(
-        ({
-            _id,
-            firstName,
-            lastName,
-            imageUrl,
-            vacations,
-            role,
-            email,
-        }: UserWithVacations) => {
-            console.log(email)
-            return (
-                <Card
-                    key={_id}
-                    className={style.userDiv}
-                    onClick={() => goToUserWithId(_id)}
-                    padding="1rem 2rem"
-                >
-                    <div className={style.leftContainer}>
-                        <div>
-                            <img
-                                src={imageUrl}
-                                alt={`${firstName}'s profile picture`}
-                            />
-                            <div>
-                                <h3>
-                                    {firstName} {lastName}
-                                </h3>
-                                <p>username@email.com</p>
+    return (
+        <div className={style.employeesContainer}>
+            {data.map(
+                ({
+                    _id,
+                    firstName,
+                    lastName,
+                    imageUrl,
+                    vacations,
+                    role,
+                    phone,
+                }: UserWithVacations) => (
+                    <Card
+                        key={_id}
+                        className={style.userDiv}
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            if (searchParams.get('selectedUser') === _id) {
+                                collapse()
+                            } else {
+                                goToUserWithId(_id)
+                            }
+                        }}
+                        padding="1.25rem"
+                        borderRadius="1rem"
+                        backgroundColor={'white'}
+                    >
+                        <div className={style.mainData}>
+                            <div className={style.leftMainData}>
+                                <img
+                                    src={imageUrl}
+                                    alt={`${firstName}'s profile picture`}
+                                />
+                                <div>
+                                    <h3>
+                                        {firstName} {lastName}
+                                    </h3>
+                                    <p>
+                                        {phone} - {role}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className={style.rightMainData}>
+                                <div
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        if (
+                                            searchParams.get('selectedUser') ===
+                                            _id
+                                        ) {
+                                            collapse()
+                                        } else {
+                                            goToUserWithId(_id)
+                                        }
+                                    }}
+                                >
+                                    <p>
+                                        View{' '}
+                                        {searchParams.get('selectedUser') ===
+                                        _id
+                                            ? 'Less'
+                                            : 'More'}
+                                    </p>
+                                    {searchParams.get('selectedUser') ===
+                                    _id ? (
+                                        <ExpandLess fontSize="medium" />
+                                    ) : (
+                                        <ExpandMore fontSize="medium" />
+                                    )}
+                                </div>
+                                {searchParams.get('selectedUser') !== _id && (
+                                    <p>
+                                        {vacations.length} vacation
+                                        {vacations.length === 1 ? '' : 's'}
+                                    </p>
+                                )}
                             </div>
                         </div>
-                        <div>
-                            {vacations.map((asset) => {
-                                return (
-                                    <IconBasedOnAssetType
-                                        key={asset._id}
-                                        asset={asset.type}
-                                    />
-                                )
-                            })}
-                        </div>
-                    </div>
-                    <div className={style.rightContainer}>
-                        <div
-                            onClick={() => {
-                                goToUserWithId(_id)
-                            }}
+                        <Collapse
+                            in={
+                                searchParams.get('selectedUser') !== null &&
+                                _id === searchParams.get('selectedUser')
+                            }
+                            timeout="auto"
+                            unmountOnExit
                         >
-                            <p>{role}</p>
-                            <ArrowForwardIos />
-                        </div>
-                        <p>
-                            {vacations.length} item
-                            {vacations.length === 1 ? '' : 's'}
-                        </p>
-                    </div>
-                </Card>
-            )
-        },
-    )
+                            <div className={style.collapsedData}>
+                                <div className={style.collapseDataVacationList}>
+                                    <h3>Vacations this year</h3>
+                                    <div>
+                                        {vacations.length > 0 ? vacations.map(({ type }) => (
+                                            <p>{type}</p>
+                                        )) : (
+                                            <p>No vacations this year</p>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
 
-    return <div className={style.employeesContainer}>{users}</div>
-}
-
-const IconBasedOnAssetType = ({ asset }: { asset: string }) => {
-    return (
-        <div className={style.assetContainer}>
-            {asset === 'laptop' ? <LaptopOutlined /> : <MonitorOutlined />}
+                            {/* <CardContent>
+                                <Typography sx={{ marginBottom: 2 }}>
+                                    Method:
+                                </Typography>
+                                <Typography sx={{ marginBottom: 2 }}>
+                                    Heat 1/2 cup of the broth in a pot until
+                                    simmering, add saffron and set aside for 10
+                                    minutes.
+                                </Typography>
+                            </CardContent> */}
+                        </Collapse>
+                    </Card>
+                ),
+            )}
         </div>
     )
 }

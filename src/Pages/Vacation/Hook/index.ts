@@ -33,10 +33,10 @@ export const useGetUsersWithVacations = () => {
     })
 }
 export const useGetUserWithVacations = () => {
-    const { id } = useParams()
+    const { searchParams } = useContext(VacationContext)
     return useQuery({
-        queryKey: ['userWithVacations', id],
-        queryFn: () => getUserWithVacations(id as string),
+        queryKey: ['userWithVacations', searchParams.get('userId')],
+        queryFn: () => getUserWithVacations(searchParams.get('userId')!),
     })
 }
 

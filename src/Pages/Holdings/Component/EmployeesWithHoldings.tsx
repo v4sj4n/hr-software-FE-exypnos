@@ -46,72 +46,69 @@ export const EmployeesWithHoldings = () => {
             </div>
         )
 
-    const users = data?.pages.map((page) =>
-        page.data.map(
-            ({
-                _id,
-                firstName,
-                lastName,
-                imageUrl,
-                assets,
-                role,
-                email,
-            }: UserWithHoldings) => {
-                console.log(email)
-                return (
-                    <Card
-                        key={_id}
-                        className={style.userDiv}
-                        onClick={() => goToUserWithId(_id)}
-                        padding="1rem 2rem"
-                    >
-                        <div className={style.leftContainer}>
-                            <div>
-                                <img
-                                    src={imageUrl}
-                                    alt={`${firstName}'s profile picture`}
-                                />
-                                <div>
-                                    <h3>
-                                        {firstName} {lastName}
-                                    </h3>
-                                    <p>username@email.com</p>
-                                </div>
-                            </div>
-                            <div>
-                                {assets.map((asset) => {
-                                    return (
-                                        <IconBasedOnAssetType
-                                            key={asset._id}
-                                            asset={asset.type}
-                                        />
-                                    )
-                                })}
-                            </div>
-                        </div>
-                        <div className={style.rightContainer}>
-                            <div
-                                onClick={() => {
-                                    goToUserWithId(_id)
-                                }}
-                            >
-                                <p>{role}</p>
-                                <ArrowForwardIos />
-                            </div>
-                            <p>
-                                {assets.length} item
-                                {assets.length === 1 ? '' : 's'}
-                            </p>
-                        </div>
-                    </Card>
-                )
-            },
-        ),
-    )
-
     return (
         <div className={style.employeesContainer}>
-            {users}
+            {data?.pages.map((page) =>
+                page.data.map(
+                    ({
+                        _id,
+                        firstName,
+                        lastName,
+                        imageUrl,
+                        assets,
+                        role,
+                        phone,
+                    }: UserWithHoldings) => (
+                        <Card
+                            key={_id}
+                            className={style.userDiv}
+                            onClick={() => goToUserWithId(_id)}
+                            padding="1rem 2rem"
+                        >
+                            <div className={style.leftContainer}>
+                                <div>
+                                    <img
+                                        src={imageUrl}
+                                        alt={`${firstName}'s profile picture`}
+                                    />
+                                    <div>
+                                        <h3>
+                                            {firstName} {lastName}
+                                        </h3>
+                                        <p>
+                                            {phone} - {role}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div>
+                                    {assets.map((asset) => {
+                                        return (
+                                            <IconBasedOnAssetType
+                                                key={asset._id}
+                                                asset={asset.type}
+                                            />
+                                        )
+                                    })}
+                                </div>
+                            </div>
+                            <div className={style.rightContainer}>
+                                <div
+                                    onClick={() => {
+                                        goToUserWithId(_id)
+                                    }}
+                                >
+                                    <p>View More</p>
+                                    <ArrowForwardIos />
+                                </div>
+                                <p>
+                                    {assets.length} item
+                                    {assets.length === 1 ? '' : 's'}
+                                </p>
+                            </div>
+                        </Card>
+                    ),
+                ),
+            )}
             <div ref={ref}>{isFetchingNextPage && 'Loading...'}</div>
         </div>
     )

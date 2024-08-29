@@ -9,21 +9,21 @@
     height: 100%;
     background-color: #f0f7ff !important;
 
-    >div {
+    > div {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         width: 100%;
 
-        >img {
+        > img {
             width: 7.5rem;
             height: 7.5rem;
             border-radius: 50%;
             margin-bottom: 0.5rem;
         }
 
-        >h3 {
+        > h3 {
             font-weight: 600;
             color: #0062d1;
             margin-top: 1rem;
@@ -114,11 +114,11 @@
                     line-height: 115%;
                 }
 
-                >span:nth-of-type(1) button {
+                > span:nth-of-type(1) button {
                     color: #7d7d7d;
                 }
 
-                >span:nth-of-type(2) button {
+                > span:nth-of-type(2) button {
                     color: #45a557;
                 }
             }
@@ -139,7 +139,7 @@
     width: 100%;
     gap: 0.5rem;
 
-    >span button {
+    > span button {
         color: white;
         background-color: #0072f5;
         border: none;
@@ -178,7 +178,7 @@
         border-radius: 50%;
     }
 
-    >div {
+    > div {
         * {
             margin: 0;
         }
@@ -200,7 +200,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
 
-    >div {
+    > div {
         * {
             margin: 0;
         }
@@ -229,11 +229,11 @@
     justify-content: center;
     background-color: rgba(219, 219, 219, 0.404);
 
-    >p {
+    > p {
         margin: 0rem;
     }
 
-    >svg {
+    > svg {
         height: 1rem;
         width: 1rem;
     }
@@ -245,7 +245,7 @@
 }
 
 .itemAssigner {
-    >h3 {
+    > h3 {
         font-size: 1.25rem;
         margin-bottom: 1rem;
     }
@@ -257,7 +257,7 @@
         align-items: center;
         justify-content: end;
 
-        >button {
+        > button {
             padding: 0.5rem 1rem;
             cursor: pointer;
             height: 2.5rem;

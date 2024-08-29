@@ -37,8 +37,9 @@ const UserHoldingsComponent = () => {
     if (holdingsGetter.isError) return <p>{holdingsGetter.error.message}</p>
     return (
         <Card
-            border="1px solid gray"
+            border="2px solid rgb(211,211,211,.5)"
             padding="1.5rem"
+            borderRadius='1.25rem'
             className={style.userCard}
         >
             <div className={style.userImageNameRole}>
