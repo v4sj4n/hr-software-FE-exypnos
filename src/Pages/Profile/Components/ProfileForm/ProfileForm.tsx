@@ -12,7 +12,8 @@ import { ProfileProvider } from './Context/ProfileProvider'
 const ProfileFormContext = () => {
     const { uploadImage, previewImage } = useFileUpload()
 
-    const { user, isCurrentUser, isAdmin, handleChange, handleUpdate } =  useProfile()
+    const { user, isCurrentUser, isAdmin, handleChange, handleUpdate } =
+        useProfile()
 
     if (!user) {
         return <div>No user data available</div>

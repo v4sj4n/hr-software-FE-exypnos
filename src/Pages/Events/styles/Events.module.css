@@ -53,9 +53,7 @@
     -webkit-box-orient: vertical;
 }
 
-
-.location{
-
+.location {
     flex-direction: column;
     width: 100%;
     word-break: break-word;

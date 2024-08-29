@@ -15,8 +15,6 @@ import { EventsProvider, useEvents } from './Context/EventsContext'
 import Forms from './Forms/Forms'
 import { Tooltip } from '@mui/material'
 
-
-
 function EventsContentAndComponents() {
     const {
         events,
@@ -41,8 +39,6 @@ function EventsContentAndComponents() {
         handleOpenDrawer,
     } = useEvents()
 
-  
-    
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Toast
@@ -88,10 +84,9 @@ function EventsContentAndComponents() {
                 <div className={style.grid}>
                     {isLoading
                         ? events.map((event) => (
-                            <EventsContent key={event._id} />
-                        ))
+                              <EventsContent key={event._id} />
+                          ))
                         : events.map((event) => (
-
                               <Card
                                   key={event._id}
                                   borderRadius="5px"
@@ -155,12 +150,12 @@ function EventsContentAndComponents() {
                                                       }}
                                                   />
                                               </div>
-                       
                                           </Tooltip>
-                                          <div className={style.location}>{event.location}</div>
+                                          <div className={style.location}>
+                                              {event.location}
+                                          </div>
                                       </div>
 
-                                      
                                       <Button
                                           btnText={
                                               isAdmin ? 'See Details' : 'Vote'
@@ -175,7 +170,7 @@ function EventsContentAndComponents() {
                           ))}
                 </div>
                 {showModal && (
-                    <ModalComponent open={showModal} handleClose={closeModal} >
+                    <ModalComponent open={showModal} handleClose={closeModal}>
                         <div
                             style={{
                                 display: 'flex',

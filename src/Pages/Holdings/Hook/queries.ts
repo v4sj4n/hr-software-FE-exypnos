@@ -13,17 +13,14 @@ export const getHoldings = async ({
     search: string
 }) => {
     console.log('Getting holdings:', pageParam)
-    return new Promise((resolve) => {
-        setTimeout(async () => {
-            const response = await AxiosInstance.get(
-                `/asset/user?users=${users}&search=${search}&page=${pageParam}&limit=${LIMIT}`,
-            )
-            resolve({
-                data: response.data.data,
-                totalPages: response.data.totalPages,
-            })
-        }, 1500)
-    })
+
+    const response = await AxiosInstance.get(
+        `/asset/user?users=${users}&search=${search}&page=${pageParam}&limit=${LIMIT}`,
+    )
+    return {
+        data: response.data.data,
+        totalPages: response.data.totalPages,
+    }
 }
 
 export const getUserHoldings = async (userId: string) => {
@@ -54,11 +51,12 @@ export const handleItemAssign = async (
     event: FormEvent<HTMLFormElement>,
     assetId: string,
     userId: string,
+    date: string,
 ) => {
     event.preventDefault()
     const payload = {
         userId,
-        takenDate: new Date().toISOString(),
+        takenDate: date,
     }
     await AxiosInstance.patch(`/asset/${assetId}`, payload)
 }

@@ -57,7 +57,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         setEditParticipants,
         editType,
         setEditType,
-        
     } = useUpdateEvent(setEvents)
 
     const {
@@ -171,7 +170,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
                 setEditType,
                 handleFileUpload,
                 eventPhotos,
-                
             }}
         >
             {children}

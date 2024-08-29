@@ -99,7 +99,6 @@ export const useGetAndUpdateUserById = () => {
     }
 }
 
-
 export const useCreatePayroll = () => {
     const { id } = useParams<{ id: string }>()
 
@@ -112,7 +111,9 @@ export const useCreatePayroll = () => {
     })
     const [createToastOpen, setCreateToastOpen] = useState(false)
     const [createToastMessage, setCreateToastMessage] = useState('')
-    const [createToastSeverity, setCreateToastSeverity] = useState<'success' | 'error'>('success')
+    const [createToastSeverity, setCreateToastSeverity] = useState<
+        'success' | 'error'
+    >('success')
 
     const handleChangePayroll = (
         event: React.ChangeEvent<HTMLInputElement>,
@@ -152,7 +153,15 @@ export const useCreatePayroll = () => {
         setCreateToastOpen(false)
     }
 
-    return { payroll, handleChangePayroll, handleCreatePayroll, createToastMessage, createToastOpen, createToastSeverity ,handleCreateToastClose }
+    return {
+        payroll,
+        handleChangePayroll,
+        handleCreatePayroll,
+        createToastMessage,
+        createToastOpen,
+        createToastSeverity,
+        handleCreateToastClose,
+    }
 }
 
 export const useUpdatePayroll = () => {
@@ -161,10 +170,13 @@ export const useUpdatePayroll = () => {
     const currentYear = currentDate.getFullYear()
     const lastMonth = currentDate.getMonth() - 1
 
-    const [EditingPayroll, setEditingPayroll] = useState<EmployeePayroll | null>(null)
+    const [EditingPayroll, setEditingPayroll] =
+        useState<EmployeePayroll | null>(null)
     const [toastOpen, setToastOpen] = useState(false)
     const [toastMessage, setToastMessage] = useState('')
-    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>('success')
+    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
+        'success',
+    )
 
     const { isLoading, error, status } = useQuery<EmployeePayroll[], Error>({
         queryKey: ['EditingPayroll', id, lastMonth, currentYear],
