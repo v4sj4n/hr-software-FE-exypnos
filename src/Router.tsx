@@ -21,7 +21,7 @@ import Pagination from './Pages/PaginationExample/Main.tsx'
 import SpecificUserPayroll from './Pages/Payroll/SpecificUser/SpecificUserPayroll.tsx'
 import About from './Pages/About/About.tsx'
 import UserVacations from './Pages/Vacation/UserVacations.tsx'
-// import Notification from './Pages/Notification/Notification.tsx'
+import EmailConfirmation from './Pages/Recruitment/Component/EmailConfirmation.tsx'
 
 export default function Router() {
     const router = createBrowserRouter([
@@ -32,6 +32,10 @@ export default function Router() {
         {
             path: 'recruitment',
             element: <Recruitment />,
+        },
+        {
+            path: '/applicant/confirm',
+            element: <EmailConfirmation />,
         },
         // {
         //     path: 'Notification',
