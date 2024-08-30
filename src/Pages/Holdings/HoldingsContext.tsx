@@ -25,12 +25,12 @@ interface HoldingsContextType {
     >
     handleToastClose: () => void
     itemReturnConfigs: {
-        state: string | null
+        state: string
         date: string
     }
     setItemReturnConfigs: Dispatch<
         SetStateAction<{
-            state: string | null
+            state: string
             date: string
         }>
     >
@@ -48,7 +48,7 @@ const defaultContextValue: HoldingsContextType = {
     setToastConfigs: () => {},
     handleToastClose: () => {},
     itemReturnConfigs: {
-        state: null,
+        state: '',
         date: new Date().toISOString(),
     },
     setItemReturnConfigs: () => {},
@@ -72,10 +72,10 @@ const HoldingsProvider: FC<{ children: ReactNode }> = ({ children }) => {
     })
 
     const [itemReturnConfigs, setItemReturnConfigs] = useState<{
-        state: string | null
+        state: string
         date: string
     }>({
-        state: null,
+        state: '',
         date: new Date().toISOString(),
     })
 
@@ -88,7 +88,7 @@ const HoldingsProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
     const handleCloseOnModal = () => {
         setItemReturnConfigs({
-            state: null,
+            state: '',
             date: new Date().toISOString(),
         })
         setSearchParams((prev) => {

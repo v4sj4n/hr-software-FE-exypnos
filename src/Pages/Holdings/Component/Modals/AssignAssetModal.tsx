@@ -85,85 +85,87 @@ export const AssignAssetModal = () => {
                 className={style.itemAssigner}
             >
                 <h3>Assign Item</h3>
-                <Autocomplete
-                    id="users-list"
-                    sx={{
-                        width: '100%',
-                        marginBottom: '1rem',
-                    }}
-                    open={isOpen}
-                    onOpen={() => setIsOpen(true)}
-                    onClose={() => setIsOpen(false)}
-                    onChange={(event, newValue) => {
-                        event.preventDefault()
-                        if (newValue) {
-                            setAssetId(newValue?._id)
-                            setAutocompleteValue(newValue)
+                <div className={style.inputContainer}>
+                    <Autocomplete
+                        id="users-list"
+                        sx={{
+                            width: '100%',
+                            marginBottom: '1rem',
+                        }}
+                        open={isOpen}
+                        onOpen={() => setIsOpen(true)}
+                        onClose={() => setIsOpen(false)}
+                        onChange={(event, newValue) => {
+                            event.preventDefault()
+                            if (newValue) {
+                                setAssetId(newValue?._id)
+                                setAutocompleteValue(newValue)
+                            }
+                        }}
+                        value={autocompleteValue}
+                        options={options}
+                        loading={autocompleteLoading}
+                        isOptionEqualToValue={(option, value) =>
+                            option._id === value._id
                         }
-                    }}
-                    value={autocompleteValue}
-                    options={options}
-                    loading={autocompleteLoading}
-                    isOptionEqualToValue={(option, value) =>
-                        option._id === value._id
-                    }
-                    getOptionLabel={(option) =>
-                        option.type + ' ' + option.serialNumber
-                    }
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Item"
-                            variant="filled"
-                            size="small"
-                            sx={{
-                                ...inputStyles,
-                            }}
-                            InputLabelProps={{
-                                style: {
-                                    color: '#4C556B',
-                                    fontFamily: '"Outfit", sans-serif',
-                                },
-                                shrink: true,
-                            }}
-                            InputProps={{
-                                disableUnderline: true,
-                                ...params.InputProps,
-                                endAdornment: (
-                                    <>
-                                        {autocompleteLoading ? (
-                                            <CircularProgress
-                                                color="inherit"
-                                                size={20}
-                                            />
-                                        ) : null}
-                                        {params.InputProps.endAdornment}
-                                    </>
-                                ),
-                            }}
-                        />
-                    )}
-                />
-                <Input
-                    IsUsername
-                    name="Date"
-                    shrink
-                    label="Date"
-                    type="date"
-                    value={date.split('T')[0]}
-                    onChange={(e) => setDate(e.target.value)}
-                />
+                        getOptionLabel={(option) =>
+                            option.type + ' ' + option.serialNumber
+                        }
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="Item"
+                                variant="filled"
+                                size="small"
+                                sx={{
+                                    ...inputStyles,
+                                }}
+                                InputLabelProps={{
+                                    style: {
+                                        color: '#4C556B',
+                                        fontFamily: '"Outfit", sans-serif',
+                                    },
+                                    shrink: true,
+                                }}
+                                InputProps={{
+                                    disableUnderline: true,
+                                    ...params.InputProps,
+                                    endAdornment: (
+                                        <>
+                                            {autocompleteLoading ? (
+                                                <CircularProgress
+                                                    color="inherit"
+                                                    size={20}
+                                                />
+                                            ) : null}
+                                            {params.InputProps.endAdornment}
+                                        </>
+                                    ),
+                                }}
+                            />
+                        )}
+                    />
+                    <Input
+                        IsUsername
+                        name="Date"
+                        shrink
+                        label="Date"
+                        type="date"
+                        value={date.split('T')[0]}
+                        onChange={(e) => setDate(e.target.value)}
+                    />
+                </div>
 
                 <div className={style.buttonContainer}>
-                    <Button
-                        btnText={'Cancel'}
-                        type={ButtonTypes.SECONDARY}
-                        onClick={handleClose}
-                    />
                     <Button
                         btnText={'Assign'}
                         isSubmit
                         type={ButtonTypes.PRIMARY}
+                    />
+                    <Button
+                        btnText={'Cancel'}
+                        type={ButtonTypes.SECONDARY}
+                        onClick={handleClose}
                     />
                 </div>
             </form>
