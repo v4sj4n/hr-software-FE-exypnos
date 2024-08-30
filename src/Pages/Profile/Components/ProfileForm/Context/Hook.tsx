@@ -105,8 +105,6 @@ export const useCreatePayroll = () => {
     const [payroll, setPayroll] = useState<EmployePayroll>({
         workingDays: undefined,
         grossSalary: undefined,
-        month: new Date().getMonth() - 1,
-        year: new Date().getFullYear(),
         userId: id || '',
     })
     const [createToastOpen, setCreateToastOpen] = useState(false)

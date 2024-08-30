@@ -3,6 +3,7 @@ import Card from '@/Components/Card/Card';
 import image from '/Images/HeroImage.png';
 import styles from './Style/About.module.css';
 
+
 const About = () => {
   return (
     <div className={styles.container}>
@@ -72,3 +73,4 @@ const About = () => {
 };
 
 export default About;
+
