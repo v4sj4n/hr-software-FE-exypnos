@@ -3,6 +3,7 @@ import {
     GridColDef,
     GridRowParams,
     GridValidRowModel,
+    GridPaginationModel,
 } from '@mui/x-data-grid'
 import React from 'react'
 import { TableStyles } from '../Input/Styles'
@@ -12,31 +13,36 @@ interface DataTableProps<T extends GridValidRowModel> {
     columns: GridColDef[]
     getRowId?: (row: T) => string | number
     height?: number | string
-    initialPageSize?: number
     pageSizeOptions?: number[]
     additionalStyles?: React.CSSProperties
     handleRowClick?: (params: GridRowParams) => void
+    totalPages: number
+    page: number
+    pageSize: number
+    onPaginationModelChange: (model: GridPaginationModel) => void
 }
+
 export default function DataTable<T extends GridValidRowModel>({
     rows,
     columns,
     getRowId = (row: T) => row.id,
     height = 'auto',
-    initialPageSize = 5,
     pageSizeOptions = [5, 10, 20, 30],
-
+    totalPages,
+    page,
+    pageSize,
     handleRowClick,
+    onPaginationModelChange,
 }: DataTableProps<T>) {
-    const columnsWithIcons = columns.map((column) => {
-        return {
-            ...column,
-            renderHeader: () => (
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    {column.headerName}
-                </div>
-            ),
-        }
-    })
+    const columnsWithIcons = columns.map((column) => ({
+        ...column,
+        renderHeader: () => (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                {column.headerName}
+            </div>
+        ),
+    }))
+
     return (
         <div style={{ height, width: '100%' }}>
             <DataGrid
@@ -44,6 +50,17 @@ export default function DataTable<T extends GridValidRowModel>({
                 columns={columnsWithIcons}
                 getRowId={getRowId}
                 onRowClick={handleRowClick}
+                pagination
+                paginationMode="server"
+                rowCount={totalPages * pageSize}
+                paginationModel={{ page, pageSize }}
+                onPaginationModelChange={onPaginationModelChange}
+                pageSizeOptions={pageSizeOptions}
+                autoHeight={true}
+                disableColumnFilter={true}
+                rowSelection={false}
+                disableDensitySelector={true}
+                // disableColumnMenu={true}
                 sx={{
                     ...TableStyles,
                     '& .colored-row': {
@@ -54,12 +71,6 @@ export default function DataTable<T extends GridValidRowModel>({
                     },
                     width: '100%',
                 }}
-                initialState={{
-                    pagination: {
-                        paginationModel: { page: 0, pageSize: initialPageSize },
-                    },
-                }}
-                pageSizeOptions={pageSizeOptions}
             />
         </div>
     )

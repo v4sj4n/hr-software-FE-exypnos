@@ -1,7 +1,8 @@
-import React from 'react'
-import Card from '@/Components/Card/Card'
-import image from '/Images/HeroImage.png'
-import styles from './Style/About.module.css'
+import React from 'react';
+import Card from '@/Components/Card/Card';
+import image from '/Images/HeroImage.png';
+import styles from './Style/About.module.css';
+
 
 const About = () => {
     return (
@@ -98,4 +99,5 @@ const About = () => {
     )
 }
 
-export default About
+export default About;
+

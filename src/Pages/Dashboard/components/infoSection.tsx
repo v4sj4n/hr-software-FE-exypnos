@@ -1,23 +1,26 @@
-import React, { useState, useEffect } from 'react'
 import style from '../style/infoSection.module.css'
-import { useGetAllEvents } from '@/Pages/Events/Hook'
+
 import { EventsData } from '../../Events/Interface/Events'
 import dayjs from 'dayjs'
-
+import AxiosInstance from '@/Helpers/Axios'
+import { useQuery } from '@tanstack/react-query'
 const InfoSection: React.FC = () => {
-    const { events } = useGetAllEvents()
-    const [recentEvents, setRecentEvents] = useState<EventsData[]>([])
 
-    useEffect(() => {
-        console.log(events)
-        const sortedEvents = events.sort(
-            (a, b) =>
-                new Date(b.creatingTime).getTime() -
-                new Date(a.creatingTime).getTime(),
+    const fetchEventsDashboard = async () => {
+        const response = await AxiosInstance.get(
+            `/event`
         )
 
-        setRecentEvents(sortedEvents.slice(0, 4))
-    }, [events])
+        console.log('Fetched eventsDahboardddd:', response.data)
+        return response.data
+    }
+
+    const { data: events } = useQuery({
+        queryKey: ['event'],
+        queryFn: () => fetchEventsDashboard()
+    })
+
+    console.log('events', events)
 
     return (
         <div className={style.infoSection}>
@@ -27,35 +30,34 @@ const InfoSection: React.FC = () => {
                     padding: 0,
                 }}
             >
-                {recentEvents.length > 0 ? (
-                    recentEvents.map((event) => (
-                        <li className={style.eventContainer} key={event._id}>
-                            <span className={style.blueDot}></span>
-                            <div className={style.eventData}>
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        width: '100%',
-                                    }}
-                                >
-                                    <h3>{event.title}</h3>
-
+                {events?.slice(0, 4).map((event: EventsData) => (
+                    <li className={style.eventContainer} key={event._id}>
+                        <span className={style.blueDot}></span>
+                        <div className={style.eventData}>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    width: '100%',
+                                }}
+                            >
+                                <h3>{event.title}</h3>
+                                <span>
                                     {dayjs(event.startDate).format(
                                         'ddd DD MMM YYYY',
                                     )}
-                                </div>
-                                <p>{event.description}</p>
+                                </span>
                             </div>
-                        </li>
-                    ))
-                ) : (
-                    <li>No recent events</li>
-                )}
+                            <p>{event.description}</p>
+                        </div>
+                    </li>
+                ))}
             </ul>
         </div>
     )
 }
+
+
 
 export default InfoSection

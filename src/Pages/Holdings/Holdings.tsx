@@ -50,12 +50,13 @@ function HoldingsComponent() {
             }
             return newParams
         })
-    }, 500)
-    const userFilterChoices = ['ALL', 'W ASSETS', 'W/O ASSETS']
-
+    }, 500) 
     const onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         debouncedSetSearchParams(e.target.value)
     }
+    const userFilterChoices = ['ALL', 'W ASSETS', 'W/O ASSETS']
+
+   
 
     return (
         <main className={style.main}>
