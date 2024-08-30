@@ -1,8 +1,8 @@
 import AxiosInstance from '@/Helpers/Axios'
 import { VacationFormFields } from '@/Schemas/Vacations/Vacation.schema'
 
-export const getAllVacations = async () => {
-    return (await AxiosInstance.get('/vacation')).data
+export const getAllVacations = async (page: string, limit: string) => {
+    return (await AxiosInstance.get(`/vacation?page=${page}&limit=${limit}`)).data
 }
 
 export const getUsersWithVacations = async () => {

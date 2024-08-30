@@ -14,7 +14,7 @@ export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
 
     const [page, setPage] = useState(0)
-    const [pageSize, setPageSize] = useState(2)
+    const [pageSize, setPageSize] = useState(5)
 
     const handlePaginationModelChange = (model: GridPaginationModel) => {
         setPage(model.page);

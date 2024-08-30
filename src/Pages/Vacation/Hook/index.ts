@@ -11,9 +11,14 @@ import { VacationContext } from '../VacationContext'
 import { VacationFormFields } from '@/Schemas/Vacations/Vacation.schema'
 
 export const useGetVacations = () => {
+    const { searchParams } = useContext(VacationContext)
+
     return useQuery({
-        queryKey: ['vacations'],
-        queryFn: getAllVacations,
+        queryKey: ['vacations',
+            searchParams.get('page'),
+            searchParams.get('limit'),
+        ],
+        queryFn: () => getAllVacations(searchParams.get('page') as string, searchParams.get('limit') as string),
     })
 }
 

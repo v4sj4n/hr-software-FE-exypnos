@@ -1,8 +1,8 @@
 import { CircularProgress } from '@mui/material'
 
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { InventoryContext } from '../InventoryContext'
-import { GridRenderCellParams } from '@mui/x-data-grid'
+import { GridPaginationModel, GridRenderCellParams } from '@mui/x-data-grid'
 import style from '../style/inventoryTable.module.scss'
 import DataTable from '@/Components/Table/Table'
 
@@ -14,21 +14,42 @@ import { Asset } from '@/Pages/Holdings/TAsset'
 import { StatusBadge } from '@/Components/StatusBadge/StatusBadge'
 
 export const InventoryTable = () => {
-    const { isError, error, isLoading, data } = useAllInventoryItems()
+    const { isError, error, data, isPending } =
+        useAllInventoryItems()
 
     const { handleOpenViewAssetModalOpen, searchParams, setSearchParams } =
         useContext(InventoryContext)
 
-    if (isError) return <div>Error: {error.message}</div>
-    if (isLoading) return <CircularProgress />
+    useEffect(() => {
+        if (searchParams.get('page') === null) {
+            setSearchParams((prev) => {
+                const newParams = new URLSearchParams(prev)
+                newParams.set('page', '0')
+                newParams.set('limit', '5')
+                return newParams
+            })
+        }
+    }, [searchParams, setSearchParams])
 
-    const rows = data.map((asset: Asset) => ({
+    if (isError) return <div>Error: {error.message}</div>
+    if (isPending) return <CircularProgress />
+
+    const rows = data.data.map((asset: Asset) => ({
         id: asset._id,
         type: asset.type[0].toUpperCase() + asset.type.slice(1),
         occupant: asset.userId,
         status: asset.status,
         serialNumber: asset.serialNumber,
     }))
+
+    const handlePaginationModelChange = (model: GridPaginationModel) => {
+        setSearchParams((prev) => {
+            const newParams = new URLSearchParams(prev)
+            newParams.set('page', model.page.toString())
+            newParams.set('limit', model.pageSize.toString())
+            return newParams
+        })
+    }
 
     const columns = [
         {
@@ -121,7 +142,17 @@ export const InventoryTable = () => {
 
     return (
         <>
-            <DataTable rows={rows} columns={columns} getRowId={getRowId} />
+           
+                <DataTable
+                    onPaginationModelChange={handlePaginationModelChange}
+                    page={Number(searchParams.get('page')!)}
+                    pageSize={Number(searchParams.get('limit')!)}
+                    totalPages={data.totalPages}
+                    rows={rows}
+                    columns={columns}
+                    getRowId={getRowId}
+                />
+        
             {searchParams.get('selectedInventoryItem') && (
                 <SingleInventoryItem />
             )}

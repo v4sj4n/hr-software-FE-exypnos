@@ -4,9 +4,10 @@ import style from '../styles/Payroll.module.css'
 import { usePayrollContextSpecific } from './Context/SpecificUserPayrollContext'
 import Input from '@/Components/Input/Index'
 import { EventsProvider } from '@/Pages/Events/Context/EventsContext'
+import { RingLoader } from 'react-spinners'
 
 function SpecificUserPayrollContent() {
-    const { rows, columns, getRowId, setMonth, setYear, fullName,   page, pageSize, totalPages, handlePaginationModelChange } =
+    const { rows, columns, getRowId, setMonth, setYear, fullName,   page, pageSize, totalPages, handlePaginationModelChange, isPending } =
         usePayrollContextSpecific()
 
     const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,6 +16,9 @@ function SpecificUserPayrollContent() {
         setYear(parseInt(yearString))
         setMonth(parseInt(monthString))
     }
+
+
+    if (isPending) return <div style={{ display: "flex", fontSize: "30px", justifyContent: "center", marginTop: "50px" }}> <RingLoader /></div>
 
     return (
         <div className={style.payroll}>
