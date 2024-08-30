@@ -1,75 +1,53 @@
-import { useState, useEffect, ChangeEvent } from 'react'
+import { useState, } from 'react'
 import AxiosInstance from '@/Helpers/Axios'
 import { EventsCreationData, EventsData } from '../Interface/Events'
 import { useSearchParams } from 'react-router-dom'
-import { debounce } from '@/Helpers/debounce.ts'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { debouncedSetSearchParams, fetchEvents } from '../utils/utils'
 
 export const useGetAllEvents = () => {
-    const [events, setEvents] = useState<EventsData[]>([])
-    const [searchParams, setSearchParams] = useSearchParams()
-    const [isLoading, setIsLoading] = useState(false)
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    const debouncedSetSearchParams = debounce((value: string) => {
-        setSearchParams((prev) => {
-            const newParams = new URLSearchParams(prev)
-            if (value) {
-                newParams.set('search', value)
-            } else {
-                newParams.delete('search')
-            }
-            return newParams
-        })
-    }, 500)
+    const query = useInfiniteQuery({
+        queryKey: ['events', searchParams.get('search')],
+        queryFn: ({pageParam}) => {
+            const currentSearch = searchParams.get('search') || '';
+            return fetchEvents(currentSearch, pageParam as number);
+        },
+        initialPageParam:0,
+        getNextPageParam: (lastPage, allPages) => {
+            return lastPage.length > 0 ? allPages.length + 1 : undefined;
+        }
+    });
 
-    const onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-        debouncedSetSearchParams(e.target.value)
-        fetchEvents()
-    }
+    const debouncedSearchParams = debouncedSetSearchParams(setSearchParams);
 
-    const fetchEvents = () => {
-        setIsLoading(true)
-        const currentSearch = searchParams.get('search') || ''
-        AxiosInstance.get<EventsData[]>(`/event?search=${currentSearch}`)
-            .then((response) => {
-                console.log('Fetched events:', response.data)
-                console.log('Event data: ', events)
-                setIsLoading(false)
-                setEvents(response.data)
-            })
-            .catch((error) => {
-                console.error('Error fetching data:', error)
-                setIsLoading(false)
-            })
-    }
-
-    useEffect(() => {
-        fetchEvents()
-    }, [searchParams])
+    const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        debouncedSearchParams(e.target.value);
+    };
 
     return {
-        events,
-        setEvents,
-        isLoading,
+        ...query,
         onSearchChange,
-    }
-}
+    };
+};
 
 
-export const useCreateEvent = (
-    setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>,
-) => {
+
+export const useCreateEvent = () => {
     const [toastOpen, setToastOpen] = useState(false)
     const [toastMessage, setToastMessage] = useState('')
     const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
         'success',
     )
     const [eventPhotos, setEventPhotos] = useState<File[]>([])
+    const [createdEvents, setCreatedEvents] = useState<EventsData[]>([])
     const [event, setEvent] = useState<EventsCreationData>({
         title: '',
         description: '',
         endDate: '',
         startDate: '',
-        location: '' , 
+        location: '',
         photo: [],
         participants: [],
         type: '',
@@ -95,13 +73,13 @@ export const useCreateEvent = (
             setIncludesPoll(e.target.checked)
         } else if (name === 'pollQuestion') {
             setPollQuestion(value)
-        }  else if (name === 'location') {
+        } else if (name === 'location') {
             const location = value
             setEvent((prevEvent) => ({
                 ...prevEvent,
                 location,
             }))
-        } 
+        }
         else if (name === 'isMultipleChoice') {
             setIsMultipleChoice(e.target.checked)
         } else {
@@ -114,16 +92,16 @@ export const useCreateEvent = (
 
     const handleLocationChange = (address: string) => {
         console.log('Selected address:', address);
-      
-         {
-          setEvent(prevEvent => ({
-            ...prevEvent,
-            location: address
-          }));
+
+        {
+            setEvent(prevEvent => ({
+                ...prevEvent,
+                location: address
+            }));
         }
-      };
-      
-      
+    };
+
+
     const handleFileUpload = (photo: File[]) => {
         setEventPhotos(photo)
     }
@@ -178,17 +156,17 @@ export const useCreateEvent = (
                     'Content-Type': 'multipart/form-data',
                 },
             })
-            
+
             setToastMessage('Event created successfully')
             setToastOpen(true)
             setToastSeverity('success')
-            setEvents((prevEvents) => [...prevEvents, response.data])
+            setCreatedEvents((prevEvents) => [...prevEvents, response.data])
             setEvent({
                 title: '',
                 description: '',
                 startDate: '',
                 endDate: '',
-                location: '' , 
+                location: '',
 
                 type: '',
                 photo: [],
@@ -233,13 +211,12 @@ export const useCreateEvent = (
         toastSeverity,
         handleFileUpload,
         eventPhotos,
-        handleLocationChange
+        handleLocationChange,
+        createdEvents
     }
 }
 
-export const useUpdateEvent = (
-    setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>,
-) => {
+export const useUpdateEvent = () => {
     const [editingEvent, setEditingEvent] = useState<EventsData | null>(null)
     const [showEditDrawer, setEditDrawer] = useState(false)
     const [includePollInEdit, setIncludePollInEdit] = useState(false)
@@ -248,6 +225,7 @@ export const useUpdateEvent = (
     const [editIsMultipleChoice, setEditIsMultipleChoice] = useState(false)
     const [updateToastOpen, setUpdateToastOpen] = useState(false)
     const [updateToastMessage, setUpdateToastMessage] = useState('')
+    const [updatedEvent, setUpdatedEvent] = useState<EventsData[]>([])
     const [updateToastSeverity, setUpdateToastSeverity] = useState<
         'success' | 'error'
     >('success')
@@ -349,17 +327,17 @@ export const useUpdateEvent = (
             description: editingEvent.description,
             startDate: editingEvent.startDate,
             endDate: editingEvent.endDate,
-            location: editingEvent.location, 
+            location: editingEvent.location,
             participants: editParticipants,
             type: editType,
             poll: includePollInEdit
                 ? {
-                      question: editPollQuestion,
-                      options: editPollOptions
-                          .filter((option) => option.trim() !== '')
-                          .map((option) => ({ option, votes: 0, voters: [] })),
-                      isMultipleVote: editIsMultipleChoice,
-                  }
+                    question: editPollQuestion,
+                    options: editPollOptions
+                        .filter((option) => option.trim() !== '')
+                        .map((option) => ({ option, votes: 0, voters: [] })),
+                    isMultipleVote: editIsMultipleChoice,
+                }
                 : null,
         }
         console.log(fieldsToUpdate, 'iuegfyugwegf')
@@ -369,7 +347,7 @@ export const useUpdateEvent = (
                 setUpdateToastMessage('Event updated successfully')
                 setUpdateToastOpen(true)
                 setUpdateToastSeverity('success')
-                setEvents((prevEvents) =>
+                setUpdatedEvent((prevEvents) =>
                     prevEvents.map((event) =>
                         event._id === editingEvent._id ? response.data : event,
                     ),
@@ -414,13 +392,13 @@ export const useUpdateEvent = (
         setEditParticipants,
         editType,
         setEditType,
+        updatedEvent
     }
 }
 
-export const useDeleteEvent = (
-    setEvents: React.Dispatch<React.SetStateAction<EventsData[]>>,
-) => {
+export const useDeleteEvent = () => {
     const [showModal, setShowModal] = useState(false)
+    const [deletedEvents, setDeletedEvents] = useState([] as EventsData[] )
     const [eventToDeleteId, setEventToDeleteId] = useState<string | number>('')
     const handleDeleteEventModal = (eventToDeleteId: string | number) => {
         setEventToDeleteId(eventToDeleteId)
@@ -436,7 +414,7 @@ export const useDeleteEvent = (
         AxiosInstance.delete(`/event/${id}`)
             .then(() => {
                 console.log('Event deleted successfully')
-                setEvents((prevEvents) =>
+                setDeletedEvents((prevEvents) =>
                     prevEvents.filter((event) => event._id !== id),
                 )
             })
@@ -451,5 +429,6 @@ export const useDeleteEvent = (
         showModal,
         handleDeleteEventModal,
         eventToDeleteId,
+        deletedEvents
     }
 }

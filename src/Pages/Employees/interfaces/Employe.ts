@@ -1,5 +1,5 @@
 import React from 'react'
-import { GridColDef, GridRowParams } from '@mui/x-data-grid'
+import { GridColDef, GridPaginationModel, GridRowParams } from '@mui/x-data-grid'
 
 export interface EmployeeRow {
     id: number
@@ -14,8 +14,13 @@ export interface EmployeeContextType {
     rows: EmployeeRow[]
     columns: GridColDef[]
     headerTextColors: { [key: string]: string }
+    isPending: boolean
     getRowId: (row: EmployeeRow) => number
     handleRowClick: (params: GridRowParams) => void
+    page:number
+    pageSize:number
+    totalPages:number
+    handlePaginationModelChange: (paginationModel: GridPaginationModel) => void
 }
 
 export interface UserProfileData {
@@ -27,6 +32,7 @@ export interface UserProfileData {
     pob: string
     dob: string
     gender: string
+    originalId: number
     role: string
     firstName: string
     imageUrl: string

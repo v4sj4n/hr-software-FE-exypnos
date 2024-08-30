@@ -83,7 +83,7 @@ const SelectedEventCard = ({
                         <LocationOnOutlinedIcon
                             sx={{ height: 20, width: 20, color: '#6b7280' }}
                         />
-                        <div>{selectedEvent.location.toString()}</div>
+                        <div>{selectedEvent.location}</div>
                     </div>
                 </div>
                 {!showVotersButton && selectedEvent.poll && (

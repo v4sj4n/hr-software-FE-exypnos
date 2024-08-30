@@ -9,7 +9,7 @@ export default function About() {
                     style={{ display: 'flex', justifyContent: 'space-around' }}
                 >
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <h1>Tiutull</h1>
+                        <h1>Titull</h1>
                         <div style={{ maxWidth: '500px' }}>
                             CodeVider is an Albanian-based web development
                             outsourcing company that offers full-stack

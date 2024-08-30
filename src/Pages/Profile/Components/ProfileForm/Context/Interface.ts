@@ -34,9 +34,6 @@ export interface EmployeePayroll {
 
 export interface EmployePayroll {
     workingDays: number | undefined
- 
     grossSalary: number | undefined
-    month: number
-    year: number
     userId: string
 }

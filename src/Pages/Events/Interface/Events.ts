@@ -7,11 +7,13 @@ export interface EventsData {
     email: string[]
     time: string
     creatingTime: string
+    data: EventsData[]
     file: string
     location: string  
     type: string
     photo: string[]
     participants: string[]
+    totalPages: number
     poll: {
         question: string
         options: {
@@ -105,4 +107,9 @@ export interface EventsContextProps {
     handleFileUpload: (files: File[]) => void
     eventPhotos: File[]
     handleLocationChange: (address: string) => void;
+    hideToast?: () => void
+    showToast: boolean
+    toast: string
+    createdEvents: EventsData[]
+    
 }
