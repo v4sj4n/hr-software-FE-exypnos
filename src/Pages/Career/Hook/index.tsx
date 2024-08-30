@@ -33,7 +33,7 @@ export const useGetAllEvents = () => {
         setIsLoading(true)
         AxiosInstance.get<EventsData[]>('/event?type=career')
             .then((response) => {
-                console.log('Fetched events:', response.data)
+                console.log('Fetched gertiii:', response.data)
                 setTimeout(() => {
                     setIsLoading(false)
                 }, 500)

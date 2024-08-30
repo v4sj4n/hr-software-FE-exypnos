@@ -1,23 +1,39 @@
 import React, { useState } from 'react'
 import { PayrollContextSpecific, PayrollRowSpecifc } from '../interface'
-import { usePayrollUserId } from '../../Hook'
+import { GridPaginationModel } from '@mui/x-data-grid'
+import AxiosInstance from '@/Helpers/Axios'
+import { useQuery } from '@tanstack/react-query'
+import { useParams } from 'react-router-dom'
 
 export const PayrollProviderSpecific: React.FC<{
     children: React.ReactNode
 }> = ({ children }) => {
+
+const {id} = useParams()
     const [month, setMonth] = useState<number | undefined>(undefined)
     const [year, setYear] = useState<number | undefined>(undefined)
+    const [page, setPage] = useState(0)
+    const [pageSize, setPageSize] = useState(5)
+    
+    const handlePaginationModelChange = (model: GridPaginationModel) => {
+        setPage(model.page);
+        setPageSize(model.pageSize);
+    };
 
-    const {
-        data: payrollId = [],
-        isPending,
-        isError,
-    } = usePayrollUserId(month, year)
-    if (isPending) return <div>Loading...</div>
-    if (isError) return <div>Error: {isError}</div>
+    const fetchPayroll = async (): Promise<{ data: PayrollRowSpecifc[], totalPages: number }> => {
+        const response = await AxiosInstance.get<{ data: PayrollRowSpecifc[], totalPages: number }>(
+        `/salary/user/${id}?month=${month}&year=${year}&limit=${pageSize}&page=${page}`
+        )
+        return response.data
+    }
 
-    const rows: PayrollRowSpecifc[] = payrollId.map((payrollData, index) => ({
-        id: index + 1,
+    const { data: payrollId, isPending } = useQuery<{ data: PayrollRowSpecifc[], totalPages: number }, Error>({
+        queryKey: ['payrollId', month, year, page, pageSize],
+        queryFn: () => fetchPayroll()
+    })
+
+    const rows: PayrollRowSpecifc[] = payrollId?.data.map((payrollData, index) => ({
+        id: (page * pageSize) + index,
         originalId: payrollData.userId._id,
         netSalary: `${payrollData.netSalary}${payrollData.currency}`,
         healthInsurance: `${payrollData.healthInsurance}${payrollData.currency}`,
@@ -31,7 +47,7 @@ export const PayrollProviderSpecific: React.FC<{
         currency: payrollData.currency,
         bonus: payrollData.bonus,
         userId: payrollData.userId._id,
-    }))
+    })) ?? []
 
     const columns = [
         { field: 'id', headerName: 'No', flex: 0.5 },
@@ -57,7 +73,11 @@ export const PayrollProviderSpecific: React.FC<{
         getRowId,
         setMonth,
         setYear,
-        fullName: `${payrollId[0]?.userId.firstName} ${payrollId[0]?.userId.lastName}`,
+        isPending,
+        page,
+        pageSize,
+        totalPages: payrollId?.totalPages ?? 0,
+        handlePaginationModelChange,
     }
 
     return (

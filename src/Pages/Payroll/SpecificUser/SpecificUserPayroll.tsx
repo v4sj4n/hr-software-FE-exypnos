@@ -6,7 +6,7 @@ import Input from '@/Components/Input/Index'
 import { EventsProvider } from '@/Pages/Events/Context/EventsContext'
 
 function SpecificUserPayrollContent() {
-    const { rows, columns, getRowId, setMonth, setYear, fullName } =
+    const { rows, columns, getRowId, setMonth, setYear, fullName,   page, pageSize, totalPages, handlePaginationModelChange } =
         usePayrollContextSpecific()
 
     const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +40,10 @@ function SpecificUserPayrollContent() {
                     onChange={handleDateChange}
                 />
             </div>
-            <DataTable rows={rows} columns={columns} getRowId={getRowId} />
+            <DataTable rows={rows} columns={columns} getRowId={getRowId}    totalPages={totalPages}
+                page={page}
+                pageSize={pageSize}
+                onPaginationModelChange={handlePaginationModelChange} />
             <div
                 style={{
                     width: '500px',
