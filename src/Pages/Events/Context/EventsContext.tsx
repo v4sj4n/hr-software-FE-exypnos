@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from 'react'
 import { EventsData, EventsContextProps } from '../Interface/Events'
 import {
-    useGetAllEvents,
+    // useGetAllEvents,
     useCreateEvent,
     useUpdateEvent,
     useDeleteEvent,
@@ -14,7 +14,7 @@ const EventsContext = createContext<EventsContextProps | undefined>(undefined)
 export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-    const { events, setEvents, isLoading, onSearchChange } = useGetAllEvents()
+
     const {
         handleChange,
         event,
@@ -33,7 +33,9 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         toastSeverity,
         handleFileUpload,
         eventPhotos,
-    } = useCreateEvent(setEvents)
+        handleLocationChange,
+        createdEvents
+    } = useCreateEvent()
 
     const {
         editingEvent,
@@ -55,8 +57,9 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         editParticipants,
         setEditParticipants,
         editType,
-        setEditType,
-    } = useUpdateEvent(setEvents)
+        setEditType,        
+    } = useUpdateEvent()
+
 
     const {
         handleDelete,
@@ -64,19 +67,20 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         showModal,
         handleDeleteEventModal,
         eventToDeleteId,
-    } = useDeleteEvent(setEvents)
+    } = useDeleteEvent()
     const [showEventModal, setShowEventModal] = useState<boolean>(false)
     const [selectedEvent, setSelectedEvent] = useState<EventsData | null>(null)
     const { currentUser } = useAuth()
     const isAdmin = currentUser?.role === 'admin'
     const typesofEvent = [
         'sports',
-        'carier',
+        'career',
         'teambuilding',
         'training',
         'other',
     ]
     const { data: users = [] } = useGetAllUsers()
+    console.log('selmaaaaa', users)
     const allEmails = users.map((user) => user.auth.email)
 
     const handleSeeVoters = (event: EventsData) => {
@@ -110,9 +114,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     return (
         <EventsContext.Provider
             value={{
-                events,
-                isLoading,
-                onSearchChange,
+                handleLocationChange,
                 createEvent,
                 updateEvent,
                 handleDelete,
@@ -168,6 +170,8 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
                 setEditType,
                 handleFileUpload,
                 eventPhotos,
+                createdEvents,
+
             }}
         >
             {children}

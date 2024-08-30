@@ -11,6 +11,7 @@ import { ProfileProvider } from './Context/ProfileProvider'
 
 const ProfileFormContext = () => {
     const { uploadImage, previewImage } = useFileUpload()
+
     const { user, isCurrentUser, isAdmin, handleChange, handleUpdate } =
         useProfile()
 

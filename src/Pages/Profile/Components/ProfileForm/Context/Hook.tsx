@@ -4,6 +4,7 @@ import { UserProfileData } from '@/Pages/Employees/interfaces/Employe'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { EmployeePayroll, EmployePayroll } from './Interface'
 
 export const useGetAndUpdateUserById = () => {
     const { id } = useParams<{ id: string }>()
@@ -98,28 +99,19 @@ export const useGetAndUpdateUserById = () => {
     }
 }
 
-interface EmployePayroll {
-    workingDays: number | undefined
-    socialSecurity: number | undefined
-    healthInsurance: number | undefined
-    grossSalary: number | undefined
-    month: number
-    year: number
-    userId: string
-}
-
 export const useCreatePayroll = () => {
     const { id } = useParams<{ id: string }>()
 
     const [payroll, setPayroll] = useState<EmployePayroll>({
         workingDays: undefined,
-        socialSecurity: undefined,
-        healthInsurance: undefined,
         grossSalary: undefined,
-        month: new Date().getMonth() + 1,
-        year: new Date().getFullYear(),
         userId: id || '',
     })
+    const [createToastOpen, setCreateToastOpen] = useState(false)
+    const [createToastMessage, setCreateToastMessage] = useState('')
+    const [createToastSeverity, setCreateToastSeverity] = useState<
+        'success' | 'error'
+    >('success')
 
     const handleChangePayroll = (
         event: React.ChangeEvent<HTMLInputElement>,
@@ -135,32 +127,39 @@ export const useCreatePayroll = () => {
         event: React.FormEvent<HTMLButtonElement>,
     ) => {
         event.preventDefault()
-        const payloadToSend = {
+        const fieldsToCreate = {
             ...payroll,
-            workingDays: payroll.workingDays ?? 0,
-            socialSecurity: payroll.socialSecurity ?? 0,
-            healthInsurance: payroll.healthInsurance ?? 0,
-            grossSalary: payroll.grossSalary ?? 0,
+            workingDays: payroll.workingDays,
+            grossSalary: payroll.grossSalary,
         }
 
         try {
-            const response = await AxiosInstance.post('/salary', payloadToSend)
+            const response = await AxiosInstance.post('/salary', fieldsToCreate)
             console.log('Payroll created successfully:', response.data)
+            setCreateToastOpen(true)
+            setCreateToastMessage('Payroll created successfully')
+            setCreateToastSeverity('success')
         } catch (error) {
             console.error('Error creating payroll:', error)
+            setCreateToastOpen(true)
+            setCreateToastMessage('Failed to create payroll')
+            setCreateToastSeverity('error')
         }
     }
 
-    return { payroll, handleChangePayroll, handleCreatePayroll }
-}
+    const handleCreateToastClose = () => {
+        setCreateToastOpen(false)
+    }
 
-interface EmployeePayroll {
-    _id: string
-    workingDays: number | undefined
-    grossSalary: number | undefined
-    month: number
-    year: number
-    userId: string
+    return {
+        payroll,
+        handleChangePayroll,
+        handleCreatePayroll,
+        createToastMessage,
+        createToastOpen,
+        createToastSeverity,
+        handleCreateToastClose,
+    }
 }
 
 export const useUpdatePayroll = () => {
@@ -169,24 +168,31 @@ export const useUpdatePayroll = () => {
     const currentYear = currentDate.getFullYear()
     const lastMonth = currentDate.getMonth() - 1
 
-    const [payrollId, setPayrollId] = useState<EmployeePayroll | null>(null)
+    const [EditingPayroll, setEditingPayroll] =
+        useState<EmployeePayroll | null>(null)
+    const [toastOpen, setToastOpen] = useState(false)
+    const [toastMessage, setToastMessage] = useState('')
+    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
+        'success',
+    )
 
-    const { isLoading, error } = useQuery<EmployeePayroll[], Error>({
-        queryKey: ['payrollId', id, lastMonth, currentYear],
+    const { isLoading, error, status } = useQuery<EmployeePayroll[], Error>({
+        queryKey: ['EditingPayroll', id, lastMonth, currentYear],
         queryFn: async () => {
             const url = `/salary/user/${id}?month=${lastMonth}&year=${currentYear}`
             const response = await AxiosInstance.get<EmployeePayroll[]>(url)
             console.log('Gerti', response.data[0]._id)
-            setPayrollId(response.data[0])
+            setEditingPayroll(response.data[0])
             return response.data
         },
     })
 
-    const handleChangePayroll = (
+    console.log(status)
+    const handleUpdateChangePayroll = (
         event: React.ChangeEvent<HTMLInputElement>,
     ) => {
         const { name, value } = event.target
-        setPayrollId((prevPayroll) => {
+        setEditingPayroll((prevPayroll) => {
             if (!prevPayroll) return null
             return {
                 ...prevPayroll,
@@ -199,29 +205,43 @@ export const useUpdatePayroll = () => {
         event: React.FormEvent<HTMLButtonElement>,
     ) => {
         event.preventDefault()
-        if (!payrollId) return
+        if (!EditingPayroll) return
 
-        const payloadToSend = {
-            workingDays: payrollId.workingDays,
-            grossSalary: payrollId.grossSalary,
+        const fieldsToUpdate = {
+            workingDays: EditingPayroll.workingDays,
+            grossSalary: EditingPayroll.grossSalary,
         }
-        console.log(payrollId)
+        console.log(EditingPayroll)
         try {
             const response = await AxiosInstance.patch(
-                `/salary/${payrollId._id}`,
-                payloadToSend,
+                `/salary/${EditingPayroll._id}`,
+                fieldsToUpdate,
             )
             console.log('Payroll updated successfully:', response.data)
+            setToastMessage('Payroll updated successfully')
+            setToastOpen(true)
+            setToastSeverity('success')
         } catch (error) {
             console.error('Error updating payroll:', error)
+            setToastMessage('Error updating payroll')
+            setToastSeverity('error')
+            setToastOpen(true)
         }
     }
 
+    const handleToastClose = () => {
+        setToastOpen(false)
+    }
+
     return {
-        payrollId,
-        handleChangePayroll,
+        EditingPayroll,
+        handleUpdateChangePayroll,
         handleUpdatePayroll,
         isLoading,
         error,
+        handleToastClose,
+        toastOpen,
+        toastMessage,
+        toastSeverity,
     }
 }

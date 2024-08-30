@@ -9,6 +9,8 @@ import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { useEvents } from '../Context/EventsContext'
 import style from '../styles/Events.module.css'
+import MapComponent from '../Components/GoogleMap/MapPicker'
+
 export default function Forms() {
     const {
         editingEvent,
@@ -41,6 +43,27 @@ export default function Forms() {
         handleCloseDrawer,
         drawerOpen,
     } = useEvents()
+
+    const handleLocationChange = (address: string) => {
+        console.log('Selected address:', address)
+
+        if (editingEvent) {
+            handleEditChange({
+                target: {
+                    name: 'location',
+                    value: address,
+                },
+            } as React.ChangeEvent<HTMLInputElement>)
+        } else {
+            handleChange({
+                target: {
+                    name: 'location',
+                    value: address,
+                },
+            } as React.ChangeEvent<HTMLInputElement>)
+        }
+    }
+
     return (
         <div>
             <DrawerComponent open={drawerOpen} onClose={handleCloseDrawer}>
@@ -51,6 +74,7 @@ export default function Forms() {
                         style={{ cursor: 'pointer' }}
                     />
                 </div>
+
                 <Input
                     IsUsername
                     label="Event Title"
@@ -58,11 +82,12 @@ export default function Forms() {
                     onChange={editingEvent ? handleEditChange : handleChange}
                     value={editingEvent ? editingEvent.title : event.title}
                 />
+
                 <div style={{ display: 'flex', width: '100%', gap: 15 }}>
                     <Input
                         IsUsername
                         label="Start Date and Time"
-                        shrink={true}
+                        shrink
                         name="startDate"
                         type="datetime-local"
                         onChange={
@@ -75,10 +100,11 @@ export default function Forms() {
                         }
                         width={178}
                     />
+
                     <Input
                         IsUsername
                         label="End Date and Time"
-                        shrink={true}
+                        shrink
                         name="endDate"
                         type="datetime-local"
                         width={173}
@@ -92,16 +118,15 @@ export default function Forms() {
                         }
                     />
                 </div>
-                <Input
-                    IsUsername
-                    width="100%"
-                    label="Location"
-                    name="location"
-                    onChange={editingEvent ? handleEditChange : handleChange}
-                    value={
+
+                <MapComponent
+                    onLocationChange={handleLocationChange}
+                    savedLocation={
                         editingEvent ? editingEvent.location : event.location
                     }
+                    showInput={true}
                 />
+
                 <Input
                     IsUsername
                     label="Description"
@@ -116,8 +141,8 @@ export default function Forms() {
                             : event.description
                     }
                 />
+
                 <Selecter
-                    width="100%"
                     value={editingEvent ? editParticipants : participants}
                     onChange={(newValue) => {
                         if (editingEvent) {
@@ -131,10 +156,11 @@ export default function Forms() {
                         }
                     }}
                     options={allEmails}
-                    multiple={true}
+                    multiple
                     name="participants"
                     label="Participants"
                 />
+
                 <Selecter
                     value={editingEvent ? editType : event.type}
                     onChange={(newValue) => {
@@ -160,8 +186,10 @@ export default function Forms() {
                     name="type"
                     label="Event Type"
                 />
+
                 <div> Add Event Images</div>
                 <Dropzone />
+
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Switch
                         checked={
@@ -179,6 +207,7 @@ export default function Forms() {
                             : 'Add poll to event'}
                     </div>
                 </div>
+
                 {(editingEvent ? includePollInEdit : includesPoll) && (
                     <div
                         style={{
@@ -198,6 +227,7 @@ export default function Forms() {
                                 editingEvent ? handleEditChange : handleChange
                             }
                         />
+
                         <div
                             style={{
                                 display: 'flex',
@@ -228,6 +258,7 @@ export default function Forms() {
                                 <div>Multiple choice</div>
                             </div>
                         </div>
+
                         {(editingEvent ? editPollOptions : pollOptions).map(
                             (option, index) => (
                                 <Input
@@ -250,6 +281,7 @@ export default function Forms() {
                                 />
                             ),
                         )}
+
                         <Button
                             onClick={
                                 editingEvent
@@ -265,6 +297,7 @@ export default function Forms() {
                                     .length >= 3
                             }
                         />
+
                         {(editingEvent ? editPollOptions : pollOptions)
                             .length >= 3 && (
                             <div style={{ color: 'red', fontSize: '14px' }}>
@@ -273,7 +306,9 @@ export default function Forms() {
                         )}
                     </div>
                 )}
+
                 <div className={style.border}></div>
+
                 <Button
                     btnText={editingEvent ? 'Update' : 'Save event'}
                     type={ButtonTypes.PRIMARY}

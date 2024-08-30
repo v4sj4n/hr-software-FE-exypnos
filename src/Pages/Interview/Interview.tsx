@@ -3,7 +3,7 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import CheckIcon from '@mui/icons-material/Check'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
-import { Tooltip, Tabs, Tab, MenuItem } from '@mui/material'
+import { Tooltip, Tabs, Tab } from '@mui/material'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { InterviewProvider, useInterviewContext } from './Hook/InterviewContext'
 import style from './styles/Interview.module.css'
@@ -36,30 +36,23 @@ function InterviewKanbanContent() {
     const [startDate, setStartDate] = useState<string | null>(null)
     const [endDate, setEndDate] = useState<string | null>(null)
     const [currentTab, setCurrentTab] = useState<string>('first_interview')
-
     useEffect(() => {
-        if (startDate && endDate) {
-            console.log('Filtering interviews with the following parameters:')
-            console.log('Current Phase:', currentPhase)
-            console.log('Start Date:', startDate)
-            console.log('End Date:', endDate)
+        console.log('Fetching interviews with default/current parameters:')
+        console.log('Current Phase:', currentPhase)
+        console.log('Start Date:', startDate)
+        console.log('End Date:', endDate)
 
-            fetchFilteredInterviews(
-                currentPhase,
-                new Date(startDate),
-                new Date(endDate),
-            )
-                .then(() => {
-                    console.log('Interviews fetched successfully')
-                })
-                .catch((err) => {
-                    console.error('Error fetching interviews:', err)
-                })
-        } else {
-            console.log(
-                'Start or end date is missing. Not applying the filter.',
-            )
-        }
+        fetchFilteredInterviews(
+            currentPhase,
+            startDate ? new Date(startDate) : undefined,
+            endDate ? new Date(endDate) : undefined,
+        )
+            .then(() => {
+                console.log('Interviews fetched successfully on mount')
+            })
+            .catch((err) => {
+                console.error('Error fetching interviews:', err)
+            })
     }, [currentPhase, startDate, endDate])
 
     useEffect(() => {
@@ -103,7 +96,6 @@ function InterviewKanbanContent() {
                     multiple={false}
                     value={currentPhase}
                     options={phases}
-                    width="250px"
                     onChange={(newValue) => setCurrentPhase(newValue)}
                 />
 
@@ -207,12 +199,10 @@ function InterviewKanbanContent() {
                                                                 style.candidateName
                                                             }
                                                         >
-                                                            {interview.fullName}{' '}
-                                                            <p>
-                                                                {
-                                                                    interview.positionApplied
-                                                                }
-                                                            </p>
+                                                            <b>{`${interview.firstName} ${interview.lastName}`}</b>{' '}
+                                                            {
+                                                                interview.positionApplied
+                                                            }
                                                         </h3>
                                                         {currentTab !==
                                                             'employed' &&

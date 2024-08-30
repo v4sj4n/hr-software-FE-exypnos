@@ -22,8 +22,26 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
         handleChange,
         handleUpdate,
     } = useGetAndUpdateUserById()
-    const { payroll, handleCreatePayroll } = useCreatePayroll()
-    const { payrollId, handleChangePayroll } = useUpdatePayroll()
+
+    const {
+        payroll,
+        handleCreatePayroll,
+        handleChangePayroll,
+        createToastMessage,
+        createToastOpen,
+        createToastSeverity,
+        handleCreateToastClose,
+    } = useCreatePayroll()
+
+    const {
+        EditingPayroll,
+        handleUpdateChangePayroll,
+        toastOpen,
+        toastMessage,
+        handleToastClose,
+        handleUpdatePayroll,
+        toastSeverity,
+    } = useUpdatePayroll()
 
     const value = {
         user,
@@ -33,10 +51,20 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
         isAdmin,
         handleChange,
         handleUpdate,
-        handleChangePayroll,
+        handleUpdatePayroll,
+        handleUpdateChangePayroll,
         payroll,
         handleCreatePayroll,
-        payrollId,
+        EditingPayroll,
+        toastOpen,
+        toastMessage,
+        handleToastClose,
+        toastSeverity,
+        handleChangePayroll,
+        createToastMessage,
+        createToastOpen,
+        createToastSeverity,
+        handleCreateToastClose,
     }
 
     return (

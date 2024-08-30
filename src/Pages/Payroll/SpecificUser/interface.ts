@@ -1,4 +1,4 @@
-import { GridColDef } from '@mui/x-data-grid'
+import { GridColDef, GridPaginationModel } from '@mui/x-data-grid'
 import React from 'react'
 
 export interface PayrollContextType {
@@ -9,6 +9,11 @@ export interface PayrollContextType {
     setMonth: (month: number) => void
     setYear: (year: number) => void
     fullName: string | undefined
+    isPending: boolean
+    page:number
+    pageSize:number
+    totalPages:number
+    handlePaginationModelChange: (paginationModel: GridPaginationModel) => void
 }
 
 export const PayrollContextSpecific = React.createContext<
