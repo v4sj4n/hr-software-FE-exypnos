@@ -9,14 +9,16 @@ const InfoSection: React.FC = () => {
     const [recentEvents, setRecentEvents] = useState<EventsData[]>([])
 
     useEffect(() => {
-        console.log(events)
-        const sortedEvents = events.sort(
-            (a, b) =>
-                new Date(b.creatingTime).getTime() -
-                new Date(a.creatingTime).getTime(),
-        )
-
-        setRecentEvents(sortedEvents.slice(0, 4))
+        if (Array.isArray(events)) {
+            const sortedEvents = [...events].sort(
+                (a, b) =>
+                    new Date(b.creatingTime).getTime() -
+                    new Date(a.creatingTime).getTime(),
+            )
+            setRecentEvents(sortedEvents.slice(0, 4))
+        } else {
+            console.error('Events is not an array:', events)
+        }
     }, [events])
 
     return (
@@ -41,10 +43,11 @@ const InfoSection: React.FC = () => {
                                     }}
                                 >
                                     <h3>{event.title}</h3>
-
-                                    {dayjs(event.startDate).format(
-                                        'ddd DD MMM YYYY',
-                                    )}
+                                    <span>
+                                        {dayjs(event.startDate).format(
+                                            'ddd DD MMM YYYY',
+                                        )}
+                                    </span>
                                 </div>
                                 <p>{event.description}</p>
                             </div>
