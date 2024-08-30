@@ -9,7 +9,7 @@ export interface EventsData {
     creatingTime: string
     data: EventsData[]
     file: string
-    location: string  
+    location: string
     type: string
     photo: string[]
     participants: string[]
@@ -31,9 +31,9 @@ export interface EventsCreationData {
     description: string
     startDate: string
     endDate: string
-    location: string  
+    location: string
 
-        participants: string[]
+    participants: string[]
     photo: File[]
     type: string
     poll: {

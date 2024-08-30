@@ -14,14 +14,13 @@
 
 // export default function Notification() {
 
-
 //     const [notification, setNotification] = useState<NotificationData[]>([])
 //     const {currentUser} = useAuth()
 //     const currentUserId = currentUser?._id;
 //     console.log(currentUserId)
 
 //     useEffect(() => {
-      
+
 //         AxiosInstance.get<NotificationData[]>(`notification/user/${currentUserId}`)
 //             .then((response) => {
 //                 setNotification(response.data)
@@ -31,9 +30,8 @@
 //             .catch((error) => {
 //                 console.error('Error fetching data:', error)
 //             })
-           
-//     }, [currentUserId])
 
+//     }, [currentUserId])
 
 //   return (
 //     <div>

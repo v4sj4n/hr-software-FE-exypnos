@@ -17,6 +17,7 @@ import { useGetAllEvents } from './Hook'
 import { useInView } from 'react-intersection-observer'
 import { useEffect } from 'react'
 import { EventsData } from './Interface/Events'
+
 function EventsContentAndComponents() {
     const {
         onSearchChange,
@@ -39,6 +40,7 @@ function EventsContentAndComponents() {
         handleOpenDrawer,
     } = useEvents()
 
+
     const {data: events , isFetchingNextPage, fetchNextPage,isLoading } = useGetAllEvents()
     
     const {ref, inView} = useInView()
@@ -51,6 +53,7 @@ function EventsContentAndComponents() {
         }
     }, [fetchNextPage, inView])
     if(isLoading) return <div>Loading...</div>
+
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>

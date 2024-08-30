@@ -57,9 +57,9 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         editParticipants,
         setEditParticipants,
         editType,
-        setEditType,
-        
+        setEditType,        
     } = useUpdateEvent()
+
 
     const {
         handleDelete,
@@ -74,7 +74,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     const isAdmin = currentUser?.role === 'admin'
     const typesofEvent = [
         'sports',
-        'carier',
+        'career',
         'teambuilding',
         'training',
         'other',
@@ -171,6 +171,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
                 handleFileUpload,
                 eventPhotos,
                 createdEvents,
+
             }}
         >
             {children}

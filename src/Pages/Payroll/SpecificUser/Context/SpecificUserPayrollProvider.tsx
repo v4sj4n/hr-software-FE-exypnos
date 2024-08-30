@@ -31,7 +31,6 @@ const {id} = useParams()
         queryKey: ['payrollId', month, year, page, pageSize],
         queryFn: () => fetchPayroll()
     })
-  
 
     const rows: PayrollRowSpecifc[] = payrollId?.data.map((payrollData, index) => ({
         id: (page * pageSize) + index,

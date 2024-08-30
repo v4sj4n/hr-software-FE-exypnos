@@ -1,29 +1,20 @@
-import { Autocomplete, CircularProgress, TextField } from '@mui/material'
 import Card from '@/Components/Card/Card'
-import { useGetUserHoldings, useHandleItemAssigner } from '../Hook'
+import { useGetUserHoldings } from '../Hook'
 import style from '../style/userHoldings.module.scss'
 import { LaptopOutlined, MonitorOutlined } from '@mui/icons-material'
-import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
-import Button from '@/Components/Button/Button'
-import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-import { FormEvent, useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { Asset } from '../TAsset'
-import AxiosInstance from '@/Helpers/Axios'
-import { inputStyles } from '@/Components/Input/Styles'
-import { useParams } from 'react-router-dom'
-import { AssetModal } from './AssetModal'
+import { ReturnAssetModal } from './ReturnAssetModal'
 import HoldingsProvider, { HoldingsContext } from '../HoldingsContext'
 import Toast from '@/Components/Toast/Toast'
+import AssignAssetModal from './AssignAssetModal'
+import Button from '@/Components/Button/Button'
+import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 
 const UserHoldingsComponent = () => {
     const holdingsGetter = useGetUserHoldings()
-    const {
-        searchParams,
-        setSearchParams,
-        toastConfigs,
-        setToastConfigs,
-        handleToastClose,
-    } = useContext(HoldingsContext)
+    const { searchParams, setSearchParams, toastConfigs, handleToastClose } =
+        useContext(HoldingsContext)
 
     const handleItemClick = (id: string) => {
         setSearchParams((prevParams) => {
@@ -34,35 +25,13 @@ const UserHoldingsComponent = () => {
         })
     }
 
-    const [isOpen, setIsOpen] = useState(false)
-    const [options, setOptions] = useState<Asset[]>([])
-    const [autocompleteLoading, setAutocompleteLoading] = useState(false)
-    const [assetId, setAssetId] = useState<string | null>(null)
-    const itemAssigner = useHandleItemAssigner()
-    const { id: userId } = useParams()
-
-    useEffect(() => {
-        let active = true
-
-        if (!isOpen) {
-            return undefined
-        }
-
-        setAutocompleteLoading(true)
-        ;(async () => {
-            if (active) {
-                const { data } = await AxiosInstance.get<Asset[]>(
-                    '/asset?availability=available',
-                )
-                setOptions(data)
-            }
-            setAutocompleteLoading(false)
-        })()
-
-        return () => {
-            active = false
-        }
-    }, [isOpen])
+    const handleOpenAssignModal = () => {
+        setSearchParams((prevParams) => {
+            const newParams = new URLSearchParams(prevParams)
+            newParams.set('assignItem', 'true')
+            return newParams
+        })
+    }
 
     if (holdingsGetter.isLoading) return <p>Loading...</p>
     if (holdingsGetter.isError) return <p>{holdingsGetter.error.message}</p>
@@ -106,106 +75,13 @@ const UserHoldingsComponent = () => {
                         )
                     })}
                 </div>
-                <form
-                    onSubmit={async (event: FormEvent<HTMLFormElement>) => {
-                        itemAssigner.mutate({
-                            event,
-                            assetId: assetId as string,
-                            userId: userId as string,
-                        })
-                        if (itemAssigner.isError) {
-                            setToastConfigs({
-                                isOpen: true,
-                                message: 'Error assigning item',
-                                severity: 'error',
-                            })
-                        } else {
-                            setToastConfigs({
-                                isOpen: true,
-                                message: 'Item assigned successfully',
-                                severity: 'success',
-                            })
-                        }
-                        setAssetId(null)
-                    }}
-                    className={style.itemAssigner}
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Autocomplete
-                        id="users-list"
-                        sx={{
-                            width: '100%',
-                            marginBottom: '1rem',
-                        }}
-                        open={isOpen}
-                        onOpen={() => setIsOpen(true)}
-                        onClose={() => setIsOpen(false)}
-                        onChange={(event, newValue) => {
-                            event.preventDefault()
-                            if (newValue) {
-                                setAssetId(newValue?._id)
-                            }
-                        }}
-                        options={options}
-                        loading={autocompleteLoading}
-                        isOptionEqualToValue={(option, value) =>
-                            option._id === value._id
-                        }
-                        getOptionLabel={(option) =>
-                            option.type + ' ' + option.serialNumber
-                        }
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                label="Assign to User"
-                                variant="filled"
-                                size="small"
-                                sx={{
-                                    ...inputStyles,
-                                }}
-                                InputLabelProps={{
-                                    style: {
-                                        color: '#4C556B',
-                                        fontFamily: '"Outfit", sans-serif',
-                                    },
-                                    shrink: true,
-                                }}
-                                InputProps={{
-                                    disableUnderline: true,
-                                    ...params.InputProps,
-                                    endAdornment: (
-                                        <>
-                                            {autocompleteLoading ? (
-                                                <CircularProgress
-                                                    color="inherit"
-                                                    size={20}
-                                                />
-                                            ) : null}
-                                            {params.InputProps.endAdornment}
-                                        </>
-                                    ),
-                                }}
-                            />
-                        )}
-                    />
-                    <TooltipImproved
-                        text={`Assign the selected item as a possesion of ${holdingsGetter.data.firstName} ${holdingsGetter.data.lastName}`}
-                        placement="right"
-                        offset={[-10, 0]}
-                    >
-                        <span>
-                            <Button
-                                btnText={'Assign'}
-                                isSubmit
-                                type={ButtonTypes.PRIMARY}
-                            />
-                        </span>
-                    </TooltipImproved>
-                </form>
             </div>
+
+            <Button
+                btnText={'Add item'}
+                type={ButtonTypes.PRIMARY}
+                onClick={handleOpenAssignModal}
+            />
             <Toast
                 open={toastConfigs.isOpen}
                 onClose={handleToastClose}
@@ -213,7 +89,9 @@ const UserHoldingsComponent = () => {
                 severity={toastConfigs.severity}
             />
 
-            {searchParams.get('selectedOwnedItem') && <AssetModal />}
+            {searchParams.get('assignItem') && <AssignAssetModal />}
+
+            {searchParams.get('selectedOwnedItem') && <ReturnAssetModal />}
         </Card>
     )
 }

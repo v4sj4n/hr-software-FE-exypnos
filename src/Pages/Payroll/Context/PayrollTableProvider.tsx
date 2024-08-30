@@ -54,6 +54,7 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
         userId: payrollItem.userId._id,
     })) ?? []
 
+
     const columns = [
         { field: 'id', headerName: 'No', flex: 0.5 },
         { field: 'fullName', headerName: 'Full Name', flex: 1.7 },
@@ -90,7 +91,6 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
         pageSize,
         totalPages: payrollData?.totalPages ?? 0,
         handlePaginationModelChange,
-
     }
 
     return (

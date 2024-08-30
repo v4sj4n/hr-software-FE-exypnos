@@ -100,8 +100,7 @@ export const useCreateEvent = () => {
             }));
         }
     };
-
-
+        
     const handleFileUpload = (photo: File[]) => {
         setEventPhotos(photo)
     }
@@ -126,7 +125,7 @@ export const useCreateEvent = () => {
         formData.append('description', event.description)
         formData.append('startDate', event.startDate)
         formData.append('endDate', event.endDate)
-        formData.append('location', event.location);
+        formData.append('location', event.location)
         formData.append('type', event.type)
         participants.forEach((participant, index) => {
             formData.append(`participants[${index}]`, participant)

@@ -14,13 +14,14 @@ export interface ProfileContextType {
     toastSeverity: 'success' | 'error'
     handleToastClose: () => void
     handleCreateToastClose: () => void
-    handleUpdatePayroll: (event: React.FormEvent<HTMLButtonElement>) => Promise<void>
+    handleUpdatePayroll: (
+        event: React.FormEvent<HTMLButtonElement>,
+    ) => Promise<void>
 }
 
 export const ProfileContext = createContext<ProfileContextType | undefined>(
     undefined,
 )
-
 
 export interface EmployeePayroll {
     _id: string
@@ -30,7 +31,6 @@ export interface EmployeePayroll {
     year: number
     userId: string
 }
-
 
 export interface EmployePayroll {
     workingDays: number | undefined

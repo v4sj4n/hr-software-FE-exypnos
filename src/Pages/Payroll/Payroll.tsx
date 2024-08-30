@@ -8,6 +8,7 @@ function PayrollContent() {
     const { rows, columns, getRowId, handleRowClick, setMonth, setYear, isPending, page, pageSize, totalPages, handlePaginationModelChange, } =
         usePayrollContext()
 
+
     const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const date = event.target.value
         const [yearString, monthString] = date.split('-')

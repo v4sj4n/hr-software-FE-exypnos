@@ -70,7 +70,6 @@ export default function Calendar() {
                 setIsLoading(false)
             })
             .catch((error) => {
-                
                 if (error.name !== 'AbortError') {
                     throw error
                 }
@@ -81,13 +80,12 @@ export default function Calendar() {
 
     React.useEffect(() => {
         fetchHighlightedDays(initialValue)
-      
+
         return () => requestAbortController.current?.abort()
     }, [])
 
     const handleMonthChange = (date: Dayjs) => {
         if (requestAbortController.current) {
-            
             requestAbortController.current.abort()
         }
 
