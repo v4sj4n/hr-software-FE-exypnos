@@ -1,6 +1,8 @@
 import Card from '@/Components/Card/Card'
 import style from './styles/promotion.module.css'
 import ChartBar from './components/ChartBar'
+import PromotionCard from './components/PromotionCard'
+import Rating from './components/Rating'
 
 export default function Promotion() {
     return (
@@ -11,25 +13,11 @@ export default function Promotion() {
                         <ChartBar />
                     </Card>
                     <Card>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Nemo iusto omnis blanditiis sapiente nulla,
-                            fugit debitis veniam dolorem dicta repellendus earum
-                            eum impedit ipsam porro minus numquam. Animi,
-                            repellendus vel.
-                        </p>
+                       <PromotionCard />
                     </Card>
                 </div>
-                <div className={style.secondDiv}>
-                    <Card>
-                        <p>
-                            Lorem ipsum dolor sit, amet consectetur adipisicing
-                            elit. Rem dolorem quos, ratione suscipit modi
-                            obcaecati et, soluta quo enim ipsum, amet sunt quas
-                            autem sint odit accusamus quia ipsam aliquid!
-                        </p>
-                    </Card>
-                </div>
+                        <Rating />
+                
             </div>
         </>
     )

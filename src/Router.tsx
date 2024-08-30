@@ -22,6 +22,7 @@ import Pagination from './Pages/PaginationExample/Main.tsx'
 import SpecificUserPayroll from './Pages/Payroll/SpecificUser/SpecificUserPayroll.tsx'
 import About from './Pages/About/About.tsx'
 import UserVacations from './Pages/Vacation/UserVacations.tsx'
+import Promotion from './Pages/Promotion/Promotion.tsx'
 
 export default function Router() {
     const router = createBrowserRouter([
@@ -52,6 +53,10 @@ export default function Router() {
                 {
                     path: '/employees',
                     element: <Employees />,
+                },
+                {
+                    path: '/promotion',
+                    element: <Promotion />,
                 },
                 { path: '/dashboard', element: <Dashboard />, index: false },
                 {
