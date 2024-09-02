@@ -2,15 +2,31 @@ import { useGetUsersWithVacations } from '../Hook/index.ts'
 import { CircularProgress } from '@mui/material'
 import { UserWithVacations } from '../TVacation.ts'
 import style from '../style/employeesWithVacations.module.scss'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { VacationContext } from '../VacationContext'
 import SimpleCollapsableCard from '@/Components/Vacation_Asset/SimpleCollapsableCard.tsx'
 import { EmployeesWithVacationsSearchFilter } from './SearchFilters.tsx'
+import { useInView } from 'react-intersection-observer'
 
 export const EmployeesWithVacations = () => {
-    const { isError, error, data, isLoading } = useGetUsersWithVacations()
+    const {
+        isError,
+        error,
+        data,
+        isLoading,
+        fetchNextPage,
+        isFetchingNextPage,
+    } = useGetUsersWithVacations()
 
     const { searchParams, setSearchParams } = useContext(VacationContext)
+
+    const { ref, inView } = useInView()
+
+    useEffect(() => {
+        if (inView) {
+            fetchNextPage()
+        }
+    }, [fetchNextPage, inView])
 
     if (isError) return <div>Error: {error.message}</div>
     if (isLoading)
@@ -19,8 +35,6 @@ export const EmployeesWithVacations = () => {
                 <CircularProgress />
             </div>
         )
-
-        
 
     return (
         <div className={style.employeesContainer}>
@@ -54,6 +68,7 @@ export const EmployeesWithVacations = () => {
                     </SimpleCollapsableCard>
                 )),
             )}
+            <div ref={ref}>{isFetchingNextPage && 'Loading...'}</div>
         </div>
     )
 }

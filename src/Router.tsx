@@ -22,6 +22,7 @@ import SpecificUserPayroll from './Pages/Payroll/SpecificUser/SpecificUserPayrol
 import About from './Pages/About/About.tsx'
 import UserVacations from './Pages/Vacation/UserVacations.tsx'
 import EmailConfirmation from './Pages/Recruitment/Component/EmailConfirmation.tsx'
+import NotFound from './Pages/NotFound/NotFound.tsx'
 
 export default function Router() {
     const router = createBrowserRouter([
@@ -33,6 +34,7 @@ export default function Router() {
             path: 'recruitment',
             element: <Recruitment />,
         },
+
         {
             path: '/applicant/confirm',
             element: <EmailConfirmation />,
@@ -119,6 +121,10 @@ export default function Router() {
                     element: <Inventory />,
                 },
             ],
+        },
+        {
+            path: '*',
+            element: <NotFound />,
         },
     ])
     return <RouterProvider router={router} />

@@ -18,7 +18,7 @@
             margin: 0;
         }
 
-        > p:nth-of-type(2) {
+        >p:nth-of-type(2) {
             align-self: flex-end;
         }
     }
@@ -35,10 +35,11 @@
     grid-template-columns: 1fr 2fr;
     gap: 0.5rem;
 
-    > * {
+
+    >* {
         border-radius: 0.25rem;
+
     }
-    gap: 20px;
 }
 
 .formButtonContainer {
@@ -46,7 +47,7 @@
     justify-content: flex-end;
     gap: 0.5rem;
 
-    > button {
+    >button {
         padding: 0.25rem 1rem;
         cursor: pointer;
     }
