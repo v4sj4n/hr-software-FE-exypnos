@@ -1,23 +1,16 @@
 import { useGetUsersWithVacations } from '../Hook/index.ts'
 import { CircularProgress } from '@mui/material'
 import { UserWithVacations } from '../TVacation.ts'
-import Card from '@/Components/Card/Card'
-// import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
-import {
-    ArrowForwardIos,
-    LaptopOutlined,
-    MonitorOutlined,
-} from '@mui/icons-material'
 import style from '../style/employeesWithVacations.module.scss'
-import { useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import { VacationContext } from '../VacationContext'
+import SimpleCollapsableCard from '@/Components/Vacation_Asset/SimpleCollapsableCard.tsx'
+import { EmployeesWithVacationsSearchFilter } from './SearchFilters.tsx'
 
 export const EmployeesWithVacations = () => {
     const { isError, error, data, isLoading } = useGetUsersWithVacations()
-    const navigate = useNavigate()
 
-    const goToUserWithId = (id: string) => {
-        navigate(`/vacation/${id}`)
-    }
+    const { searchParams, setSearchParams } = useContext(VacationContext)
 
     if (isError) return <div>Error: {error.message}</div>
     if (isLoading)
@@ -27,74 +20,40 @@ export const EmployeesWithVacations = () => {
             </div>
         )
 
-    const users = data.map(
-        ({
-            _id,
-            firstName,
-            lastName,
-            imageUrl,
-            vacations,
-            role,
-            email,
-        }: UserWithVacations) => {
-            console.log(email)
-            return (
-                <Card
-                    key={_id}
-                    className={style.userDiv}
-                    onClick={() => goToUserWithId(_id)}
-                    padding="1rem 2rem"
-                >
-                    <div className={style.leftContainer}>
-                        <div>
-                            <img
-                                src={imageUrl}
-                                alt={`${firstName}'s profile picture`}
-                            />
-                            <div>
-                                <h3>
-                                    {firstName} {lastName}
-                                </h3>
-                                <p>username@email.com</p>
+        
+
+    return (
+        <div className={style.employeesContainer}>
+            <EmployeesWithVacationsSearchFilter />
+            {data?.pages.map((page) =>
+                page.data.map((user: UserWithVacations) => (
+                    <SimpleCollapsableCard
+                        key={user._id}
+                        user={user}
+                        searchParams={searchParams}
+                        setSearchParams={setSearchParams}
+                        items={{
+                            type: 'Vacation',
+                            itemArr: user.vacations,
+                        }}
+                    >
+                        <div className={style.collapsedData}>
+                            <div className={style.collapseDataVacationList}>
+                                <h3>Vacations this year</h3>
+                                <div>
+                                    {user.vacations.length > 0 ? (
+                                        user.vacations.map(({ type, _id }) => (
+                                            <p key={_id}>{type}</p>
+                                        ))
+                                    ) : (
+                                        <p>No vacations this year</p>
+                                    )}
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            {vacations.map((asset) => {
-                                return (
-                                    <IconBasedOnAssetType
-                                        key={asset._id}
-                                        asset={asset.type}
-                                    />
-                                )
-                            })}
-                        </div>
-                    </div>
-                    <div className={style.rightContainer}>
-                        <div
-                            onClick={() => {
-                                goToUserWithId(_id)
-                            }}
-                        >
-                            <p>{role}</p>
-                            <ArrowForwardIos />
-                        </div>
-                        <p>
-                            {vacations.length} item
-                            {vacations.length === 1 ? '' : 's'}
-                        </p>
-                    </div>
-                </Card>
-            )
-        },
-    )
-
-    return <div className={style.employeesContainer}>{users}</div>
-}
-
-const IconBasedOnAssetType = ({ asset }: { asset: string }) => {
-    return (
-        <div className={style.assetContainer}>
-            {asset === 'laptop' ? <LaptopOutlined /> : <MonitorOutlined />}
+                    </SimpleCollapsableCard>
+                )),
+            )}
         </div>
     )
 }

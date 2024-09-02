@@ -78,6 +78,10 @@ const {id} = useParams()
         pageSize,
         totalPages: payrollId?.totalPages ?? 0,
         handlePaginationModelChange,
+        fullName: payrollId?.data[0]
+        ? `${payrollId.data[0].userId.firstName} ${payrollId.data[0].userId.lastName}`
+        : '',
+
     }
 
     return (

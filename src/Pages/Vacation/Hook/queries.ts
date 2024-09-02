@@ -1,13 +1,33 @@
 import AxiosInstance from '@/Helpers/Axios'
 import { VacationFormFields } from '@/Schemas/Vacations/Vacation.schema'
 
-export const getAllVacations = async () => {
-    return (await AxiosInstance.get('/vacation')).data
+const LIMIT = 5
+
+export const getAllVacations = async (page: string, limit: string) => {
+    return (await AxiosInstance.get(`/vacation?page=${page}&limit=${limit}`))
+        .data
 }
 
-export const getUsersWithVacations = async () => {
-    return (await AxiosInstance.get('/vacation/user')).data
+export const getUsersWithVacations = async ({
+    pageParam,
+    search,
+    users,
+}: {
+    pageParam: number
+    search: string
+    users: string
+}) => {
+    console.log('Getting holdings:', pageParam)
+
+    const response = await AxiosInstance.get(
+        `/vacation/user?search=${search}&users=${users}&page=${pageParam}&limit=${LIMIT}&startDate=2024-01-01T00:00:00.810Z&endDate=2025-01-01T10:00:00.810Z`,
+    )
+    return {
+        data: response.data.data,
+        totalPages: response.data.totalPages,
+    }
 }
+
 export const getUserWithVacations = async (id: string) => {
     return (await AxiosInstance.get(`/vacation/user/${id}`)).data
 }

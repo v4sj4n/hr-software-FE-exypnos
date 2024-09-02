@@ -9,9 +9,18 @@ import {
 import { CreateInventoryItemFormFields } from '@/Schemas/Inventory/CreateInventoryItem.schema'
 
 export const useAllInventoryItems = () => {
+    const { searchParams } = useContext(InventoryContext)
     return useQuery({
-        queryKey: ['allInventoryItems'],
-        queryFn: getAllInventoryItems,
+        queryKey: [
+            'allInventoryItems',
+            searchParams.get('page'),
+            searchParams.get('limit'),
+        ],
+        queryFn: () =>
+            getAllInventoryItems(
+                searchParams.get('page') as string,
+                searchParams.get('limit') as string,
+            ),
     })
 }
 

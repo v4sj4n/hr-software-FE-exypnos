@@ -2,10 +2,10 @@ import { CircularProgress } from '@mui/material'
 import { useGetVacations } from '../Hook'
 import { Vacation } from '../TVacation'
 import DataTable from '@/Components/Table/Table'
-import { GridRenderCellParams } from '@mui/x-data-grid'
+import { GridPaginationModel, GridRenderCellParams } from '@mui/x-data-grid'
 import { dateFormatter } from '@/Helpers/dateFormater'
 import style from '../style/vacationTable.module.scss'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { VacationContext } from '../VacationContext'
 import { SelectedVacation } from './form/SelectedVacation'
 import { StatusBadge } from '@/Components/StatusBadge/StatusBadge'
@@ -13,16 +13,28 @@ import Toast from '@/Components/Toast/Toast'
 
 export const VacationTable = () => {
     const {
+        searchParams,
         setSearchParams,
         viewVacationModalOpen,
         handleOpenViewVacationModalOpen,
         toastConfigs,
         handleToastClose,
     } = useContext(VacationContext)
-    const { data, error, isLoading } = useGetVacations()
+    const { data, error, isPending } = useGetVacations()
+
+    useEffect(() => {
+        if (searchParams.get('page') === null) {
+            setSearchParams((prev) => {
+                const newParams = new URLSearchParams(prev)
+                newParams.set('page', '0')
+                newParams.set('limit', '5')
+                return newParams
+            })
+        }
+    }, [searchParams, setSearchParams])
 
     if (error) return <p>Error: {error.message}</p>
-    if (isLoading) return <CircularProgress />
+    if (isPending) return <CircularProgress />
 
     const onLinkClick = (id: string) => {
         setSearchParams((prevParams) => {
@@ -37,8 +49,8 @@ export const VacationTable = () => {
         id !== '' && handleOpenViewVacationModalOpen()
     }
 
-    const rows = data?.map((vacation: Vacation, index: number) => ({
-        id: index + 1,
+    const rows = data?.data.map((vacation: Vacation) => ({
+        id: vacation._id,
         fullName: `${vacation.userId?.firstName} ${vacation.userId?.lastName}`,
         type: vacation.type,
         status: vacation.status,
@@ -46,6 +58,15 @@ export const VacationTable = () => {
         endDate: vacation.endDate,
         actions: vacation._id,
     }))
+    const handlePaginationModelChange = (model: GridPaginationModel) => {
+        setSearchParams((prev) => {
+            const newParams = new URLSearchParams(prev)
+            newParams.set('page', model.page.toString())
+            newParams.set('limit', model.pageSize.toString())
+            return newParams
+        })
+    }
+
     const columns = [
         { field: 'id', headerName: 'ID', width: 50 },
         { field: 'fullName', headerName: 'Full Name', flex: 1 },
@@ -92,7 +113,15 @@ export const VacationTable = () => {
 
     return (
         <>
-            <DataTable rows={rows} columns={columns} getRowId={getRowId} />
+            <DataTable
+                onPaginationModelChange={handlePaginationModelChange}
+                page={Number(searchParams.get('page')!)}
+                pageSize={Number(searchParams.get('limit')!)}
+                totalPages={data.totalPages}
+                rows={rows}
+                columns={columns}
+                getRowId={getRowId}
+            />
             {viewVacationModalOpen && <SelectedVacation />}
             <Toast
                 open={toastConfigs.isOpen}
