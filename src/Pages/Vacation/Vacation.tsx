@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { MouseEvent, useContext, useEffect } from 'react'
 import VacationProvider, { VacationContext } from './VacationContext'
 import { VacationTable } from './components/VacationTable'
 import style from './style/vacation.module.scss'
@@ -8,7 +8,7 @@ import { EmployeesWithVacations } from './components/EmployeesWithVacations'
 function VacationComponent() {
     const { searchParams, setSearchParams } = useContext(VacationContext)
     const handleChange = (
-        event: React.MouseEvent<HTMLElement>,
+        event: MouseEvent<HTMLElement>,
         newAlignment: string,
     ) => {
         event.preventDefault()

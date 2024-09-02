@@ -37,6 +37,7 @@ $green-color: #02a700;
 $red-color: #d32f2f;
 $orange-color: #ca8206;
 $gray-color: #4d4d4d;
+$lightblue-color: #add8e6;
 
 @mixin badge {
     padding: 0.3rem 0.75rem;
@@ -66,4 +67,10 @@ $gray-color: #4d4d4d;
     @include badge;
     color: #1f1f1fd0;
     background-color: lighten($color: $red-color, $amount: 25);
+}
+
+.lightblue {
+    @include badge;
+    color: #1f1f1fd0;
+    background-color: $lightblue-color;
 }

@@ -56,19 +56,19 @@ export const SideBar = () => {
                         className={style.item}
                         onClick={() => toggleDropdown('recruiting')}
                     >
-                        <p className={style.link}>
+                        <div className={style.link}>
                             <div className={style.iconTextContainer}>
                                 <GroupAddIcon
                                     className={style.icon}
                                     style={{ marginLeft: '2px' }}
                                 />
                                 {isOpen && (
-                                    <p
+                                    <span
                                         className={style.text}
                                         style={{ marginLeft: '-2px' }}
                                     >
                                         Recruiting
-                                    </p>
+                                    </span>
                                 )}
                             </div>
                             {isOpen &&
@@ -81,7 +81,7 @@ export const SideBar = () => {
                                         className={style.expandIcon}
                                     />
                                 ))}
-                        </p>
+                        </div>
                     </div>
                     <div
                         className={`${style.dropdownMenu} ${
@@ -99,7 +99,7 @@ export const SideBar = () => {
                         className={style.item}
                         onClick={() => toggleDropdown('employee')}
                     >
-                        <p className={style.link}>
+                        <div className={style.link}>
                             <div className={style.iconTextContainer}>
                                 <GroupIcon className={style.icon} />
                                 {isOpen && (
@@ -116,7 +116,7 @@ export const SideBar = () => {
                                         className={style.expandIcon}
                                     />
                                 ))}
-                        </p>
+                        </div>
                     </div>
                     <div
                         className={`${style.dropdownMenu} ${
@@ -140,7 +140,7 @@ export const SideBar = () => {
                         className={style.item}
                         onClick={() => toggleDropdown('assets')}
                     >
-                        <p className={style.link}>
+                        <div className={style.link}>
                             <div className={style.iconTextContainer}>
                                 <DevicesIcon className={style.icon} />
                                 {isOpen && (
@@ -157,7 +157,7 @@ export const SideBar = () => {
                                         className={style.expandIcon}
                                     />
                                 ))}
-                        </p>
+                        </div>
                     </div>
                     <div
                         className={`${style.dropdownMenu} ${
@@ -176,7 +176,7 @@ export const SideBar = () => {
                         className={style.item}
                         onClick={() => toggleDropdown('events')}
                     >
-                        <p className={style.link}>
+                        <div className={style.link}>
                             <div className={style.iconTextContainer}>
                                 <EventIcon className={style.icon} />
                                 {isOpen && (
@@ -195,7 +195,7 @@ export const SideBar = () => {
                                         className={style.expandIcon}
                                     />
                                 ))}
-                        </p>
+                        </div>
                     </div>
                     <div
                         className={`${style.dropdownMenu} ${

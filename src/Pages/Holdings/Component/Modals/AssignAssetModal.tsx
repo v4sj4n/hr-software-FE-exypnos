@@ -36,6 +36,7 @@ export const AssignAssetModal = () => {
         if (!isOpen) {
             return undefined
         }
+        console.log(options)
 
         setAutocompleteLoading(true)
         ;(async () => {
@@ -43,6 +44,8 @@ export const AssignAssetModal = () => {
                 const { data } = await AxiosInstance.get<Asset[]>(
                     '/asset?availability=available',
                 )
+                console.log(options)
+                console.log(data)
                 setOptions(data)
             }
             setAutocompleteLoading(false)

@@ -5,6 +5,7 @@ import style from '../style/employeesWithVacations.module.scss'
 import { useContext } from 'react'
 import { VacationContext } from '../VacationContext'
 import SimpleCollapsableCard from '@/Components/Vacation_Asset/SimpleCollapsableCard.tsx'
+import { EmployeesWithVacationsSearchFilter } from './SearchFilters.tsx'
 
 export const EmployeesWithVacations = () => {
     const { isError, error, data, isLoading } = useGetUsersWithVacations()
@@ -19,35 +20,40 @@ export const EmployeesWithVacations = () => {
             </div>
         )
 
+        
+
     return (
         <div className={style.employeesContainer}>
-            {data.map((user: UserWithVacations) => (
-                <SimpleCollapsableCard
-                    key={user._id}
-                    user={user}
-                    searchParams={searchParams}
-                    setSearchParams={setSearchParams}
-                    items={{
-                        type: 'Vacation',
-                        itemArr: user.vacations,
-                    }}
-                >
-                    <div className={style.collapsedData}>
-                        <div className={style.collapseDataVacationList}>
-                            <h3>Vacations this year</h3>
-                            <div>
-                                {user.vacations.length > 0 ? (
-                                    user.vacations.map(({ type, _id }) => (
-                                        <p key={_id}>{type}</p>
-                                    ))
-                                ) : (
-                                    <p>No vacations this year</p>
-                                )}
+            <EmployeesWithVacationsSearchFilter />
+            {data?.pages.map((page) =>
+                page.data.map((user: UserWithVacations) => (
+                    <SimpleCollapsableCard
+                        key={user._id}
+                        user={user}
+                        searchParams={searchParams}
+                        setSearchParams={setSearchParams}
+                        items={{
+                            type: 'Vacation',
+                            itemArr: user.vacations,
+                        }}
+                    >
+                        <div className={style.collapsedData}>
+                            <div className={style.collapseDataVacationList}>
+                                <h3>Vacations this year</h3>
+                                <div>
+                                    {user.vacations.length > 0 ? (
+                                        user.vacations.map(({ type, _id }) => (
+                                            <p key={_id}>{type}</p>
+                                        ))
+                                    ) : (
+                                        <p>No vacations this year</p>
+                                    )}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </SimpleCollapsableCard>
-            ))}
+                    </SimpleCollapsableCard>
+                )),
+            )}
         </div>
     )
 }

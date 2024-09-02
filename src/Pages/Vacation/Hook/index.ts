@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+    useInfiniteQuery,
+    useMutation,
+    useQuery,
+    useQueryClient,
+} from '@tanstack/react-query'
 import {
     getAllVacations,
     getUsersWithVacations,
@@ -14,11 +19,16 @@ export const useGetVacations = () => {
     const { searchParams } = useContext(VacationContext)
 
     return useQuery({
-        queryKey: ['vacations',
+        queryKey: [
+            'vacations',
             searchParams.get('page'),
             searchParams.get('limit'),
         ],
-        queryFn: () => getAllVacations(searchParams.get('page') as string, searchParams.get('limit') as string),
+        queryFn: () =>
+            getAllVacations(
+                searchParams.get('page') as string,
+                searchParams.get('limit') as string,
+            ),
     })
 }
 
@@ -31,9 +41,26 @@ export const useGetVacation = () => {
 }
 
 export const useGetUsersWithVacations = () => {
-    return useQuery({
-        queryKey: ['usersWithVacations'],
-        queryFn: () => getUsersWithVacations(),
+    const { searchParams } = useContext(VacationContext)
+
+    return useInfiniteQuery({
+        initialPageParam: 0,
+        queryKey: [
+            'usersWithHoldings',
+            searchParams.get('search'),
+            searchParams.get('users'),
+        ],
+        queryFn: ({ pageParam }) =>
+            getUsersWithVacations({
+                pageParam,
+                search: (searchParams.get('search') as string) || '',
+                users: (searchParams.get('users') as string) || '',
+            }),
+        getNextPageParam: (lastPage, allPages) => {
+            return lastPage.totalPages > allPages.length
+                ? allPages.length + 1
+                : undefined
+        },
     })
 }
 export const useGetUserWithVacations = () => {

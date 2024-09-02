@@ -17,6 +17,8 @@ export const StatusBadge = ({
             return <span className={style.grayBadge}>● {status}</span>
         case 'orange':
             return <span className={style.orangeBadge}>● {status}</span>
+        case 'lightblue':
+            return <span className={style.lightblue}>● {status}</span>
         default:
             return <span className={style.blueBadge}>● {status}</span>
     }

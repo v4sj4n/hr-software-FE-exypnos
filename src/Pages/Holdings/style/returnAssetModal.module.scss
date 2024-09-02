@@ -31,14 +31,13 @@
 }
 
 .inputContainer {
-    // display: grid;
-    // grid-template-columns: 1fr 2fr;
-    // gap: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 0.5rem;
 
-    // > * {
-    //     border-radius: 0.25rem;
-    // }
-    display: flex;
+    > * {
+        border-radius: 0.25rem;
+    }
     gap: 20px;
 }
 
