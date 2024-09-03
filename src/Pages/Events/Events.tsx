@@ -20,7 +20,6 @@ import { EventsData } from './Interface/Events'
 
 function EventsContentAndComponents() {
     const {
-        onSearchChange,
         handleDelete,
         handleToastClose,
         handleUpdateToastClose,
@@ -40,8 +39,7 @@ function EventsContentAndComponents() {
         handleOpenDrawer,
     } = useEvents()
 
-
-    const {data: events , isFetchingNextPage, fetchNextPage,isLoading } = useGetAllEvents()
+    const {data: events , isFetchingNextPage, fetchNextPage,isLoading, onSearchChange } = useGetAllEvents()
     
     const {ref, inView} = useInView()
 
@@ -52,6 +50,8 @@ function EventsContentAndComponents() {
                 fetchNextPage()
         }
     }, [fetchNextPage, inView])
+
+
     if(isLoading) return <div>Loading...</div>
 
 

@@ -9,7 +9,7 @@
     position: sticky;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 1000;
 }
 
 .headerLeft {
@@ -78,6 +78,17 @@
     width: 150px;
 }
 
+
+.notification {
+    position: absolute;
+    top: 123%;
+    right: 0;
+    background-color: white;
+   
+    border-radius: 6px;
+    z-index: 1000;
+    width: 420px;
+}
 .dropdownItem {
     padding: 8px 16px;
     cursor: pointer;
