@@ -33,12 +33,10 @@ export const getItem = async (itemId: string) => {
 }
 
 export const handleItemReturn = async (
-    event: FormEvent<HTMLFormElement>,
     assetId: string,
     status: string,
     returnDate: string,
 ) => {
-    event.preventDefault()
     const payload = {
         userId: null,
         returnDate: returnDate,

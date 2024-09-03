@@ -86,16 +86,14 @@ export const useHandleItemReturner = () => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: ({
-            event,
             assetId,
             status,
             returnDate,
         }: {
-            event: FormEvent<HTMLFormElement>
             assetId: string
             status: string
             returnDate: string
-        }) => handleItemReturn(event, assetId, status, returnDate),
+        }) => handleItemReturn(assetId, status, returnDate),
         onSettled: () => {
             queryClient.invalidateQueries({
                 queryKey: ['usersWithHoldings'],
