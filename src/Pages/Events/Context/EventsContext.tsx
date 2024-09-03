@@ -14,7 +14,6 @@ const EventsContext = createContext<EventsContextProps | undefined>(undefined)
 export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-
     const {
         handleChange,
         event,
@@ -34,7 +33,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         handleFileUpload,
         eventPhotos,
         handleLocationChange,
-        createdEvents
+        createdEvents,
     } = useCreateEvent()
 
     const {
@@ -57,9 +56,8 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         editParticipants,
         setEditParticipants,
         editType,
-        setEditType,        
+        setEditType,
     } = useUpdateEvent()
-
 
     const {
         handleDelete,
@@ -171,7 +169,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
                 handleFileUpload,
                 eventPhotos,
                 createdEvents,
-
             }}
         >
             {children}

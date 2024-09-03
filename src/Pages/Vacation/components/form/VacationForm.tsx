@@ -3,8 +3,7 @@ import {
     VacationSchema,
 } from '@/Schemas/Vacations/Vacation.schema'
 import { UseQueryResult } from '@tanstack/react-query'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import style from '../../style/vacationForm.module.scss'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import dayjs from 'dayjs'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import Button from '@/Components/Button/Button'
@@ -14,6 +13,9 @@ import { useContext } from 'react'
 import { VacationContext } from '../../VacationContext'
 import { AxiosError } from 'axios'
 import { valibotResolver } from '@hookform/resolvers/valibot'
+import Selecter from '@/Components/Input/components/Select/Selecter'
+import Input from '@/Components/Input/Index'
+import style from '../../style/vacationForm.module.scss'
 
 type MyComponentProps = {
     data: UseQueryResult<any, Error>
@@ -28,6 +30,7 @@ export const VacationForm: React.FC<MyComponentProps> = ({
     const {
         register,
         handleSubmit,
+        control,
         setError,
         formState: { errors, isSubmitting },
     } = useForm<VacationFormFields>({
@@ -68,77 +71,96 @@ export const VacationForm: React.FC<MyComponentProps> = ({
         }
     }
 
-    const vacationTypes = [
-        { value: 'vacation', label: 'Vacation' },
-        { value: 'sick', label: 'Sick' },
-        { value: 'personal', label: 'Personal' },
-        { value: 'maternity', label: 'Maternity' },
-    ]
-
-    const statusTypes = [
-        { value: 'pending', label: 'Pending' },
-        { value: 'accepted', label: 'Accepted' },
-        { value: 'rejected', label: 'Rejected' },
-    ]
-
     return (
-        <div>
+        <>
             <h3 className={style.fullName}>
                 {vacation.data.userId.firstName} {vacation.data.userId.lastName}
             </h3>
             <form
-                className={style.selectedForm}
                 onSubmit={handleSubmit(onSubmit)}
+                className={style.formContainer}
             >
                 <div>
-                    <select id="type" {...register('type')}>
-                        {vacationTypes.map((type) => (
-                            <option value={type.value}>{type.label}</option>
-                        ))}
-                    </select>
-                    <select id="status" {...register('status')}>
-                        {statusTypes.map((status) => (
-                            <option value={status.value}>{status.label}</option>
-                        ))}
-                    </select>
+                    <Controller
+                        name="type"
+                        control={control}
+                        render={({ field }) => (
+                            <Selecter
+                                label="Vacation Type"
+                                name="Vacation Type"
+                                multiple={false}
+                                options={[
+                                    'vacation',
+                                    'sick',
+                                    'personal',
+                                    'maternity',
+                                ]}
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                        )}
+                    />
                 </div>
                 <div>
-                    <div className={style.oneElement}>
-                        <input
-                            type="date"
-                            {...register('startDate')}
-                            placeholder="Start Date"
-                        />
-                        {errors.startDate && (
-                            <ErrorText>{errors.startDate.message}</ErrorText>
+                    <Controller
+                        name="status"
+                        control={control}
+                        render={({ field }) => (
+                            <Selecter
+                                label="Status"
+                                name="Status"
+                                multiple={false}
+                                options={['pending', 'accepted', 'rejected']}
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
                         )}
-                    </div>
-                    <div className={style.oneElement}>
-                        <input
-                            type="date"
-                            {...register('endDate')}
-                            placeholder="End Date"
-                        />
-                        {errors.endDate && (
-                            <ErrorText>{errors.endDate.message}</ErrorText>
-                        )}
-                    </div>
+                    />
                 </div>
-                <div className={style.buttonGroups}>
-                    <Button
-                        type={ButtonTypes.SECONDARY}
-                        btnText={'cancel'}
-                        onClick={handleCloseVacationModalOpen}
-                    />{' '}
+
+                <div>
+                    <Input
+                        IsUsername
+                        name="Start Date"
+                        label="Start Date"
+                        type="date"
+                        register={register('startDate')}
+                        placeholder="Start Date"
+                        shrink
+                    />
+                    {errors.startDate && (
+                        <ErrorText>{errors.startDate.message}</ErrorText>
+                    )}
+                </div>
+                <div>
+                    <Input
+                        IsUsername
+                        label="End Date"
+                        name="End Date"
+                        shrink
+                        register={register('endDate')}
+                        type="date"
+                        placeholder="End Date"
+                    />
+                    {errors.endDate && (
+                        <ErrorText>{errors.endDate.message}</ErrorText>
+                    )}
+                </div>
+                <div className={style.buttonsContainer}>
                     <Button
                         type={ButtonTypes.PRIMARY}
                         btnText={`${isSubmitting ? 'Submitting' : 'Submit'}`}
                         disabled={isSubmitting}
                         isSubmit
                     />
+                    <Button
+                        type={ButtonTypes.SECONDARY}
+                        btnText="Cancel"
+                        onClick={handleCloseVacationModalOpen}
+                    />
                 </div>
                 {errors.root && <ErrorText>{errors.root.message}</ErrorText>}
             </form>
-        </div>
+        </>
     )
 }

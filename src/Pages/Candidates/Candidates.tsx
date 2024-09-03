@@ -4,8 +4,31 @@ import { CandidateProvider } from './Context/CandidateTableProvider'
 import { RingLoader } from 'react-spinners'
 
 function CandidatesCoontext() {
-    const { getRowId, columns, rows, handleRowClick, handlePaginationModelChange, totalPages, page, pageSize, isPending  } = useCandidateContext()
-    if (isPending) return <div style={{ display: "flex", fontSize: "30px", justifyContent: "center", marginTop: "200px" }}> <RingLoader /></div>
+    const {
+        getRowId,
+        columns,
+        rows,
+        handleRowClick,
+        handlePaginationModelChange,
+        totalPages,
+        page,
+        pageSize,
+        isPending,
+    } = useCandidateContext()
+    if (isPending)
+        return (
+            <div
+                style={{
+                    display: 'flex',
+                    fontSize: '30px',
+                    justifyContent: 'center',
+                    marginTop: '200px',
+                }}
+            >
+                {' '}
+                <RingLoader />
+            </div>
+        )
     return (
         <DataTable
             getRowId={getRowId}

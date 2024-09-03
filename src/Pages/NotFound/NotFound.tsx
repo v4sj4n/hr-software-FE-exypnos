@@ -22,7 +22,6 @@ export default function NotFound() {
     return (
         <main className={style.mainContainer}>
             <div className={style.itemsContainer}>
-
                 <img src="/Images/notFound.png" alt="not found illustration" />
                 <h3>Ooops, this page is not found</h3>
                 {count > 0 ? (

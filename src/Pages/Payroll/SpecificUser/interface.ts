@@ -10,9 +10,9 @@ export interface PayrollContextType {
     setYear: (year: number) => void
     fullName: string | undefined
     isPending: boolean
-    page:number
-    pageSize:number
-    totalPages:number
+    page: number
+    pageSize: number
+    totalPages: number
     handlePaginationModelChange: (paginationModel: GridPaginationModel) => void
 }
 

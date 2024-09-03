@@ -40,20 +40,23 @@ function EventsContentAndComponents() {
         handleOpenDrawer,
     } = useEvents()
 
+    const {
+        data: events,
+        isFetchingNextPage,
+        fetchNextPage,
+        isLoading,
+    } = useGetAllEvents()
 
-    const {data: events , isFetchingNextPage, fetchNextPage,isLoading } = useGetAllEvents()
-    
-    const {ref, inView} = useInView()
+    const { ref, inView } = useInView()
 
     console.log('eventeeeeeee', events)
 
     useEffect(() => {
         if (inView) {
-                fetchNextPage()
+            fetchNextPage()
         }
     }, [fetchNextPage, inView])
-    if(isLoading) return <div>Loading...</div>
-
+    if (isLoading) return <div>Loading...</div>
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -98,9 +101,8 @@ function EventsContentAndComponents() {
             </div>
             <div className={style.contanier}>
                 <div className={style.grid}>
-                    { events?.pages.map((page) => (
+                    {events?.pages.map((page) =>
                         page.data.map((event: EventsData) => (
-
                             <Card
                                 key={event._id}
                                 borderRadius="5px"
@@ -165,7 +167,9 @@ function EventsContentAndComponents() {
                                                 />
                                             </div>
                                         </Tooltip>
-                                        <div className={style.location}>{event.location}</div>
+                                        <div className={style.location}>
+                                            {event.location}
+                                        </div>
                                     </div>
                                     <Button
                                         btnText={
@@ -178,8 +182,8 @@ function EventsContentAndComponents() {
                                     />
                                 </div>
                             </Card>
-                    ))
-                          ))}
+                        )),
+                    )}
                 </div>
                 {showModal && (
                     <ModalComponent open={showModal} handleClose={closeModal}>

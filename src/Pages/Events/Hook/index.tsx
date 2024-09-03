@@ -1,4 +1,4 @@
-import { useState, } from 'react'
+import { useState } from 'react'
 import AxiosInstance from '@/Helpers/Axios'
 import { EventsCreationData, EventsData } from '../Interface/Events'
 import { useSearchParams } from 'react-router-dom'
@@ -6,33 +6,31 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { debouncedSetSearchParams, fetchEvents } from '../utils/utils'
 
 export const useGetAllEvents = () => {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams()
 
     const query = useInfiniteQuery({
         queryKey: ['events', searchParams.get('search')],
-        queryFn: ({pageParam}) => {
-            const currentSearch = searchParams.get('search') || '';
-            return fetchEvents(currentSearch, pageParam as number);
+        queryFn: ({ pageParam }) => {
+            const currentSearch = searchParams.get('search') || ''
+            return fetchEvents(currentSearch, pageParam as number)
         },
-        initialPageParam:0,
+        initialPageParam: 0,
         getNextPageParam: (lastPage, allPages) => {
-            return lastPage.length > 0 ? allPages.length + 1 : undefined;
-        }
-    });
+            return lastPage.length > 0 ? allPages.length + 1 : undefined
+        },
+    })
 
-    const debouncedSearchParams = debouncedSetSearchParams(setSearchParams);
+    const debouncedSearchParams = debouncedSetSearchParams(setSearchParams)
 
     const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        debouncedSearchParams(e.target.value);
-    };
+        debouncedSearchParams(e.target.value)
+    }
 
     return {
         ...query,
         onSearchChange,
-    };
-};
-
-
+    }
+}
 
 export const useCreateEvent = () => {
     const [toastOpen, setToastOpen] = useState(false)
@@ -79,8 +77,7 @@ export const useCreateEvent = () => {
                 ...prevEvent,
                 location,
             }))
-        }
-        else if (name === 'isMultipleChoice') {
+        } else if (name === 'isMultipleChoice') {
             setIsMultipleChoice(e.target.checked)
         } else {
             setEvent((prevEvent) => ({
@@ -91,16 +88,16 @@ export const useCreateEvent = () => {
     }
 
     const handleLocationChange = (address: string) => {
-        console.log('Selected address:', address);
+        console.log('Selected address:', address)
 
         {
-            setEvent(prevEvent => ({
+            setEvent((prevEvent) => ({
                 ...prevEvent,
-                location: address
-            }));
+                location: address,
+            }))
         }
-    };
-        
+    }
+
     const handleFileUpload = (photo: File[]) => {
         setEventPhotos(photo)
     }
@@ -211,7 +208,7 @@ export const useCreateEvent = () => {
         handleFileUpload,
         eventPhotos,
         handleLocationChange,
-        createdEvents
+        createdEvents,
     }
 }
 
@@ -331,12 +328,12 @@ export const useUpdateEvent = () => {
             type: editType,
             poll: includePollInEdit
                 ? {
-                    question: editPollQuestion,
-                    options: editPollOptions
-                        .filter((option) => option.trim() !== '')
-                        .map((option) => ({ option, votes: 0, voters: [] })),
-                    isMultipleVote: editIsMultipleChoice,
-                }
+                      question: editPollQuestion,
+                      options: editPollOptions
+                          .filter((option) => option.trim() !== '')
+                          .map((option) => ({ option, votes: 0, voters: [] })),
+                      isMultipleVote: editIsMultipleChoice,
+                  }
                 : null,
         }
         console.log(fieldsToUpdate, 'iuegfyugwegf')
@@ -391,13 +388,13 @@ export const useUpdateEvent = () => {
         setEditParticipants,
         editType,
         setEditType,
-        updatedEvent
+        updatedEvent,
     }
 }
 
 export const useDeleteEvent = () => {
     const [showModal, setShowModal] = useState(false)
-    const [deletedEvents, setDeletedEvents] = useState([] as EventsData[] )
+    const [deletedEvents, setDeletedEvents] = useState([] as EventsData[])
     const [eventToDeleteId, setEventToDeleteId] = useState<string | number>('')
     const handleDeleteEventModal = (eventToDeleteId: string | number) => {
         setEventToDeleteId(eventToDeleteId)
@@ -428,6 +425,6 @@ export const useDeleteEvent = () => {
         showModal,
         handleDeleteEventModal,
         eventToDeleteId,
-        deletedEvents
+        deletedEvents,
     }
 }

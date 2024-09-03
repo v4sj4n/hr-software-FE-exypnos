@@ -21,7 +21,6 @@ import { valibotResolver } from '@hookform/resolvers/valibot'
 import { useState } from 'react'
 import Toast from '@/Components/Toast/Toast'
 
-
 export default function Recruitment() {
     const {
         control,
@@ -47,53 +46,70 @@ export default function Recruitment() {
         'Java',
     ]
 
-    const [showModal, setShowModal] = useState(false);
+    const [showModal, setShowModal] = useState(false)
 
-    const onSubmit: SubmitHandler<RecruitmentFormFields> = async (data: RecruitmentFormFields) => {
+    const onSubmit: SubmitHandler<RecruitmentFormFields> = async (
+        data: RecruitmentFormFields,
+    ) => {
         try {
-            const formData = new FormData();
+            const formData = new FormData()
             Object.keys(data).forEach((key) => {
                 if (key === 'technologiesUsed') {
-                    formData.append('technologiesUsed', JSON.stringify(data.technologiesUsed));
-                } else if (key === 'file' && data.file instanceof FileList && data.file.length > 0) {
-                    formData.append('file', data.file[0]);
+                    formData.append(
+                        'technologiesUsed',
+                        JSON.stringify(data.technologiesUsed),
+                    )
+                } else if (
+                    key === 'file' &&
+                    data.file instanceof FileList &&
+                    data.file.length > 0
+                ) {
+                    formData.append('file', data.file[0])
                 } else {
-                    formData.append(key, data[key as keyof RecruitmentFormFields] as string);
+                    formData.append(
+                        key,
+                        data[key as keyof RecruitmentFormFields] as string,
+                    )
                 }
-            });
-    
+            })
+
             const res = await AxiosInstance.post('/applicant', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-            });
-    
-            console.log(res);
-    
+            })
+
+            console.log(res)
+
             if (res.data.confirmationToken) {
-                setShowModal(true); 
+                setShowModal(true)
             } else {
-                console.error('No confirmation token received');
+                console.error('No confirmation token received')
             }
         } catch (err: unknown) {
-            console.log(err);
+            console.log(err)
             if (err instanceof AxiosError) {
                 if (err?.response?.data?.message) {
-                    setError('root', { message: err?.response?.data?.message });
-                    return;
+                    setError('root', { message: err?.response?.data?.message })
+                    return
                 }
                 if (err.code === 'ERR_NETWORK') {
-                    setError('root', { message: 'No internet connection. Please try again later.' });
-                    return;
+                    setError('root', {
+                        message:
+                            'No internet connection. Please try again later.',
+                    })
+                    return
                 }
-                setError('root', { message: 'An error occurred while logging in' });
+                setError('root', {
+                    message: 'An error occurred while logging in',
+                })
             } else {
-                setError('root', { message: 'An error occurred while creating the asset' });
+                setError('root', {
+                    message: 'An error occurred while creating the asset',
+                })
             }
         }
-    };
-    
-
+    }
 
     return (
         <div className={style.background}>
@@ -336,14 +352,14 @@ export default function Recruitment() {
                 src={image}
                 style={{ width: '600px', height: 'auto' }}
             />
-             {showModal && (
-    <Toast
-        message="Please check your email to confirm your identity."
-        onClose={() => setShowModal(false)}
-        open={showModal} 
-        severity={'success'} 
-    />
-)}
+            {showModal && (
+                <Toast
+                    message="Please check your email to confirm your identity."
+                    onClose={() => setShowModal(false)}
+                    open={showModal}
+                    severity={'success'}
+                />
+            )}
         </div>
     )
 }
