@@ -1,34 +1,42 @@
 import AxiosInstance from '@/Helpers/Axios'
 import Card from '@/Components/Card/Card'
 import { useEffect, useState } from 'react'
-import { Salary } from './ChartBar';
-import { useAuth } from '@/Context/AuthProvider'
+
+export type Promotion = {
+    position: string
+    grade: string
+    startDate: string   
+}
 
 
-export default function PromotionCard() {
-    const [dataset, setDataset] = useState<Salary[]>([]);
-    const { currentUser } = useAuth();
+export default function PromotionCard({ id }: { id: string }) {
+    const [dataset, setDataset] = useState<Promotion[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await AxiosInstance<Salary[]>(
-                `/salary/user/${currentUser?._id}?graph=true`,
+            const response = await AxiosInstance<Promotion[]>(
+                `/promotions/${id}`,
             );
-            let data: Salary[] = response.data;
+            let data: Promotion[] = response.data;
             setDataset(data);
+            console.log("dataPromotion", data);
         };
 
         fetchData();
-    }, [currentUser]);
+    }, []);
 
     return (
-        <div style={{ width: '100%' }}>
+        <Card gap='10px' height='100vh' flex='1'>
+        <h3>Promotion</h3>
             {dataset.map((item, index) => (
-                <Card marginTop="20px" key={index}>
-                    <h1>Salary</h1>
-                    <p>Net Salary: {item.netSalary}</p>
+                <Card key={index} >
+                    <div>
+                        <h3>Position: {item.position}</h3>
+                        <p>Grade: {item.grade}</p>
+                        <p>Date: {item.startDate.split("T")[0]}</p>
+                    </div>
                 </Card>
             ))}
-        </div>
+        </Card>
     );
 }
