@@ -6,9 +6,7 @@ import { HoldingsSearchFilter } from './Component/SearchFilters.tsx'
 function HoldingsComponent() {
     return (
         <main className={style.main}>
-
-                <HoldingsSearchFilter />
-           
+            <HoldingsSearchFilter />
 
             <div className={style.mainContainer}>
                 <EmployeesWithHoldings />

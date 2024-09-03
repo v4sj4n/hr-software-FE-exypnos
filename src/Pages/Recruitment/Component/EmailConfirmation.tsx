@@ -14,7 +14,7 @@
 //         if (token) {
 //             try {
 //                 const confirmationUrl = `http://localhost:5173/recruitment/confirm?token=${token}&status=success`;
-//                 await AxiosInstance.post(confirmationUrl, {token }); 
+//                 await AxiosInstance.post(confirmationUrl, {token });
 //                 setStatus('success');
 //                 setTimeout(() => {
 //                     setShouldNavigate(true);
@@ -40,7 +40,7 @@
 //     if (status === 'confirming') {
 //         return <div>Confirming your application...</div>;
 //     }
-    
+
 //      if (status === 'error') {
 //         return (
 //             <div>
@@ -49,7 +49,7 @@
 //             </div>
 //         );
 //     }
-    
+
 //     if (status === 'success') {
 //         return (
 //             <div>
@@ -63,70 +63,77 @@
 
 // export default EmailConfirmation;
 
-
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import AxiosInstance from '../../../Helpers/Axios';
+import React, { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import AxiosInstance from '../../../Helpers/Axios'
 
 const EmailConfirmation: React.FC = () => {
-    const { search } = useLocation();
-    const query = new URLSearchParams(search);
-    const token = query.get('token');
-    const [status, setStatus] = useState<'confirming' | 'success' | 'error'>('confirming');
-    const navigate = useNavigate();
+    const { search } = useLocation()
+    const query = new URLSearchParams(search)
+    const token = query.get('token')
+    const [status, setStatus] = useState<'confirming' | 'success' | 'error'>(
+        'confirming',
+    )
+    const navigate = useNavigate()
 
     useEffect(() => {
         const confirm = async () => {
             if (token) {
                 try {
-                    const confirmationUrl = `/applicant/confirm?token=${token}&status=success`;
-                    const response = await AxiosInstance.get(confirmationUrl);
+                    const confirmationUrl = `/applicant/confirm?token=${token}&status=success`
+                    const response = await AxiosInstance.get(confirmationUrl)
 
                     if (response.status === 200) {
-                        navigate('/career'); 
-                        setStatus('success');
+                        navigate('/career')
+                        setStatus('success')
                     } else {
-                        setStatus('error');
+                        setStatus('error')
                     }
                 } catch (error) {
-                    console.error('Error confirming application:', error);
-                    setStatus('error');
+                    console.error('Error confirming application:', error)
+                    setStatus('error')
                 }
             } else {
-                setStatus('error');
+                setStatus('error')
             }
-        };
+        }
 
-        confirm();
-    }, [token]);
+        confirm()
+    }, [token])
 
     useEffect(() => {
         if (status === 'success') {
             setTimeout(() => {
-                navigate('/career');
-            }, 3000); 
+                navigate('/career')
+            }, 3000)
         }
-    }, [status, navigate]);
+    }, [status, navigate])
 
     if (status === 'confirming') {
-        return <div>Confirming your application...</div>;
+        return <div>Confirming your application...</div>
     }
 
     if (status === 'success') {
         return (
             <div>
                 <h1>Confirmation Successful!</h1>
-                <p>Your application has been confirmed. You will be redirected shortly.</p>
+                <p>
+                    Your application has been confirmed. You will be redirected
+                    shortly.
+                </p>
             </div>
-        );
+        )
     }
 
     return (
         <div>
             <h1>Confirmation Failed</h1>
-            <p>There was an issue with confirming your application. Please try again later.</p>
+            <p>
+                There was an issue with confirming your application. Please try
+                again later.
+            </p>
         </div>
-    );
-};
+    )
+}
 
-export default EmailConfirmation;
+export default EmailConfirmation

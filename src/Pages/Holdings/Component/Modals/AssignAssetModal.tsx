@@ -161,12 +161,12 @@ export const AssignAssetModal = () => {
 
                 <div className={style.buttonContainer}>
                     <Button
-                        btnText={'Assign'}
+                        btnText="Assign"
                         isSubmit
                         type={ButtonTypes.PRIMARY}
                     />
                     <Button
-                        btnText={'Cancel'}
+                        btnText="Cancel"
                         type={ButtonTypes.SECONDARY}
                         onClick={handleClose}
                     />

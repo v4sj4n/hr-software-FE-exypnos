@@ -1,4 +1,4 @@
-import { useState, } from 'react'
+import { useState } from 'react'
 import AxiosInstance from '@/Helpers/Axios'
 import { EventsCreationData, EventsData } from '../Interface/Events'
 import { useSearchParams } from 'react-router-dom'
@@ -6,10 +6,11 @@ import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-q
 import { debouncedSetSearchParams, fetchEvents } from '../utils/utils'
 
 export const useGetAllEvents = () => {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams()
 
     const query = useInfiniteQuery({
         queryKey: ['events', searchParams.get('search')],
+
         queryFn: ({ pageParam = 0 }) => {
             const currentSearch = searchParams.get('search') || '';
             console.log('selma', pageParam);    
@@ -24,15 +25,17 @@ export const useGetAllEvents = () => {
         },
     });
 
-    const debouncedSearchParams = debouncedSetSearchParams(setSearchParams);
+
+    const debouncedSearchParams = debouncedSetSearchParams(setSearchParams)
 
     const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        debouncedSearchParams(e.target.value);
-    };
+        debouncedSearchParams(e.target.value)
+    }
 
     return {
         ...query,
         onSearchChange,
+
     };
 };
 
@@ -44,6 +47,7 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
     const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>('success');
     const [eventPhotos, setEventPhotos] = useState<File[]>([]);
     const [createdEvents, setCreatedEvents] = useState<EventsData[]>([]);
+
     const [event, setEvent] = useState<EventsCreationData>({
         title: '',
         description: '',
@@ -146,10 +150,12 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
         } else if (name === 'location') {
             setEvent((prevEvent) => ({
                 ...prevEvent,
+
                 location: value,
             }));
         } else if (name === 'isMultipleChoice') {
             setIsMultipleChoice(e.target.checked);
+
         } else {
             setEvent((prevEvent) => ({
                 ...prevEvent,
@@ -159,11 +165,13 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
     };
 
     const handleLocationChange = (address: string) => {
+
         setEvent(prevEvent => ({
             ...prevEvent,
             location: address,
         }));
     };
+
 
     const handleFileUpload = (photo: File[]) => {
         setEventPhotos(photo);
@@ -207,8 +215,10 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
         eventPhotos,
         handleLocationChange,
         createdEvents,
+
   };
 };
+
 
 
 
@@ -334,12 +344,12 @@ const updateEventMutation = useMutation({
             type: editType,
             poll: includePollInEdit
                 ? {
-                    question: editPollQuestion,
-                    options: editPollOptions
-                        .filter((option) => option.trim() !== '')
-                        .map((option) => ({ option, votes: 0, voters: [] })),
-                    isMultipleVote: editIsMultipleChoice,
-                }
+                      question: editPollQuestion,
+                      options: editPollOptions
+                          .filter((option) => option.trim() !== '')
+                          .map((option) => ({ option, votes: 0, voters: [] })),
+                      isMultipleVote: editIsMultipleChoice,
+                  }
                 : null,
         };
         const response = await AxiosInstance.patch(`/event/${editingEvent._id}`, fieldsToUpdate);
@@ -398,14 +408,14 @@ const updateEventMutation = useMutation({
         setEditParticipants,
         editType,
         setEditType,
-        updatedEvent
+        updatedEvent,
     }
 }
 
 export const useDeleteEvent = () => {
     const queryClient = useQueryClient();
     const [showModal, setShowModal] = useState(false)
-    const [deletedEvents, setDeletedEvents] = useState([] as EventsData[] )
+    const [deletedEvents, setDeletedEvents] = useState([] as EventsData[])
     const [eventToDeleteId, setEventToDeleteId] = useState<string | number>('')
     const handleDeleteEventModal = (eventToDeleteId: string | number) => {
         setEventToDeleteId(eventToDeleteId)
@@ -441,6 +451,6 @@ export const useDeleteEvent = () => {
         showModal,
         handleDeleteEventModal,
         eventToDeleteId,
-        deletedEvents
+        deletedEvents,
     }
 }

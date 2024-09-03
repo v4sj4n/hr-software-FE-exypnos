@@ -43,6 +43,7 @@ export default function DataTable<T extends GridValidRowModel>({
       ),
   }))
 
+
   return (
       <div style={{ height, width: '100%' }}>
           <DataGrid
@@ -75,3 +76,4 @@ export default function DataTable<T extends GridValidRowModel>({
       </div>
   )
 }
+

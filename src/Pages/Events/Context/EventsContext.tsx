@@ -57,6 +57,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         }
     }
 
+
     const {
         handleChange,
         event,
@@ -76,8 +77,11 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         handleFileUpload,
         eventPhotos,
         handleLocationChange,
+
         createdEvents
     } = useCreateEvent(handleCloseDrawer)
+
+
 
     const {
         editingEvent,

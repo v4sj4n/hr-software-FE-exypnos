@@ -1,6 +1,7 @@
 import { debounce } from '@/Helpers/debounce.ts'
-import AxiosInstance from '@/Helpers/Axios';
-import { EventsData } from '../Interface/Events';
+import AxiosInstance from '@/Helpers/Axios'
+import { EventsData } from '../Interface/Events'
+
 
 export const fetchEvents = async (search: string,pageParam: number): Promise<EventsData[]> => {
   const Limit = 6
@@ -10,16 +11,17 @@ export const fetchEvents = async (search: string,pageParam: number): Promise<Eve
   return response.data;
 };
 
+
 export const debouncedSetSearchParams = (setSearchParams: Function) => {
-  return debounce((value: string) => {
-    setSearchParams((prev: URLSearchParams) => {
-      const newParams = new URLSearchParams(prev);
-      if (value) {
-        newParams.set('search', value);
-      } else {
-        newParams.delete('search');
-      }
-      return newParams;
-    });
-  }, 500);
-};
+    return debounce((value: string) => {
+        setSearchParams((prev: URLSearchParams) => {
+            const newParams = new URLSearchParams(prev)
+            if (value) {
+                newParams.set('search', value)
+            } else {
+                newParams.delete('search')
+            }
+            return newParams
+        })
+    }, 500)
+}

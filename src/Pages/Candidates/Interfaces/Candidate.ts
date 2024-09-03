@@ -1,5 +1,9 @@
 import React from 'react'
-import { GridColDef, GridPaginationModel, GridRowParams } from '@mui/x-data-grid'
+import {
+    GridColDef,
+    GridPaginationModel,
+    GridRowParams,
+} from '@mui/x-data-grid'
 
 export interface CandidateRow {
     _id: any
@@ -41,9 +45,9 @@ export interface CandidateContextType {
     getRowId: (row: CandidateRow) => number
     handleRowClick: (params: GridRowParams) => void
     isPending: boolean
-    page:number
-    pageSize:number
-    totalPages:number
+    page: number
+    pageSize: number
+    totalPages: number
     handlePaginationModelChange: (paginationModel: GridPaginationModel) => void
 }
 
