@@ -2,7 +2,7 @@ import { useState } from 'react'
 import AxiosInstance from '@/Helpers/Axios'
 import { EventsCreationData, EventsData } from '../Interface/Events'
 import { useSearchParams } from 'react-router-dom'
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { debouncedSetSearchParams, fetchEvents } from '../utils/utils'
 
 export const useGetAllEvents = () => {
@@ -10,15 +10,21 @@ export const useGetAllEvents = () => {
 
     const query = useInfiniteQuery({
         queryKey: ['events', searchParams.get('search')],
-        queryFn: ({ pageParam }) => {
-            const currentSearch = searchParams.get('search') || ''
-            return fetchEvents(currentSearch, pageParam as number)
+
+        queryFn: ({ pageParam = 0 }) => {
+            const currentSearch = searchParams.get('search') || '';
+            console.log('selma', pageParam);    
+            return fetchEvents(currentSearch, pageParam as number);
         },
         initialPageParam: 0,
         getNextPageParam: (lastPage, allPages) => {
-            return lastPage.length > 0 ? allPages.length + 1 : undefined
+            if (lastPage.length < 6) {
+                return undefined;
+            }
+            return allPages.length ;
         },
-    })
+    });
+
 
     const debouncedSearchParams = debouncedSetSearchParams(setSearchParams)
 
@@ -29,17 +35,19 @@ export const useGetAllEvents = () => {
     return {
         ...query,
         onSearchChange,
-    }
-}
 
-export const useCreateEvent = () => {
-    const [toastOpen, setToastOpen] = useState(false)
-    const [toastMessage, setToastMessage] = useState('')
-    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
-        'success',
-    )
-    const [eventPhotos, setEventPhotos] = useState<File[]>([])
-    const [createdEvents, setCreatedEvents] = useState<EventsData[]>([])
+    };
+};
+
+export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
+    const queryClient = useQueryClient();
+
+    const [toastOpen, setToastOpen] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>('success');
+    const [eventPhotos, setEventPhotos] = useState<File[]>([]);
+    const [createdEvents, setCreatedEvents] = useState<EventsData[]>([]);
+
     const [event, setEvent] = useState<EventsCreationData>({
         title: '',
         description: '',
@@ -54,141 +62,139 @@ export const useCreateEvent = () => {
             options: [],
             isMultipleVote: false,
         },
-    })
+    });
+    const [pollQuestion, setPollQuestion] = useState('');
+    const [pollOptions, setPollOptions] = useState<string[]>(['', '']);
+    const [isMultipleChoice, setIsMultipleChoice] = useState(false);
+    const [includesPoll, setIncludesPoll] = useState(false);
+    const [participants, setParticipants] = useState<string[]>([]);
 
-    const [pollQuestion, setPollQuestion] = useState('')
-    const [pollOptions, setPollOptions] = useState<string[]>(['', ''])
-    const [isMultipleChoice, setIsMultipleChoice] = useState(false)
-    const [includesPoll, setIncludesPoll] = useState(false)
-    const [participants, setParticipants] = useState<string[]>([])
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-
-        if (name === 'participants') {
-            setParticipants(value.split(',').map((_id) => _id.trim()))
-        } else if (name === 'includesPoll') {
-            setIncludesPoll(e.target.checked)
-        } else if (name === 'pollQuestion') {
-            setPollQuestion(value)
-        } else if (name === 'location') {
-            const location = value
-            setEvent((prevEvent) => ({
-                ...prevEvent,
-                location,
-            }))
-        } else if (name === 'isMultipleChoice') {
-            setIsMultipleChoice(e.target.checked)
-        } else {
-            setEvent((prevEvent) => ({
-                ...prevEvent,
-                [name]: value,
-            }))
-        }
-    }
-
-    const handleLocationChange = (address: string) => {
-        console.log('Selected address:', address)
-
-        {
-            setEvent((prevEvent) => ({
-                ...prevEvent,
-                location: address,
-            }))
-        }
-    }
-
-    const handleFileUpload = (photo: File[]) => {
-        setEventPhotos(photo)
-    }
-
-    const handleOptionChange = (index: number, value: string) => {
-        const newOptions = [...pollOptions]
-        newOptions[index] = value
-        setPollOptions(newOptions)
-    }
-
-    const handleAddOption = () => {
-        if (pollOptions.length < 3) {
-            setPollOptions([...pollOptions, ''])
-        }
-    }
-
-    const createEvent = async (e: React.FormEvent<HTMLButtonElement>) => {
-        e.preventDefault()
-
-        const formData = new FormData()
-        formData.append('title', event.title)
-        formData.append('description', event.description)
-        formData.append('startDate', event.startDate)
-        formData.append('endDate', event.endDate)
-        formData.append('location', event.location)
-        formData.append('type', event.type)
-        participants.forEach((participant, index) => {
-            formData.append(`participants[${index}]`, participant)
-        })
-
-        if (includesPoll) {
-            formData.append(
-                'poll',
-                JSON.stringify({
-                    question: pollQuestion,
-                    options: pollOptions
-                        .filter((option) => option.trim() !== '')
-                        .map((option) => ({ option, votes: 0, voters: [] })),
-                    isMultipleVote: isMultipleChoice,
-                }),
-            )
-        }
-
-        eventPhotos.forEach((photo) => {
-            formData.append('photo', photo)
-        })
-
-        console.log('Form data:', JSON.stringify(formData))
-        try {
-            const response = await AxiosInstance.post('/event', formData, {
+    const createEventMutation = useMutation({
+        mutationFn: async () => {
+            const formData = new FormData();
+            formData.append('title', event.title);
+            formData.append('description', event.description);
+            formData.append('startDate', event.startDate);
+            formData.append('endDate', event.endDate);
+            formData.append('location', event.location);
+            formData.append('type', event.type);
+            participants.forEach((participant, index) => {
+                formData.append(`participants[${index}]`, participant);
+            });
+            if (includesPoll) {
+                formData.append(
+                    'poll',
+                    JSON.stringify({
+                        question: pollQuestion,
+                        options: pollOptions
+                            .filter((option) => option.trim() !== '')
+                            .map((option) => ({ option, votes: 0, voters: [] })),
+                        isMultipleVote: isMultipleChoice,
+                    }),
+                );
+            }
+            eventPhotos.forEach((photo) => {
+                formData.append('photo', photo);
+            });
+            const response = await AxiosInstance.post('event', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-            })
+            });
+            return response.data;
+        },
+        onSuccess: (data) => {
+            setToastMessage('Event created successfully');
+            setToastOpen(true);
+            setToastSeverity('success');
+            setCreatedEvents((prevEvents) => [...prevEvents, data]);
 
-            setToastMessage('Event created successfully')
-            setToastOpen(true)
-            setToastSeverity('success')
-            setCreatedEvents((prevEvents) => [...prevEvents, response.data])
+            queryClient.invalidateQueries({
+                queryKey: ['events'],
+            });
+            
             setEvent({
                 title: '',
                 description: '',
                 startDate: '',
                 endDate: '',
                 location: '',
-
                 type: '',
                 photo: [],
                 participants: [],
                 poll: { question: '', options: [], isMultipleVote: false },
-            })
-            setPollQuestion('')
-            setPollOptions(['', ''])
-            setIsMultipleChoice(false)
-            setParticipants([])
-            setEventPhotos([])
-            setEventPhotos([])
-        } catch (error) {
-            console.error('Error creating event:', error)
-            setToastMessage('Error creating event')
-            setToastSeverity('error')
-            setToastOpen(true)
+            });
+            setPollQuestion('');
+            setPollOptions(['', '']);
+            setIsMultipleChoice(false);
+            setParticipants([]);
+            setEventPhotos([]);
+            handleCloseDrawer();
+        },
+        onError: (error: Error) => {
+            console.error('Error creating event', error);
+            setToastMessage('Error creating event');
+            setToastSeverity('error');
+            setToastOpen(true);
+        },
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        if (name === 'participants') {
+            setParticipants(value.split(',').map((_id) => _id.trim()));
+        } else if (name === 'includesPoll') {
+            setIncludesPoll(e.target.checked);
+        } else if (name === 'pollQuestion') {
+            setPollQuestion(value);
+        } else if (name === 'location') {
+            setEvent((prevEvent) => ({
+                ...prevEvent,
+
+                location: value,
+            }));
+        } else if (name === 'isMultipleChoice') {
+            setIsMultipleChoice(e.target.checked);
+
+        } else {
+            setEvent((prevEvent) => ({
+                ...prevEvent,
+                [name]: value,
+            }));
         }
-    }
+    };
+
+    const handleLocationChange = (address: string) => {
+
+        setEvent(prevEvent => ({
+            ...prevEvent,
+            location: address,
+        }));
+    };
+
+
+    const handleFileUpload = (photo: File[]) => {
+        setEventPhotos(photo);
+    };
+
+    const handleOptionChange = (index: number, value: string) => {
+        const newOptions = [...pollOptions];
+        newOptions[index] = value;
+        setPollOptions(newOptions);
+    };
+
+    const handleAddOption = () => {
+        if (pollOptions.length < 3) {
+            setPollOptions([...pollOptions, '']);
+        }
+    };
 
     const handleToastClose = () => {
-        setToastOpen(false)
-    }
+        setToastOpen(false);
+    };
 
     return {
-        createEvent,
+        createEvent: createEventMutation.mutate,
         handleChange,
         event,
         endDate: event.endDate,
@@ -209,10 +215,15 @@ export const useCreateEvent = () => {
         eventPhotos,
         handleLocationChange,
         createdEvents,
-    }
-}
 
-export const useUpdateEvent = () => {
+  };
+};
+
+
+
+
+    export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
+    const queryClient = useQueryClient();
     const [editingEvent, setEditingEvent] = useState<EventsData | null>(null)
     const [showEditDrawer, setEditDrawer] = useState(false)
     const [includePollInEdit, setIncludePollInEdit] = useState(false)
@@ -313,11 +324,16 @@ export const useUpdateEvent = () => {
         setEditParticipants(event.participants)
         setEditType(event.type)
     }
+ const handleUpdateToastClose = () => {
+        setUpdateToastOpen(false)
+    }
 
-    const updateEvent = (e: React.FormEvent<HTMLButtonElement>) => {
-        e.preventDefault()
-        if (!editingEvent) return
 
+const updateEventMutation = useMutation({
+    mutationFn: async () => {
+        if (!editingEvent) {
+            throw new Error('No event selected for editing');
+        }
         const fieldsToUpdate = {
             title: editingEvent.title,
             description: editingEvent.description,
@@ -335,34 +351,38 @@ export const useUpdateEvent = () => {
                       isMultipleVote: editIsMultipleChoice,
                   }
                 : null,
-        }
-        console.log(fieldsToUpdate, 'iuegfyugwegf')
-        AxiosInstance.patch(`/event/${editingEvent._id}`, fieldsToUpdate)
+        };
+        const response = await AxiosInstance.patch(`/event/${editingEvent._id}`, fieldsToUpdate);
+        return response.data;
+    },
+    onSuccess: (data) => {
+        setUpdateToastMessage('Event updated successfully');
+        setUpdateToastOpen(true);
+        setUpdateToastSeverity('success');
+        setUpdatedEvent((prevEvents) =>
+            prevEvents.map((event) =>
+                event._id === editingEvent?._id ? data : event,
+            ),
+        );
 
-            .then((response) => {
-                setUpdateToastMessage('Event updated successfully')
-                setUpdateToastOpen(true)
-                setUpdateToastSeverity('success')
-                setUpdatedEvent((prevEvents) =>
-                    prevEvents.map((event) =>
-                        event._id === editingEvent._id ? response.data : event,
-                    ),
-                )
-                setEditingEvent(null)
-                resetEditPollState()
-                setEditDrawer(false)
-            })
-            .catch((error) => {
-                console.error('Error updating event:', error)
-                setUpdateToastMessage('Error updating event')
-                setUpdateToastOpen(true)
-                setUpdateToastSeverity('error')
-            })
-    }
+        queryClient.invalidateQueries({
+            queryKey: ['events'],
+        });
 
-    const handleUpdateToastClose = () => {
-        setUpdateToastOpen(false)
-    }
+            setEditingEvent(null)
+            resetEditPollState()
+            setEditDrawer(false)
+            handleCloseDrawer()
+    },
+    onError: (error) => {
+        console.error('Error updating event:', error);
+        setUpdateToastMessage('Error updating event');
+        setUpdateToastOpen(true);
+        setUpdateToastSeverity('error');
+    },
+});
+
+   
 
     return {
         editingEvent,
@@ -375,7 +395,7 @@ export const useUpdateEvent = () => {
         handleEditChange,
         handleEditOptionChange,
         handleAddEditOption,
-        updateEvent,
+        updateEvent: updateEventMutation.mutate,
         setEventForEditing,
         toggleForm,
         handleEditClick,
@@ -393,6 +413,7 @@ export const useUpdateEvent = () => {
 }
 
 export const useDeleteEvent = () => {
+    const queryClient = useQueryClient();
     const [showModal, setShowModal] = useState(false)
     const [deletedEvents, setDeletedEvents] = useState([] as EventsData[])
     const [eventToDeleteId, setEventToDeleteId] = useState<string | number>('')
@@ -406,21 +427,26 @@ export const useDeleteEvent = () => {
         setEventToDeleteId('')
     }
 
-    const handleDelete = (id: string | number) => {
-        AxiosInstance.delete(`/event/${id}`)
-            .then(() => {
-                console.log('Event deleted successfully')
-                setDeletedEvents((prevEvents) =>
-                    prevEvents.filter((event) => event._id !== id),
-                )
-            })
-            .catch((error) => {
-                console.error('Error deleting event:', error)
-            })
-    }
+    const handleDeleteEventMutation = useMutation({
+        mutationFn: async (id: string | number) => {
+           const response = await  AxiosInstance.delete(`/event/${id}`)
+           return response.data
+        }, 
+        onSuccess: (id) => {
+            setDeletedEvents((prevEvents) =>
+                prevEvents.filter((event) => event._id !== id),
+            )
+            queryClient.invalidateQueries({
+                queryKey: ['events'],
+            });
+        },
+        onError: (error: Error) => {
+            console.error('Error creating event', error);
+        }
+    })
 
     return {
-        handleDelete,
+        handleDelete: handleDeleteEventMutation.mutate,
         closeModal,
         showModal,
         handleDeleteEventModal,
