@@ -43,8 +43,13 @@ export const useCreateInventoryItem = () => {
 
     const queryClient = useQueryClient()
     return useMutation({
-        mutationFn: ({ item }: { item: CreateInventoryItemFormFields }) =>
-            createInventoryItem(item),
+        mutationFn: ({
+            type,
+            serialNumber,
+        }: {
+            type: 'laptop' | 'monitor'
+            serialNumber: string
+        }) => createInventoryItem(type, serialNumber),
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ['allInventoryItems'],

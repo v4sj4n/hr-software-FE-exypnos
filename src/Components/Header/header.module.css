@@ -78,13 +78,12 @@
     width: 150px;
 }
 
-
 .notification {
     position: absolute;
     top: 123%;
     right: 0;
     background-color: white;
-   
+
     border-radius: 6px;
     z-index: 1000;
     width: 420px;

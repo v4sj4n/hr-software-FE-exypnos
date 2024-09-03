@@ -61,7 +61,7 @@ const UsernameInput: React.FC<InputProps> = (props) => {
                     color: '#4C556B',
                     fontFamily: '"Outfit", sans-serif',
                     fontSize: '14px',
-                    zIndex:1
+                    zIndex: 1,
                 },
                 shrink: shrink,
             }}

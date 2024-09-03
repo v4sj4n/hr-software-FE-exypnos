@@ -118,13 +118,24 @@ export const Header = () => {
                                             onClick={updateSatusAndNvigate}
                                             to={`/${notification.type}`}
                                         >
-                                            <Card border='1px solid #ebebeb '>
-                                                <div style={{display:"flex", justifyContent:"space-between"}}>
+                                            <Card border="1px solid #ebebeb ">
+                                                <div
+                                                    style={{
+                                                        display: 'flex',
+                                                        justifyContent:
+                                                            'space-between',
+                                                    }}
+                                                >
                                                     {notification.title}
-                                                    <CloseIcon sx={{width:"20px", height:"20px"}}/>
-                                                    </div>
+                                                    <CloseIcon
+                                                        sx={{
+                                                            width: '20px',
+                                                            height: '20px',
+                                                        }}
+                                                    />
+                                                </div>
                                                 {notification.type}
-                                                </Card>
+                                            </Card>
                                         </Link>
                                     </div>
                                 ))}

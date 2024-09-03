@@ -4,13 +4,16 @@ import { BarChart } from '@mui/x-charts/BarChart'
 import { axisClasses } from '@mui/x-charts/ChartsAxis'
 import { DatasetType } from '@mui/x-charts/internals'
 import { useEffect, useState } from 'react'
-import { ChartsAxisContentProps, ChartsTooltip } from '@mui/x-charts/ChartsTooltip';
+import {
+    ChartsAxisContentProps,
+    ChartsTooltip,
+} from '@mui/x-charts/ChartsTooltip'
 const valueFormatter = (value: number | null) => `${value}ALL`
 export type Salary = {
     netSalary: number
     month: number
     healthInsurance: number
-    socialSecurity: number  
+    socialSecurity: number
     grossSalary: number
     bonus: number
 }
@@ -34,7 +37,6 @@ const chartSetting = {
         '.MuiChartsLegend-mark': {
             fill: '#c5b3e6',
         },
-
     },
 }
 
@@ -46,10 +48,10 @@ export default function ChartBar({ id }: { id: string }) {
             const response = await AxiosInstance<Salary[]>(
                 `/salary/user/${id}?graph=true`,
             )
-            console.log("response", response.data)
+            console.log('response', response.data)
             let data: Salary[] = response.data
             setDataset(data)
-            console.log("datasalary", data)
+            console.log('datasalary', data)
         }
 
         fetchData()
@@ -69,14 +71,14 @@ export default function ChartBar({ id }: { id: string }) {
                     ]}
                     {...chartSetting}
                     tooltip={{
-                    trigger: 'none',
+                        trigger: 'none',
                     }}
                 >
                     <ChartsTooltip
                         slots={{
                             axisContent: (props: ChartsAxisContentProps) => {
-                                const { dataIndex} = props;
-                                if (!dataIndex) return;
+                                const { dataIndex } = props
+                                if (!dataIndex) return
                                 return (
                                     <div
                                         style={{
@@ -86,27 +88,48 @@ export default function ChartBar({ id }: { id: string }) {
                                         }}
                                     >
                                         <p>
-                                            Month: {String(dataset[dataIndex]?.month) ?? ''}
+                                            Month:{' '}
+                                            {String(
+                                                dataset[dataIndex]?.month,
+                                            ) ?? ''}
                                         </p>
                                         <p>
-                                            Net Salary: {String(dataset[dataIndex]?.netSalary ?? '')}
+                                            Net Salary:{' '}
+                                            {String(
+                                                dataset[dataIndex]?.netSalary ??
+                                                    '',
+                                            )}
                                         </p>
                                         <p>
-                                            Gross Salary: {String(dataset[dataIndex]?.grossSalary ?? '')}
+                                            Gross Salary:{' '}
+                                            {String(
+                                                dataset[dataIndex]
+                                                    ?.grossSalary ?? '',
+                                            )}
                                         </p>
                                         <p>
-                                            Bonus: {String(dataset[dataIndex]?.bonus) ?? ''}
+                                            Bonus:{' '}
+                                            {String(
+                                                dataset[dataIndex]?.bonus,
+                                            ) ?? ''}
                                         </p>
                                         <p>
-                                            Health Insurance: {String(dataset[dataIndex]?.healthInsurance) ?? ''}
+                                            Health Insurance:{' '}
+                                            {String(
+                                                dataset[dataIndex]
+                                                    ?.healthInsurance,
+                                            ) ?? ''}
                                         </p>
                                         <p>
-                                            Social Security: {String(dataset[dataIndex]?.socialSecurity) ?? ''}
+                                            Social Security:{' '}
+                                            {String(
+                                                dataset[dataIndex]
+                                                    ?.socialSecurity,
+                                            ) ?? ''}
                                         </p>
-                    
                                     </div>
-                                );
-                            }
+                                )
+                            },
                         }}
                     />
                 </BarChart>

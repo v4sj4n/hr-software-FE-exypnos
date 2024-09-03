@@ -1,10 +1,6 @@
 import React, { createContext, useContext, useState } from 'react'
 import { EventsData, EventsContextProps } from '../Interface/Events'
-import {
-    useCreateEvent,
-    useUpdateEvent,
-    useDeleteEvent,
-} from '../Hook/index'
+import { useCreateEvent, useUpdateEvent, useDeleteEvent } from '../Hook/index'
 import { useAuth } from '@/Context/AuthProvider'
 import { useGetAllUsers } from '@/Pages/Employees/Hook'
 
@@ -13,7 +9,6 @@ const EventsContext = createContext<EventsContextProps | undefined>(undefined)
 export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-
     const [showEventModal, setShowEventModal] = useState<boolean>(false)
     const [selectedEvent, setSelectedEvent] = useState<EventsData | null>(null)
     const { currentUser } = useAuth()
@@ -57,7 +52,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         }
     }
 
-
     const {
         handleChange,
         event,
@@ -78,10 +72,8 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         eventPhotos,
         handleLocationChange,
 
-        createdEvents
+        createdEvents,
     } = useCreateEvent(handleCloseDrawer)
-
-
 
     const {
         editingEvent,
@@ -103,9 +95,8 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         editParticipants,
         setEditParticipants,
         editType,
-        setEditType,        
+        setEditType,
     } = useUpdateEvent(handleCloseDrawer)
-
 
     const {
         handleDelete,
@@ -114,7 +105,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         handleDeleteEventModal,
         eventToDeleteId,
     } = useDeleteEvent()
- 
 
     return (
         <EventsContext.Provider

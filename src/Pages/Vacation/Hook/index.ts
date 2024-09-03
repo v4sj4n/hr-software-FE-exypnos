@@ -58,7 +58,7 @@ export const useGetUsersWithVacations = () => {
             }),
         getNextPageParam: (lastPage, allPages) => {
             return lastPage.totalPages > allPages.length
-                ? allPages.length + 1
+                ? allPages.length
                 : undefined
         },
     })

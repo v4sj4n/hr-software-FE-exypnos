@@ -19,7 +19,7 @@ const PrivateRoute = () => {
                     <SideBar />
                     <main
                         style={{
-                            backgroundColor:  "#D7EBF2",
+                            backgroundColor: '#D7EBF2',
                             // #D7EBF2
                             // #B68CE6
                             // #3F67B7
