@@ -12,7 +12,6 @@ export default function ViewCandidats() {
         handleCloseModal,
         handleOpenModal,
         handleConfirm,
-        modalAction,
         showConfirmationModal,
         firstInterviewDate,
         setFirstInterviewDate,

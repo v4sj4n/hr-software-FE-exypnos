@@ -12,6 +12,9 @@ import { useAuth } from '../../Context/AuthProvider'
 import { Link, useNavigate } from 'react-router-dom'
 import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
 import AxiosInstance from '@/Helpers/Axios'
+import Card from '../Card/Card'
+import CloseIcon from '@mui/icons-material/Close'
+// import DrawerComponent from '../Drawer/Drawer'
 
 interface NotificationData {
     _id: string
@@ -93,7 +96,7 @@ export const Header = () => {
                         onClick={toggleDropdownNotification}
                         style={{ cursor: 'pointer' }}
                     />
-                    <span className={style.badge}>3</span>
+                    <span className={style.badge}>{notification.length}</span>
                 </div>
                 <div className={style.icon} onClick={toggleDropdown}>
                     <img
@@ -107,7 +110,7 @@ export const Header = () => {
                     />
                     <div className={style.username}></div>
                     {showDropdownNotification && (
-                        <div className={style.dropdown}>
+                        <div className={style.notification}>
                             <div>
                                 {' '}
                                 {notification.map((notification) => (
@@ -116,8 +119,13 @@ export const Header = () => {
                                             onClick={updateSatusAndNvigate}
                                             to={`/${notification.type}`}
                                         >
-                                            <div>{notification.title}</div>
-                                            <div> {notification.type}</div>
+                                            <Card border='1px solid #ebebeb '>
+                                                <div style={{display:"flex", justifyContent:"space-between"}}>
+                                                    {notification.title}
+                                                    <CloseIcon sx={{width:"20px", height:"20px"}}/>
+                                                    </div>
+                                                {notification.type}
+                                                </Card>
                                         </Link>
                                     </div>
                                 ))}

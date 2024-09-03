@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState } from 'react'
 import { EventsData, EventsContextProps } from '../Interface/Events'
 import {
-    // useGetAllEvents,
     useCreateEvent,
     useUpdateEvent,
     useDeleteEvent,
@@ -15,59 +14,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
 
-    const {
-        handleChange,
-        event,
-        createEvent,
-        pollQuestion,
-        pollOptions,
-        participants,
-        isMultipleChoice,
-        handleOptionChange,
-        handleAddOption,
-        includesPoll,
-        setParticipants,
-        toastOpen,
-        toastMessage,
-        handleToastClose,
-        toastSeverity,
-        handleFileUpload,
-        eventPhotos,
-        handleLocationChange,
-        createdEvents
-    } = useCreateEvent()
-
-    const {
-        editingEvent,
-        includePollInEdit,
-        editPollQuestion,
-        editPollOptions,
-        editIsMultipleChoice,
-        handleEditChange,
-        handleEditOptionChange,
-        handleAddEditOption,
-        updateEvent,
-        toggleForm,
-        handleEditClick,
-        handleToggleForm,
-        handleUpdateToastClose,
-        updateToastMessage,
-        updateToastOpen,
-        updateToastSeverity,
-        editParticipants,
-        setEditParticipants,
-        editType,
-        setEditType,        
-    } = useUpdateEvent()
-
-
-    const {
-        handleDelete,
-        closeModal,
-        showModal,
-        handleDeleteEventModal,
-        eventToDeleteId,
-    } = useDeleteEvent()
     const [showEventModal, setShowEventModal] = useState<boolean>(false)
     const [selectedEvent, setSelectedEvent] = useState<EventsData | null>(null)
     const { currentUser } = useAuth()
@@ -80,7 +26,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         'other',
     ]
     const { data: users = [] } = useGetAllUsers()
-    console.log('selmaaaaa', users)
+    console.log('gertiiiiiiiiiiiiiiiiiiiiii', users)
     const allEmails = users.map((user) => user.auth.email)
 
     const handleSeeVoters = (event: EventsData) => {
@@ -110,6 +56,61 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
             handleToggleForm()
         }
     }
+
+    const {
+        handleChange,
+        event,
+        createEvent,
+        pollQuestion,
+        pollOptions,
+        participants,
+        isMultipleChoice,
+        handleOptionChange,
+        handleAddOption,
+        includesPoll,
+        setParticipants,
+        toastOpen,
+        toastMessage,
+        handleToastClose,
+        toastSeverity,
+        handleFileUpload,
+        eventPhotos,
+        handleLocationChange,
+        createdEvents
+    } = useCreateEvent(handleCloseDrawer)
+
+    const {
+        editingEvent,
+        includePollInEdit,
+        editPollQuestion,
+        editPollOptions,
+        editIsMultipleChoice,
+        handleEditChange,
+        handleEditOptionChange,
+        handleAddEditOption,
+        updateEvent,
+        toggleForm,
+        handleEditClick,
+        handleToggleForm,
+        handleUpdateToastClose,
+        updateToastMessage,
+        updateToastOpen,
+        updateToastSeverity,
+        editParticipants,
+        setEditParticipants,
+        editType,
+        setEditType,        
+    } = useUpdateEvent(handleCloseDrawer)
+
+
+    const {
+        handleDelete,
+        closeModal,
+        showModal,
+        handleDeleteEventModal,
+        eventToDeleteId,
+    } = useDeleteEvent()
+ 
 
     return (
         <EventsContext.Provider
@@ -171,7 +172,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
                 handleFileUpload,
                 eventPhotos,
                 createdEvents,
-
             }}
         >
             {children}
