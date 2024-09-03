@@ -1,0 +1,33 @@
+.container {
+    display: flex;
+    gap: 50px;
+}
+
+.firstDiv {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 48%;
+    height: 100%;
+    border-radius: 10px;
+    flex: 3;
+}
+
+.secondDiv {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    height: 100%;
+    border-radius: 10px;
+    flex: 1;
+}
+
+.thirdDiv {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 48%;
+    height: 100vh;
+    border-radius: 10px;
+    flex: 2;
+}

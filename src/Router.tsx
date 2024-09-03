@@ -17,12 +17,14 @@ import Inventory from './Pages/Inventory/Inventory.tsx'
 import Career from './Pages/Career/Career.tsx'
 import Holdings from './Pages/Holdings/Holdings.tsx'
 import Vacation from './Pages/Vacation/Vacation.tsx'
-import Pagination from './Pages/PaginationExample/Main.tsx'
 import SpecificUserPayroll from './Pages/Payroll/SpecificUser/SpecificUserPayroll.tsx'
 import About from './Pages/About/About.tsx'
 import UserVacations from './Pages/Vacation/UserVacations.tsx'
 import EmailConfirmation from './Pages/Recruitment/Component/EmailConfirmation.tsx'
 import NotFound from './Pages/NotFound/NotFound.tsx'
+import UserPromotion from './Pages/Promotion/UserPromotion.tsx'
+import Promotion from './Pages/Promotion/Promotion.tsx'
+
 
 export default function Router() {
     const router = createBrowserRouter([
@@ -53,7 +55,7 @@ export default function Router() {
         },
         {
             path: 'pagination',
-            element: <Pagination />,
+            element: <UserPromotion />,
         },
         {
             path: '/',
@@ -62,6 +64,14 @@ export default function Router() {
                 {
                     path: '/employees',
                     element: <Employees />,
+                },
+                {
+                    path: '/promotion',
+                    element: <Promotion/>,
+                },
+                {
+                    path: '/userPromotion',
+                    element: <UserPromotion />,
                 },
                 { path: '/dashboard', element: <Dashboard />, index: false },
                 {

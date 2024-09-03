@@ -14,6 +14,22 @@ import {
     handleItemReturn,
 } from './queries'
 
+// export const useEmployeesWithHoldings = () => {
+//     // const { searchParams } = useContext(HoldingsContext)
+//     return useQuery({
+//         queryKey: [
+//             'usersWithHoldings',
+//             // searchParams.get('users'),
+//             // searchParams.get('search'),
+//         ],
+//         queryFn: () =>
+//             getHoldings(
+//                 // searchParams.get('users') || '',
+//                 // searchParams.get('search') || '',
+//             ),
+//     })
+// }
+
 export const useEmployeesWithHoldings = () => {
     const { searchParams } = useContext(HoldingsContext)
 
