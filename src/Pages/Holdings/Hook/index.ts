@@ -14,6 +14,22 @@ import {
     handleItemReturn,
 } from './queries'
 
+// export const useEmployeesWithHoldings = () => {
+//     // const { searchParams } = useContext(HoldingsContext)
+//     return useQuery({
+//         queryKey: [
+//             'usersWithHoldings',
+//             // searchParams.get('users'),
+//             // searchParams.get('search'),
+//         ],
+//         queryFn: () =>
+//             getHoldings(
+//                 // searchParams.get('users') || '',
+//                 // searchParams.get('search') || '',
+//             ),
+//     })
+// }
+
 export const useEmployeesWithHoldings = () => {
     const { searchParams } = useContext(HoldingsContext)
 
@@ -86,16 +102,14 @@ export const useHandleItemReturner = () => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: ({
-            event,
             assetId,
             status,
             returnDate,
         }: {
-            event: FormEvent<HTMLFormElement>
             assetId: string
             status: string
             returnDate: string
-        }) => handleItemReturn(event, assetId, status, returnDate),
+        }) => handleItemReturn(assetId, status, returnDate),
         onSettled: () => {
             queryClient.invalidateQueries({
                 queryKey: ['usersWithHoldings'],

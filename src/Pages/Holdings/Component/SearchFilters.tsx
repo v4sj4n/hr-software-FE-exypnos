@@ -54,12 +54,12 @@ export const HoldingsSearchFilter = () => {
     const userFilterChoices = ['ALL', 'W ASSETS', 'W/O ASSETS']
     return (
         <div
-        style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginBottom: '1rem',
-        }}
-    >
+            style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginBottom: '1rem',
+            }}
+        >
             <Input
                 type="search"
                 iconPosition="end"
@@ -157,6 +157,6 @@ export const HoldingsSearchFilter = () => {
                     ))}
                 </RadioGroup>
             </Box>
-            </div>
+        </div>
     )
 }

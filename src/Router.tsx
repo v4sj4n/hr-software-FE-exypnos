@@ -22,6 +22,9 @@ import About from './Pages/About/About.tsx'
 import UserVacations from './Pages/Vacation/UserVacations.tsx'
 import EmailConfirmation from './Pages/Recruitment/Component/EmailConfirmation.tsx'
 import NotFound from './Pages/NotFound/NotFound.tsx'
+import UserPromotion from './Pages/Promotion/UserPromotion.tsx'
+import Promotion from './Pages/Promotion/Promotion.tsx'
+
 
 export default function Router() {
     const router = createBrowserRouter([
@@ -53,6 +56,14 @@ export default function Router() {
                 {
                     path: '/employees',
                     element: <Employees />,
+                },
+                {
+                    path: '/promotion',
+                    element: <Promotion/>,
+                },
+                {
+                    path: '/userPromotion',
+                    element: <UserPromotion />,
                 },
                 { path: '/dashboard', element: <Dashboard />, index: false },
                 {

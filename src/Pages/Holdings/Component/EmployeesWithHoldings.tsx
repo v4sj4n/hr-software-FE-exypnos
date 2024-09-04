@@ -12,6 +12,7 @@ import Button from '@/Components/Button/Button.tsx'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes.tsx'
 import { AssignAssetModal } from './Modals/AssignAssetModal.tsx'
 import { ReturnAssetModal } from './Modals/ReturnAssetModal.tsx'
+import Toast from '@/Components/Toast/Toast.tsx'
 
 export const EmployeesWithHoldings = () => {
     const {
@@ -22,7 +23,8 @@ export const EmployeesWithHoldings = () => {
         fetchNextPage,
         isFetchingNextPage,
     } = useEmployeesWithHoldings()
-    const { searchParams, setSearchParams } = useContext(HoldingsContext)
+    const { searchParams, setSearchParams, toastConfigs, handleToastClose } =
+        useContext(HoldingsContext)
 
     const { ref, inView } = useInView()
 
@@ -107,6 +109,12 @@ export const EmployeesWithHoldings = () => {
                 )),
             )}
             <div ref={ref}>{isFetchingNextPage && 'Loading...'}</div>
+            <Toast
+                severity={toastConfigs.severity}
+                message={toastConfigs.message!}
+                open={toastConfigs.isOpen}
+                onClose={handleToastClose}
+            />
         </div>
     )
 }

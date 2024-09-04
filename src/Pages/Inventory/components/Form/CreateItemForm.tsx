@@ -1,4 +1,4 @@
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useContext } from 'react'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
@@ -13,6 +13,7 @@ import { AxiosError } from 'axios'
 import { useCreateInventoryItem } from '../../Hook/hook'
 import { valibotResolver } from '@hookform/resolvers/valibot'
 import style from '../../style/createItemForm.module.scss'
+import Selecter from '@/Components/Input/components/Select/Selecter'
 
 export const CreateItemForm = () => {
     const { handleCloseCreateModalOpen } = useContext(InventoryContext)
@@ -21,6 +22,7 @@ export const CreateItemForm = () => {
         register,
         handleSubmit,
         setError,
+        control,
         formState: { errors, isSubmitting },
     } = useForm<CreateInventoryItemFormFields>({
         resolver: valibotResolver(CreateInventoryItemSchema),
@@ -44,13 +46,20 @@ export const CreateItemForm = () => {
             <h3 className={style.heading}>Create an asset</h3>
             <form onSubmit={handleSubmit(onSubmit)} className={style.form}>
                 <div>
-                    <select {...register('type')} className={style.selector}>
-                        <option value="" disabled selected>
-                            Select an item
-                        </option>
-                        <option value="laptop">Laptop</option>
-                        <option value="monitor">Monitor</option>
-                    </select>
+                    <Controller
+                        name="type"
+                        control={control}
+                        render={({ field }) => (
+                            <Selecter
+                                label="Item Type"
+                                name="Item Type"
+                                multiple={false}
+                                options={['monitor', 'laptop']}
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                        )}
+                    ></Controller>
                     {errors.type && (
                         <ErrorText>{errors.type.message}</ErrorText>
                     )}
@@ -81,6 +90,7 @@ export const CreateItemForm = () => {
                     <Button
                         type={ButtonTypes.PRIMARY}
                         btnText={isSubmitting ? 'Submitting' : 'Submit'}
+                        disabled={isSubmitting}
                         width={'100%'}
                         isSubmit
                     />

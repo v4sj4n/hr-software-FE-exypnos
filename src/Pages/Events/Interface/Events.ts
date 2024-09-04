@@ -102,8 +102,7 @@ export interface EventsContextProps {
     editType: string
     handleFileUpload: (files: File[]) => void
     eventPhotos: File[]
-    handleLocationChange: (address: string) => void;
+    handleLocationChange: (address: string) => void
     hideToast?: () => void
     createdEvents: EventsData[]
-    
 }

@@ -14,8 +14,7 @@ import { Asset } from '@/Pages/Holdings/TAsset'
 import { StatusBadge } from '@/Components/StatusBadge/StatusBadge'
 
 export const InventoryTable = () => {
-    const { isError, error, data, isPending } =
-        useAllInventoryItems()
+    const { isError, error, data, isPending } = useAllInventoryItems()
 
     const { handleOpenViewAssetModalOpen, searchParams, setSearchParams } =
         useContext(InventoryContext)
@@ -121,10 +120,14 @@ export const InventoryTable = () => {
                     <button
                         onClick={() => {
                             handleOpenViewAssetModalOpen()
-                            const selectedParam = new URLSearchParams({
-                                selectedInventoryItem: param.value,
+                            setSearchParams((prev) => {
+                                const newParams = new URLSearchParams(prev)
+                                newParams.set(
+                                    'selectedInventoryItem',
+                                    param.value,
+                                )
+                                return newParams
                             })
-                            setSearchParams(selectedParam)
                         }}
                         style={{
                             border: 'none',
@@ -142,17 +145,16 @@ export const InventoryTable = () => {
 
     return (
         <>
-           
-                <DataTable
-                    onPaginationModelChange={handlePaginationModelChange}
-                    page={Number(searchParams.get('page')!)}
-                    pageSize={Number(searchParams.get('limit')!)}
-                    totalPages={data.totalPages}
-                    rows={rows}
-                    columns={columns}
-                    getRowId={getRowId}
-                />
-        
+            <DataTable
+                onPaginationModelChange={handlePaginationModelChange}
+                page={Number(searchParams.get('page')!)}
+                pageSize={Number(searchParams.get('limit')!)}
+                totalPages={data.totalPages}
+                rows={rows}
+                columns={columns}
+                getRowId={getRowId}
+            />
+
             {searchParams.get('selectedInventoryItem') && (
                 <SingleInventoryItem />
             )}

@@ -5,11 +5,8 @@ import dayjs from 'dayjs'
 import AxiosInstance from '@/Helpers/Axios'
 import { useQuery } from '@tanstack/react-query'
 const InfoSection: React.FC = () => {
-
     const fetchEventsDashboard = async () => {
-        const response = await AxiosInstance.get(
-            `/event`
-        )
+        const response = await AxiosInstance.get(`/event`)
 
         console.log('Fetched eventsDahboardddd:', response.data)
         return response.data
@@ -17,7 +14,7 @@ const InfoSection: React.FC = () => {
 
     const { data: events } = useQuery({
         queryKey: ['event'],
-        queryFn: () => fetchEventsDashboard()
+        queryFn: () => fetchEventsDashboard(),
     })
 
     console.log('events', events)
@@ -57,7 +54,5 @@ const InfoSection: React.FC = () => {
         </div>
     )
 }
-
-
 
 export default InfoSection

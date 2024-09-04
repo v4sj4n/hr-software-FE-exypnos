@@ -4,10 +4,32 @@ import { useEmployeeContext } from './Context/EmployeTableContext'
 import { EmployeeProvider } from './Context/EmployeTableProvider'
 import style from './style/Employees.module.css'
 function EmployeesContent() {
-    const { rows, columns, getRowId, handleRowClick, handlePaginationModelChange, page, pageSize, totalPages, isPending } = useEmployeeContext()
+    const {
+        rows,
+        columns,
+        getRowId,
+        handleRowClick,
+        handlePaginationModelChange,
+        page,
+        pageSize,
+        totalPages,
+        isPending,
+    } = useEmployeeContext()
 
-
-    if (isPending) return <div style={{ display: "flex", fontSize: "30px", justifyContent: "center", marginTop: "200px" }}> <RingLoader /></div>
+    if (isPending)
+        return (
+            <div
+                style={{
+                    display: 'flex',
+                    fontSize: '30px',
+                    justifyContent: 'center',
+                    marginTop: '200px',
+                }}
+            >
+                {' '}
+                <RingLoader />
+            </div>
+        )
 
     return (
         <div className={style.employe}>

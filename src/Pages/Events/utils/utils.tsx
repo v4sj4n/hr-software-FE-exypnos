@@ -1,6 +1,7 @@
 import { debounce } from '@/Helpers/debounce.ts'
-import AxiosInstance from '@/Helpers/Axios';
-import { EventsData } from '../Interface/Events';
+import AxiosInstance from '@/Helpers/Axios'
+import { EventsData } from '../Interface/Events'
+
 
 export const fetchEvents = async (search: string,pageParam: number): Promise<EventsData[]> => {
   const Limit = 6
