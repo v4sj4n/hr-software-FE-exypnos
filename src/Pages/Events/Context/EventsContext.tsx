@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { EventsData, EventsContextProps } from '../Interface/Events'
 import {
     useCreateEvent,
@@ -7,6 +7,8 @@ import {
 } from '../Hook/index'
 import { useAuth } from '@/Context/AuthProvider'
 import { useGetAllUsers } from '@/Pages/Employees/Hook'
+import { useSearchParams } from 'react-router-dom'
+import AxiosInstance from '@/Helpers/Axios'
 
 const EventsContext = createContext<EventsContextProps | undefined>(undefined)
 
@@ -15,7 +17,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
 
     const [showEventModal, setShowEventModal] = useState<boolean>(false)
-    const [selectedEvent, setSelectedEvent] = useState<EventsData['_id'] >()
+    const [selectedEvent, setSelectedEvent] = useState<EventsData| null>(null)
     const [drawerOpen, setDrawerOpen] = useState(false)
     const [drawerAction, setDrawerAction] = useState<'create' | 'edit'>('create')
 
@@ -26,11 +28,29 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     console.log('gertiiiiiiiiiiiiiiiiiiiiii', users)
     const allEmails = users.map((user) => user.auth.email)
 
-    const handleSeeEventDetails = (event: EventsData['_id']) => {
-        setSelectedEvent(event)
-        setShowEventModal(true)
+    const handleSeeEventDetails = async (event: EventsData) => {
+        try{
+            const res = await AxiosInstance.get(`/event/${event._id}`)
+            console.log('res', res)
+            setSelectedEvent(res.data)
+            console.log('handleSeeEventDetails', event)
+            setShowEventModal(true)
+        }
+        catch(err){
+            console.log(err)
+        }
+      
     }
 
+    const [searchParams] = useSearchParams();
+    const eventId = searchParams.get('event');
+
+   useEffect(() => {
+    if (eventId) {
+        handleSeeEventDetails({ _id: eventId } as unknown as EventsData);
+        console.log('eventId', eventId)
+    }
+    }, [eventId]);
 
     const handleOpenDrawer = (
         action: 'create' | 'edit',

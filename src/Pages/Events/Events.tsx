@@ -17,6 +17,7 @@ import { useGetAllEvents } from './Hook'
 import { useInView } from 'react-intersection-observer'
 import { useEffect } from 'react'
 import { EventsData } from './Interface/Events'
+import EventsContentLoader from '@/Components/Content/ContentLoader'
 
 function EventsContentAndComponents() {
     const {
@@ -43,17 +44,22 @@ function EventsContentAndComponents() {
 
     const { ref, inView } = useInView()
 
-    console.log('eventeeeeeee', events)
-
     useEffect(() => {
         if (inView) {
-            fetchNextPage()
+                fetchNextPage()
         }
     }, [fetchNextPage, inView])
 
+    if (isLoading) {
 
-    if (isLoading) return <div>Loading...</div>
-
+        return (
+            <div className={style.grid}>
+                <EventsContentLoader />
+                <EventsContentLoader />
+                <EventsContentLoader />
+            </div>
+        )
+    }
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>

@@ -13,18 +13,21 @@ import { useEffect } from 'react'
 const SelectedEventCard = () => {
     const { currentUser } = useAuth()
     const { selectedEvent, setSelectedEvent, setShowEventModal } = useEvents()
-
     const [, setSearchParams] = useSearchParams()
-useEffect(() => {
-    if (selectedEvent) {
-        setSearchParams({ event: selectedEvent._id.toString() });
-    } else {
-        setSearchParams({});
-    }
-    return () => {
-        setSearchParams({});
-    };
-}, [selectedEvent, setSearchParams]);
+
+    useEffect(() => {
+        console.log("Selected Event:", selectedEvent); 
+        if (selectedEvent?._id) {
+            setSearchParams({ event: selectedEvent._id.toString() });
+        } else {
+            setSearchParams({});
+        }
+    
+        return () => {
+            setSearchParams({});
+        };
+    }, [selectedEvent, setSearchParams]);
+    
 
     if (!selectedEvent) {
         return null
@@ -32,7 +35,9 @@ useEffect(() => {
 
     return (
         <div className={style.Wrap}>
-            <Example images={selectedEvent.photo} />
+            {selectedEvent?.photo && selectedEvent.photo.length > 0 ? (
+                <Example images={selectedEvent.photo} />
+            ) : ''}
             <div
                 style={{
                     gap: '10px',

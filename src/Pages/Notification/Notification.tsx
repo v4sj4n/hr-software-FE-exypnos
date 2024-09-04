@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { Card,  Typography, IconButton, Badge, Box, ClickAwayListener } from '@mui/material';
+import { Card, Typography, IconButton, Badge, Box, ClickAwayListener } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AxiosInstance from '@/Helpers/Axios';
 import { useAuth } from '@/Context/AuthProvider';
-import { Link } from 'react-router-dom';
-import { useEvents } from '../Events/Context/EventsContext';
+import { useNavigate } from 'react-router-dom';
 
 interface Notification {
   _id: number;
   title: string;
   type: string;
-  typeId: string
+  typeId: string;
 }
 
 const NotificationDropdown: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { currentUser } = useAuth();
   const currentUserId = currentUser?._id;
-  const {handleSeeEventDetails} = useEvents()
+  const navigate = useNavigate(); 
 
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
@@ -44,6 +43,22 @@ const NotificationDropdown: React.FC = () => {
   const handleClickAway = () => {
     setIsOpen(false);
   };
+
+
+  const removeNotification = async() => {
+    try {
+      await AxiosInstance.patch(`notification/${notifications[0]?._id}`)
+    } catch (error) {
+      console.error(`Error removing notification ${notifications[0]?._id}:`, error);
+    }
+}
+  
+const handleNotificationClick = (notification: Notification) => { 
+  // TO-DO check based on the notification type and navigate to the corresponding event page
+  removeNotification()
+  navigate(`/events?event=${notification.typeId}`);
+    setIsOpen(false);
+};
 
   const getColorByType = (type: string) => {
     switch (type) {
@@ -90,6 +105,10 @@ const NotificationDropdown: React.FC = () => {
                   bgcolor: getColorByType(notification.type),
                   color: '#fff',
                 }}
+                onClick={
+                  () => handleNotificationClick(notification)
+                 
+                } 
               >
                 <Box
                   sx={{
@@ -101,9 +120,7 @@ const NotificationDropdown: React.FC = () => {
                 >
                   <Box>
                     <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-                     <Link to={`${notification.type}?event=${notification.typeId}`}>
-                     {notification.type}
-                     </Link> 
+                      {notification.type}
                     </Typography>
                     <Typography variant="body2">
                       {notification.title}
@@ -112,8 +129,11 @@ const NotificationDropdown: React.FC = () => {
                   <IconButton
                     size="small"
                     sx={{ color: '#fff' }}
-                    onClick={
-                        () => handleDismiss(notification._id)}
+                    onClick={(e) => {
+                      e.stopPropagation(); 
+                      removeNotification()
+                      handleDismiss(notification._id);
+                    }}
                   >
                     <CloseIcon />
                   </IconButton>

@@ -1,7 +1,7 @@
 import { UseMutateFunction } from "@tanstack/react-query"
 
 export interface EventsData {
-    _id: number
+    _id: number | number
     title: string
     description: string
     startDate: string

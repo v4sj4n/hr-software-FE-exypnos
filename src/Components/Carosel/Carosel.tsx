@@ -1,12 +1,16 @@
 import React from 'react'
 import Carousel from 'react-material-ui-carousel'
-import { Paper } from '@mui/material'
+import { Paper, Typography } from '@mui/material'
 
 interface CarouselProps {
     images: string[]
 }
 
 const Example: React.FC<CarouselProps> = ({ images }) => {
+    if (!images || images.length === 0) {
+        return <Typography variant="h6">No images available</Typography>
+    }
+
     return (
         <Carousel sx={{ width: '100%', height: '100%' }}>
             {images.map((image, i) => (
