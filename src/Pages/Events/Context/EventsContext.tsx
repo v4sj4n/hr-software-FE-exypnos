@@ -15,29 +15,22 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
 
     const [showEventModal, setShowEventModal] = useState<boolean>(false)
-    const [selectedEvent, setSelectedEvent] = useState<EventsData | null>(null)
+    const [selectedEvent, setSelectedEvent] = useState<EventsData['_id'] >()
+    const [drawerOpen, setDrawerOpen] = useState(false)
+    const [drawerAction, setDrawerAction] = useState<'create' | 'edit'>('create')
+
     const { currentUser } = useAuth()
     const isAdmin = currentUser?.role === 'admin'
-    const typesofEvent = [
-        'sports',
-        'career',
-        'teambuilding',
-        'training',
-        'other',
-    ]
+    const typesofEvent = ['sports', 'teambuilding', 'training', 'other']
     const { data: users = [] } = useGetAllUsers()
     console.log('gertiiiiiiiiiiiiiiiiiiiiii', users)
     const allEmails = users.map((user) => user.auth.email)
 
-    const handleSeeVoters = (event: EventsData) => {
+    const handleSeeEventDetails = (event: EventsData['_id']) => {
         setSelectedEvent(event)
         setShowEventModal(true)
     }
 
-    const [drawerOpen, setDrawerOpen] = useState(false)
-    const [drawerAction, setDrawerAction] = useState<'create' | 'edit'>(
-        'create',
-    )
 
     const handleOpenDrawer = (
         action: 'create' | 'edit',
@@ -64,7 +57,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         pollQuestion,
         pollOptions,
         participants,
-        isMultipleChoice,
         handleOptionChange,
         handleAddOption,
         includesPoll,
@@ -84,7 +76,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         includePollInEdit,
         editPollQuestion,
         editPollOptions,
-        editIsMultipleChoice,
         handleEditChange,
         handleEditOptionChange,
         handleAddEditOption,
@@ -99,7 +90,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         editParticipants,
         setEditParticipants,
         editType,
-        setEditType,        
+        setEditType,
     } = useUpdateEvent(handleCloseDrawer)
 
 
@@ -110,7 +101,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         handleDeleteEventModal,
         eventToDeleteId,
     } = useDeleteEvent()
- 
+
 
     return (
         <EventsContext.Provider
@@ -148,11 +139,9 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
                 updateToastSeverity,
                 editPollQuestion,
                 editPollOptions,
-                editIsMultipleChoice,
                 type: event.type,
                 pollQuestion,
                 pollOptions,
-                isMultipleChoice,
                 toastOpen,
                 toastMessage,
                 toastSeverity,
@@ -161,7 +150,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
                 allEmails,
                 typesofEvent,
                 eventToDeleteId,
-                handleSeeVoters,
+                handleSeeEventDetails,
                 drawerOpen,
                 handleOpenDrawer,
                 handleCloseDrawer,

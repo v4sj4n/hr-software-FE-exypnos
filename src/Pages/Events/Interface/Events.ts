@@ -1,3 +1,5 @@
+import { UseMutateFunction } from "@tanstack/react-query"
+
 export interface EventsData {
     _id: number
     title: string
@@ -43,16 +45,12 @@ export interface EventsCreationData {
             votes: number
             voters: { _id: string; firstName: string; lastName: string }[]
         }[]
-        isMultipleVote: boolean
     }
 }
 
 export interface EventsContextProps {
-    events: EventsData[]
-    isLoading: boolean
-    onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-    createEvent: (e: React.FormEvent<HTMLButtonElement>) => void
-    updateEvent: (e: React.FormEvent<HTMLButtonElement>) => void
+    createEvent: UseMutateFunction<any, Error, void, unknown>;
+    updateEvent: UseMutateFunction<any, Error, void, unknown>;
     handleDelete: (id: string | number) => void
     handleEditChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     handleOptionChange: (index: number, value: string) => void
@@ -84,11 +82,9 @@ export interface EventsContextProps {
     editPollQuestion: string
     setEditParticipants: React.Dispatch<React.SetStateAction<string[]>>
     editPollOptions: string[]
-    editIsMultipleChoice: boolean
     type: string
     pollQuestion: string
     pollOptions: string[]
-    isMultipleChoice: boolean
     toastOpen: boolean
     toastMessage: string
     toastSeverity: 'success' | 'error'
@@ -97,7 +93,7 @@ export interface EventsContextProps {
     typesofEvent: string[]
     allEmails: string[]
     eventToDeleteId: string | number
-    handleSeeVoters: (event: EventsData) => void
+    handleSeeEventDetails: (event: EventsData) => void
     drawerOpen: boolean
     handleOpenDrawer: (action: 'create' | 'edit', event?: EventsData) => void
     editParticipants: string[]
@@ -108,8 +104,6 @@ export interface EventsContextProps {
     eventPhotos: File[]
     handleLocationChange: (address: string) => void;
     hideToast?: () => void
-    showToast: boolean
-    toast: string
     createdEvents: EventsData[]
     
 }

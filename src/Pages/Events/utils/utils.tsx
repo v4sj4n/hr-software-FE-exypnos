@@ -10,7 +10,7 @@ export const fetchEvents = async (search: string,pageParam: number): Promise<Eve
   return response.data;
 };
 
-export const debouncedSetSearchParams = (setSearchParams: Function) => {
+export const debouncedSetSearchParams = (setSearchParams: (Function)) => {
   return debounce((value: string) => {
     setSearchParams((prev: URLSearchParams) => {
       const newParams = new URLSearchParams(prev);

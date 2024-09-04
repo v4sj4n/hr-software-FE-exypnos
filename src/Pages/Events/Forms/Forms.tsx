@@ -24,10 +24,8 @@ export default function Forms() {
         updateEvent,
         pollQuestion,
         pollOptions,
-        isMultipleChoice,
         includePollInEdit,
         includesPoll,
-        editIsMultipleChoice,
         handleChange,
         handleEditChange,
         event,
@@ -90,17 +88,11 @@ export default function Forms() {
                         shrink
                         name="startDate"
                         type="datetime-local"
-                        onChange={
-                            editingEvent ? handleEditChange : handleChange
-                        }
-                        value={
-                            editingEvent
-                                ? editingEvent.startDate.slice(0, 16)
-                                : event.startDate
+                        onChange={ editingEvent ? handleEditChange : handleChange }
+                        value={ editingEvent ? editingEvent.startDate.slice(0, 16) : event.startDate
                         }
                         width={178}
                     />
-
                     <Input
                         IsUsername
                         label="End Date and Time"
@@ -108,25 +100,15 @@ export default function Forms() {
                         name="endDate"
                         type="datetime-local"
                         width={173}
-                        onChange={
-                            editingEvent ? handleEditChange : handleChange
-                        }
-                        value={
-                            editingEvent
-                                ? editingEvent.endDate.slice(0, 16)
-                                : endDate
-                        }
+                        onChange={ editingEvent ? handleEditChange : handleChange }
+                        value={ editingEvent ? editingEvent.endDate.slice(0, 16) : endDate}
                     />
                 </div>
-
                 <MapComponent
                     onLocationChange={handleLocationChange}
-                    savedLocation={
-                        editingEvent ? editingEvent.location : event.location
-                    }
+                    savedLocation={ editingEvent ? editingEvent.location : event.location}
                     showInput={true}
                 />
-
                 <Input
                     IsUsername
                     label="Description"
@@ -135,13 +117,8 @@ export default function Forms() {
                     multiline
                     rows={4}
                     onChange={editingEvent ? handleEditChange : handleChange}
-                    value={
-                        editingEvent
-                            ? editingEvent.description
-                            : event.description
-                    }
+                    value={ editingEvent ? editingEvent.description : event.description }
                 />
-
                 <Selecter
                     value={editingEvent ? editParticipants : participants}
                     onChange={(newValue) => {
@@ -160,7 +137,6 @@ export default function Forms() {
                     name="participants"
                     label="Participants"
                 />
-
                 <Selecter
                     value={editingEvent ? editType : event.type}
                     onChange={(newValue) => {
@@ -186,28 +162,19 @@ export default function Forms() {
                     name="type"
                     label="Event Type"
                 />
-
                 <div> Add Event Images</div>
                 <Dropzone />
-
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Switch
-                        checked={
-                            editingEvent ? includePollInEdit : includesPoll
-                        }
-                        onChange={(e) =>
-                            editingEvent ? handleEditChange(e) : handleChange(e)
-                        }
+                        checked={ editingEvent ? includePollInEdit : includesPoll }
+                        onChange={(e) => editingEvent ? handleEditChange(e) : handleChange(e) }
                         name="includesPoll"
                         sx={{ color: '#2469FF' }}
                     />
                     <div>
-                        {editingEvent
-                            ? 'Include poll in event'
-                            : 'Add poll to event'}
+                        {editingEvent ? 'Include poll in event' : 'Add poll to event'}
                     </div>
                 </div>
-
                 {(editingEvent ? includePollInEdit : includesPoll) && (
                     <div
                         style={{
@@ -220,45 +187,10 @@ export default function Forms() {
                             label="Poll Question"
                             name="pollQuestion"
                             IsUsername
-                            value={
-                                editingEvent ? editPollQuestion : pollQuestion
-                            }
-                            onChange={
-                                editingEvent ? handleEditChange : handleChange
-                            }
+                            value={ editingEvent ? editPollQuestion : pollQuestion }
+                            onChange={ editingEvent ? handleEditChange : handleChange }
                         />
-
-                        <div
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            Options
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <Switch
-                                    checked={
-                                        editingEvent
-                                            ? editIsMultipleChoice
-                                            : isMultipleChoice
-                                    }
-                                    onChange={(e) =>
-                                        editingEvent
-                                            ? handleEditChange(e)
-                                            : handleChange(e)
-                                    }
-                                    name="isMultipleChoice"
-                                />
-                                <div>Multiple choice</div>
-                            </div>
-                        </div>
-
+                           <>Options</> 
                         {(editingEvent ? editPollOptions : pollOptions).map(
                             (option, index) => (
                                 <Input
@@ -283,21 +215,13 @@ export default function Forms() {
                         )}
 
                         <Button
-                            onClick={
-                                editingEvent
-                                    ? handleAddEditOption
-                                    : handleAddOption
-                            }
+                            onClick={ editingEvent  ? handleAddEditOption : handleAddOption }
                             btnText="Add new option"
                             type={ButtonTypes.SECONDARY}
                             color="#2469FF"
                             borderColor="#2469FF"
-                            disabled={
-                                (editingEvent ? editPollOptions : pollOptions)
-                                    .length >= 3
-                            }
+                            disabled={ (editingEvent ? editPollOptions : pollOptions) .length >= 3}
                         />
-
                         {(editingEvent ? editPollOptions : pollOptions)
                             .length >= 3 && (
                             <div style={{ color: 'red', fontSize: '14px' }}>
@@ -306,9 +230,7 @@ export default function Forms() {
                         )}
                     </div>
                 )}
-
                 <div className={style.border}></div>
-
                 <Button
                     btnText={editingEvent ? 'Update' : 'Save event'}
                     type={ButtonTypes.PRIMARY}

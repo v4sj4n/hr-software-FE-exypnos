@@ -27,11 +27,18 @@
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(3, 405px);
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 16px;
     color: rgb(44, 56, 68);
     width: 100%;
 }
+
+@media (min-width: 1200px) {
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    }
+}
+
 
 .title {
     color: #3F67B7;
