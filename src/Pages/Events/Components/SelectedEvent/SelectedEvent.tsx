@@ -16,18 +16,17 @@ const SelectedEventCard = () => {
     const [, setSearchParams] = useSearchParams()
 
     useEffect(() => {
-        console.log("Selected Event:", selectedEvent); 
+        console.log('Selected Event:', selectedEvent)
         if (selectedEvent?._id) {
-            setSearchParams({ event: selectedEvent._id.toString() });
+            setSearchParams({ event: selectedEvent._id.toString() })
         } else {
-            setSearchParams({});
+            setSearchParams({})
         }
-    
+
         return () => {
-            setSearchParams({});
-        };
-    }, [selectedEvent, setSearchParams]);
-    
+            setSearchParams({})
+        }
+    }, [selectedEvent, setSearchParams])
 
     if (!selectedEvent) {
         return null
@@ -37,7 +36,9 @@ const SelectedEventCard = () => {
         <div className={style.Wrap}>
             {selectedEvent?.photo && selectedEvent.photo.length > 0 ? (
                 <Example images={selectedEvent.photo} />
-            ) : ''}
+            ) : (
+                ''
+            )}
             <div
                 style={{
                     gap: '10px',
@@ -119,6 +120,5 @@ const SelectedEventCard = () => {
         </div>
     )
 }
-
 
 export default SelectedEventCard

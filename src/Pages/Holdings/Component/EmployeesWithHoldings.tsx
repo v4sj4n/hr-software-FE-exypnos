@@ -29,6 +29,10 @@ export const EmployeesWithHoldings = () => {
     const { ref, inView } = useInView()
 
     useEffect(() => {
+        setSearchParams(new URLSearchParams())
+    })
+
+    useEffect(() => {
         if (inView) {
             fetchNextPage()
         }
@@ -66,17 +70,19 @@ export const EmployeesWithHoldings = () => {
                         user={user}
                         searchParams={searchParams}
                         setSearchParams={setSearchParams}
-                        items={{
-                            type: 'Holding',
-                            itemArr: user.assets,
-                        }}
+                        items={
+                            user.assets
+                                ? { type: 'Holding', itemArr: user.assets }
+                                : undefined
+                        }
                     >
                         <div className={style.collapsedData}>
                             <div className={style.collapseDataVacationList}>
                                 <h3>Occupied items</h3>
                                 <div>
                                     <div>
-                                        {user.assets.length > 0 ? (
+                                        {user.assets &&
+                                        user.assets.length > 0 ? (
                                             user.assets.map(({ type, _id }) => (
                                                 <p
                                                     onClick={() => {

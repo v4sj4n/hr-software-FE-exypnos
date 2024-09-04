@@ -39,7 +39,6 @@ export const useCreateAplicant = () => {
     }
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        // console.log("File uploaded:", event.target.files[0]);
         if (event.target.files && event.target.files[0]) {
             setAplicantFormData({
                 ...aplicantFormData,
@@ -71,12 +70,10 @@ export const useCreateAplicant = () => {
         event: React.FormEvent<HTMLButtonElement>,
     ) => {
         event.preventDefault()
-        console.log('Creating new applicant with data:', aplicantFormData)
         const formData = new FormData()
         Object.keys(aplicantFormData).forEach((key) => {
             if (key === 'file' && aplicantFormData.file) {
                 formData.append('file', aplicantFormData.file)
-                console.log('Appending file:', aplicantFormData.file)
             } else if (key === 'technologiesUsed') {
                 formData.append(
                     'technologiesUsed',
@@ -91,16 +88,14 @@ export const useCreateAplicant = () => {
                 )
             }
         })
-        console.log(aplicantFormData)
         setIsLoading(true)
         setError(null)
         try {
-            const response = await AxiosInstance.post('/applicant', formData, {
+            await AxiosInstance.post('/applicant', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             })
-            console.log('Applicant created successfully!', response.data)
             resetForm()
             setShowModal(true)
         } catch (error) {

@@ -6,30 +6,28 @@ import Rating from './components/Rating'
 import { useAuth } from '@/Context/AuthProvider'
 import { useLocation } from 'react-router-dom'
 
+export default function UserPromotion() {
+    const location = useLocation()
+    const queryParams = new URLSearchParams(location.search)
+    const id = queryParams.get('id')
 
-    export default function UserPromotion() {
-        const location = useLocation();
-        const queryParams = new URLSearchParams(location.search);
-        const id = queryParams.get('id');
-    
-        console.log("id", id);
-        if (!id) {
-            return <div>Invalid User</div>
-        }
-        return (
-            <>
-                <div className={style.container}>
-                    <div className={style.firstDiv}>
-                        <Card padding="20px">
-                            <ChartBar id={id} />
-                        </Card>
-                        <Rating id={id} />
-                    </div>
-                    <div className={style.thirdDiv}>
-                        <PromotionCard id={id} />
-                    </div>
-                </div>
-            </>
-        )
+    console.log('id', id)
+    if (!id) {
+        return <div>Invalid User</div>
     }
-    
+    return (
+        <>
+            <div className={style.container}>
+                <div className={style.firstDiv}>
+                    <Card padding="20px">
+                        <ChartBar id={id} />
+                    </Card>
+                    <Rating id={id} />
+                </div>
+                <div className={style.thirdDiv}>
+                    <PromotionCard id={id} />
+                </div>
+            </div>
+        </>
+    )
+}

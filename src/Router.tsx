@@ -25,7 +25,6 @@ import NotFound from './Pages/NotFound/NotFound.tsx'
 import UserPromotion from './Pages/Promotion/UserPromotion.tsx'
 import Promotion from './Pages/Promotion/Promotion.tsx'
 
-
 export default function Router() {
     const router = createBrowserRouter([
         {
@@ -59,7 +58,7 @@ export default function Router() {
                 },
                 {
                     path: '/promotion',
-                    element: <Promotion/>,
+                    element: <Promotion />,
                 },
                 {
                     path: '/userPromotion',

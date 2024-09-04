@@ -1,21 +1,20 @@
-import {
-    VacationFormFields,
-    VacationSchema,
-} from '@/Schemas/Vacations/Vacation.schema'
+import { VacationSchema } from '@/Schemas/Vacations/Vacation.schema'
 import { UseQueryResult } from '@tanstack/react-query'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+// import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+// import { valibotResolver } from '@hookform/resolvers/valibot'
 import dayjs from 'dayjs'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { useUpdateVacation } from '../../Hook'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { VacationContext } from '../../VacationContext'
 import { AxiosError } from 'axios'
-import { valibotResolver } from '@hookform/resolvers/valibot'
 import Selecter from '@/Components/Input/components/Select/Selecter'
 import Input from '@/Components/Input/Index'
 import style from '../../style/vacationForm.module.scss'
+import { useForm } from '@tanstack/react-form'
+import { valibotValidator } from '@tanstack/valibot-form-adapter'
 
 type MyComponentProps = {
     data: UseQueryResult<any, Error>
@@ -24,52 +23,90 @@ type MyComponentProps = {
 export const VacationForm: React.FC<MyComponentProps> = ({
     data: vacation,
 }) => {
+    const [error, setError] = useState<string | null>(null)
     const { handleCloseVacationModalOpen, setToastConfigs } =
         useContext(VacationContext)
     const updater = useUpdateVacation()
-    const {
-        register,
-        handleSubmit,
-        control,
-        setError,
-        formState: { errors, isSubmitting },
-    } = useForm<VacationFormFields>({
+
+    const form = useForm({
         defaultValues: {
             status: vacation.data.status,
             type: vacation.data.type,
             startDate: dayjs(vacation.data.startDate).format('YYYY-MM-DD'),
             endDate: dayjs(vacation.data.endDate).format('YYYY-MM-DD'),
         },
-        resolver: valibotResolver(VacationSchema),
-    })
+        validatorAdapter: valibotValidator(),
+        onSubmit: async ({ value }) => {
+            console.log(value)
 
-    const onSubmit: SubmitHandler<VacationFormFields> = async (
-        data: VacationFormFields,
-    ) => {
-        data.endDate = dayjs(data.endDate).toISOString()
-        data.startDate = dayjs(data.startDate).toISOString()
-
-        updater.mutate({ vacation: data })
-        if (updater.isError) {
-            setToastConfigs({
-                isOpen: true,
-                message: updater.error?.message || 'Failed to update vacation',
-                severity: 'error',
-            })
-            if (updater.error instanceof AxiosError)
-                setError('root', { message: updater.error.response?.data })
-            else {
-                setError('root', { message: 'something happened' })
+            value.endDate = dayjs(value.endDate).toISOString()
+            value.startDate = dayjs(value.startDate).toISOString()
+            updater.mutate({ vacation: value })
+            if (updater.isError) {
+                setToastConfigs({
+                    isOpen: true,
+                    message:
+                        updater.error?.message || 'Failed to update vacation',
+                    severity: 'error',
+                })
+                if (updater.error instanceof AxiosError)
+                    setError(updater.error.response?.data)
+                else {
+                    setError('something happened')
+                }
+            } else {
+                setToastConfigs({
+                    isOpen: true,
+                    message: 'Vacation updated successfully',
+                    severity: 'success',
+                })
+                handleCloseVacationModalOpen()
             }
-        } else {
-            setToastConfigs({
-                isOpen: true,
-                message: 'Vacation updated successfully',
-                severity: 'success',
-            })
-            handleCloseVacationModalOpen()
-        }
-    }
+        },
+    })
+    // const {
+    //     register,
+    //     handleSubmit,
+    //     control,
+    //     setError,
+    //     formState: { errors, isSubmitting },
+    // } = useForm<VacationFormFields>({
+    //     defaultValues: {
+    //         status: vacation.data.status,
+    //         type: vacation.data.type,
+    //         startDate: dayjs(vacation.data.startDate).format('YYYY-MM-DD'),
+    //         endDate: dayjs(vacation.data.endDate).format('YYYY-MM-DD'),
+    //     },
+    //     resolver: valibotResolver(VacationSchema),
+    // })
+
+    // const onSubmit: SubmitHandler<VacationFormFields> = async (
+    //     data: VacationFormFields,
+    // ) => {
+    //     data.endDate = dayjs(data.endDate).toISOString()
+    //     data.startDate = dayjs(data.startDate).toISOString()
+
+    //     updater.mutate({ vacation: data })
+    //     if (updater.isError) {
+    //         setToastConfigs({
+    //             isOpen: true,
+    //             message: updater.error?.message || 'Failed to update vacation',
+    //             severity: 'error',
+    //         })
+    //         if (updater.error instanceof AxiosError)
+    //             setError('root', { message: updater.error.response?.data })
+    //         else {
+    //             setError('root', { message: 'something happened' })
+    //         }
+    //     } else {
+    //         setToastConfigs({
+    //             isOpen: true,
+    //             message: 'Vacation updated successfully',
+    //             severity: 'success',
+    //         })
+    //         handleCloseVacationModalOpen()
+    //     }
+    // }
 
     return (
         <>
@@ -77,14 +114,26 @@ export const VacationForm: React.FC<MyComponentProps> = ({
                 {vacation.data.userId.firstName} {vacation.data.userId.lastName}
             </h3>
             <form
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    form.handleSubmit()
+                }}
                 className={style.formContainer}
             >
-                <div>
-                    <Controller
-                        name="type"
-                        control={control}
-                        render={({ field }) => (
+                <form.Field
+                    name="type"
+                    validators={{
+                        onChange: VacationSchema.entries.type,
+                    }}
+                    children={({
+                        handleChange,
+                        state: {
+                            value,
+                            meta: { errors },
+                        },
+                    }) => (
+                        <div>
                             <Selecter
                                 label="Vacation Type"
                                 name="Vacation Type"
@@ -95,62 +144,101 @@ export const VacationForm: React.FC<MyComponentProps> = ({
                                     'personal',
                                     'maternity',
                                 ]}
-                                value={field.value}
-                                onChange={field.onChange}
+                                value={value}
+                                onChange={(newValue) => handleChange(newValue)}
                             />
-                        )}
-                    />
-                </div>
-                <div>
-                    <Controller
-                        name="status"
-                        control={control}
-                        render={({ field }) => (
+                            {errors && <ErrorText>{errors}</ErrorText>}
+                        </div>
+                    )}
+                />
+
+                <form.Field
+                    name="status"
+                    validators={{
+                        onChange: VacationSchema.entries.status,
+                    }}
+                    children={({
+                        handleChange,
+                        state: {
+                            value,
+                            meta: { errors },
+                        },
+                    }) => (
+                        <div>
                             <Selecter
-                                label="Status"
-                                name="Status"
+                                label="Vacation Status"
+                                name="Vacation Status"
                                 multiple={false}
                                 options={['pending', 'accepted', 'rejected']}
-                                value={field.value}
-                                onChange={field.onChange}
+                                value={value}
+                                onChange={(newValue) => handleChange(newValue)}
                             />
-                        )}
-                    />
-                </div>
+                            {errors && <ErrorText>{errors}</ErrorText>}
+                        </div>
+                    )}
+                />
 
-                <div>
-                    <Input
-                        IsUsername
-                        name="Start Date"
-                        label="Start Date"
-                        type="date"
-                        register={register('startDate')}
-                        placeholder="Start Date"
-                        shrink
-                    />
-                    {errors.startDate && (
-                        <ErrorText>{errors.startDate.message}</ErrorText>
+                <form.Field
+                    name="startDate"
+                    validators={{
+                        onChange: VacationSchema.entries.startDate,
+                    }}
+                    children={({
+                        handleChange,
+                        state: {
+                            value,
+                            meta: { errors },
+                        },
+                    }) => (
+                        <div>
+                            <Input
+                                IsUsername
+                                name="Start Date"
+                                label="Start Date"
+                                type="date"
+                                placeholder="Start Date"
+                                shrink
+                                value={value}
+                                onChange={(e) => handleChange(e.target.value)}
+                            />
+                            {errors && <ErrorText>{errors}</ErrorText>}
+                        </div>
                     )}
-                </div>
-                <div>
-                    <Input
-                        IsUsername
-                        label="End Date"
-                        name="End Date"
-                        shrink
-                        register={register('endDate')}
-                        type="date"
-                        placeholder="End Date"
-                    />
-                    {errors.endDate && (
-                        <ErrorText>{errors.endDate.message}</ErrorText>
+                />
+
+                <form.Field
+                    name="endDate"
+                    validators={{
+                        onChange: VacationSchema.entries.endDate,
+                    }}
+                    children={({
+                        handleChange,
+                        state: {
+                            value,
+                            meta: { errors },
+                        },
+                    }) => (
+                        <div>
+                            <Input
+                                IsUsername
+                                name="End Date"
+                                label="End Date"
+                                type="date"
+                                placeholder="End Date"
+                                shrink
+                                value={value}
+                                onChange={(e) => handleChange(e.target.value)}
+                            />
+                            {errors && <ErrorText>{errors}</ErrorText>}
+                        </div>
                     )}
-                </div>
+                />
+
                 <div className={style.buttonsContainer}>
                     <Button
                         type={ButtonTypes.PRIMARY}
-                        btnText={`${isSubmitting ? 'Submitting' : 'Submit'}`}
-                        disabled={isSubmitting}
+                        btnText={`${form.state.isSubmitting ? 'Submitting' : 'Submit'}`}
+                        disabled={form.state.isSubmitting}
                         isSubmit
                     />
                     <Button
@@ -159,7 +247,7 @@ export const VacationForm: React.FC<MyComponentProps> = ({
                         onClick={handleCloseVacationModalOpen}
                     />
                 </div>
-                {errors.root && <ErrorText>{errors.root.message}</ErrorText>}
+                {error && <ErrorText>{error}</ErrorText>}
             </form>
         </>
     )

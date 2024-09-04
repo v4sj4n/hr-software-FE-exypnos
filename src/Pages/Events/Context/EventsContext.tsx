@@ -1,10 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { EventsData, EventsContextProps } from '../Interface/Events'
-import {
-    useCreateEvent,
-    useUpdateEvent,
-    useDeleteEvent,
-} from '../Hook/index'
+import { useCreateEvent, useUpdateEvent, useDeleteEvent } from '../Hook/index'
 import { useAuth } from '@/Context/AuthProvider'
 import { useGetAllUsers } from '@/Pages/Employees/Hook'
 import { useSearchParams } from 'react-router-dom'
@@ -15,11 +11,12 @@ const EventsContext = createContext<EventsContextProps | undefined>(undefined)
 export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-
     const [showEventModal, setShowEventModal] = useState<boolean>(false)
-    const [selectedEvent, setSelectedEvent] = useState<EventsData| null>(null)
+    const [selectedEvent, setSelectedEvent] = useState<EventsData | null>(null)
     const [drawerOpen, setDrawerOpen] = useState(false)
-    const [drawerAction, setDrawerAction] = useState<'create' | 'edit'>('create')
+    const [drawerAction, setDrawerAction] = useState<'create' | 'edit'>(
+        'create',
+    )
 
     const { currentUser } = useAuth()
     const isAdmin = currentUser?.role === 'admin'
@@ -29,28 +26,26 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     const allEmails = users.map((user) => user.auth.email)
 
     const handleSeeEventDetails = async (event: EventsData) => {
-        try{
+        try {
             const res = await AxiosInstance.get(`/event/${event._id}`)
             console.log('res', res)
             setSelectedEvent(res.data)
             console.log('handleSeeEventDetails', event)
             setShowEventModal(true)
-        }
-        catch(err){
+        } catch (err) {
             console.log(err)
         }
-      
     }
 
-    const [searchParams] = useSearchParams();
-    const eventId = searchParams.get('event');
+    const [searchParams] = useSearchParams()
+    const eventId = searchParams.get('event')
 
-   useEffect(() => {
-    if (eventId) {
-        handleSeeEventDetails({ _id: eventId } as unknown as EventsData);
-        console.log('eventId', eventId)
-    }
-    }, [eventId]);
+    useEffect(() => {
+        if (eventId) {
+            handleSeeEventDetails({ _id: eventId } as unknown as EventsData)
+            console.log('eventId', eventId)
+        }
+    }, [eventId])
 
     const handleOpenDrawer = (
         action: 'create' | 'edit',
@@ -69,7 +64,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
             handleToggleForm()
         }
     }
-
 
     const {
         handleChange,
@@ -90,10 +84,8 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         eventPhotos,
         handleLocationChange,
 
-        createdEvents
+        createdEvents,
     } = useCreateEvent(handleCloseDrawer)
-
-
 
     const {
         editingEvent,
@@ -117,7 +109,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         setEditType,
     } = useUpdateEvent(handleCloseDrawer)
 
-
     const {
         handleDelete,
         closeModal,
@@ -125,7 +116,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         handleDeleteEventModal,
         eventToDeleteId,
     } = useDeleteEvent()
-
 
     return (
         <EventsContext.Provider

@@ -1,6 +1,5 @@
 import { ModalComponent } from '@/Components/Modal/Modal'
 import { useGetItem, useHandleItemReturner } from '../../Hook'
-import style from '../../style/returnAssetModal.module.scss'
 import { TitleCaser } from '@/Helpers/TitleCaser'
 import dayjs from 'dayjs'
 import { useContext } from 'react'
@@ -8,71 +7,54 @@ import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Input from '@/Components/Input/Index'
 import { HoldingsContext } from '../../HoldingsContext'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import {
-    ReturnAssetFormFields,
-    ReturnAssetSchema,
-} from '@/Schemas/Holdings/ReturnAsset.schema'
-import { valibotResolver } from '@hookform/resolvers/valibot'
 import Selecter from '@/Components/Input/components/Select/Selecter'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
-import { AxiosError } from 'axios'
+import { useForm } from '@tanstack/react-form'
+import { valibotValidator } from '@tanstack/valibot-form-adapter'
+import { picklist } from 'valibot'
+import style from '../../style/returnAssetModal.module.scss'
 
 export const ReturnAssetModal = () => {
     const {
         searchParams,
-        itemReturnConfigs,
         handleCloseOnModal: handleClose,
         setToastConfigs,
     } = useContext(HoldingsContext)
     const itemGetter = useGetItem()
 
-    const { mutate, isError, error } = useHandleItemReturner()
+    const { mutateAsync, error } = useHandleItemReturner()
 
-    const {
-        setError,
-        control,
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-    } = useForm<ReturnAssetFormFields>({
-        resolver: valibotResolver(ReturnAssetSchema),
+    const form = useForm({
         defaultValues: {
             status: 'available',
             returnDate: new Date().toISOString().split('T')[0],
         },
-    })
-    const onSubmit: SubmitHandler<ReturnAssetFormFields> = async (
-        data: ReturnAssetFormFields,
-    ) => {
-        mutate({
-            assetId: itemGetter.data._id,
-            status: data.status,
-            returnDate: data.returnDate,
-        })
-        if (isError) {
-            if (error instanceof AxiosError)
-                setError('root', { message: error.response?.data?.message })
-            else {
-                setError('root', { message: 'something happened' })
-            }
 
-            setToastConfigs({
-                isOpen: true,
-                message: 'Error returning item',
-                severity: 'error',
+        onSubmit: async ({ value }) => {
+            console.log(value)
+            await mutateAsync({
+                assetId: itemGetter.data._id,
+                status: value.status,
+                returnDate: value.returnDate,
             })
-        } else {
-            setToastConfigs({
-                isOpen: true,
-                message: 'Item returned successfully',
-                severity: 'success',
-            })
-            setTimeout(() => {
+            console.log(error)
+            if (error) {
+                setToastConfigs({
+                    isOpen: true,
+                    message: 'Error returning item',
+                    severity: 'error',
+                })
+            } else {
+                setToastConfigs({
+                    isOpen: true,
+                    message: 'Item returned successfully',
+                    severity: 'success',
+                })
                 handleClose()
-            }, 2500)
-        }
-    }
+            }
+        },
+        validatorAdapter: valibotValidator(),
+    })
 
     return (
         <ModalComponent
@@ -97,58 +79,86 @@ export const ReturnAssetModal = () => {
                         </div>
                     </div>
                     <form
-                        onSubmit={handleSubmit(onSubmit)}
+                        onSubmit={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            form.handleSubmit()
+                        }}
                         className={style.formContainer}
                     >
                         <h3>Do you want to return the item?</h3>
 
                         <div className={style.inputContainer}>
-                            <div>
-                                <Controller
-                                    name="status"
-                                    control={control}
-                                    render={({ field }) => (
+                            <form.Field
+                                name="status"
+                                validators={{
+                                    onChange: picklist(
+                                        ['available', 'broken'],
+                                        "Please select an item status of 'available' or 'broken'",
+                                    ),
+                                }}
+                                children={(field) => (
+                                    <div>
                                         <Selecter
                                             label="Status"
                                             name="Status"
                                             multiple={false}
                                             options={['available', 'broken']}
-                                            value={field.value}
-                                            onChange={field.onChange}
+                                            value={field.state.value}
+                                            onChange={(newValue) =>
+                                                field.handleChange(
+                                                    newValue as string,
+                                                )
+                                            }
                                         />
-                                    )}
-                                />
-                                {errors.status && (
-                                    <ErrorText>
-                                        {errors.status.message}
-                                    </ErrorText>
+                                        {field.state.meta.errors ? (
+                                            <ErrorText>
+                                                {field.state.meta.errors.join(
+                                                    ', ',
+                                                )}
+                                            </ErrorText>
+                                        ) : null}
+                                    </div>
                                 )}
-                            </div>
-                            <div>
-                                <Input
-                                    className={style.returnDateInput}
-                                    name="returnDate"
-                                    IsUsername
-                                    type="date"
-                                    label="Return Date"
-                                    shrink
-                                    register={register('returnDate')}
-                                    value={itemReturnConfigs.date.split('T')[0]}
-                                />
-                                {errors.returnDate && (
-                                    <ErrorText>
-                                        {errors.returnDate.message}
-                                    </ErrorText>
+                            />
+
+                            <form.Field
+                                name="returnDate"
+                                children={(field) => (
+                                    <div>
+                                        <Input
+                                            className={style.returnDateInput}
+                                            name="returnDate"
+                                            IsUsername
+                                            type="date"
+                                            label="Return Date"
+                                            value={field.state.value}
+                                            onChange={(e) =>
+                                                field.handleChange(
+                                                    e.target.value,
+                                                )
+                                            }
+                                            shrink
+                                        />
+                                        {field.state.meta.errors ? (
+                                            <ErrorText>
+                                                {field.state.meta.errors.join(
+                                                    ', ',
+                                                )}
+                                            </ErrorText>
+                                        ) : null}
+                                    </div>
                                 )}
-                            </div>
+                            />
                         </div>
                         <div className={style.formButtonContainer}>
                             <Button
                                 type={ButtonTypes.PRIMARY}
                                 btnText={
-                                    isSubmitting ? 'Returning...' : 'Return'
+                                    form.state.isSubmitting
+                                        ? 'Returning...'
+                                        : 'Return'
                                 }
-                                disabled={isSubmitting}
                                 isSubmit
                             />
                             <Button
@@ -157,6 +167,8 @@ export const ReturnAssetModal = () => {
                                 onClick={handleClose}
                             />
                         </div>
+
+                        {error && <ErrorText>{error.message}</ErrorText>}
                     </form>
                 </div>
             )}

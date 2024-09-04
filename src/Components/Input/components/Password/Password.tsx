@@ -8,7 +8,6 @@ import { inputStyles } from '../../Styles'
 import { InputProps } from '../Interface'
 
 const PasswordInput: React.FC<InputProps> = (props) => {
-    const { register } = props
     return (
         <FormControl fullWidth>
             <TextField
@@ -22,7 +21,6 @@ const PasswordInput: React.FC<InputProps> = (props) => {
                 variant="filled"
                 size="small"
                 id={props.id}
-                {...register}
                 type={props.type === true ? 'text' : 'password'}
                 InputLabelProps={{
                     style: {

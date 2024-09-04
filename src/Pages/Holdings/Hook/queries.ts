@@ -1,5 +1,4 @@
 import AxiosInstance from '@/Helpers/Axios'
-import { FormEvent } from 'react'
 
 const LIMIT = 5
 
@@ -12,8 +11,6 @@ export const getHoldings = async ({
     users: string
     search: string
 }) => {
-    console.log('Getting holdings:', pageParam)
-
     const response = await AxiosInstance.get(
         `/asset/user?users=${users}&search=${search}&page=${pageParam}&limit=${LIMIT}`,
     )
@@ -46,12 +43,10 @@ export const handleItemReturn = async (
 }
 
 export const handleItemAssign = async (
-    event: FormEvent<HTMLFormElement>,
     assetId: string,
     userId: string,
     date: string,
 ) => {
-    event.preventDefault()
     const payload = {
         userId,
         takenDate: date,

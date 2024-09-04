@@ -1,26 +1,25 @@
 .itemAssigner {
-    > h3 {
-        font-size: 1.25rem;
-        margin-bottom: 1rem;
-    }
-}
-
-.buttonContainer {
-    margin-top: 0.5rem;
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    justify-content: end;
-
-    > button {
-        padding: 0.5rem 1rem;
-        cursor: pointer;
-        height: 2.5rem;
-    }
-}
-
-.inputContainer {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 0.5rem;
+}
+
+.modalTitle {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+}
+
+.buttonsContainer {
+    grid-column: 1 / span 2;
+    display: flex;
+    justify-content: end;
+    gap: 0.5rem;
+
+    > button {
+        padding: 0.5rem 1rem;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
 }

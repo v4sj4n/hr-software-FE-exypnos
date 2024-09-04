@@ -20,9 +20,7 @@ export const useApplicantById = () => {
                 `/applicant/${id}`,
             )
             setApplicant(response.data)
-            console.log('Applicant fetched:', response.data)
         } catch (error) {
-            console.error('Error fetching data:', error)
             setApplicant(null)
         }
     }, [id])
