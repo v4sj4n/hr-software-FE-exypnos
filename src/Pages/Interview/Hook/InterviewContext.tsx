@@ -4,6 +4,7 @@ import { DropResult } from 'react-beautiful-dnd'
 import { useGetAllInterviews, applicantsData } from '.'
 import { formatDate, getInterviewsByPhase } from './utils'
 import AxiosInstance from '@/Helpers/Axios'
+import Toast from '@/Components/Toast/Toast'
 
 export interface Interview extends applicantsData {
     phase: string
@@ -81,6 +82,10 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     const phases = ['first_interview', 'second_interview', 'rejected', 'employed']
     const [scheduleType, setScheduleType] = useState<'schedule' | 'reschedule'>('schedule')
     const [filteredInterviews, setFilteredInterviews] = useState<Interview[]>([])
+    const [toastOpen, setToastOpen] = useState(false)
+    const [toastMessage, setToastMessage] = useState('')
+    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>('success')
+
 
     useEffect(() => {
         if (interviewsData && Array.isArray(interviewsData)) {
@@ -123,12 +128,13 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
     const fetchFilteredInterviews = async (
         currentPhase?: string,
+        status?: string,
         startDate?: Date,
         endDate?: Date
     ): Promise<Interview[]> => {
         try {
             const params: any = {}
-            if (currentPhase) params.currentPhase = currentPhase
+            if (currentPhase && status ) params.currentPhase = currentPhase
             if (startDate) params.startDate = startDate.toISOString()
             if (endDate) params.endDate = endDate.toISOString()
 
@@ -170,7 +176,7 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                 status: 'rejected',
                 currentPhase: 'rejected',
             })
-
+    
             if (response.status === 200) {
                 setInterviews((prevInterviews) =>
                     prevInterviews.map((i) =>
@@ -180,15 +186,19 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                     )
                 )
                 setFilteredInterviews((prevInterviews) =>
-                    prevInterviews.map((i) =>
-                        i._id === interview._id
-                            ? { ...i, status: 'rejected', currentPhase: 'rejected' }
-                            : i
-                    )
+                    prevInterviews.filter((i) => i._id !== interview._id) // Remove from the current tab
                 )
+    
+                // Trigger toast for rejection
+                setToastMessage('This candidate will now be found in the rejected tab')
+                setToastSeverity('success')
+                setToastOpen(true)
             }
         } catch (error) {
             console.error('Failed to cancel interview:', error)
+            setToastMessage('Failed to reject the candidate')
+            setToastSeverity('error')
+            setToastOpen(true)
         }
     }
 
@@ -264,7 +274,7 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         try {
             let newPhase = interview.currentPhase
             let status = interview.status
-
+    
             if (interview.currentPhase === 'first_interview') {
                 newPhase = 'second_interview'
                 status = 'active'
@@ -272,12 +282,12 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                 status = 'employed'
                 newPhase = 'employed'
             }
-
+    
             const response = await AxiosInstance.patch(`/applicant/${interview._id}`, {
                 status: status,
                 currentPhase: newPhase,
             })
-
+    
             if (response.status === 200) {
                 setInterviews((prevInterviews) =>
                     prevInterviews.map((i) =>
@@ -293,15 +303,18 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                             : i
                     )
                 )
-
-                if (newPhase === 'second_interview') {
-                    setSelectedInterview(interview)
-                    setIsReschedule(false)
-                    setIsModalOpen(true)
+    
+                if (status === 'employed') {
+                    setToastMessage('This candidate will now be found as an employee')
+                    setToastSeverity('success')
+                    setToastOpen(true)
                 }
             }
         } catch (error) {
             console.error('Failed to update interview status:', error)
+            setToastMessage('Failed to accept the candidate')
+            setToastSeverity('error')
+            setToastOpen(true)
         }
     }
 
@@ -387,6 +400,14 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             }}
         >
             {children}
+            <Toast
+            
+                open={toastOpen}
+                message={toastMessage}
+                severity={toastSeverity}
+                onClose={() => (false)}
+
+            />
         </InterviewContext.Provider>
     )
 }

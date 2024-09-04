@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import CheckIcon from '@mui/icons-material/Check'
 import DeleteIcon from '@mui/icons-material/Delete'
-import EditIcon from '@mui/icons-material/Edit'
+import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import { Tooltip, Tabs, Tab } from '@mui/material'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { InterviewProvider, useInterviewContext } from './Hook/InterviewContext'
@@ -11,7 +11,6 @@ import Button from '@/Components/Button/Button'
 import RescheduleModal from './Component/ScheduleForm'
 import Input from '@/Components/Input/Index'
 import Selecter from '@/Components/Input/components/Select/Selecter'
-import Toast from '@/Components/Toast/Toast'
 
 function InterviewKanbanContent() {
     const {
@@ -46,7 +45,6 @@ function InterviewKanbanContent() {
 
     useEffect(() => {
         if (isFiltered) {
-            // When filtered, show only the interviews for the current tab
             const tabFilteredInterviews = filteredInterviews.filter((interview) => {
                 if (currentTab === 'first_interview' && interview.currentPhase === 'first_interview') return true
                 if (currentTab === 'second_interview' && interview.currentPhase === 'second_interview') return true
@@ -56,7 +54,6 @@ function InterviewKanbanContent() {
             })
             setFilteredInterviews(tabFilteredInterviews)
         } else {
-            // When not filtered, show all interviews for the current tab
             const tabFilteredInterviews = interviews.filter((interview) => {
                 if (currentTab === 'first_interview' && interview.currentPhase === 'first_interview') return true
                 if (currentTab === 'second_interview' && interview.currentPhase === 'second_interview') return true
@@ -90,7 +87,7 @@ function InterviewKanbanContent() {
         setCurrentPhase('first_interview')
         setStartDate(null)
         setEndDate(null)
-        fetchFilteredInterviews() // Fetch all interviews again
+        fetchFilteredInterviews()
     }
 
     if (loading) return <div>Loading...</div>
@@ -195,13 +192,14 @@ function InterviewKanbanContent() {
                                                             onClick={() => handleNavigateToProfile(interview._id.toString())}
                                                             className={style.candidateName}
                                                         >
-                                                            <b>{`${interview.firstName} ${interview.lastName}`}</b>{' '}
+                                                            {`${interview.firstName} ${interview.lastName}`}{' '}
                                                             {interview.positionApplied}
                                                         </h3>
                                                         {currentTab !== 'employed' && currentTab !== 'applicant' && (
                                                             <>
                                                                 <p>
-                                                                    Interview Date:{' '}
+                                                                  
+                                                                  <b> Interview Date </b> :{' '}
                                                                     {interview.currentPhase === 'second_interview'
                                                                         ? formatDate(interview.secondInterviewDate)
                                                                         : formatDate(interview.firstInterviewDate)}
@@ -231,7 +229,7 @@ function InterviewKanbanContent() {
                                                                             alignItems="center"
                                                                             color="#2457A3"
                                                                             borderColor="#2457A3"
-                                                                            icon={<EditIcon />}
+                                                                            icon={<EditCalendarIcon />}
                                                                             onClick={() => handleOpenModal(interview, true)}
                                                                         />
                                                                     </span>

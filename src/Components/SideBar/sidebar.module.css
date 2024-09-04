@@ -5,6 +5,7 @@
     top: 62px;
     z-index: 1;
     height: 100%;
+    /* background-image: linear-gradient(180deg, #d8b4f2, #8f56cfbd); */
 }
 
 .toggleButton {

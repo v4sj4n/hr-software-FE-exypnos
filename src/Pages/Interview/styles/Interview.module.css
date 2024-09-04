@@ -1,124 +1,121 @@
+
 .kanbanBoard {
+    display: flex;
+    flex-direction: column;
+    background-color: #F5F3FF; 
     padding: 20px;
-    background-color: transparent; /* Soft white */
-    min-height: 100vh;
-    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    height: 2000px;
+}
+
+.filterContainer {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #EDEBFF; /* Lilac background for filters */
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.filterField {
+    background-color: #E0DFFF; /* Input background color */
+    border: 1px solid #C4BFEA;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
 }
 
 .kanbanColumns {
     display: flex;
     justify-content: space-between;
-    gap: 24px;
-}
+    gap: 20px;
+    height: auto;
 
+}
 
 .kanbanColumn {
-    flex: 1;
-    min-width: 280px;
-    background-color: #ffffff; /* Soft white */
-    border-radius: 16px;
-    padding: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.kanbanColumn h2 {
-    font-size: 20px;
-    color: #5c2d91; /* Purple */
-    padding-bottom: 14px;
-    border-bottom: 2px solid #dcdcdc; /* Soft white */
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.kanbanList {
-    min-height: 320px;
+    background-color: transparent; 
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    height: auto;
 }
 
 .kanbanItem {
-    background-color: #ffffff; /* Soft white */
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    border: 1px solid #e4e4e4; /* Soft white */
-    transition:
-        background-color 0.3s ease,
-        box-shadow 0.3s ease;
+    background-color: #EDEBFF; 
+    border: 1px solid #C4BFEA;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    transition: transform 0.2s;
+    height: auto;
 }
 
 .kanbanItem:hover {
-    background-color: #f3e8f7; /* Lavender */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transform: scale(1.02);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
-.kanbanItem h3 {
-    margin: 0 0 6px 0;
-    color: #5c2d91; /* Purple */
+.candidateName {
+    font-weight: bold;
+    color: #4A3C82; 
+    cursor: pointer;
+    margin-bottom: 8px;
 }
 
-.kanbanItem p {
-    margin: 0;
-    font-size: 15px;
-    color: #7a5c9b; /* Lilac */
+.applicantCount {
+    color: #8F80C9;
 }
 
 .buttonContainer {
     display: flex;
-    justify-content: space-between;
-    margin-top: 12px;
-    gap: 12px;
+    justify-content: flex-end;
+    gap: 10px;
 }
 
-.buttonContainer button {
-    transition:
-        background-color 0.2s ease,
-        transform 0.2s ease;
+.kanbanList {
+    margin-top: 10px;
+    max-height: 100px;
 }
 
-.buttonContainer button:hover {
-    background-color: #e0e0e0;/* Soft white */
-    transform: scale(1.05);
+.kanbanList p {
+    color: #4A3C82; 
 }
 
-.buttonContainer button:active {
-    transform: scale(0.95);
-}
-
-.candidateName:hover {
-    color: #7a5c9b; 
-}
-
-.applicantCount {
-    font-size: 15px;
-    color: #ffffff; 
-    background-color: #5c2d91; 
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-weight: bold;
-}
-
-.MuiTabs-root {
-    border-bottom: 2px solid #dcdcdc; 
+.tabs {
+    margin-bottom: 20px;
+    border-bottom: 2px solid #C4BFEA; 
 }
 
 .MuiTab-root {
-    min-width: 120px;
+    color: #4A3C82 !important; 
+    font-weight: bold !important;
 }
 
-.MuiTab-root.Mui-selected {
-    color: #5c2d91; 
-    font-weight: bold;
+.Mui-selected {
+    color: #D1C2FF !important; 
+    font-weight: bold !important;
 }
 
-.MuiTab-root:hover {
-    color: #7a5c9b; 
+.MuiButton-root {
+    background-color: #4A3C82 !important; 
+    color: #FFFFFF !important; 
 }
 
-.filterContainer {
-    display:  flex;
-    justify-content: flex-end;
-    margin-top: 20px;
-    gap: 20px;
+.MuiButton-root:hover {
+    background-color: #6A52A8 !important; 
+}
+
+.MuiTooltip-tooltip {
+    background-color: #4A3C82 !important; 
+    color: #FFFFFF !important; 
+}
+
+.rescheduleModal {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
