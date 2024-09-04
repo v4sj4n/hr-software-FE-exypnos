@@ -17,6 +17,7 @@ import { useGetAllEvents } from './Hook'
 import { useInView } from 'react-intersection-observer'
 import { useEffect } from 'react'
 import { EventsData } from './Interface/Events'
+import EventsContentLoader from '@/Components/Content/ContentLoader'
 
 function EventsContentAndComponents() {
     const {
@@ -35,16 +36,13 @@ function EventsContentAndComponents() {
         toastSeverity,
         isAdmin,
         eventToDeleteId,
-        handleSeeVoters,
+        handleSeeEventDetails,
         handleOpenDrawer,
     } = useEvents()
 
-    const {data: events , isFetchingNextPage, fetchNextPage,isLoading, onSearchChange } = useGetAllEvents()
-    
-    const {ref, inView} = useInView()
+    const { data: events, isFetchingNextPage, fetchNextPage, isLoading, onSearchChange } = useGetAllEvents()
 
-
-    console.log('eventeeeeeee', events)
+    const { ref, inView } = useInView()
 
     useEffect(() => {
         if (inView) {
@@ -52,11 +50,17 @@ function EventsContentAndComponents() {
         }
     }, [fetchNextPage, inView])
 
+    if (isLoading) {
 
 
-    if(isLoading) return <div>Loading...</div>
-
-
+        return (
+            <div className={style.grid}>
+                <EventsContentLoader />
+                <EventsContentLoader />
+                <EventsContentLoader />
+            </div>
+        )
+    }
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -101,7 +105,8 @@ function EventsContentAndComponents() {
             </div>
             <div className={style.contanier}>
                 <div className={style.grid}>
-                    {events?.pages.map((page) =>
+
+                    {events?.pages.map((page) => (
                         page.data.map((event: EventsData) => (
                             <Card
                                 key={event._id}
@@ -176,14 +181,16 @@ function EventsContentAndComponents() {
                                             isAdmin ? 'See Details' : 'Vote'
                                         }
                                         type={ButtonTypes.SECONDARY}
-                                        onClick={() => handleSeeVoters(event)}
+                                        onClick={() => handleSeeEventDetails(event)}
                                         cursor="pointer"
                                         padding="8px"
                                     />
                                 </div>
                             </Card>
-                        )),
-                    )}
+
+                        ))
+                    ))}
+
                 </div>
                 {showModal && (
                     <ModalComponent open={showModal} handleClose={closeModal}>

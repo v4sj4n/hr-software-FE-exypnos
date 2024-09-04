@@ -1,6 +1,5 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import {
-    NotificationsOutlined as NotificationsIcon,
     SettingsOutlined as SettingsOutlinedIcon,
     Logout as LogoutIcon,
     PermIdentity as PermIdentityIcon,
@@ -11,29 +10,18 @@ import style from './header.module.css'
 import { useAuth } from '../../Context/AuthProvider'
 import { Link, useNavigate } from 'react-router-dom'
 import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
-import AxiosInstance from '@/Helpers/Axios'
-import Card from '../Card/Card'
-import CloseIcon from '@mui/icons-material/Close'
-// import DrawerComponent from '../Drawer/Drawer'
+import { EventsProvider } from '@/Pages/Events/Context/EventsContext'
+import NotificationDropdown from '@/Pages/Notification/Notification'
 
-interface NotificationData {
-    _id: string
-    title: string
-    content: string
-    type: string
-    typeId: string
-}
 
-export const Header = () => {
+export const HeaderContent = () => {
     const { isSidebarOpen: isOpen, toggleSidebar } =
         useContext(SidebarHeaderContext)
     const [showDropdown, setShowDropdown] = useState(false)
-    const [showDropdownNotification, setShowDropdownNotification] =
-        useState(false)
+  
     const navigate = useNavigate()
     const toggleDropdown = () => setShowDropdown(!showDropdown)
-    const toggleDropdownNotification = () =>
-        setShowDropdownNotification(!showDropdownNotification)
+
 
     const { logout, currentUser } = useAuth()
 
@@ -41,27 +29,8 @@ export const Header = () => {
         logout()
         navigate('/')
     }
+  
 
-    const [notification, setNotification] = useState<NotificationData[]>([])
-    const currentUserId = currentUser?._id
-
-    useEffect(() => {
-        AxiosInstance.get<NotificationData[]>(
-            `notification/user/${currentUserId}`,
-        )
-            .then((response) => {
-                setNotification(response.data)
-                console.log('Notification fetch:', response.data)
-                setNotification(response.data)
-            })
-            .catch((error) => {
-                console.error('Error fetching data:', error)
-            })
-    }, [currentUserId])
-
-    const updateSatusAndNvigate = () => {
-        AxiosInstance.patch(`notification/${notification[0]?._id}`)
-    }
     const handleProfileClick = () => {
         navigate(`/profile/${currentUser?._id}`)
     }
@@ -91,11 +60,7 @@ export const Header = () => {
             </div>
             <div className={style.headerRight}>
                 <div className={style.icon}>
-                    <NotificationsIcon
-                        onClick={toggleDropdownNotification}
-                        style={{ cursor: 'pointer' }}
-                    />
-                    <span className={style.badge}>{notification.length}</span>
+                <NotificationDropdown/>
                 </div>
                 <div className={style.icon} onClick={toggleDropdown}>
                     <img
@@ -108,29 +73,7 @@ export const Header = () => {
                         }}
                     />
                     <div className={style.username}></div>
-                    {showDropdownNotification && (
-                        <div className={style.notification}>
-                            <div>
-                                {' '}
-                                {notification.map((notification) => (
-                                    <div key={notification._id}>
-                                        <Link
-                                            onClick={updateSatusAndNvigate}
-                                            to={`/${notification.type}`}
-                                        >
-                                            <Card border='1px solid #ebebeb '>
-                                                <div style={{display:"flex", justifyContent:"space-between"}}>
-                                                    {notification.title}
-                                                    <CloseIcon sx={{width:"20px", height:"20px"}}/>
-                                                    </div>
-                                                {notification.type}
-                                                </Card>
-                                        </Link>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
+                    
                     {showDropdown && (
                         <div className={style.dropdown}>
                             <div
@@ -156,3 +99,12 @@ export const Header = () => {
         </nav>
     )
 }
+
+const Header: React.FC = () => {
+    return (
+        <EventsProvider>
+            <HeaderContent />
+        </EventsProvider>
+    )
+}
+export default Header

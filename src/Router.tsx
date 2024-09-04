@@ -41,10 +41,6 @@ export default function Router() {
             path: '/applicant/confirm',
             element: <EmailConfirmation />,
         },
-        // {
-        //     path: 'Notification',
-        //     element: <Notification />,
-        // },
         {
             path: '/forgot-password',
             element: <ResetPass />,
@@ -52,10 +48,6 @@ export default function Router() {
         {
             path: 'career',
             element: <Career />,
-        },
-        {
-            path: 'pagination',
-            element: <UserPromotion />,
         },
         {
             path: '/',

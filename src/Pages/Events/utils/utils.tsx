@@ -11,17 +11,16 @@ export const fetchEvents = async (search: string,pageParam: number): Promise<Eve
   return response.data;
 };
 
-
-export const debouncedSetSearchParams = (setSearchParams: Function) => {
-    return debounce((value: string) => {
-        setSearchParams((prev: URLSearchParams) => {
-            const newParams = new URLSearchParams(prev)
-            if (value) {
-                newParams.set('search', value)
-            } else {
-                newParams.delete('search')
-            }
-            return newParams
-        })
-    }, 500)
-}
+export const debouncedSetSearchParams = (setSearchParams: (Function)) => {
+  return debounce((value: string) => {
+    setSearchParams((prev: URLSearchParams) => {
+      const newParams = new URLSearchParams(prev);
+      if (value) {
+        newParams.set('search', value);
+      } else {
+        newParams.delete('search');
+      }
+      return newParams;
+    });
+  }, 500);
+};
