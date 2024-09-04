@@ -99,7 +99,7 @@ const EmailConfirmation: React.FC = () => {
         }
 
         confirm()
-    }, [token])
+    }, [navigate, token])
 
     useEffect(() => {
         if (status === 'success') {
