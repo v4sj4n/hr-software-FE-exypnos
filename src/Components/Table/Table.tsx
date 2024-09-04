@@ -64,7 +64,7 @@ export default function DataTable<T extends GridValidRowModel>({
                 sx={{
                     ...TableStyles,
                     '& .colored-row': {
-                        backgroundColor: '#f4f4f4',
+                        backgroundColor: '#5f43b2',
                     },
                     '& .MuiDataGrid-row': {
                         cursor: 'pointer',

@@ -1,3 +1,4 @@
+import { colors } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
 export const inputStyles = {
@@ -55,7 +56,7 @@ export const chekboxStyles = {
 //#
 
 export const TableStyles = {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
     fontFamily: '"Outfit", sans-serif',
     borderRadius: '5px',
     overflow: 'hidden',
@@ -67,6 +68,7 @@ export const TableStyles = {
         fontFamily: '"Outfit", sans-serif',
         borderTopLeftRadius: '5px',
         borderTopRightRadius: '5px',
+        colors:'rgba(255, 255, 255, 0.7)'
     },
     '& .MuiDataGrid-row': {
         backgroundColor: '#FFFFFF',

@@ -61,21 +61,23 @@ const DashboardContent: React.FC = () => {
                         </div>
                     </div>
                     <div className={style.middleRow}>
-                        <Card1 padding="20px" borderRadius="15px" flex="1">
+                        <Card1 padding="20px" borderRadius="15px" flex="1" backgroundColor='rgba(255, 255, 255, 0.7)
+'>
                             <h2 style={{ justifyContent: 'flex-start' }}>
                                 Calendar
                             </h2>
                             <Calendar />
                         </Card1>
-                        <Card1 padding="20px" borderRadius="15px" flex="2">
+                        <Card1 padding="20px" borderRadius="15px" flex="2" backgroundColor='rgba(255, 255, 255, 0.7)'>
                             <InfoSection />
                         </Card1>
-                        <Card1 padding="20px" borderRadius="15px" flex="2">
+                        <Card1 padding="20px" borderRadius="15px" flex="2" backgroundColor='rgba(255, 255, 255, 0.7)'>
                             <h2>Employee Status</h2>
                             <PieChartComponent />
                         </Card1>
                     </div>
                     <Card1
+                    backgroundColor='rgba(255, 255, 255, 0.7)'
                         padding="20px"
                         border="15px"
                         marginTop="20px"

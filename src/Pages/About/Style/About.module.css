@@ -1,7 +1,7 @@
 .container {
   width: 100%;
   margin: 0 auto;
-  background-color: #f0f5ff;
+  background-color: transparent;
   color: #3F67B7;
 }
 
@@ -12,7 +12,7 @@
 
 .heroImage {
   width: 100%;
-  height: 50vh;
+  height: 55vh;
 }
 .infoSection h2{
   color: #3F67B7;
@@ -40,16 +40,20 @@
   max-width: 1200px;
   margin: 50px 0;
 }
+.infoSection p{
+  font-size: larger;
+}
 
 .carouselSection {
-  margin-top: 50px;
-  text-align: center;
+  background-color: var(--light-gray);
+  padding: 40px 0;
 }
 
 .carouselTitle {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: #3F67B7;
+  font-size: 1.8rem;
+  color: var(--primary);
+  margin-bottom: 30px;
+  text-align: center;
 }
 
 .ctaContainer {

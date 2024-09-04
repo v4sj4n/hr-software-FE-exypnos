@@ -102,6 +102,7 @@ function EventsContentAndComponents() {
                         page.data.map((event: EventsData) => (
 
                             <Card
+                            backgroundColor='rgba(255, 255, 255, 0.7)'
                                 key={event._id}
                                 borderRadius="5px"
                                 border="1px solid #EBEBEB"
@@ -131,7 +132,7 @@ function EventsContentAndComponents() {
                                                         sx={{
                                                             height: 20,
                                                             width: 20,
-                                                            color: '#6B7280',
+                                                            color: '#5f43b2',
                                                         }}
                                                     />
                                                 </div>
@@ -160,7 +161,7 @@ function EventsContentAndComponents() {
                                                     sx={{
                                                         height: 20,
                                                         width: 20,
-                                                        color: '#6B7280',
+                                                        color: '#5f43b2',
                                                     }}
                                                 />
                                             </div>
@@ -171,6 +172,7 @@ function EventsContentAndComponents() {
                                         btnText={
                                             isAdmin ? 'See Details' : 'Vote'
                                         }
+                                        color='#5f43b2'
                                         type={ButtonTypes.SECONDARY}
                                         onClick={() => handleSeeVoters(event)}
                                         cursor="pointer"
@@ -225,7 +227,7 @@ function EventsContentAndComponents() {
                 {showEventModal && (
                     <ModalComponent
                         height="100%"
-                        width="400px"
+                        width="700px"
                         padding="0"
                         open={showEventModal}
                         handleClose={() => setShowEventModal(false)}

@@ -1,11 +1,12 @@
 import image from '/Images/oficePic.jpg';
 import styles from './Style/About.module.css';
 import image5 from '/Images/employe.webp';
+// import image6 from '/Images/office.jpg';
+
 import ImageCarousel from './Component/ImageCarousel';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from 'react';
-// import Example from '@/Components/Carosel/Carosel';
 import Stepper from './Component/Stepper';
 
 const About = () => {

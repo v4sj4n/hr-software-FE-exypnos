@@ -113,7 +113,7 @@ export const Header = () => {
                                     <div key={notification._id}>
                                         <Link
                                             onClick={updateSatusAndNvigate}
-                                            to={`/${notification.type}`}
+                                            to={`/${notification.type}?event=${notification.typeId}`}
                                         >
                                             <div>{notification.title}</div>
                                             <div> {notification.type}</div>
