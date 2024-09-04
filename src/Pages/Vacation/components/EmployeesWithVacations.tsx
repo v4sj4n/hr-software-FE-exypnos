@@ -46,16 +46,21 @@ export const EmployeesWithVacations = () => {
                         user={user}
                         searchParams={searchParams}
                         setSearchParams={setSearchParams}
-                        items={{
-                            type: 'Vacation',
-                            itemArr: user.vacations,
-                        }}
+                        items={
+                            user.vacations
+                                ? {
+                                      type: 'Vacation',
+                                      itemArr: user.vacations,
+                                  }
+                                : undefined
+                        }
                     >
                         <div className={style.collapsedData}>
                             <div className={style.collapseDataVacationList}>
                                 <h3>Vacations this year</h3>
                                 <div>
-                                    {user.vacations.length > 0 ? (
+                                    {user.vacations &&
+                                    user.vacations.length > 0 ? (
                                         user.vacations.map(({ type, _id }) => (
                                             <p key={_id}>{type}</p>
                                         ))

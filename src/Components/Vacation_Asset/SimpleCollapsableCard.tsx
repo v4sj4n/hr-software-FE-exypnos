@@ -17,7 +17,7 @@ type SimpleCollapsableCardProps = {
     }
     searchParams: URLSearchParams
     setSearchParams: Dispatch<React.SetStateAction<URLSearchParams>>
-    items: {
+    items?: {
         type: string
         itemArr: Vacation[] | Asset[]
     }
@@ -92,7 +92,7 @@ export default function SimpleCollapsableCard({
                             <ExpandMore fontSize="medium" />
                         )}
                     </div>
-                    {searchParams.get('selectedUser') !== _id && (
+                    {searchParams.get('selectedUser') !== _id && items && (
                         <p>
                             {items.itemArr.length} {items.type}
                             {items.itemArr.length === 1 ? '' : 's'}

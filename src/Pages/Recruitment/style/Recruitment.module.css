@@ -67,19 +67,17 @@
 }
 
 @media (max-width: 1250px) {
-    .illustration{
+    .illustration {
         display: none;
     }
 
-    .cardContainer{
+    .cardContainer {
         width: 55vw !important;
     }
-
 }
 
-
 @media (max-width: 1250px) {
-    .cardContainer{
+    .cardContainer {
         width: 75vw !important;
     }
 }
