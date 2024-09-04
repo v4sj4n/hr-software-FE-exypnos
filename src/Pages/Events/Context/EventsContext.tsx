@@ -1,8 +1,10 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { EventsData, EventsContextProps } from '../Interface/Events'
 import { useCreateEvent, useUpdateEvent, useDeleteEvent } from '../Hook/index'
 import { useAuth } from '@/Context/AuthProvider'
 import { useGetAllUsers } from '@/Pages/Employees/Hook'
+import { useSearchParams } from 'react-router-dom'
+import AxiosInstance from '@/Helpers/Axios'
 
 const EventsContext = createContext<EventsContextProps | undefined>(undefined)
 
@@ -10,29 +12,40 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
     const [showEventModal, setShowEventModal] = useState<boolean>(false)
-    const [selectedEvent, setSelectedEvent] = useState<EventsData | null>(null)
+    const [selectedEvent, setSelectedEvent] = useState<EventsData| null>(null)
+    const [drawerOpen, setDrawerOpen] = useState(false)
+    const [drawerAction, setDrawerAction] = useState<'create' | 'edit'>('create')
+
     const { currentUser } = useAuth()
     const isAdmin = currentUser?.role === 'admin'
-    const typesofEvent = [
-        'sports',
-        'career',
-        'teambuilding',
-        'training',
-        'other',
-    ]
+    const typesofEvent = ['sports', 'teambuilding', 'training', 'other']
     const { data: users = [] } = useGetAllUsers()
     console.log('gertiiiiiiiiiiiiiiiiiiiiii', users)
     const allEmails = users.map((user) => user.auth.email)
 
-    const handleSeeVoters = (event: EventsData) => {
-        setSelectedEvent(event)
-        setShowEventModal(true)
+    const handleSeeEventDetails = async (event: EventsData) => {
+        try{
+            const res = await AxiosInstance.get(`/event/${event._id}`)
+            console.log('res', res)
+            setSelectedEvent(res.data)
+            console.log('handleSeeEventDetails', event)
+            setShowEventModal(true)
+        }
+        catch(err){
+            console.log(err)
+        }
+      
     }
 
-    const [drawerOpen, setDrawerOpen] = useState(false)
-    const [drawerAction, setDrawerAction] = useState<'create' | 'edit'>(
-        'create',
-    )
+    const [searchParams] = useSearchParams();
+    const eventId = searchParams.get('event');
+
+   useEffect(() => {
+    if (eventId) {
+        handleSeeEventDetails({ _id: eventId } as unknown as EventsData);
+        console.log('eventId', eventId)
+    }
+    }, [eventId]);
 
     const handleOpenDrawer = (
         action: 'create' | 'edit',
@@ -59,7 +72,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         pollQuestion,
         pollOptions,
         participants,
-        isMultipleChoice,
         handleOptionChange,
         handleAddOption,
         includesPoll,
@@ -80,7 +92,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         includePollInEdit,
         editPollQuestion,
         editPollOptions,
-        editIsMultipleChoice,
         handleEditChange,
         handleEditOptionChange,
         handleAddEditOption,
@@ -105,6 +116,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         handleDeleteEventModal,
         eventToDeleteId,
     } = useDeleteEvent()
+
 
     return (
         <EventsContext.Provider
@@ -142,11 +154,9 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
                 updateToastSeverity,
                 editPollQuestion,
                 editPollOptions,
-                editIsMultipleChoice,
                 type: event.type,
                 pollQuestion,
                 pollOptions,
-                isMultipleChoice,
                 toastOpen,
                 toastMessage,
                 toastSeverity,
@@ -155,7 +165,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
                 allEmails,
                 typesofEvent,
                 eventToDeleteId,
-                handleSeeVoters,
+                handleSeeEventDetails,
                 drawerOpen,
                 handleOpenDrawer,
                 handleCloseDrawer,

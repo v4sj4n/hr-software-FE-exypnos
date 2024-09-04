@@ -64,14 +64,12 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
         poll: {
             question: '',
             options: [],
-            isMultipleVote: false,
         },
-    })
-    const [pollQuestion, setPollQuestion] = useState('')
-    const [pollOptions, setPollOptions] = useState<string[]>(['', ''])
-    const [isMultipleChoice, setIsMultipleChoice] = useState(false)
-    const [includesPoll, setIncludesPoll] = useState(false)
-    const [participants, setParticipants] = useState<string[]>([])
+    });
+    const [pollQuestion, setPollQuestion] = useState('');
+    const [pollOptions, setPollOptions] = useState<string[]>(['', '']);
+    const [includesPoll, setIncludesPoll] = useState(false);
+    const [participants, setParticipants] = useState<string[]>([]);
 
     const createEventMutation = useMutation({
         mutationFn: async () => {
@@ -92,12 +90,7 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
                         question: pollQuestion,
                         options: pollOptions
                             .filter((option) => option.trim() !== '')
-                            .map((option) => ({
-                                option,
-                                votes: 0,
-                                voters: [],
-                            })),
-                        isMultipleVote: isMultipleChoice,
+                            .map((option) => ({ option, votes: 0, voters: [] })),
                     }),
                 )
             }
@@ -130,14 +123,13 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
                 type: '',
                 photo: [],
                 participants: [],
-                poll: { question: '', options: [], isMultipleVote: false },
-            })
-            setPollQuestion('')
-            setPollOptions(['', ''])
-            setIsMultipleChoice(false)
-            setParticipants([])
-            setEventPhotos([])
-            handleCloseDrawer()
+                poll: { question: '', options: [] },
+            });
+            setPollQuestion('');
+            setPollOptions(['', '']);
+            setParticipants([]);
+            setEventPhotos([]);
+            handleCloseDrawer();
         },
         onError: (error: Error) => {
             console.error('Error creating event', error)
@@ -160,9 +152,8 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
                 ...prevEvent,
 
                 location: value,
-            }))
-        } else if (name === 'isMultipleChoice') {
-            setIsMultipleChoice(e.target.checked)
+            }));
+
         } else {
             setEvent((prevEvent) => ({
                 ...prevEvent,
@@ -205,7 +196,6 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
         endDate: event.endDate,
         pollQuestion,
         pollOptions,
-        isMultipleChoice,
         handleOptionChange,
         handleAddOption,
         includesPoll,
@@ -220,8 +210,10 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
         eventPhotos,
         handleLocationChange,
         createdEvents,
-    }
-}
+
+  };
+};
+
 
 export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
     const queryClient = useQueryClient()
@@ -230,7 +222,6 @@ export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
     const [includePollInEdit, setIncludePollInEdit] = useState(false)
     const [editPollQuestion, setEditPollQuestion] = useState('')
     const [editPollOptions, setEditPollOptions] = useState<string[]>(['', ''])
-    const [editIsMultipleChoice, setEditIsMultipleChoice] = useState(false)
     const [updateToastOpen, setUpdateToastOpen] = useState(false)
     const [updateToastMessage, setUpdateToastMessage] = useState('')
     const [updatedEvent, setUpdatedEvent] = useState<EventsData[]>([])
@@ -250,7 +241,6 @@ export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
         setIncludePollInEdit(false)
         setEditPollQuestion('')
         setEditPollOptions(['', ''])
-        setEditIsMultipleChoice(false)
     }
 
     const handleEditClick = (eventToEdit: EventsData['_id']) => {
@@ -266,7 +256,6 @@ export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
                         (opt: { option: string[] }) => opt.option,
                     ),
                 )
-                setEditIsMultipleChoice(response.data.poll.isMultipleVote)
             } else {
                 resetEditPollState()
             }
@@ -290,8 +279,6 @@ export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
             setIncludePollInEdit(checked)
         } else if (name === 'pollQuestion') {
             setEditPollQuestion(value)
-        } else if (name === 'isMultipleChoice') {
-            setEditIsMultipleChoice(checked)
         } else if (name === 'participants') {
             setEditParticipants(value.split(',').map((_id) => _id.trim()))
         } else if (name === 'type') {
@@ -329,48 +316,42 @@ export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
         setUpdateToastOpen(false)
     }
 
-    const updateEventMutation = useMutation({
-        mutationFn: async () => {
-            if (!editingEvent) {
-                throw new Error('No event selected for editing')
-            }
-            const fieldsToUpdate = {
-                title: editingEvent.title,
-                description: editingEvent.description,
-                startDate: editingEvent.startDate,
-                endDate: editingEvent.endDate,
-                location: editingEvent.location,
-                participants: editParticipants,
-                type: editType,
-                poll: includePollInEdit
-                    ? {
-                          question: editPollQuestion,
-                          options: editPollOptions
-                              .filter((option) => option.trim() !== '')
-                              .map((option) => ({
-                                  option,
-                                  votes: 0,
-                                  voters: [],
-                              })),
-                          isMultipleVote: editIsMultipleChoice,
-                      }
-                    : null,
-            }
-            const response = await AxiosInstance.patch(
-                `/event/${editingEvent._id}`,
-                fieldsToUpdate,
-            )
-            return response.data
-        },
-        onSuccess: (data) => {
-            setUpdateToastMessage('Event updated successfully')
-            setUpdateToastOpen(true)
-            setUpdateToastSeverity('success')
-            setUpdatedEvent((prevEvents) =>
-                prevEvents.map((event) =>
-                    event._id === editingEvent?._id ? data : event,
-                ),
-            )
+
+const updateEventMutation = useMutation({
+    mutationFn: async () => {
+        if (!editingEvent) {
+            throw new Error('No event selected for editing');
+        }
+        const fieldsToUpdate = {
+            title: editingEvent.title,
+            description: editingEvent.description,
+            startDate: editingEvent.startDate,
+            endDate: editingEvent.endDate,
+            location: editingEvent.location,
+            participants: editParticipants,
+            type: editType,
+            poll: includePollInEdit
+                ? {
+                    question: editPollQuestion,
+                    options: editPollOptions
+                        .filter((option) => option.trim() !== '')
+                        .map((option) => ({ option, votes: 0, voters: [] })),
+                }
+
+                : null,
+        };
+        const response = await AxiosInstance.patch(`/event/${editingEvent._id}`, fieldsToUpdate);
+        return response.data;
+    },
+    onSuccess: (data) => {
+        setUpdateToastMessage('Event updated successfully');
+        setUpdateToastOpen(true);
+        setUpdateToastSeverity('success');
+        setUpdatedEvent((prevEvents) =>
+            prevEvents.map((event) =>
+                event._id === editingEvent?._id ? data : event,
+            ),
+        );
 
             queryClient.invalidateQueries({
                 queryKey: ['events'],
@@ -380,14 +361,14 @@ export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
             resetEditPollState()
             setEditDrawer(false)
             handleCloseDrawer()
-        },
-        onError: (error) => {
-            console.error('Error updating event:', error)
-            setUpdateToastMessage('Error updating event')
-            setUpdateToastOpen(true)
-            setUpdateToastSeverity('error')
-        },
-    })
+    },
+    onError: (error) => {
+        console.error('Error updating event:', error);
+        setUpdateToastMessage('Error updating event');
+        setUpdateToastOpen(true);
+        setUpdateToastSeverity('error');
+    },
+});
 
     return {
         editingEvent,
@@ -395,7 +376,6 @@ export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
         includePollInEdit,
         editPollQuestion,
         editPollOptions,
-        editIsMultipleChoice,
         setEditingEvent,
         handleEditChange,
         handleEditOptionChange,

@@ -1,43 +1,38 @@
-import ContentLoader from 'react-content-loader'
 
-export const EventsContent = () => {
-    return (
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                backgroundColor: '#FFFFFF',
-                borderRadius: '8px',
-                padding: '16px',
-                width: '340px',
-            }}
-        >
-            <ContentLoader
-                speed={2}
-                width={340}
-                height={200}
-                backgroundColor="#ececec"
-                foregroundColor="#d0d0d0"
-                style={{ borderRadius: '8px' }}
-            >
-                {/* Title */}
-                <rect x="15" y="15" rx="4" ry="4" width="200" height="20" />
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 
-                {/* Description */}
-                <rect x="15" y="45" rx="4" ry="4" width="250" height="15" />
+export default function EventsContentLoader() {
+  return (
+    <Box
+      sx={{
+        marginBottom: '16px',
+        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',  
+        borderRadius: '8px',  
+        padding: '16px',   
+        backgroundColor: '#fff' 
+      }}
+    >
+      <Stack spacing={2}>
+        {/* Title Skeleton */}
+        <Skeleton variant="text" sx={{ fontSize: '1.5rem', width: '60%' }} />
 
-                {/* Time */}
-                <rect x="15" y="90" rx="4" ry="4" width="100" height="15" />
+        {/* Description Skeleton */}
+        <Skeleton variant="text" sx={{ fontSize: '1rem', width: '80%' }} />
 
-                {/* Date */}
-                <rect x="15" y="120" rx="4" ry="4" width="150" height="15" />
+        {/* Date */}
+        <Skeleton variant="rectangular" sx={{ width: '100%', height: '24px' }} />
 
-                {/* Location */}
-                <rect x="15" y="150" rx="4" ry="4" width="200" height="15" />
+        {/* Location */}
+        <Skeleton variant="rectangular" sx={{ width: '100%', height: '24px' }} />
 
-                {/* Edit Button (dots menu) */}
-                <rect x="305" y="15" rx="4" ry="4" width="20" height="20" />
-            </ContentLoader>
-        </div>
-    )
+        {/* See Details Button Skeleton */}
+        <Skeleton variant="rectangular" sx={{ width: '100%', height: '30px', borderRadius: '16px' }} />
+
+        {/* Three Dots Menu Skeleton */}
+        <Skeleton variant="circular" width={24} height={24} sx={{ position: 'absolute', top: 16, right: 16 }} />
+      </Stack>
+    </Box>
+  );
 }
