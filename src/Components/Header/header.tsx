@@ -12,16 +12,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
 import { EventsProvider } from '@/Pages/Events/Context/EventsContext'
 import NotificationDropdown from '@/Pages/Notification/Notification'
-
+import { ClickAwayListener } from '@mui/material'
 
 export const HeaderContent = () => {
     const { isSidebarOpen: isOpen, toggleSidebar } =
         useContext(SidebarHeaderContext)
     const [showDropdown, setShowDropdown] = useState(false)
-  
-    const navigate = useNavigate()
-    const toggleDropdown = () => setShowDropdown(!showDropdown)
 
+    const navigate = useNavigate()
 
     const { logout, currentUser } = useAuth()
 
@@ -29,7 +27,6 @@ export const HeaderContent = () => {
         logout()
         navigate('/')
     }
-  
 
     const handleProfileClick = () => {
         navigate(`/profile/${currentUser?._id}`)
@@ -60,41 +57,47 @@ export const HeaderContent = () => {
             </div>
             <div className={style.headerRight}>
                 <div className={style.icon}>
-                <NotificationDropdown/>
+                    <NotificationDropdown />
                 </div>
-                <div className={style.icon} onClick={toggleDropdown}>
-                    <img
-                        src={currentUser?.imageUrl}
-                        style={{
-                            cursor: 'pointer',
-                            width: '40px',
-                            height: '40px',
-                            borderRadius: '50%',
-                        }}
-                    />
-                    <div className={style.username}></div>
-                    
-                    {showDropdown && (
-                        <div className={style.dropdown}>
-                            <div
-                                className={style.dropdownItem}
-                                onClick={handleProfileClick}
-                            >
-                                Profile <PermIdentityIcon />
-                            </div>
 
-                            <div className={style.dropdownItem}>
-                                Settings <SettingsOutlinedIcon />
+                <ClickAwayListener onClickAway={() => setShowDropdown(false)}>
+                    <div
+                        className={style.icon}
+                        onClick={() => setShowDropdown(true)}
+                    >
+                        <img
+                            src={currentUser?.imageUrl}
+                            style={{
+                                cursor: 'pointer',
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '50%',
+                            }}
+                        />
+                        <div className={style.username}></div>
+
+                        {showDropdown && (
+                            <div className={style.dropdown}>
+                                <div
+                                    className={style.dropdownItem}
+                                    onClick={handleProfileClick}
+                                >
+                                    Profile <PermIdentityIcon />
+                                </div>
+
+                                <div className={style.dropdownItem}>
+                                    Settings <SettingsOutlinedIcon />
+                                </div>
+                                <div
+                                    className={style.dropdownItem}
+                                    onClick={handleLogout}
+                                >
+                                    Logout <LogoutIcon />
+                                </div>
                             </div>
-                            <div
-                                className={style.dropdownItem}
-                                onClick={handleLogout}
-                            >
-                                Logout <LogoutIcon />
-                            </div>
-                        </div>
-                    )}
-                </div>
+                        )}
+                    </div>
+                </ClickAwayListener>
             </div>
         </nav>
     )
