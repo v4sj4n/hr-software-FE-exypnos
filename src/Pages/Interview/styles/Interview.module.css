@@ -2,7 +2,7 @@
 .kanbanBoard {
     display: flex;
     flex-direction: column;
-    background-color: #F5F3FF; 
+    background: rgba(255, 255, 255, 0.7);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -14,7 +14,7 @@
     gap: 15px;
     margin-bottom: 20px;
     padding: 10px;
-    background-color: #EDEBFF; /* Lilac background for filters */
+    background: rgba(255, 255, 255, 0.7);
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
@@ -32,9 +32,12 @@
     justify-content: space-between;
     gap: 20px;
     height: auto;
+    
 
 }
-
+.kanbanColumns h2{
+    color: #373535;
+}
 .kanbanColumn {
     background-color: transparent; 
     border-radius: 10px;
@@ -44,7 +47,7 @@
 }
 
 .kanbanItem {
-    background-color: #EDEBFF; 
+    background-color: rgba(255, 255, 255, 0.7);
     border: 1px solid #C4BFEA;
     padding: 15px;
     margin-bottom: 10px;
@@ -60,13 +63,13 @@
 
 .candidateName {
     font-weight: bold;
-    color: #4A3C82; 
+    color: #1c449ad7; 
     cursor: pointer;
     margin-bottom: 8px;
-}
+} 
 
 .applicantCount {
-    color: #8F80C9;
+    color: #79a9d9;
 }
 
 .buttonContainer {
@@ -81,7 +84,7 @@
 }
 
 .kanbanList p {
-    color: #4A3C82; 
+    color: #373535; 
 }
 
 .tabs {

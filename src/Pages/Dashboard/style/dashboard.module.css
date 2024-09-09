@@ -19,10 +19,9 @@
 }
 
 .welcome {
-    /* background-image: url('/Images/blue.jpg'); */
     background-color: var(--soft-white);
 
-    color: #5f43b2;
+    color: #1e299ebd;
     background: rgba(255, 255, 255, 0.7);
     border-radius: 15px;
     padding: 2.5rem 2rem;
@@ -105,7 +104,7 @@
 
 h2,
 h3 {
-    color: #5f43b2;
+    color: #1c449ad7;
     margin-bottom: 0;
     margin-top: 0;
 }

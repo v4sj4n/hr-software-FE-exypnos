@@ -1,105 +1,84 @@
 import { createTheme } from '@mui/material/styles'
 
-// Light Theme
-export const lightTheme = createTheme({
-    palette: {
-        mode: 'light',
-        primary: {
-            main: '#2469ff',  // Main primary color for the light theme
-        },
-        background: {
-            default: '#D7EBF2',  // Light background
-            paper: '#ffffff',
-        },
-        text: {
-            primary: '#2457A3',  // Text color
-        },
+export const deepBlueTheme = createTheme({
+  palette: {
+    mode: 'light',  // Light mode for deep blue theme
+    primary: {
+      main: '#2469ff',
     },
-    components: {
-        // Override Material-UI's Button styles
-        MuiButton: {
-            styleOverrides: {
-                root: {
-                    borderRadius: '8px',
-                    fontFamily: 'Outfit, sans-serif',
-                    fontSize: '16px',
-                    padding: '0.5rem 1rem',
-                },
-                // Override styles for the contained primary button
-                containedPrimary: {
-                    color: '#ffffff',
-                    backgroundColor: '#2469ff',
-                    borderColor: '#2469ff',
-                    borderRadius: '5px',
-                    '&:hover': {
-                        backgroundColor: '#1E5ACC',
-                        borderColor: '#1E5ACC',
-                    },
-                    '&:active': {
-                        backgroundColor: '#194DB3',
-                        borderColor: '#194DB3',
-                    },
-                    '&:focus': {
-                        outline: '2px solid #1E5ACC',
-                    },
-                },
-            },
-        },
-        // You can add more component customizations like Card, Table, etc.
-        MuiCard: {
-            styleOverrides: {
-                root: {
-                    padding: '1rem',
-                    borderRadius: '12px',
-                    backgroundColor: '#ffffff',
-                    boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-                },
-            },
-        },
+    background: {
+      default: '#D7EBF2',  // Background color
+      paper: '#FFFFFF',  // Card color
     },
+    text: {
+      primary: '#1c449ad7',  // Black font color
+      secondary: '#001F54',  // Blue font color
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#2469ff',  // Button background deep blue
+          color: '#FFFFFF',  // Button text white
+          '&:hover': {
+            backgroundColor: '#002E8A',  // Darker blue on hover
+          },
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#FFFFFF',  // White card background
+          color: '#000000',  // Black text in cards
+          padding: '1rem',
+          borderRadius: '8px',
+        },
+      },
+    },
+
+  },
 })
 
-// Dark Theme
-export const darkTheme = createTheme({
+export const purpleTheme = createTheme({
     palette: {
-        mode: 'dark',
-        primary: {
-            main: '#90caf9',  // Primary color for dark theme
-        },
-        background: {
-            default: '#121212',  // Dark background
-            paper: '#1d1d1d',
-        },
-        text: {
-            primary: '#ffffff',
-        },
+      mode: 'light',  // Light mode for purple theme
+      primary: {
+        main: '#6A0DAD',  // Purple for buttons
+      },
+      background: {
+        default: '#CBC3E3',  // Soft white background
+        paper: '#D8BFD8',  // Lilac for card background
+      },
+      text: {
+        primary: '##5f43b2',  // Black font color
+        secondary: '#6A0DAD',  // Lavender font color
+      },
     },
     components: {
-        MuiButton: {
-            styleOverrides: {
-                root: {
-                    borderRadius: '8px',
-                    fontFamily: 'Outfit, sans-serif',
-                    fontSize: '16px',
-                    padding: '0.5rem 1rem',
-                },
-                containedPrimary: {
-                    color: '#ffffff',
-                    backgroundColor: '#90caf9',
-                    borderColor: '#90caf9',
-                    borderRadius: '5px',
-                    '&:hover': {
-                        backgroundColor: '#80b6e5',
-                    },
-                    '&:active': {
-                        backgroundColor: '#70a4d2',
-                    },
-                    '&:focus': {
-                        outline: '2px solid #70a4d2',
-                    },
-                },
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            backgroundColor: '#BF40BF',  // Button background purple
+            color: '#FFFFFF',  // Button text white
+            '&:hover': {
+              backgroundColor: '#9A31D9',  // Lighter purple on hover
             },
+          },
         },
-        // Add more components like Card, Table, etc.
+      },
+      MuiCard: {
+        styleOverrides: {
+          root: {
+            backgroundColor: '#D8BFD8',  // Lilac card background
+            color: '#000000',  // Black text in cards
+            padding: '1rem',
+            borderRadius: '8px',
+          },
+        },
+      },
+      
     },
-})
+  })
+  
