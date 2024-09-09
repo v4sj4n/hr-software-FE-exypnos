@@ -4,6 +4,7 @@ import { GridPaginationModel, GridRowParams } from '@mui/x-data-grid'
 import { useNavigate } from 'react-router-dom'
 import AxiosInstance from '@/Helpers/Axios'
 import { useQuery } from '@tanstack/react-query'
+import { getMonthName } from '../utils/Utils'
 
 export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
@@ -48,11 +49,11 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const rows: PayrollRow[] =
         payrollData?.data.map((payrollItem, index) => ({
-            id: page * pageSize + index,
+            id: page * pageSize + index + 1,
             originalId: payrollItem.userId._id,
             netSalary: `${payrollItem.netSalary}${payrollItem.currency}`,
             healthInsurance: `${payrollItem.healthInsurance}${payrollItem.currency}`,
-            month: payrollItem.month,
+            month: getMonthName(payrollItem.month),
             workingDays: payrollItem.workingDays,
             tax: payrollItem.tax,
             socialSecurity: payrollItem.socialSecurity,
