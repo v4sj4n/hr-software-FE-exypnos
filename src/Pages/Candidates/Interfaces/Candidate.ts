@@ -6,9 +6,9 @@ import {
 } from '@mui/x-data-grid'
 
 export interface CandidateRow {
-    _id: any
-    lastName: any
-    firstName: any
+    _id: string
+    firstName: string
+    lastName: string
     id: number
     originalId: string | number
     fullName: string

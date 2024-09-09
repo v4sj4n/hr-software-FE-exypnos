@@ -135,9 +135,8 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
             setEventPhotos([])
             handleCloseDrawer()
         },
-        onError: (error: Error) => {
-            console.error('Error creating event', error)
-            setToastMessage('Error creating event')
+        onError: (error: any) => {
+            setToastMessage( error.response.data.message); 
             setToastSeverity('error')
             setToastOpen(true)
         },
@@ -320,7 +319,7 @@ export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
     const updateEventMutation = useMutation({
         mutationFn: async () => {
             if (!editingEvent) {
-                throw new Error('No event selected for editing')
+                throw new Error('No event selected for editing');
             }
             const fieldsToUpdate = {
                 title: editingEvent.title,
@@ -342,40 +341,38 @@ export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
                               })),
                       }
                     : null,
-            }
+            };
             const response = await AxiosInstance.patch(
                 `/event/${editingEvent._id}`,
                 fieldsToUpdate,
-            )
-            return response.data
+            );
+            return response.data;
         },
         onSuccess: (data) => {
-            setUpdateToastMessage('Event updated successfully')
-            setUpdateToastOpen(true)
-            setUpdateToastSeverity('success')
+            setUpdateToastMessage('Event updated successfully');
+            setUpdateToastOpen(true);
+            setUpdateToastSeverity('success');
             setUpdatedEvent((prevEvents) =>
                 prevEvents.map((event) =>
                     event._id === editingEvent?._id ? data : event,
                 ),
-            )
-
+            );
+    
             queryClient.invalidateQueries({
                 queryKey: ['events'],
-            })
-
-            setEditingEvent(null)
-            resetEditPollState()
-            setEditDrawer(false)
-            handleCloseDrawer()
+            });
+    
+            setEditingEvent(null);
+            resetEditPollState();
+            setEditDrawer(false);
+            handleCloseDrawer();
         },
-        onError: (error) => {
-            console.error('Error updating event:', error)
-            setUpdateToastMessage('Error updating event')
-            setUpdateToastOpen(true)
-            setUpdateToastSeverity('error')
+        onError: (error: any) => {
+            setUpdateToastMessage( error.response.data.message); 
+            setUpdateToastOpen(true);
+            setUpdateToastSeverity('error');
         },
-    })
-
+    });
     return {
         editingEvent,
         setEditDrawer,

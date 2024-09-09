@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
     Card,
     Typography,
@@ -9,9 +9,10 @@ import {
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import NotificationsIcon from '@mui/icons-material/Notifications'
-import AxiosInstance from '@/Helpers/Axios'
-import { useAuth } from '@/Context/AuthProvider'
 import { useNavigate } from 'react-router-dom'
+import { useGetAllNotifications } from '.'
+import AxiosInstance from '@/Helpers/Axios'
+
 
 interface Notification {
     _id: number
@@ -22,22 +23,8 @@ interface Notification {
 
 const NotificationDropdown: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false)
-    const { currentUser } = useAuth()
-    const currentUserId = currentUser?._id
+    const { notifications, setNotifications } = useGetAllNotifications() 
     const navigate = useNavigate()
-
-    const [notifications, setNotifications] = useState<Notification[]>([])
-
-    useEffect(() => {
-        AxiosInstance.get(`notification/user/${currentUserId}`)
-            .then((response) => {
-                setNotifications(response.data)
-                console.log('Notification fetch:', response.data)
-            })
-            .catch((error) => {
-                console.error('Error fetching data:', error)
-            })
-    }, [currentUserId])
 
     const handleToggleDropdown = () => {
         setIsOpen(!isOpen)
@@ -53,22 +40,25 @@ const NotificationDropdown: React.FC = () => {
         setIsOpen(false)
     }
 
-    const removeNotification = async () => {
+    const removeNotification = async (notificationId: number) => {
         try {
-            await AxiosInstance.patch(`notification/${notifications[0]?._id}`)
+            await AxiosInstance.patch(`notification/${notificationId}`)
         } catch (error) {
-            console.error(
-                `Error removing notification ${notifications[0]?._id}:`,
-                error,
-            )
+            console.error(`Error removing notification ${notificationId}:`, error)
         }
     }
 
     const handleNotificationClick = (notification: Notification) => {
-        // TO-DO check based on the notification type and navigate to the corresponding event page
-        removeNotification()
+        if(notification.type === 'events') {
+              removeNotification(notification._id)
         navigate(`/events?event=${notification.typeId}`)
         setIsOpen(false)
+        } else if(notification.type === "vacation") {
+            removeNotification(notification._id)
+            navigate(`/vacation?vacationType=requests&page=1&limit=5&selectedVacation=${notification.typeId}`)
+            console.log('Notification typesss:',`/vacation?vacationType=requests&page=1&limit=5&selectedVacation=${notification.typeId}`)
+        }
+       console.log('Notification typesss:', notification.type)
     }
 
     const getColorByType = (type: string) => {
@@ -106,6 +96,7 @@ const NotificationDropdown: React.FC = () => {
                             boxShadow: 1,
                             borderRadius: 1,
                             overflow: 'hidden',
+                            cursor: 'pointer',
                         }}
                     >
                         {notifications.map((notification) => (
@@ -144,7 +135,7 @@ const NotificationDropdown: React.FC = () => {
                                         sx={{ color: '#fff' }}
                                         onClick={(e) => {
                                             e.stopPropagation()
-                                            removeNotification()
+                                            removeNotification(notification._id)
                                             handleDismiss(notification._id)
                                         }}
                                     >

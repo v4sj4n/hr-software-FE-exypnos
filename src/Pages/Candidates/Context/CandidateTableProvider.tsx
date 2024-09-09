@@ -1,6 +1,5 @@
 import React from 'react'
 import { CandidateContext, CandidateRow } from '../Interfaces/Candidate'
-// import { useGetAllApplicants } from '../Hook'
 import {
     GridPaginationModel,
     GridRenderCellParams,
@@ -47,7 +46,7 @@ export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const rows: CandidateRow[] =
         applicants?.data.map((applicant, index) => ({
-            id: page * pageSize + index,
+            id: page * pageSize + index + 1,
             originalId: applicant._id,
             fullName: `${applicant.firstName} ${applicant.lastName}`,
             email: applicant.email,

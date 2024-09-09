@@ -49,7 +49,7 @@ export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const rows: EmployeeRow[] =
         users?.data.map((user, index) => ({
-            id: page * pageSize + index,
+            id: page * pageSize + index + 1,
             originalId: user._id,
             role: user.role,
             phone: user.phone,
