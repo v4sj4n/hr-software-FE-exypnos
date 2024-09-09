@@ -11,8 +11,7 @@ import { useSearchParams } from 'react-router-dom'
 interface VacationContextType {
     searchParams: URLSearchParams
     setSearchParams: Dispatch<SetStateAction<URLSearchParams>>
-    viewVacationModalOpen: boolean
-    handleOpenViewVacationModalOpen: () => void
+    handleOpenViewVacationModalOpen: (id: string) => void
     handleCloseVacationModalOpen: () => void
     toastConfigs: {
         message: string | null
@@ -32,7 +31,6 @@ interface VacationContextType {
 const defaultContextValue: VacationContextType = {
     searchParams: new URLSearchParams(),
     setSearchParams: () => {},
-    viewVacationModalOpen: false,
     handleOpenViewVacationModalOpen: () => {},
     handleCloseVacationModalOpen: () => {},
     toastConfigs: {
@@ -50,9 +48,16 @@ export const VacationContext =
 const VacationProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [searchParams, setSearchParams] = useSearchParams()
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [viewVacationModalOpen, setViewVacationModalOpen] =
         useState<boolean>(false)
-    const handleOpenViewVacationModalOpen = () => setViewVacationModalOpen(true)
+    const handleOpenViewVacationModalOpen = (id: string) => {
+        setSearchParams((prev) => {
+            const newParams = new URLSearchParams(prev)
+            newParams.set('selectedVacation', id)
+            return newParams
+        })
+    }
     const handleCloseVacationModalOpen = () => {
         setViewVacationModalOpen(false)
         setSearchParams((prevParams) => {
@@ -84,7 +89,6 @@ const VacationProvider: FC<{ children: ReactNode }> = ({ children }) => {
             value={{
                 searchParams,
                 setSearchParams,
-                viewVacationModalOpen,
                 handleOpenViewVacationModalOpen,
                 handleCloseVacationModalOpen,
                 toastConfigs,

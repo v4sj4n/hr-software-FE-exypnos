@@ -64,50 +64,6 @@ export const VacationForm: React.FC<MyComponentProps> = ({
             }
         },
     })
-    // const {
-    //     register,
-    //     handleSubmit,
-    //     control,
-    //     setError,
-    //     formState: { errors, isSubmitting },
-    // } = useForm<VacationFormFields>({
-    //     defaultValues: {
-    //         status: vacation.data.status,
-    //         type: vacation.data.type,
-    //         startDate: dayjs(vacation.data.startDate).format('YYYY-MM-DD'),
-    //         endDate: dayjs(vacation.data.endDate).format('YYYY-MM-DD'),
-    //     },
-    //     resolver: valibotResolver(VacationSchema),
-    // })
-
-    // const onSubmit: SubmitHandler<VacationFormFields> = async (
-    //     data: VacationFormFields,
-    // ) => {
-    //     data.endDate = dayjs(data.endDate).toISOString()
-    //     data.startDate = dayjs(data.startDate).toISOString()
-
-    //     updater.mutate({ vacation: data })
-    //     if (updater.isError) {
-    //         setToastConfigs({
-    //             isOpen: true,
-    //             message: updater.error?.message || 'Failed to update vacation',
-    //             severity: 'error',
-    //         })
-    //         if (updater.error instanceof AxiosError)
-    //             setError('root', { message: updater.error.response?.data })
-    //         else {
-    //             setError('root', { message: 'something happened' })
-    //         }
-    //     } else {
-    //         setToastConfigs({
-    //             isOpen: true,
-    //             message: 'Vacation updated successfully',
-    //             severity: 'success',
-    //         })
-    //         handleCloseVacationModalOpen()
-    //     }
-    // }
-
     return (
         <>
             <h3 className={style.fullName}>

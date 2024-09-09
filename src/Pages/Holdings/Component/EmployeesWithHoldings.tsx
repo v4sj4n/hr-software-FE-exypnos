@@ -30,7 +30,7 @@ export const EmployeesWithHoldings = () => {
 
     useEffect(() => {
         setSearchParams(new URLSearchParams())
-    })
+    }, [])
 
     useEffect(() => {
         if (inView) {

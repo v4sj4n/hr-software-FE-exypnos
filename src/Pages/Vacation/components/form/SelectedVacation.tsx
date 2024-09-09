@@ -6,7 +6,7 @@ import { VacationForm } from './VacationForm'
 
 export const SelectedVacation = () => {
     const {
-        viewVacationModalOpen: open,
+        searchParams,
         handleCloseVacationModalOpen: handleClose,
     } = useContext(VacationContext)
 
@@ -19,7 +19,7 @@ export const SelectedVacation = () => {
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
-            open={open}
+            open={searchParams.get("selectedVacation") !== null}
             onClose={handleClose}
             closeAfterTransition
             slots={{ backdrop: Backdrop }}
@@ -29,7 +29,7 @@ export const SelectedVacation = () => {
                 },
             }}
         >
-            <Fade in={open}>
+            <Fade in={searchParams.get("selectedVacation") !== null}>
                 <Card
                     sx={{
                         position: 'absolute',
