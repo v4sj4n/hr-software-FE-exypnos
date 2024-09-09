@@ -13,6 +13,8 @@ import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
 import { EventsProvider } from '@/Pages/Events/Context/EventsContext'
 import NotificationDropdown from '@/Pages/Notification/Notification'
 import { ClickAwayListener } from '@mui/material'
+import ThemeSwitcher from '@/Theme/ThemeSwitcher'
+
 
 export const HeaderContent = () => {
     const { isSidebarOpen: isOpen, toggleSidebar } =
@@ -56,6 +58,8 @@ export const HeaderContent = () => {
                 )}
             </div>
             <div className={style.headerRight}>
+            <ThemeSwitcher /> 
+
                 <div className={style.icon}>
                     <NotificationDropdown />
                 </div>

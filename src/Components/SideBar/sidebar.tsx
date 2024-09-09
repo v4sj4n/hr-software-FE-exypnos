@@ -15,6 +15,7 @@ import style from './sidebar.module.css'
 import { Link } from 'react-router-dom'
 import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
 
+
 export const SideBar = () => {
     const { isSidebarOpen: isOpen } = useContext(SidebarHeaderContext)
 
@@ -228,9 +229,15 @@ export const SideBar = () => {
                                 {isOpen && (
                                     <span className={style.text}>About</span>
                                 )}
+
+                               
                             </div>
+                            
                         </Link>
+                        
                     </div>
+                    <div >
+                                                    </div>
                 </div>
             </nav>
         </div>

@@ -3,7 +3,6 @@
     justify-content: space-between;
     align-items: center;
     padding: 0.75rem 1.25rem;
-    background: #fdfdfe;
     width: 100%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: sticky;
@@ -91,7 +90,7 @@
 .dropdownItem {
     padding: 8px 16px;
     cursor: pointer;
-    color: #587edf;
+    color: #5f43b2;
     display: flex;
     justify-content: space-between;
 }
@@ -104,6 +103,6 @@
     height: 24px;
     cursor: pointer;
     & svg:hover {
-        fill: #525252;
+        fill: #5f43b2;
     }
 }

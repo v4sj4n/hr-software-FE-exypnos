@@ -40,7 +40,7 @@
 }
 
 .title {
-    color: #3f67b7;
+    color: #1c449ad7;
     display: flex;
     font-size: 18px;
     font-weight: bolder;
@@ -101,6 +101,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #2457a3;
 }
 
 .border {

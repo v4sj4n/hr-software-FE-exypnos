@@ -1,7 +1,7 @@
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Input from '@/Components/Input/Index'
-import { Box } from '@mui/material'
+import { Box, Checkbox, FormControlLabel } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { ModalComponent } from '../../../Components/Modal/Modal'
 
@@ -31,6 +31,7 @@ interface RescheduleModalProps {
         notes: string,
         customMessage: string,
         customSubject: string,
+        useCustomEmail: boolean  // New flag to indicate if custom email should be used
     ) => void
     selectedInterview: Interview
     isReschedule: boolean
@@ -47,6 +48,7 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
     const [notes, setNotes] = useState('')
     const [customMessage, setCustomMessage] = useState('')
     const [customSubject, setCustomSubject] = useState('')
+    const [useCustomEmail, setUseCustomEmail] = useState(false) // New state for custom email toggle
 
     useEffect(() => {
         const initialDate =
@@ -63,7 +65,8 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
         e.preventDefault()
 
         if (interviewDate) {
-            handleSchedule(interviewDate, notes, customMessage, customSubject)
+            // Pass useCustomEmail flag to handleSchedule
+            handleSchedule(interviewDate, notes, customMessage, customSubject, useCustomEmail)
         } else {
             console.error('Interview date is required')
         }
@@ -104,28 +107,44 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
                     name="notes"
                 />
 
-                <Input
-                    IsUsername
-                    type="textarea"
-                    name="customSubject"
-                    label="Subject"
-                    multiline
-                    rows={3}
-                    value={customSubject}
-                    onChange={(e) => setCustomSubject(e.target.value)}
+                {/* Checkbox for custom email */}
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={useCustomEmail}
+                            onChange={(e) => setUseCustomEmail(e.target.checked)}
+                            color="primary"
+                        />
+                    }
+                    label="Use custom email"
                 />
 
-                <Input
-                    IsUsername
-                    multiline={true}
-                    width="100%"
-                    label="Message"
-                    type="textarea"
-                    rows={4}
-                    value={customMessage}
-                    onChange={(e) => setCustomMessage(e.target.value)}
-                    name="message"
-                />
+                {useCustomEmail && (
+                    <>
+                        <Input
+                            IsUsername
+                            type="textarea"
+                            name="customSubject"
+                            label="Subject"
+                            multiline
+                            rows={1}
+                            value={customSubject}
+                            onChange={(e) => setCustomSubject(e.target.value)}
+                        />
+
+                        <Input
+                            IsUsername
+                            multiline={true}
+                            width="100%"
+                            label="Message"
+                            type="textarea"
+                            rows={4}
+                            value={customMessage}
+                            onChange={(e) => setCustomMessage(e.target.value)}
+                            name="message"
+                        />
+                    </>
+                )}
 
                 <div
                     style={{

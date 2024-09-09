@@ -50,8 +50,12 @@ export default function Router() {
         },
         {
             path: '/',
-            element: <PrivateRoute />,
-            children: [
+            
+            element: (
+                <>
+                    <PrivateRoute />
+                </>
+            ),            children: [
                 {
                     path: '/employees',
                     element: <Employees />,
