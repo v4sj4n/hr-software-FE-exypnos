@@ -1,9 +1,9 @@
 import { Navigate, Outlet } from 'react-router-dom'
-
 import { SideBar } from '../Components/SideBar/sidebar'
 import SidebarHeaderProvider from './SidebarHeaderContext'
 import { BreadcrumbComponent } from '@/Components/BreadCrumbs/BreadCrumbs'
 import { useTheme } from '@mui/material/styles' 
+import Header from '@/Components/Header/header'
 
 const PrivateRoute = () => {
     const isAuthenticated = !!localStorage.getItem('access_token')
