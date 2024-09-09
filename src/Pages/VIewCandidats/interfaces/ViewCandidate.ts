@@ -7,7 +7,7 @@ export interface CandidateView {
     email: string
     experience: string
     applicationMethod: string
-    age: string
+    dob: string
     positionApplied: string
     technologiesUsed: string[]
     salaryExpectations: string
