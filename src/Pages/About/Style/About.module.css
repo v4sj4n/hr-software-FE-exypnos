@@ -6,69 +6,141 @@
 }
 
 .heroSection {
-    position: relative;
-    text-align: center;
+  position: relative;
+  text-align: center;
+  height: 70vh; 
+  overflow: hidden;
 }
 
 .heroImage {
   width: 100%;
-  height: 55vh;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(100%);
+  transition: transform 0.5s ease-in-out;
 }
-.infoSection h2 {
-    color: #3f67b7;
+
+.heroSection:hover .heroImage {
+  transform: scale(1.05); /* Parallax effect */
+}
+
+.heroSection::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
+  z-index: 1;
 }
 
 .mainTitle {
-    position: absolute;
-    top: 65%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 3rem;
-    z-index: 10;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 4rem;
+  font-weight: 700;
+  z-index: 2;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+   animation: fadeIn 2s ; 
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translate(-50%, -60%);
+  }
+  to {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+  }
 }
 
 .infoContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  z-index: 2; /* Ensure proper stacking */
+}
+
+.infoContainer:hover {
+  transform: scale(1.02);
 }
 
 .infoSection {
-    width: 80%;
-    max-width: 1200px;
-    margin: 50px 0;
+  width: 85%;
+  max-width: 1100px;
+  margin: 40px 0;
+  line-height: 1.8;
 }
-.infoSection p{
-  font-size: larger;
+
+.infoSection h2 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #3F67B7;
+  text-align: center;
+}
+
+.infoSection p {
+  font-size: 1.2rem;
+  color: #333;
+  text-align: justify;
+  padding: 0 10px;
+  transition: color 0.3s ease;
+}
+
+.infoSection p:hover {
+  color: #3F67B7; /* Text hover color change for interaction */
 }
 
 .carouselSection {
-  background-color: var(--light-gray);
-  padding: 40px 0;
+  padding: 60px 0;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s ease;
+  background: rgba(255, 255, 255, 0.7);
+  margin-top: 50px; /* Add space above carousel to avoid overlapping */
+  z-index: 1; /* Ensure proper stacking */
 }
 
 .carouselTitle {
-  font-size: 1.8rem;
-  color: var(--primary);
+  font-size: 2.4rem;
+  color: #3F67B7;
   margin-bottom: 30px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
   text-align: center;
 }
 
 .ctaContainer {
-    text-align: center;
-    margin-top: 50px;
+  text-align: center;
+  margin-top: 50px;
 }
 
 .cta {
-    background-color: #0066cc;
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
+  background-color: #0066cc;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 15px 30px;
+  text-decoration: none;
+  border-radius: 30px; /* More rounded for a modern look */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds shadow for depth */
 }
 
 .cta:hover {
-    background-color: #004d99;
+  background-color: #004d99;
+  transform: scale(1.05); /* Slightly scales up on hover */
 }
