@@ -1,51 +1,60 @@
 import { ModalComponent } from '@/Components/Modal/Modal'
 import { useGetItem, useHandleItemReturner } from '../../Hook'
-import style from '../../style/returnAssetModal.module.scss'
 import { TitleCaser } from '@/Helpers/TitleCaser'
 import dayjs from 'dayjs'
-import { FormEvent, useContext } from 'react'
+import { useContext } from 'react'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Input from '@/Components/Input/Index'
 import { HoldingsContext } from '../../HoldingsContext'
+import Selecter from '@/Components/Input/components/Select/Selecter'
+import { ErrorText } from '@/Components/Error/ErrorTextForm'
+import { useForm } from '@tanstack/react-form'
+import { valibotValidator } from '@tanstack/valibot-form-adapter'
+import { picklist } from 'valibot'
+import style from '../../style/returnAssetModal.module.scss'
 
 export const ReturnAssetModal = () => {
     const {
         searchParams,
-        itemReturnConfigs,
-        setItemReturnConfigs,
         handleCloseOnModal: handleClose,
         setToastConfigs,
     } = useContext(HoldingsContext)
     const itemGetter = useGetItem()
 
-    const handleItemReturner = useHandleItemReturner()
+    const { mutateAsync, error } = useHandleItemReturner()
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        handleItemReturner.mutate({
-            event: e,
-            assetId: itemGetter.data._id as string,
-            status: itemReturnConfigs.state as string,
-            returnDate: itemReturnConfigs.date,
-        })
+    const form = useForm({
+        defaultValues: {
+            status: 'available',
+            returnDate: new Date().toISOString().split('T')[0],
+        },
 
-        if (handleItemReturner.isError) {
-            setToastConfigs({
-                isOpen: true,
-                message: 'Error returning item',
-                severity: 'error',
+        onSubmit: async ({ value }) => {
+            console.log(value)
+            await mutateAsync({
+                assetId: itemGetter.data._id,
+                status: value.status,
+                returnDate: value.returnDate,
             })
-        } else {
-            setToastConfigs({
-                isOpen: true,
-                message: 'Item returned successfully',
-                severity: 'success',
-            })
-        }
-
-        handleClose()
-    }
+            console.log(error)
+            if (error) {
+                setToastConfigs({
+                    isOpen: true,
+                    message: 'Error returning item',
+                    severity: 'error',
+                })
+            } else {
+                setToastConfigs({
+                    isOpen: true,
+                    message: 'Item returned successfully',
+                    severity: 'success',
+                })
+                handleClose()
+            }
+        },
+        validatorAdapter: valibotValidator(),
+    })
 
     return (
         <ModalComponent
@@ -70,49 +79,86 @@ export const ReturnAssetModal = () => {
                         </div>
                     </div>
                     <form
-                        onSubmit={handleSubmit}
+                        onSubmit={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            form.handleSubmit()
+                        }}
                         className={style.formContainer}
                     >
                         <h3>Do you want to return the item?</h3>
 
                         <div className={style.inputContainer}>
-                            <select
-                                onChange={(e) => {
-                                    setItemReturnConfigs((prev) => {
-                                        return {
-                                            ...prev,
-                                            state: e.target.value,
-                                        }
-                                    })
+                            <form.Field
+                                name="status"
+                                validators={{
+                                    onChange: picklist(
+                                        ['available', 'broken'],
+                                        "Please select an item status of 'available' or 'broken'",
+                                    ),
                                 }}
-                                required
-                                value={itemReturnConfigs.state}
-                            >
-                                <option value="" disabled selected>
-                                    Select status
-                                </option>
-                                <option value="available">Available</option>
-                                <option value="broken">Broken</option>
-                            </select>
-                            <Input
-                                className={style.returnDateInput}
+                                children={(field) => (
+                                    <div>
+                                        <Selecter
+                                            label="Status"
+                                            name="Status"
+                                            multiple={false}
+                                            options={['available', 'broken']}
+                                            value={field.state.value}
+                                            onChange={(newValue) =>
+                                                field.handleChange(
+                                                    newValue as string,
+                                                )
+                                            }
+                                        />
+                                        {field.state.meta.errors ? (
+                                            <ErrorText>
+                                                {field.state.meta.errors.join(
+                                                    ', ',
+                                                )}
+                                            </ErrorText>
+                                        ) : null}
+                                    </div>
+                                )}
+                            />
+
+                            <form.Field
                                 name="returnDate"
-                                IsUsername
-                                type="date"
-                                label="Return Date"
-                                shrink
-                                value={itemReturnConfigs.date.split('T')[0]}
-                                onChange={(e) =>
-                                    setItemReturnConfigs((prev) => {
-                                        return { ...prev, date: e.target.value }
-                                    })
-                                }
+                                children={(field) => (
+                                    <div>
+                                        <Input
+                                            className={style.returnDateInput}
+                                            name="returnDate"
+                                            IsUsername
+                                            type="date"
+                                            label="Return Date"
+                                            value={field.state.value}
+                                            onChange={(e) =>
+                                                field.handleChange(
+                                                    e.target.value,
+                                                )
+                                            }
+                                            shrink
+                                        />
+                                        {field.state.meta.errors ? (
+                                            <ErrorText>
+                                                {field.state.meta.errors.join(
+                                                    ', ',
+                                                )}
+                                            </ErrorText>
+                                        ) : null}
+                                    </div>
+                                )}
                             />
                         </div>
                         <div className={style.formButtonContainer}>
                             <Button
                                 type={ButtonTypes.PRIMARY}
-                                btnText="Return"
+                                btnText={
+                                    form.state.isSubmitting
+                                        ? 'Returning...'
+                                        : 'Return'
+                                }
                                 isSubmit
                             />
                             <Button
@@ -121,6 +167,8 @@ export const ReturnAssetModal = () => {
                                 onClick={handleClose}
                             />
                         </div>
+
+                        {error && <ErrorText>{error.message}</ErrorText>}
                     </form>
                 </div>
             )}

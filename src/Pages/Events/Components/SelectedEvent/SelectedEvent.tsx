@@ -7,17 +7,26 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import Example from '@/Components/Carosel/Carosel'
 import { useEvents } from '../../Context/EventsContext'
 import MapComponent from '../GoogleMap/MapPicker'
+import { useSearchParams } from 'react-router-dom'
+import { useEffect } from 'react'
 
-interface SelectedEventCardProps {
-    showVotersButton?: boolean
-    onSeeVoters?: () => void
-}
-
-const SelectedEventCard = ({
-    showVotersButton = false,
-}: SelectedEventCardProps) => {
+const SelectedEventCard = () => {
     const { currentUser } = useAuth()
     const { selectedEvent, setSelectedEvent, setShowEventModal } = useEvents()
+    const [, setSearchParams] = useSearchParams()
+
+    useEffect(() => {
+        console.log('Selected Event:', selectedEvent)
+        if (selectedEvent?._id) {
+            setSearchParams({ event: selectedEvent._id.toString() })
+        } else {
+            setSearchParams({})
+        }
+
+        return () => {
+            setSearchParams({})
+        }
+    }, [selectedEvent, setSearchParams])
 
     if (!selectedEvent) {
         return null
@@ -25,7 +34,11 @@ const SelectedEventCard = ({
 
     return (
         <div className={style.Wrap}>
-            <Example images={selectedEvent.photo} />
+            {selectedEvent?.photo && selectedEvent.photo.length > 0 ? (
+                <Example images={selectedEvent.photo} />
+            ) : (
+                ''
+            )}
             <div
                 style={{
                     gap: '10px',
@@ -96,7 +109,7 @@ const SelectedEventCard = ({
                         showInput={false}
                     />
                 </div>
-                {!showVotersButton && selectedEvent.poll && (
+                {selectedEvent.poll && (
                     <EventPoll
                         poll={selectedEvent.poll}
                         eventId={selectedEvent._id}

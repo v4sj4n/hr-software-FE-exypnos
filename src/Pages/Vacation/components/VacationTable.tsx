@@ -15,7 +15,6 @@ export const VacationTable = () => {
     const {
         searchParams,
         setSearchParams,
-        viewVacationModalOpen,
         handleOpenViewVacationModalOpen,
         toastConfigs,
         handleToastClose,
@@ -35,19 +34,6 @@ export const VacationTable = () => {
 
     if (error) return <p>Error: {error.message}</p>
     if (isPending) return <CircularProgress />
-
-    const onLinkClick = (id: string) => {
-        setSearchParams((prevParams) => {
-            const newParams = new URLSearchParams(prevParams)
-            if (id !== '') {
-                newParams.set('selectedVacation', id)
-            } else {
-                newParams.delete('selectedVacation')
-            }
-            return newParams
-        })
-        id !== '' && handleOpenViewVacationModalOpen()
-    }
 
     const rows = data?.data.map((vacation: Vacation) => ({
         id: vacation._id,
@@ -99,7 +85,7 @@ export const VacationTable = () => {
             renderCell: (param: GridRenderCellParams) => {
                 return (
                     <span
-                        onClick={() => onLinkClick(param.value)}
+                        onClick={() => handleOpenViewVacationModalOpen(param.value as string)}
                         className={style.viewButton}
                     >
                         View
@@ -122,7 +108,7 @@ export const VacationTable = () => {
                 columns={columns}
                 getRowId={getRowId}
             />
-            {viewVacationModalOpen && <SelectedVacation />}
+            {searchParams.get('selectedVacation') && <SelectedVacation />}
             <Toast
                 open={toastConfigs.isOpen}
                 onClose={handleToastClose}

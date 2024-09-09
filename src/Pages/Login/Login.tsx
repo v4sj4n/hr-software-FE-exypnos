@@ -7,63 +7,79 @@ import img from '/Images/HeroImage.png'
 import logo from '/Images/image_1-removebg-preview.png'
 import { useLogin } from './Hook'
 import style from './styles/Login.module.css'
-import { LoginFormFields, LoginSchema } from '@/Schemas/Login/Login.schema'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { LoginSchema } from '@/Schemas/Login/Login.schema'
 import AxiosInstance from '@/Helpers/Axios'
 import { useAuth } from '@/Context/AuthProvider'
 import { AxiosError } from 'axios'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
-import { valibotResolver } from '@hookform/resolvers/valibot'
+
+import { useEffect, useState } from 'react'
+import { RingLoader } from 'react-spinners'
+import { useForm } from '@tanstack/react-form'
+import { valibotValidator } from '@tanstack/valibot-form-adapter'
 
 const Login: React.FC = () => {
-    const { login } = useAuth()
+    const { login, isAuthenticated } = useAuth()
     const navigate = useNavigate()
     const { showPassword, handleClickShowPassword } = useLogin()
-    const {
-        register,
-        handleSubmit,
-        setError,
-        formState: { errors, isSubmitting },
-    } = useForm<LoginFormFields>({
-        resolver: valibotResolver(LoginSchema),
+    const [error, setError] = useState<string | null>(null)
+
+    const form = useForm({
+        defaultValues: {
+            email: '',
+            password: '',
+        },
+        validatorAdapter: valibotValidator(),
+        onSubmit: async ({ value }) => {
+            try {
+                const res = await AxiosInstance.post('/auth/signin', value)
+                const user = res.data.data.user
+                const role = user.role
+                const access_token = res.data.data.access_token
+                login(access_token, role, user)
+            } catch (err: unknown) {
+                if (err instanceof AxiosError) {
+                    if (err?.response?.data?.message) {
+                        setError(err?.response?.data?.message)
+                        return
+                    }
+                    if (err.code === 'ERR_NETWORK') {
+                        setError(
+                            'No internet connection. Please try again later.',
+                        )
+                        return
+                    }
+                }
+                setError('An error occurred. Please try again later.')
+            }
+        },
     })
 
-    const onSubmit: SubmitHandler<LoginFormFields> = async (
-        data: LoginFormFields,
-    ) => {
-        try {
-            const res = await AxiosInstance.post('/auth/signin', data)
-            const user = res.data.data.user
-            const role = user.role
-            const access_token = res.data.data.access_token
-            login(access_token, role, user)
+    const [checkingIsAuthenticated, setCheckingIsAuthenticated] = useState(true)
+
+    useEffect(() => {
+        if (localStorage.getItem('access_token')) {
+            setCheckingIsAuthenticated(false)
             navigate('/dashboard')
-        } catch (err: unknown) {
-            console.log(err)
-            if (err instanceof AxiosError) {
-                if (err?.response?.data?.message) {
-                    setError('root', {
-                        message: err?.response?.data?.message,
-                    })
-                    return
-                }
-                if (err.code === 'ERR_NETWORK') {
-                    setError('root', {
-                        message:
-                            'No internet connection. Please try again later.',
-                    })
-                    return
-                }
-                setError('root', {
-                    message: 'An error occurred while logging in',
-                })
-            } else {
-                setError('root', {
-                    message: 'An error occurred while creating the asset',
-                })
-            }
+        } else {
+            setCheckingIsAuthenticated(false)
         }
-    }
+    }, [isAuthenticated, navigate])
+
+    if (checkingIsAuthenticated)
+        return (
+            <div
+                style={{
+                    height: '50vw',
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <RingLoader />
+            </div>
+        )
 
     return (
         <div className={style.container}>
@@ -80,48 +96,86 @@ const Login: React.FC = () => {
                 <div className={style.title}>Login</div>
                 <form
                     className={style.formStyle}
-                    onSubmit={handleSubmit(onSubmit)}
+                    onSubmit={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        form.handleSubmit()
+                    }}
                 >
-                    <div>
-                        <Input
-                            label="Email"
-                            name="email"
-                            register={register('email')}
-                            IsUsername
-                            width="350px"
-                            type="email"
-                        />
-                        {errors.email && (
-                            <ErrorText>{errors.email.message}</ErrorText>
+                    <form.Field
+                        name="email"
+                        validators={{
+                            onChange: LoginSchema.entries.email,
+                        }}
+                        children={({
+                            state: {
+                                value,
+                                meta: { errors },
+                            },
+                            handleChange,
+                        }) => (
+                            <div>
+                                <Input
+                                    label="Email"
+                                    name="email"
+                                    IsUsername
+                                    width="350px"
+                                    type="email"
+                                    value={value}
+                                    onChange={(e) =>
+                                        handleChange(e.target.value)
+                                    }
+                                />
+
+                                {errors && (
+                                    <ErrorText>{errors.join(', ')}</ErrorText>
+                                )}
+                            </div>
                         )}
-                    </div>
-                    <div>
-                        <Input
-                            label={'Password'}
-                            register={register('password')}
-                            id="outlined-adornment-password"
-                            name="password"
-                            type={showPassword}
-                            onClick={handleClickShowPassword}
-                            width="350px"
-                            isPassword
-                        />
-                        {errors.password && (
-                            <ErrorText>{errors.password.message}</ErrorText>
+                    />
+
+                    <form.Field
+                        name="password"
+                        validators={{
+                            onChange: LoginSchema.entries.password,
+                        }}
+                        children={({
+                            state: {
+                                value,
+                                meta: { errors },
+                            },
+                            handleChange,
+                        }) => (
+                            <div>
+                                <Input
+                                    label={'Password'}
+                                    id="outlined-adornment-password"
+                                    name="password"
+                                    type={showPassword}
+                                    onClick={handleClickShowPassword}
+                                    width="350px"
+                                    isPassword
+                                    value={value}
+                                    onChange={(e) =>
+                                        handleChange(e.target.value)
+                                    }
+                                />
+                                {errors && <ErrorText>{errors}</ErrorText>}
+                            </div>
                         )}
-                    </div>
+                    />
                     <Button
                         type={
-                            !isSubmitting
+                            !form.state.isSubmitting
                                 ? ButtonTypes.PRIMARY
                                 : ButtonTypes.DISABLED
                         }
                         isSubmit
-                        btnText={!isSubmitting ? 'Login' : 'Logging in...'}
+                        btnText={
+                            !form.state.isSubmitting ? 'Login' : 'Logging in...'
+                        }
                     />
-                    {errors.root && (
-                        <ErrorText>{errors.root.message}</ErrorText>
-                    )}
+                    {error && <ErrorText>{error}</ErrorText>}
                 </form>
 
                 <Link to="/forgot-password" className={style.forgotPassword}>

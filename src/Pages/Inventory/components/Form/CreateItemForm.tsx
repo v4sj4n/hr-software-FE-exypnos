@@ -1,74 +1,113 @@
-import { SubmitHandler, useForm } from 'react-hook-form'
 import { useContext } from 'react'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Input from '@/Components/Input/Index'
-import {
-    CreateInventoryItemFormFields,
-    CreateInventoryItemSchema,
-} from '@/Schemas/Inventory/CreateInventoryItem.schema'
-import { ErrorText } from '@/Components/Error/ErrorTextForm'
+import { useForm } from '@tanstack/react-form'
 import { InventoryContext } from '../../InventoryContext'
-import { AxiosError } from 'axios'
 import { useCreateInventoryItem } from '../../Hook/hook'
-import { valibotResolver } from '@hookform/resolvers/valibot'
+import { valibotValidator } from '@tanstack/valibot-form-adapter'
 import style from '../../style/createItemForm.module.scss'
+import Selecter from '@/Components/Input/components/Select/Selecter'
+import { minLength, nonEmpty, picklist, pipe, string } from 'valibot'
+import { ErrorText } from '@/Components/Error/ErrorTextForm'
 
 export const CreateItemForm = () => {
     const { handleCloseCreateModalOpen } = useContext(InventoryContext)
     const { mutate, isError, error } = useCreateInventoryItem()
-    const {
-        register,
-        handleSubmit,
-        setError,
-        formState: { errors, isSubmitting },
-    } = useForm<CreateInventoryItemFormFields>({
-        resolver: valibotResolver(CreateInventoryItemSchema),
-    })
 
-    const onSubmit: SubmitHandler<CreateInventoryItemFormFields> = async (
-        data: CreateInventoryItemFormFields,
-    ) => {
-        mutate({ item: data })
-        if (isError) {
-            if (error instanceof AxiosError)
-                setError('root', { message: error.response?.data?.message })
-            else {
-                setError('root', { message: 'something happened' })
+    const form = useForm({
+        defaultValues: {
+            type: 'laptop',
+            serialNumber: '',
+        },
+        onSubmit: async ({ value }) => {
+            mutate({
+                type: value.type as 'laptop' | 'monitor',
+                serialNumber: value.serialNumber,
+            })
+            if (isError) {
+                console.log(error)
             }
-        }
-    }
+        },
+        validatorAdapter: valibotValidator(),
+    })
 
     return (
         <>
             <h3 className={style.heading}>Create an asset</h3>
-            <form onSubmit={handleSubmit(onSubmit)} className={style.form}>
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    form.handleSubmit()
+                }}
+                className={style.form}
+            >
                 <div>
-                    <select {...register('type')} className={style.selector}>
-                        <option value="" disabled selected>
-                            Select an item
-                        </option>
-                        <option value="laptop">Laptop</option>
-                        <option value="monitor">Monitor</option>
-                    </select>
-                    {errors.type && (
-                        <ErrorText>{errors.type.message}</ErrorText>
-                    )}
+                    <form.Field
+                        validators={{
+                            onChange: picklist(
+                                ['laptop', 'monitor'],
+                                "Please select an item type of 'laptop' or'monitor'",
+                            ),
+                        }}
+                        name="type"
+                        children={(field) => (
+                            <div>
+                                <Selecter
+                                    label="Item Type"
+                                    name="Item Type"
+                                    multiple={false}
+                                    options={['monitor', 'laptop']}
+                                    value={field.state.value}
+                                    onChange={(newValue) =>
+                                        field.handleChange(newValue as string)
+                                    }
+                                />
+                                {field.state.meta.errors ? (
+                                    <ErrorText>
+                                        {field.state.meta.errors.join(', ')}
+                                    </ErrorText>
+                                ) : null}
+                            </div>
+                        )}
+                    />
                 </div>
 
                 <div>
-                    <Input
-                        IsUsername
+                    <form.Field
                         name="serialNumber"
-                        width={'100%'}
-                        label="Serial Number"
-                        register={register('serialNumber')}
+                        validators={{
+                            onChange: pipe(
+                                string('Serial Number is required'),
+                                nonEmpty('Please type your serial number'),
+                                minLength(
+                                    10,
+                                    'Serial Number should be at least 10 characters long',
+                                ),
+                            ),
+                        }}
+                        children={(field) => (
+                            <div>
+                                <Input
+                                    IsUsername
+                                    name="serialNumber"
+                                    width={'100%'}
+                                    label="Serial Number"
+                                    value={field.state.value}
+                                    onChange={(e) =>
+                                        field.handleChange(e.target.value)
+                                    }
+                                />
+                                {field.state.meta.errors ? (
+                                    <ErrorText>
+                                        {field.state.meta.errors.join(', ')}
+                                    </ErrorText>
+                                ) : null}
+                            </div>
+                        )}
                     />
-                    {errors.serialNumber && (
-                        <ErrorText>{errors.serialNumber.message}</ErrorText>
-                    )}
                 </div>
-                {errors.root && <ErrorText>{errors.root.message}</ErrorText>}
 
                 <div style={{ display: 'flex', gap: '0.3rem' }}>
                     <Button
@@ -80,7 +119,10 @@ export const CreateItemForm = () => {
                     />
                     <Button
                         type={ButtonTypes.PRIMARY}
-                        btnText={isSubmitting ? 'Submitting' : 'Submit'}
+                        btnText={
+                            form.state.isSubmitting ? 'Submitting' : 'Submit'
+                        }
+                        disabled={form.state.isSubmitting}
                         width={'100%'}
                         isSubmit
                     />

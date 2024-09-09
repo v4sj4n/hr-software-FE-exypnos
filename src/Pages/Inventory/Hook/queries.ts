@@ -1,5 +1,4 @@
 import AxiosInstance from '@/Helpers/Axios'
-import { CreateInventoryItemFormFields } from '@/Schemas/Inventory/CreateInventoryItem.schema'
 
 export const getAllInventoryItems = async (page: string, limit: string) => {
     const res = await AxiosInstance.get(`/asset?page=${page}&limit=${limit}`)
@@ -12,8 +11,9 @@ export const getOneInventoryItem = async (serial: string) => {
 }
 
 export const createInventoryItem = async (
-    iventoryItem: CreateInventoryItemFormFields,
+    type: 'laptop' | 'monitor',
+    serialNumber: string,
 ) => {
-    const res = await AxiosInstance.post(`/asset`, iventoryItem)
+    const res = await AxiosInstance.post(`/asset`, { type, serialNumber })
     return res.data
 }

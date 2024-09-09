@@ -5,16 +5,8 @@ import { inputStyles } from '../../Styles'
 import { InputProps } from '../Interface'
 
 const UsernameInput: React.FC<InputProps> = (props) => {
-    const {
-        initialValue,
-        width,
-        register,
-        name,
-        flex,
-        iconPosition,
-        icon,
-        shrink,
-    } = props
+    const { initialValue, width, name, flex, iconPosition, icon, shrink } =
+        props
 
     const adornment = icon && (
         <InputAdornment
@@ -50,7 +42,6 @@ const UsernameInput: React.FC<InputProps> = (props) => {
             variant="filled"
             fullWidth
             autoComplete="off"
-            {...register}
             sx={{
                 ...inputStyles,
                 width: width || '100%',
@@ -61,6 +52,7 @@ const UsernameInput: React.FC<InputProps> = (props) => {
                     color: '#4C556B',
                     fontFamily: '"Outfit", sans-serif',
                     fontSize: '14px',
+                    zIndex: 1,
                 },
                 shrink: shrink,
             }}

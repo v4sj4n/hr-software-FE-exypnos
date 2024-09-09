@@ -2,15 +2,31 @@ import { useGetUsersWithVacations } from '../Hook/index.ts'
 import { CircularProgress } from '@mui/material'
 import { UserWithVacations } from '../TVacation.ts'
 import style from '../style/employeesWithVacations.module.scss'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { VacationContext } from '../VacationContext'
 import SimpleCollapsableCard from '@/Components/Vacation_Asset/SimpleCollapsableCard.tsx'
 import { EmployeesWithVacationsSearchFilter } from './SearchFilters.tsx'
+import { useInView } from 'react-intersection-observer'
 
 export const EmployeesWithVacations = () => {
-    const { isError, error, data, isLoading } = useGetUsersWithVacations()
+    const {
+        isError,
+        error,
+        data,
+        isLoading,
+        fetchNextPage,
+        isFetchingNextPage,
+    } = useGetUsersWithVacations()
 
     const { searchParams, setSearchParams } = useContext(VacationContext)
+
+    const { ref, inView } = useInView()
+
+    useEffect(() => {
+        if (inView) {
+            fetchNextPage()
+        }
+    }, [fetchNextPage, inView])
 
     if (isError) return <div>Error: {error.message}</div>
     if (isLoading)
@@ -19,8 +35,6 @@ export const EmployeesWithVacations = () => {
                 <CircularProgress />
             </div>
         )
-
-        
 
     return (
         <div className={style.employeesContainer}>
@@ -32,16 +46,21 @@ export const EmployeesWithVacations = () => {
                         user={user}
                         searchParams={searchParams}
                         setSearchParams={setSearchParams}
-                        items={{
-                            type: 'Vacation',
-                            itemArr: user.vacations,
-                        }}
+                        items={
+                            user.vacations
+                                ? {
+                                      type: 'Vacation',
+                                      itemArr: user.vacations,
+                                  }
+                                : undefined
+                        }
                     >
                         <div className={style.collapsedData}>
                             <div className={style.collapseDataVacationList}>
                                 <h3>Vacations this year</h3>
                                 <div>
-                                    {user.vacations.length > 0 ? (
+                                    {user.vacations &&
+                                    user.vacations.length > 0 ? (
                                         user.vacations.map(({ type, _id }) => (
                                             <p key={_id}>{type}</p>
                                         ))
@@ -54,6 +73,7 @@ export const EmployeesWithVacations = () => {
                     </SimpleCollapsableCard>
                 )),
             )}
+            <div ref={ref}>{isFetchingNextPage && 'Loading...'}</div>
         </div>
     )
 }

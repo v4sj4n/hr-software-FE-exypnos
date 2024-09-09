@@ -12,6 +12,7 @@ import Button from '@/Components/Button/Button.tsx'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes.tsx'
 import { AssignAssetModal } from './Modals/AssignAssetModal.tsx'
 import { ReturnAssetModal } from './Modals/ReturnAssetModal.tsx'
+import Toast from '@/Components/Toast/Toast.tsx'
 
 export const EmployeesWithHoldings = () => {
     const {
@@ -22,9 +23,14 @@ export const EmployeesWithHoldings = () => {
         fetchNextPage,
         isFetchingNextPage,
     } = useEmployeesWithHoldings()
-    const { searchParams, setSearchParams } = useContext(HoldingsContext)
+    const { searchParams, setSearchParams, toastConfigs, handleToastClose } =
+        useContext(HoldingsContext)
 
     const { ref, inView } = useInView()
+
+    useEffect(() => {
+        setSearchParams(new URLSearchParams())
+    }, [])
 
     useEffect(() => {
         if (inView) {
@@ -64,17 +70,19 @@ export const EmployeesWithHoldings = () => {
                         user={user}
                         searchParams={searchParams}
                         setSearchParams={setSearchParams}
-                        items={{
-                            type: 'Holding',
-                            itemArr: user.assets,
-                        }}
+                        items={
+                            user.assets
+                                ? { type: 'Holding', itemArr: user.assets }
+                                : undefined
+                        }
                     >
                         <div className={style.collapsedData}>
                             <div className={style.collapseDataVacationList}>
                                 <h3>Occupied items</h3>
                                 <div>
                                     <div>
-                                        {user.assets.length > 0 ? (
+                                        {user.assets &&
+                                        user.assets.length > 0 ? (
                                             user.assets.map(({ type, _id }) => (
                                                 <p
                                                     onClick={() => {
@@ -107,6 +115,12 @@ export const EmployeesWithHoldings = () => {
                 )),
             )}
             <div ref={ref}>{isFetchingNextPage && 'Loading...'}</div>
+            <Toast
+                severity={toastConfigs.severity}
+                message={toastConfigs.message!}
+                open={toastConfigs.isOpen}
+                onClose={handleToastClose}
+            />
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import { FormEvent, useContext } from 'react'
+import { useContext } from 'react'
 import { HoldingsContext } from '../HoldingsContext'
 import {
     useInfiniteQuery,
@@ -32,7 +32,7 @@ export const useEmployeesWithHoldings = () => {
             }),
         getNextPageParam: (lastPage, allPages) => {
             return lastPage.totalPages > allPages.length
-                ? allPages.length + 1
+                ? allPages.length
                 : undefined
         },
     })
@@ -61,16 +61,14 @@ export const useHandleItemAssigner = () => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: ({
-            event,
             assetId,
             userId,
             date,
         }: {
-            event: FormEvent<HTMLFormElement>
             assetId: string
             userId: string
             date: string
-        }) => handleItemAssign(event, assetId, userId, date),
+        }) => handleItemAssign(assetId, userId, date),
         onSettled: () => {
             queryClient.invalidateQueries({
                 queryKey: ['usersWithHoldings'],
@@ -86,16 +84,14 @@ export const useHandleItemReturner = () => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: ({
-            event,
             assetId,
             status,
             returnDate,
         }: {
-            event: FormEvent<HTMLFormElement>
             assetId: string
             status: string
             returnDate: string
-        }) => handleItemReturn(event, assetId, status, returnDate),
+        }) => handleItemReturn(assetId, status, returnDate),
         onSettled: () => {
             queryClient.invalidateQueries({
                 queryKey: ['usersWithHoldings'],

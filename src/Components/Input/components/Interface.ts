@@ -1,4 +1,3 @@
-import { UseFormRegisterReturn } from 'react-hook-form'
 export interface InputProps {
     initialValue?: string
     helperText?: string
@@ -22,7 +21,6 @@ export interface InputProps {
     onClick?: () => void
     onMouseDown?: (event: React.MouseEvent<HTMLButtonElement>) => void
     width?: string | number
-    register?: UseFormRegisterReturn
     style?: React.CSSProperties
     className?: string
     placeholder?: string

@@ -17,10 +17,10 @@ import { useGetAllEvents } from './Hook'
 import { useInView } from 'react-intersection-observer'
 import { useEffect } from 'react'
 import { EventsData } from './Interface/Events'
+import EventsContentLoader from '@/Components/Content/ContentLoader'
 
 function EventsContentAndComponents() {
     const {
-        onSearchChange,
         handleDelete,
         handleToastClose,
         handleUpdateToastClose,
@@ -36,24 +36,35 @@ function EventsContentAndComponents() {
         toastSeverity,
         isAdmin,
         eventToDeleteId,
-        handleSeeVoters,
+        handleSeeEventDetails,
         handleOpenDrawer,
     } = useEvents()
 
+    const {
+        data: events,
+        isFetchingNextPage,
+        fetchNextPage,
+        isLoading,
+        onSearchChange,
+    } = useGetAllEvents()
 
-    const {data: events , isFetchingNextPage, fetchNextPage,isLoading } = useGetAllEvents()
-    
-    const {ref, inView} = useInView()
-
-    console.log('eventeeeeeee', events)
+    const { ref, inView } = useInView()
 
     useEffect(() => {
         if (inView) {
-                fetchNextPage()
+            fetchNextPage()
         }
     }, [fetchNextPage, inView])
-    if(isLoading) return <div>Loading...</div>
 
+    if (isLoading) {
+        return (
+            <div className={style.grid}>
+                <EventsContentLoader />
+                <EventsContentLoader />
+                <EventsContentLoader />
+            </div>
+        )
+    }
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -98,9 +109,8 @@ function EventsContentAndComponents() {
             </div>
             <div className={style.contanier}>
                 <div className={style.grid}>
-                    { events?.pages.map((page) => (
+                    {events?.pages.map((page) =>
                         page.data.map((event: EventsData) => (
-
                             <Card
                             backgroundColor='rgba(255, 255, 255, 0.7)'
                                 key={event._id}
@@ -166,7 +176,9 @@ function EventsContentAndComponents() {
                                                 />
                                             </div>
                                         </Tooltip>
-                                        <div className={style.location}>{event.location}</div>
+                                        <div className={style.location}>
+                                            {event.location}
+                                        </div>
                                     </div>
                                     <Button
                                         btnText={
@@ -174,14 +186,16 @@ function EventsContentAndComponents() {
                                         }
                                         color='#2457a3'
                                         type={ButtonTypes.SECONDARY}
-                                        onClick={() => handleSeeVoters(event)}
+                                        onClick={() =>
+                                            handleSeeEventDetails(event)
+                                        }
                                         cursor="pointer"
                                         padding="8px"
                                     />
                                 </div>
                             </Card>
-                    ))
-                          ))}
+                        )),
+                    )}
                 </div>
                 {showModal && (
                     <ModalComponent open={showModal} handleClose={closeModal}>

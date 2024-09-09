@@ -1,16 +1,19 @@
 import { ModalComponent } from '@/Components/Modal/Modal'
-import { FormEvent, useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { HoldingsContext } from '../../HoldingsContext'
 import AxiosInstance from '@/Helpers/Axios'
 import { Asset } from '../../TAsset'
 import { useHandleItemAssigner } from '../../Hook'
-
-import style from '../../style/assignAssetModal.module.scss'
 import { Autocomplete, CircularProgress, TextField } from '@mui/material'
 import { inputStyles } from '@/Components/Input/Styles'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Input from '@/Components/Input/Index'
+import { useForm } from '@tanstack/react-form'
+import { ErrorText } from '@/Components/Error/ErrorTextForm'
+import { valibotValidator } from '@tanstack/valibot-form-adapter'
+import { minLength, nonEmpty, pipe, string } from 'valibot'
+import style from '../../style/assignAssetModal.module.scss'
 
 export const AssignAssetModal = () => {
     const {
@@ -22,13 +25,40 @@ export const AssignAssetModal = () => {
     const [isOpen, setIsOpen] = useState(false)
     const [options, setOptions] = useState<Asset[]>([])
     const [autocompleteLoading, setAutocompleteLoading] = useState(false)
-    const [assetId, setAssetId] = useState<string | null>(null)
     const [autocompleteValue, setAutocompleteValue] = useState<Asset | null>(
         null,
     )
-    const [date, setDate] = useState<string>(new Date().toISOString())
 
-    const itemAssigner = useHandleItemAssigner()
+    const { mutateAsync, error } = useHandleItemAssigner()
+
+    const form = useForm({
+        defaultValues: {
+            assetId: '',
+            date: new Date().toISOString().split('T')[0],
+        },
+        onSubmit: async ({ value }) => {
+            await mutateAsync({
+                assetId: value.assetId as string,
+                userId: searchParams.get('selectedUser') as string,
+                date: value.date,
+            })
+            if (error) {
+                setToastConfigs({
+                    isOpen: true,
+                    message: 'Error assigning item',
+                    severity: 'error',
+                })
+            } else {
+                setToastConfigs({
+                    isOpen: true,
+                    message: 'Item assigned successfully',
+                    severity: 'success',
+                })
+                handleClose()
+            }
+        },
+        validatorAdapter: valibotValidator(),
+    })
 
     useEffect(() => {
         let active = true
@@ -44,8 +74,6 @@ export const AssignAssetModal = () => {
                 const { data } = await AxiosInstance.get<Asset[]>(
                     '/asset?availability=available',
                 )
-                console.log(options)
-                console.log(data)
                 setOptions(data)
             }
             setAutocompleteLoading(false)
@@ -60,113 +88,133 @@ export const AssignAssetModal = () => {
             open={!!searchParams.get('assignItem')}
             handleClose={handleClose}
         >
+            <h3 className={style.modalTitle}>Assign Item</h3>
+
             <form
-                onSubmit={async (event: FormEvent<HTMLFormElement>) => {
-                    itemAssigner.mutate({
-                        event,
-                        assetId: assetId as string,
-                        userId: searchParams.get('selectedUser') as string,
-                        date,
-                    })
-                    if (itemAssigner.isError) {
-                        setToastConfigs({
-                            isOpen: true,
-                            message: 'Error assigning item',
-                            severity: 'error',
-                        })
-                    } else {
-                        setToastConfigs({
-                            isOpen: true,
-                            message: 'Item assigned successfully',
-                            severity: 'success',
-                        })
-                        handleClose()
-                    }
-                    setAssetId(null)
-                    setAutocompleteValue(null)
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    form.handleSubmit()
                 }}
                 className={style.itemAssigner}
             >
-                <h3>Assign Item</h3>
-                <div className={style.inputContainer}>
-                    <Autocomplete
-                        id="users-list"
-                        sx={{
-                            width: '100%',
-                            marginBottom: '1rem',
-                        }}
-                        open={isOpen}
-                        onOpen={() => setIsOpen(true)}
-                        onClose={() => setIsOpen(false)}
-                        onChange={(event, newValue) => {
-                            event.preventDefault()
-                            if (newValue) {
-                                setAssetId(newValue?._id)
-                                setAutocompleteValue(newValue)
-                            }
-                        }}
-                        value={autocompleteValue}
-                        options={options}
-                        loading={autocompleteLoading}
-                        isOptionEqualToValue={(option, value) =>
-                            option._id === value._id
-                        }
-                        getOptionLabel={(option) =>
-                            option.type + ' ' + option.serialNumber
-                        }
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                label="Item"
-                                variant="filled"
-                                size="small"
+                <form.Field
+                    name="assetId"
+                    validators={{
+                        onChange: pipe(
+                            string('Serial Number is required'),
+                            nonEmpty('Please type your serial number'),
+                            minLength(
+                                10,
+                                'Serial Number should be at least 10 characters long',
+                            ),
+                        ),
+                    }}
+                    children={(field) => (
+                        <div>
+                            <Autocomplete
+                                id="users-list"
                                 sx={{
-                                    ...inputStyles,
+                                    width: '100%',
+                                    marginBottom: '1rem',
                                 }}
-                                InputLabelProps={{
-                                    style: {
-                                        color: '#4C556B',
-                                        fontFamily: '"Outfit", sans-serif',
-                                    },
-                                    shrink: true,
+                                open={isOpen}
+                                onOpen={() => setIsOpen(true)}
+                                onClose={() => setIsOpen(false)}
+                                onChange={(event, newValue) => {
+                                    event.preventDefault()
+                                    if (newValue) {
+                                        setAutocompleteValue(newValue)
+                                        field.handleChange(newValue._id)
+                                    }
                                 }}
-                                InputProps={{
-                                    disableUnderline: true,
-                                    ...params.InputProps,
-                                    endAdornment: (
-                                        <>
-                                            {autocompleteLoading ? (
-                                                <CircularProgress
-                                                    color="inherit"
-                                                    size={20}
-                                                />
-                                            ) : null}
-                                            {params.InputProps.endAdornment}
-                                        </>
-                                    ),
-                                }}
+                                value={autocompleteValue}
+                                options={options}
+                                loading={autocompleteLoading}
+                                isOptionEqualToValue={(option, value) =>
+                                    option._id === value._id
+                                }
+                                getOptionLabel={(option) =>
+                                    option.type + ' ' + option.serialNumber
+                                }
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="Item"
+                                        variant="filled"
+                                        size="small"
+                                        sx={{
+                                            ...inputStyles,
+                                        }}
+                                        InputLabelProps={{
+                                            style: {
+                                                color: '#4C556B',
+                                                fontFamily:
+                                                    '"Outfit", sans-serif',
+                                            },
+                                            shrink: true,
+                                        }}
+                                        InputProps={{
+                                            disableUnderline: true,
+                                            ...params.InputProps,
+                                            endAdornment: (
+                                                <>
+                                                    {autocompleteLoading ? (
+                                                        <CircularProgress
+                                                            color="inherit"
+                                                            size={20}
+                                                        />
+                                                    ) : null}
+                                                    {
+                                                        params.InputProps
+                                                            .endAdornment
+                                                    }
+                                                </>
+                                            ),
+                                        }}
+                                    />
+                                )}
                             />
-                        )}
-                    />
-                    <Input
-                        IsUsername
-                        name="Date"
-                        shrink
-                        label="Date"
-                        type="date"
-                        value={date.split('T')[0]}
-                        onChange={(e) => setDate(e.target.value)}
-                    />
-                </div>
+                            {field.state.meta.errors ? (
+                                <ErrorText>
+                                    {field.state.meta.errors.join(', ')}
+                                </ErrorText>
+                            ) : null}
+                        </div>
+                    )}
+                />
+                <form.Field
+                    name="date"
+                    children={(field) => (
+                        <>
+                            <Input
+                                IsUsername
+                                name="Date"
+                                shrink
+                                label="Date"
+                                type="date"
+                                value={field.state.value}
+                                onChange={(e) =>
+                                    field.handleChange(e.target.value)
+                                }
+                            />
+                            {field.state.meta.errors ? (
+                                <ErrorText>
+                                    {field.state.meta.errors.join(', ')}
+                                </ErrorText>
+                            ) : null}
+                        </>
+                    )}
+                />
 
-                <div className={style.buttonContainer}>
+                <div className={style.buttonsContainer}>
                     <Button
-                        btnText={'Assign'}
+                        btnText="Assign"
                         isSubmit
                         type={ButtonTypes.PRIMARY}
                     />
                     <Button
-                        btnText={'Cancel'}
+                        btnText="Cancel"
                         type={ButtonTypes.SECONDARY}
                         onClick={handleClose}
                     />

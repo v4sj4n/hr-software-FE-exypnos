@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
-import { GridPaginationModel, GridRenderCellParams, GridRowParams } from '@mui/x-data-grid'
+import {
+    GridPaginationModel,
+    GridRenderCellParams,
+    GridRowParams,
+} from '@mui/x-data-grid'
 import { Link, useNavigate } from 'react-router-dom'
 import {
     EmployeeContext,
@@ -12,41 +16,46 @@ import { useQuery } from '@tanstack/react-query'
 export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-
     const [page, setPage] = useState(0)
     const [pageSize, setPageSize] = useState(5)
 
     const handlePaginationModelChange = (model: GridPaginationModel) => {
-        setPage(model.page);
-        setPageSize(model.pageSize);
-    };
+        setPage(model.page)
+        setPageSize(model.pageSize)
+    }
 
- const fetchEmployes = async ():Promise<{data: UserProfileData[], totalPages: number}> => {
-    const response = await AxiosInstance.get<{data: UserProfileData[], totalPages: number}>(
-        `/user?page=${page}&limit=${pageSize}`
-    )
-    console.log('path:', `/user?page=${page}&limit=${pageSize}`)
-    console.log('Fetched users:', response.data)
-    return response.data
-}
+    const fetchEmployes = async (): Promise<{
+        data: UserProfileData[]
+        totalPages: number
+    }> => {
+        const response = await AxiosInstance.get<{
+            data: UserProfileData[]
+            totalPages: number
+        }>(`/user?page=${page}&limit=${pageSize}`)
+        console.log('path:', `/user?page=${page}&limit=${pageSize}`)
+        console.log('Fetched users:', response.data)
+        return response.data
+    }
 
-const {data: users, isPending } = useQuery<{data: UserProfileData[], totalPages: number}, Error>({
-    queryKey: ['users', page, pageSize],
-    queryFn: () => fetchEmployes(),
-})
-
+    const { data: users, isPending } = useQuery<
+        { data: UserProfileData[]; totalPages: number },
+        Error
+    >({
+        queryKey: ['users', page, pageSize],
+        queryFn: () => fetchEmployes(),
+    })
 
     const navigate = useNavigate()
 
     const rows: EmployeeRow[] =
-    users?.data.map((user, index) => ({
-        id: (page * pageSize) + index,
-        originalId: user._id,
-        role: user.role,
-        phone: user.phone,
-        email: user.auth?.email || '',
-        fullName: `${user.firstName} ${user.lastName}`,
-    })) || []
+        users?.data.map((user, index) => ({
+            id: page * pageSize + index + 1,
+            originalId: user._id,
+            role: user.role,
+            phone: user.phone,
+            email: user.auth?.email || '',
+            fullName: `${user.firstName} ${user.lastName}`,
+        })) || []
 
     const columns = [
         { field: 'id', headerName: 'No', maxWidth: 70, flex: 1 },
@@ -87,9 +96,9 @@ const {data: users, isPending } = useQuery<{data: UserProfileData[], totalPages:
         handleRowClick,
         handlePaginationModelChange,
         isPending,
-         page,
-          pageSize,
-          totalPages: users?.totalPages ?? 0,
+        page,
+        pageSize,
+        totalPages: users?.totalPages ?? 0,
     }
 
     return (

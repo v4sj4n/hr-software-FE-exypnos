@@ -17,8 +17,6 @@ export const getUsersWithVacations = async ({
     search: string
     users: string
 }) => {
-    console.log('Getting holdings:', pageParam)
-
     const response = await AxiosInstance.get(
         `/vacation/user?search=${search}&users=${users}&page=${pageParam}&limit=${LIMIT}&startDate=2024-01-01T00:00:00.810Z&endDate=2025-01-01T10:00:00.810Z`,
     )

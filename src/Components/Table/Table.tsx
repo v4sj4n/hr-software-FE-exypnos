@@ -60,7 +60,6 @@ export default function DataTable<T extends GridValidRowModel>({
                 disableColumnFilter={true}
                 rowSelection={false}
                 disableDensitySelector={true}
-                // disableColumnMenu={true}
                 sx={{
                     ...TableStyles,
                     '& .colored-row': {

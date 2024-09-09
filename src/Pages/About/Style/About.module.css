@@ -6,39 +6,39 @@
 }
 
 .heroSection {
-  position: relative;
-  text-align: center;
+    position: relative;
+    text-align: center;
 }
 
 .heroImage {
   width: 100%;
   height: 55vh;
 }
-.infoSection h2{
-  color: #3F67B7;
+.infoSection h2 {
+    color: #3f67b7;
 }
 
 .mainTitle {
-  position: absolute;
-  top: 65%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-size: 3rem;
-  z-index: 10;
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 3rem;
+    z-index: 10;
 }
 
 .infoContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
 }
 
 .infoSection {
-  width: 80%;
-  max-width: 1200px;
-  margin: 50px 0;
+    width: 80%;
+    max-width: 1200px;
+    margin: 50px 0;
 }
 .infoSection p{
   font-size: larger;
@@ -57,19 +57,18 @@
 }
 
 .ctaContainer {
-  text-align: center;
-  margin-top: 50px;
+    text-align: center;
+    margin-top: 50px;
 }
 
 .cta {
-  background-color: #0066cc;
-  color: white;
-  padding: 10px 20px;
-  text-decoration: none;
-  border-radius: 5px;
+    background-color: #0066cc;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
 }
 
 .cta:hover {
-  background-color: #004d99;
+    background-color: #004d99;
 }
-

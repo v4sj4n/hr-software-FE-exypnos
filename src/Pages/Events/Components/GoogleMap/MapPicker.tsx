@@ -160,6 +160,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
                         onChange={(e) => setSearchValue(e.target.value)}
                         placeholder="Enter location"
                         name="Location"
+                        label="Location"
                         icon={<SearchIcon onClick={handleSearch} />}
                         style={{ marginBottom: '15px' }}
                     />

@@ -24,10 +24,8 @@ export default function Forms() {
         updateEvent,
         pollQuestion,
         pollOptions,
-        isMultipleChoice,
         includePollInEdit,
         includesPoll,
-        editIsMultipleChoice,
         handleChange,
         handleEditChange,
         event,
@@ -100,7 +98,6 @@ export default function Forms() {
                         }
                         width={178}
                     />
-
                     <Input
                         IsUsername
                         label="End Date and Time"
@@ -118,7 +115,6 @@ export default function Forms() {
                         }
                     />
                 </div>
-
                 <MapComponent
                     onLocationChange={handleLocationChange}
                     savedLocation={
@@ -126,7 +122,6 @@ export default function Forms() {
                     }
                     showInput={true}
                 />
-
                 <Input
                     IsUsername
                     label="Description"
@@ -141,7 +136,6 @@ export default function Forms() {
                             : event.description
                     }
                 />
-
                 <Selecter
                     value={editingEvent ? editParticipants : participants}
                     onChange={(newValue) => {
@@ -160,7 +154,6 @@ export default function Forms() {
                     name="participants"
                     label="Participants"
                 />
-
                 <Selecter
                     value={editingEvent ? editType : event.type}
                     onChange={(newValue) => {
@@ -186,10 +179,8 @@ export default function Forms() {
                     name="type"
                     label="Event Type"
                 />
-
                 <div> Add Event Images</div>
                 <Dropzone />
-
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Switch
                         checked={
@@ -207,7 +198,6 @@ export default function Forms() {
                             : 'Add poll to event'}
                     </div>
                 </div>
-
                 {(editingEvent ? includePollInEdit : includesPoll) && (
                     <div
                         style={{
@@ -227,38 +217,7 @@ export default function Forms() {
                                 editingEvent ? handleEditChange : handleChange
                             }
                         />
-
-                        <div
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            Options
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <Switch
-                                    checked={
-                                        editingEvent
-                                            ? editIsMultipleChoice
-                                            : isMultipleChoice
-                                    }
-                                    onChange={(e) =>
-                                        editingEvent
-                                            ? handleEditChange(e)
-                                            : handleChange(e)
-                                    }
-                                    name="isMultipleChoice"
-                                />
-                                <div>Multiple choice</div>
-                            </div>
-                        </div>
-
+                        <>Options</>
                         {(editingEvent ? editPollOptions : pollOptions).map(
                             (option, index) => (
                                 <Input
@@ -297,7 +256,6 @@ export default function Forms() {
                                     .length >= 3
                             }
                         />
-
                         {(editingEvent ? editPollOptions : pollOptions)
                             .length >= 3 && (
                             <div style={{ color: 'red', fontSize: '14px' }}>
@@ -306,9 +264,7 @@ export default function Forms() {
                         )}
                     </div>
                 )}
-
                 <div className={style.border}></div>
-
                 <Button
                     btnText={editingEvent ? 'Update' : 'Save event'}
                     type={ButtonTypes.PRIMARY}

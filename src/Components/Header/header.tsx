@@ -1,6 +1,5 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import {
-    NotificationsOutlined as NotificationsIcon,
     SettingsOutlined as SettingsOutlinedIcon,
     Logout as LogoutIcon,
     PermIdentity as PermIdentityIcon,
@@ -11,6 +10,11 @@ import style from './header.module.css'
 import { useAuth } from '../../Context/AuthProvider'
 import { Link, useNavigate } from 'react-router-dom'
 import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
+import { EventsProvider } from '@/Pages/Events/Context/EventsContext'
+import NotificationDropdown from '@/Pages/Notification/Notification'
+import { ClickAwayListener } from '@mui/material'
+
+export const HeaderContent = () => {
 import AxiosInstance from '@/Helpers/Axios'
 import ThemeSwitcher from '@/Theme/ThemeSwitcher'
 
@@ -27,12 +31,8 @@ export const Header = () => {
     const { isSidebarOpen: isOpen, toggleSidebar } =
         useContext(SidebarHeaderContext)
     const [showDropdown, setShowDropdown] = useState(false)
-    const [showDropdownNotification, setShowDropdownNotification] =
-        useState(false)
+
     const navigate = useNavigate()
-    const toggleDropdown = () => setShowDropdown(!showDropdown)
-    const toggleDropdownNotification = () =>
-        setShowDropdownNotification(!showDropdownNotification)
 
     const { logout, currentUser } = useAuth()
 
@@ -41,26 +41,6 @@ export const Header = () => {
         navigate('/')
     }
 
-    const [notification, setNotification] = useState<NotificationData[]>([])
-    const currentUserId = currentUser?._id
-
-    useEffect(() => {
-        AxiosInstance.get<NotificationData[]>(
-            `notification/user/${currentUserId}`,
-        )
-            .then((response) => {
-                setNotification(response.data)
-                console.log('Notification fetch:', response.data)
-                setNotification(response.data)
-            })
-            .catch((error) => {
-                console.error('Error fetching data:', error)
-            })
-    }, [currentUserId])
-
-    const updateSatusAndNvigate = () => {
-        AxiosInstance.patch(`notification/${notification[0]?._id}`)
-    }
     const handleProfileClick = () => {
         navigate(`/profile/${currentUser?._id}`)
     }
@@ -92,12 +72,33 @@ export const Header = () => {
             <ThemeSwitcher /> 
 
                 <div className={style.icon}>
-                    <NotificationsIcon
-                        onClick={toggleDropdownNotification}
-                        style={{ cursor: 'pointer' }}
-                    />
-                    <span className={style.badge}>3</span>
+                    <NotificationDropdown />
                 </div>
+
+                <ClickAwayListener onClickAway={() => setShowDropdown(false)}>
+                    <div
+                        className={style.icon}
+                        onClick={() => setShowDropdown(true)}
+                    >
+                        <img
+                            src={currentUser?.imageUrl}
+                            style={{
+                                cursor: 'pointer',
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '50%',
+                            }}
+                        />
+                        <div className={style.username}></div>
+
+                        {showDropdown && (
+                            <div className={style.dropdown}>
+                                <div
+                                    className={style.dropdownItem}
+                                    onClick={handleProfileClick}
+                                >
+                                    Profile <PermIdentityIcon />
+                                </div>
                 <div className={style.icon} onClick={toggleDropdown}>
                     <img
                         src={currentUser?.imageUrl}
@@ -136,19 +137,29 @@ export const Header = () => {
                                 Profile <PermIdentityIcon />
                             </div>
 
-                            <div className={style.dropdownItem}>
-                                Settings <SettingsOutlinedIcon />
+                                <div className={style.dropdownItem}>
+                                    Settings <SettingsOutlinedIcon />
+                                </div>
+                                <div
+                                    className={style.dropdownItem}
+                                    onClick={handleLogout}
+                                >
+                                    Logout <LogoutIcon />
+                                </div>
                             </div>
-                            <div
-                                className={style.dropdownItem}
-                                onClick={handleLogout}
-                            >
-                                Logout <LogoutIcon />
-                            </div>
-                        </div>
-                    )}
-                </div>
+                        )}
+                    </div>
+                </ClickAwayListener>
             </div>
         </nav>
     )
 }
+
+const Header: React.FC = () => {
+    return (
+        <EventsProvider>
+            <HeaderContent />
+        </EventsProvider>
+    )
+}
+export default Header
