@@ -13,21 +13,10 @@ import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
 import { EventsProvider } from '@/Pages/Events/Context/EventsContext'
 import NotificationDropdown from '@/Pages/Notification/Notification'
 import { ClickAwayListener } from '@mui/material'
-
-export const HeaderContent = () => {
-import AxiosInstance from '@/Helpers/Axios'
 import ThemeSwitcher from '@/Theme/ThemeSwitcher'
 
 
-interface NotificationData {
-    _id: string
-    title: string
-    content: string
-    type: string
-    typeId: string
-}
-
-export const Header = () => {
+export const HeaderContent = () => {
     const { isSidebarOpen: isOpen, toggleSidebar } =
         useContext(SidebarHeaderContext)
     const [showDropdown, setShowDropdown] = useState(false)
@@ -99,43 +88,6 @@ export const Header = () => {
                                 >
                                     Profile <PermIdentityIcon />
                                 </div>
-                <div className={style.icon} onClick={toggleDropdown}>
-                    <img
-                        src={currentUser?.imageUrl}
-                        style={{
-                            cursor: 'pointer',
-                            width: '40px',
-                            height: '40px',
-                            borderRadius: '50%',
-                        }}
-                    />
-                    <div className={style.username}></div>
-                    {showDropdownNotification && (
-                        <div className={style.dropdown}>
-                            <div>
-                                {' '}
-                                {notification.map((notification) => (
-                                    <div key={notification._id}>
-                                        <Link
-                                            onClick={updateSatusAndNvigate}
-                                            to={`/${notification.type}?event=${notification.typeId}`}
-                                        >
-                                            <div>{notification.title}</div>
-                                            <div> {notification.type}</div>
-                                        </Link>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                    {showDropdown && (
-                        <div className={style.dropdown}>
-                            <div
-                                className={style.dropdownItem}
-                                onClick={handleProfileClick}
-                            >
-                                Profile <PermIdentityIcon />
-                            </div>
 
                                 <div className={style.dropdownItem}>
                                     Settings <SettingsOutlinedIcon />
