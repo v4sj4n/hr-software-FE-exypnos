@@ -3,16 +3,11 @@ import style from './styles/promotion.module.css'
 import ChartBar from './components/ChartBar'
 import PromotionCard from './components/PromotionCard'
 import Rating from './components/Rating'
-import { useAuth } from '@/Context/AuthProvider'
-import { useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 
     export default function UserPromotion() {
-        const location = useLocation();
-        const queryParams = new URLSearchParams(location.search);
-        const id = queryParams.get('id');
-    
-        console.log("id", id);
+    const { id } = useParams<{ id: string }>();
         if (!id) {
             return <div>Invalid User</div>
         }

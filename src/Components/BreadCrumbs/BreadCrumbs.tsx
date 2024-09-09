@@ -34,6 +34,7 @@ const routeStructure: Record<string, Route> = {
     '/view/:id': { name: 'View Candidate Details', parent: 'Employees' },
     '/profile/:id': { name: 'Profile', parent: 'Employee' },
     '/holdings/:id': { name: 'User Holdings', parent: 'Holdings' },
+    '/promotion/:id': { name: 'User Promotion', parent: 'Promotion' },
 }
 
 export const BreadcrumbComponent = () => {

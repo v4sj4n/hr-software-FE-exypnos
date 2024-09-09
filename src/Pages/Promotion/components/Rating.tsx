@@ -1,33 +1,37 @@
 import AxiosInstance from '@/Helpers/Axios'
 import Card from '@/Components/Card/Card'
 import { useEffect, useState } from 'react'
-import { useAuth } from '@/Context/AuthProvider'
 import style from '../styles/promotion.module.css'
 import BasicRating from './Stars'
+import Button from '@/Components/Button/Button'
+import { ButtonTypes } from '@/Components/Button/ButtonTypes'
+import EditIcon from '@mui/icons-material/Edit'
 
 export type Rating = {
-    productivityScore: number,
-    teamCollaborationScore: number,
-    technicalSkillLevel: number,
+    productivityScore: number
+    teamCollaborationScore: number
+    technicalSkillLevel: number
     clientFeedbackRating: number
+    projectId: { _id: string; name: string }
 }
 
 export default function Rating({ id }: { id: string }) {
-    const [value, setValue] = useState<Rating[] | null>(null);
+    console.log('id', id)
+    const [value, setValue] = useState<Rating[] | null>(null)
 
- useEffect(() => {
+    useEffect(() => {
         const fetchData = async () => {
             const response = await AxiosInstance<Rating[]>(
-                `/ratings/user/${id}`,
+                `/rating/user?id=${id}`,
             )
             let data: Rating[] = response.data
             setValue(data)
-            console.log("dataRating", data)
+            console.log('dataRating', data)
         }
 
         fetchData()
     }, [])
-  
+
     return (
         <Card>
             <h3
@@ -40,15 +44,50 @@ export default function Rating({ id }: { id: string }) {
                 Rating
             </h3>
             <div className={style.secondDiv}>
-                {value && value.map((item, index) => (
-                    <Card key={index}>
-                        <h3>Project title</h3>
-                        <BasicRating type={"ProductivityScore"} value={item.productivityScore} />
-                        <BasicRating type={"TeamCollaborationScore"} value={item.teamCollaborationScore} />
-                        <BasicRating type={"TechnicalSkillLevel"} value={item.technicalSkillLevel} />
-                        <BasicRating type={"ClientFeedbackRating"} value={item.clientFeedbackRating} />
-                    </Card>
-                ))}
+                {value &&
+                    value.map((item, index) => (
+                        <Card key={index} gap="10px">
+                            <h3>{item.projectId.name}</h3>
+                            <div className={style.grid}>
+                                <BasicRating
+                                    type={'ProductivityScore'}
+                                    value={item.productivityScore}
+                                />
+                                <BasicRating
+                                    type={'TeamCollaborationScore'}
+                                    value={item.teamCollaborationScore}
+                                />
+                                <BasicRating
+                                    type={'TechnicalSkillLevel'}
+                                    value={item.technicalSkillLevel}
+                                />
+                                <BasicRating
+                                    type={'ClientFeedbackRating'}
+                                    value={item.clientFeedbackRating}
+                                />
+                            </div>{' '}
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'flex-end',
+                                    width: '100%',
+                                }}
+                            >
+                                <Button
+                                    type={ButtonTypes.SECONDARY}
+                                    btnText=""
+                                    width="40px"
+                                    height="30px"
+                                    display="flex"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    color="#2457A3"
+                                    borderColor="#2457A3"
+                                    icon={<EditIcon />}
+                                />
+                            </div>
+                        </Card>
+                    ))}
             </div>
         </Card>
     )

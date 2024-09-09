@@ -6,9 +6,7 @@ export default function Promotion() {
 
     return (
         <>
-            <div className={style.secondDiv}>
                 <UserCard/>
-            </div>
         </>
     )
 }
