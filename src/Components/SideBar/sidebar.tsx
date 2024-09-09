@@ -12,12 +12,19 @@ import {
 
 import { useContext, useState } from 'react'
 import style from './sidebar.module.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
+import { useAuth } from '@/Context/AuthProvider'
 
 
 export const SideBar = () => {
     const { isSidebarOpen: isOpen } = useContext(SidebarHeaderContext)
+    const { currentUser } = useAuth()
+
+    const hr = currentUser?.role === 'hr'
+    const currentUserID = currentUser?._id
+
+    const navigate = useNavigate()
 
     const [dropdownOpen, setDropdownOpen] = useState({
         recruiting: false,
@@ -133,9 +140,14 @@ export const SideBar = () => {
                         <Link to="/vacation" className={style.dropdownItem}>
                             Vacation{' '}
                         </Link>
-                        <Link to="/promotion" className={style.dropdownItem}>
-                            Promotion{' '}
-                        </Link>
+                        <div
+                            onClick={() => {
+                                hr ? navigate('promotion') : navigate(`/promotion/${currentUserID}`);
+                            }}
+                            className={style.dropdownItem}
+                        >
+                            Promotion
+                        </div>
                     </div>
                     <div
                         className={style.item}

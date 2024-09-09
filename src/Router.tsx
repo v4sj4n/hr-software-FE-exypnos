@@ -65,8 +65,8 @@ export default function Router() {
                     element: <Promotion />,
                 },
                 {
-                    path: '/userPromotion',
-                    element: <UserPromotion />,
+                    path: '/promotion/:id',
+                    element: <UserPromotion/>,
                 },
                 { path: '/dashboard', element: <Dashboard />, index: false },
                 {
