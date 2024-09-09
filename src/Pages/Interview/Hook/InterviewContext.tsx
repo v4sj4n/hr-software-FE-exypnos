@@ -270,53 +270,56 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         }
     }
 
-    const handleAccept = async (interview: Interview) => {
-        try {
-            let newPhase = interview.currentPhase
-            let status = interview.status
-    
-            if (interview.currentPhase === 'first_interview') {
-                newPhase = 'second_interview'
-                status = 'active'
-            } else if (interview.currentPhase === 'second_interview') {
-                status = 'employed'
-                newPhase = 'employed'
-            }
-    
-            const response = await AxiosInstance.patch(`/applicant/${interview._id}`, {
-                status: status,
-                currentPhase: newPhase,
-            })
-    
-            if (response.status === 200) {
-                setInterviews((prevInterviews) =>
-                    prevInterviews.map((i) =>
-                        i._id === interview._id
-                            ? { ...i, status: status, currentPhase: newPhase }
-                            : i
-                    )
-                )
-                setFilteredInterviews((prevInterviews) =>
-                    prevInterviews.map((i) =>
-                        i._id === interview._id
-                            ? { ...i, status: status, currentPhase: newPhase }
-                            : i
-                    )
-                )
-    
-                if (status === 'employed') {
-                    setToastMessage('This candidate will now be found as an employee')
-                    setToastSeverity('success')
-                    setToastOpen(true)
-                }
-            }
-        } catch (error) {
-            console.error('Failed to update interview status:', error)
-            setToastMessage('Failed to accept the candidate')
-            setToastSeverity('error')
-            setToastOpen(true)
+   const handleAccept = async (interview: Interview) => {
+    try {
+        let newPhase = interview.currentPhase;
+        let status = interview.status;
+
+        if (interview.currentPhase === 'first_interview') {
+            newPhase = 'second_interview';
+            status = 'active';
+            handleOpenModal(interview, false); 
+        } 
+        else if (interview.currentPhase === 'second_interview') {
+            status = 'employed';
+            newPhase = 'employed';
         }
+
+        const response = await AxiosInstance.patch(`/applicant/${interview._id}`, {
+            status: status,
+            currentPhase: newPhase,
+        });
+
+        if (response.status === 200) {
+            setInterviews((prevInterviews) =>
+                prevInterviews.map((i) =>
+                    i._id === interview._id
+                        ? { ...i, status: status, currentPhase: newPhase }
+                        : i
+                )
+            );
+            setFilteredInterviews((prevInterviews) =>
+                prevInterviews.map((i) =>
+                    i._id === interview._id
+                        ? { ...i, status: status, currentPhase: newPhase }
+                        : i
+                )
+            );
+
+            if (status === 'employed') {
+                setToastMessage('This candidate will now be found as an employee');
+                setToastSeverity('success');
+                setToastOpen(true);
+            }
+        }
+    } catch (error) {
+        console.error('Failed to update interview status:', error);
+        setToastMessage('Failed to accept the candidate');
+        setToastSeverity('error');
+        setToastOpen(true);
     }
+};
+
 
     const onDragEnd = async (result: DropResult) => {
         if (!result.destination) return

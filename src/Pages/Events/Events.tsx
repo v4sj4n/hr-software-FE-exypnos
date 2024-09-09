@@ -132,7 +132,7 @@ function EventsContentAndComponents() {
                                                         sx={{
                                                             height: 20,
                                                             width: 20,
-                                                            color: '#5f43b2',
+                                                            color: '#2457a3',
                                                         }}
                                                     />
                                                 </div>
@@ -161,7 +161,7 @@ function EventsContentAndComponents() {
                                                     sx={{
                                                         height: 20,
                                                         width: 20,
-                                                        color: '#5f43b2',
+                                                        color: '#2457a3',
                                                     }}
                                                 />
                                             </div>
@@ -172,7 +172,7 @@ function EventsContentAndComponents() {
                                         btnText={
                                             isAdmin ? 'See Details' : 'Vote'
                                         }
-                                        color='#5f43b2'
+                                        color='#2457a3'
                                         type={ButtonTypes.SECONDARY}
                                         onClick={() => handleSeeVoters(event)}
                                         cursor="pointer"

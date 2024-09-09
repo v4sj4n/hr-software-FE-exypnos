@@ -1,8 +1,7 @@
-// Button.tsx
 import React from 'react';
-import { useTheme } from '@mui/material/styles'; // Import the theme hook
+import { useTheme } from '@mui/material/styles'; 
 import { ButtonTypes } from './ButtonTypes';
-import './Button.css'; // Import your CSS file for button styles
+import './Button.css'; 
 
 type ButtonType = (typeof ButtonTypes)[keyof typeof ButtonTypes];
 
@@ -28,6 +27,7 @@ interface ButtonProps extends ButtonStyles {
     disabled?: boolean;
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
     icon?: React.ReactNode;
+    cursor?: string;    
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -39,9 +39,8 @@ const Button: React.FC<ButtonProps> = ({
     onClick,
     ...restProps
 }) => {
-    const theme = useTheme(); // Get the current theme
+    const theme = useTheme(); 
 
-    // Get the button class based on the type
     const getButtonClass = (): string => {
         switch (type) {
             case ButtonTypes.PRIMARY:
@@ -57,7 +56,6 @@ const Button: React.FC<ButtonProps> = ({
         }
     };
 
-    // Dynamically set the style based on the theme
     const dynamicStyles: React.CSSProperties = {
         backgroundColor:
             type === ButtonTypes.PRIMARY
@@ -75,6 +73,8 @@ const Button: React.FC<ButtonProps> = ({
             type === ButtonTypes.PRIMARY || type === ButtonTypes.TERTIARY
                 ? theme.palette.primary.main
                 : theme.palette.text.secondary,
+                cursor: disabled ? 'default' : 'pointer',
+
         ...restProps, 
     };
 

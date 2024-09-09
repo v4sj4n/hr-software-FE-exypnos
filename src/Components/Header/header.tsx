@@ -12,6 +12,8 @@ import { useAuth } from '../../Context/AuthProvider'
 import { Link, useNavigate } from 'react-router-dom'
 import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
 import AxiosInstance from '@/Helpers/Axios'
+import ThemeSwitcher from '@/Theme/ThemeSwitcher'
+
 
 interface NotificationData {
     _id: string
@@ -87,6 +89,8 @@ export const Header = () => {
                 )}
             </div>
             <div className={style.headerRight}>
+            <ThemeSwitcher /> 
+
                 <div className={style.icon}>
                     <NotificationsIcon
                         onClick={toggleDropdownNotification}

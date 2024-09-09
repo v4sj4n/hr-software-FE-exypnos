@@ -21,7 +21,7 @@
 
 .filterField {
     background-color: #E0DFFF; /* Input background color */
-    border: 1px solid #C4BFEA;
+    border: 1px solid #bcc2cc;
     border-radius: 5px;
     padding: 10px;
     font-size: 14px;
@@ -48,7 +48,7 @@
 
 .kanbanItem {
     background-color: rgba(255, 255, 255, 0.7);
-    border: 1px solid #C4BFEA;
+    border: 1px solid #bcc2cc;
     padding: 15px;
     margin-bottom: 10px;
     border-radius: 8px;

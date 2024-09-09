@@ -14,7 +14,6 @@ import { useContext, useState } from 'react'
 import style from './sidebar.module.css'
 import { Link } from 'react-router-dom'
 import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
-import ThemeSwitcher from '@/Theme/ThemeSwitcher'
 
 
 export const SideBar = () => {
@@ -238,7 +237,6 @@ export const SideBar = () => {
                         
                     </div>
                     <div >
-                                                    <ThemeSwitcher /> 
                                                     </div>
                 </div>
             </nav>
