@@ -15,7 +15,7 @@ import { useParams } from 'react-router-dom'
             <>
                 <div className={style.container}>
                     <div className={style.firstDiv}>
-                        <Card padding="20px">
+                        <Card padding="20px" backgroundColor='rgba(255, 255, 255, 0.7)'>
                             <ChartBar id={id} />
                         </Card>
                         <Rating id={id} />

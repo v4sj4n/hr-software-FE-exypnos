@@ -1,9 +1,10 @@
-import { useAuth } from '@/Context/AuthProvider'
+
 import AxiosInstance from '@/Helpers/Axios'
 import { BarChart } from '@mui/x-charts/BarChart'
 import { axisClasses } from '@mui/x-charts/ChartsAxis'
 import { DatasetType } from '@mui/x-charts/internals'
 import { useEffect, useState } from 'react'
+
 import {
     ChartsAxisContentProps,
     ChartsTooltip,
