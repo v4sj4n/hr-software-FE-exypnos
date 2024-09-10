@@ -6,6 +6,7 @@ import BasicRating from './Stars'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import EditIcon from '@mui/icons-material/Edit'
+import { useTheme } from '@mui/material/styles' 
 
 export type Rating = {
     productivityScore: number
@@ -18,6 +19,7 @@ export type Rating = {
 export default function Rating({ id }: { id: string }) {
     console.log('id', id)
     const [value, setValue] = useState<Rating[] | null>(null)
+    const theme = useTheme()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,7 +35,7 @@ export default function Rating({ id }: { id: string }) {
     }, [])
 
     return (
-        <Card>
+        <Card backgroundColor='rgba(255, 255, 255, 0.7)'>
             <h3
                 style={{
                     padding: 0,
@@ -46,7 +48,7 @@ export default function Rating({ id }: { id: string }) {
             <div className={style.secondDiv}>
                 {value &&
                     value.map((item, index) => (
-                        <Card key={index} gap="10px">
+                        <Card key={index} gap="10px" backgroundColor={theme.palette.background.default}>
                             <h3>{item.projectId.name}</h3>
                             <div className={style.grid}>
                                 <BasicRating

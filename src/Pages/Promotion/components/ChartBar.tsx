@@ -4,6 +4,7 @@ import { BarChart } from '@mui/x-charts/BarChart'
 import { axisClasses } from '@mui/x-charts/ChartsAxis'
 import { DatasetType } from '@mui/x-charts/internals'
 import { useEffect, useState } from 'react'
+
 import {
     ChartsAxisContentProps,
     ChartsTooltip,
@@ -78,7 +79,7 @@ export default function ChartBar({ id }: { id: string }) {
                         slots={{
                             axisContent: (props: ChartsAxisContentProps) => {
                                 const { dataIndex } = props
-                                if (dataIndex === undefined) return null
+                                if (dataIndex === undefined ) return null
                                 const data = dataset[dataIndex]
 
                                 return (
