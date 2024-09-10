@@ -9,5 +9,6 @@ export const useGetAllUsers = () => {
             const response = await AxiosInstance.get<UserProfileData[]>('/user')
             return response.data
         },
+        
     })
 }

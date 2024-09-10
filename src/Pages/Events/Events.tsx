@@ -46,6 +46,8 @@ function EventsContentAndComponents() {
         fetchNextPage,
         isLoading,
         onSearchChange,
+        searchEvent,
+
     } = useGetAllEvents()
 
     const { ref, inView } = useInView()
@@ -93,6 +95,7 @@ function EventsContentAndComponents() {
                     width={250}
                     iconPosition="end"
                     icon={<SearchOutlinedIcon />}
+                    value={searchEvent}
                     onChange={onSearchChange}
                 />
                 {isAdmin ? (

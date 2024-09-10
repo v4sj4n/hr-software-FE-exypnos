@@ -9,7 +9,6 @@ import {
     DevicesOutlined as DevicesIcon,
     GroupAddOutlined as GroupAddIcon,
 } from '@mui/icons-material'
-
 import { useContext, useState } from 'react'
 import style from './sidebar.module.css'
 import { Link, useNavigate } from 'react-router-dom'
