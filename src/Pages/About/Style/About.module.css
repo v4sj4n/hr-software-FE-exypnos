@@ -8,7 +8,7 @@
 .heroSection {
   position: relative;
   text-align: center;
-  height: 70vh; 
+  height: 40vh; 
   overflow: hidden;
 }
 
@@ -21,7 +21,7 @@
 }
 
 .heroSection:hover .heroImage {
-  transform: scale(1.05); /* Parallax effect */
+  transform: scale(1.05); 
 }
 
 .heroSection::before {
@@ -70,7 +70,7 @@
   border-radius: 15px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
-  z-index: 2; /* Ensure proper stacking */
+  z-index: 2; 
 }
 
 .infoContainer:hover {
