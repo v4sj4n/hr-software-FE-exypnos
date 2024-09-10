@@ -1,5 +1,4 @@
 import style from '../style/infoSection.module.css'
-
 import { EventsData } from '../../Events/Interface/Events'
 import dayjs from 'dayjs'
 import AxiosInstance from '@/Helpers/Axios'
@@ -18,6 +17,7 @@ const InfoSection: React.FC = () => {
     })
 
     console.log('events', events)
+    
 
     return (
         <div className={style.infoSection}>

@@ -43,8 +43,6 @@ export default function Forms() {
     } = useEvents()
 
     const handleLocationChange = (address: string) => {
-        console.log('Selected address:', address)
-
         if (editingEvent) {
             handleEditChange({
                 target: {
@@ -251,11 +249,8 @@ export default function Forms() {
                             type={ButtonTypes.SECONDARY}
                             color="#2469FF"
                             borderColor="#2469FF"
-                            disabled={
-                                (editingEvent ? editPollOptions : pollOptions)
-                                    .length >= 3
-                            }
-                        />
+                            disabled={ (editingEvent ? editPollOptions : pollOptions).length >= 3 }
+                            />
                         {(editingEvent ? editPollOptions : pollOptions)
                             .length >= 3 && (
                             <div style={{ color: 'red', fontSize: '14px' }}>

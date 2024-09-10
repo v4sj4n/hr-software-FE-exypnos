@@ -6,7 +6,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay'
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton'
-
 function getRandomNumber(min: number, max: number) {
     return Math.round(Math.random() * (max - min) + min)
 }
@@ -40,6 +39,7 @@ function ServerDay(
         !props.outsideCurrentMonth &&
         highlightedDays.indexOf(props.day.date()) >= 0
 
+       
     return (
         <Badge
             key={props.day.toString()}
@@ -93,6 +93,7 @@ export default function Calendar() {
         setHighlightedDays([])
         fetchHighlightedDays(date)
     }
+  
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>

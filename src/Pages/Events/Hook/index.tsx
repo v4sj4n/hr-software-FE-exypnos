@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AxiosInstance from '@/Helpers/Axios'
 import { EventsCreationData, EventsData } from '../Interface/Events'
 import { useSearchParams } from 'react-router-dom'
@@ -7,39 +7,53 @@ import {
     useMutation,
     useQueryClient,
 } from '@tanstack/react-query'
-import { debouncedSetSearchParams, fetchEvents } from '../utils/utils'
+import {  fetchEvents } from '../utils/utils'
+import { debounce } from '@/Helpers/debounce'
 
 export const useGetAllEvents = () => {
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchEvent, setSearchEvent] = useState(searchParams.get('search') || ''); 
 
     const query = useInfiniteQuery({
-        queryKey: ['events', searchParams.get('search')],
-
-        queryFn: ({ pageParam = 0 }) => {
-            const currentSearch = searchParams.get('search') || ''
-            console.log('selma', pageParam)
-            return fetchEvents(currentSearch, pageParam as number)
-        },
+        queryKey: ['events', searchEvent],  
+        queryFn: ({ pageParam = 0 }) => fetchEvents(searchEvent || '', pageParam),
         initialPageParam: 0,
         getNextPageParam: (lastPage, allPages) => {
             if (lastPage.length < 6) {
-                return undefined
+                return undefined;
             }
-            return allPages.length
+            return allPages.length;
         },
-    })
+    });
 
-    const debouncedSearchParams = debouncedSetSearchParams(setSearchParams)
+    const debouncedSetSearchParams = debounce((value: string) => {
+        setSearchParams((prev: URLSearchParams) => {
+            const newParams = new URLSearchParams(prev);
+            if (value) {
+                newParams.set('search', value);
+            } else {
+                newParams.delete('search');
+            }
+            return newParams;
+        });
+    }, 500);
 
+    
     const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        debouncedSearchParams(e.target.value)
-    }
+        setSearchEvent(e.target.value);  
+        debouncedSetSearchParams(e.target.value); 
+    };
+
+    useEffect(() => {
+        setSearchEvent(searchParams.get('search') || ''); 
+    }, [searchParams]);
 
     return {
         ...query,
+        searchEvent,
         onSearchChange,
-    }
-}
+    };
+};
 
 export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
     const queryClient = useQueryClient()
@@ -135,8 +149,9 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
             setEventPhotos([])
             handleCloseDrawer()
         },
-        onError: (error: any) => {
-            setToastMessage( error.response.data.message); 
+        onError: (error: Error) => {
+            console.error('Error creating event', error)
+            setToastMessage('Error creating event')
             setToastSeverity('error')
             setToastOpen(true)
         },
@@ -319,7 +334,7 @@ export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
     const updateEventMutation = useMutation({
         mutationFn: async () => {
             if (!editingEvent) {
-                throw new Error('No event selected for editing');
+                throw new Error('No event selected for editing')
             }
             const fieldsToUpdate = {
                 title: editingEvent.title,
@@ -341,38 +356,40 @@ export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
                               })),
                       }
                     : null,
-            };
+            }
             const response = await AxiosInstance.patch(
                 `/event/${editingEvent._id}`,
                 fieldsToUpdate,
-            );
-            return response.data;
+            )
+            return response.data
         },
         onSuccess: (data) => {
-            setUpdateToastMessage('Event updated successfully');
-            setUpdateToastOpen(true);
-            setUpdateToastSeverity('success');
+            setUpdateToastMessage('Event updated successfully')
+            setUpdateToastOpen(true)
+            setUpdateToastSeverity('success')
             setUpdatedEvent((prevEvents) =>
                 prevEvents.map((event) =>
                     event._id === editingEvent?._id ? data : event,
                 ),
-            );
-    
+            )
+
             queryClient.invalidateQueries({
                 queryKey: ['events'],
-            });
-    
-            setEditingEvent(null);
-            resetEditPollState();
-            setEditDrawer(false);
-            handleCloseDrawer();
+            })
+
+            setEditingEvent(null)
+            resetEditPollState()
+            setEditDrawer(false)
+            handleCloseDrawer()
         },
-        onError: (error: any) => {
-            setUpdateToastMessage( error.response.data.message); 
-            setUpdateToastOpen(true);
-            setUpdateToastSeverity('error');
+        onError: (error) => {
+            console.error('Error updating event:', error)
+            setUpdateToastMessage('Error updating event')
+            setUpdateToastOpen(true)
+            setUpdateToastSeverity('error')
         },
-    });
+    })
+
     return {
         editingEvent,
         setEditDrawer,

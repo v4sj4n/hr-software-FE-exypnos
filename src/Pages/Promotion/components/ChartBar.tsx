@@ -1,4 +1,4 @@
-
+import { useTheme } from '@mui/material/styles'
 import AxiosInstance from '@/Helpers/Axios'
 import { BarChart } from '@mui/x-charts/BarChart'
 import { axisClasses } from '@mui/x-charts/ChartsAxis'
@@ -9,7 +9,9 @@ import {
     ChartsAxisContentProps,
     ChartsTooltip,
 } from '@mui/x-charts/ChartsTooltip'
-const valueFormatter = (value: number | null) => `${value}ALL`
+
+const valueFormatter = (value: number | null) => `${value} ALL`
+
 export type Salary = {
     netSalary: number
     month: number
@@ -19,44 +21,42 @@ export type Salary = {
     bonus: number
 }
 
-const chartSetting = {
-    series: [
-        {
-            dataKey: 'netSalary',
-            label: 'Salary Chart',
-            valueFormatter,
-        },
-    ],
-    height: 300,
-    sx: {
-        [`& .${axisClasses.directionY} .${axisClasses.label}`]: {
-            transform: 'translateX(-10px)',
-        },
-        '.css-1qdzy9k-MuiBarElement-root': {
-            fill: '#c5b3e6',
-        },
-        '.MuiChartsLegend-mark': {
-            fill: '#c5b3e6',
-        },
-    },
-}
-
 export default function ChartBar({ id }: { id: string }) {
     const [dataset, setDataset] = useState<DatasetType>([])
+    const theme = useTheme()
+
+    const chartSetting = {
+        series: [
+            {
+                dataKey: 'netSalary',
+                label: 'Salary Chart',
+                valueFormatter,
+            },
+        ],
+        height: 300,
+        sx: {
+            [`& .${axisClasses.directionY} .${axisClasses.label}`]: {
+                transform: 'translateX(-10px)',
+            },
+            '.css-1qdzy9k-MuiBarElement-root': {
+                fill: theme.palette.primary.main, // Use theme's primary color for bars
+            },
+            '.MuiChartsLegend-mark': {
+                fill: theme.palette.primary.main, // Use theme's primary color for legend
+            },
+        },
+    }
 
     useEffect(() => {
         const fetchData = async () => {
             const response = await AxiosInstance<Salary[]>(
                 `/salary/user/${id}?graph=true`,
             )
-            console.log('response', response.data)
-            let data: Salary[] = response.data
-            setDataset(data)
-            console.log('datasalary', data)
+            setDataset(response.data)
         }
 
         fetchData()
-    }, [])
+    }, [id])
 
     return (
         <div style={{ width: '100%' }}>
@@ -79,55 +79,24 @@ export default function ChartBar({ id }: { id: string }) {
                         slots={{
                             axisContent: (props: ChartsAxisContentProps) => {
                                 const { dataIndex } = props
-                                if (!dataIndex) return
+                                if (dataIndex === undefined ) return null
+                                const data = dataset[dataIndex]
+
                                 return (
                                     <div
                                         style={{
-                                            backgroundColor: 'white',
+                                            backgroundColor: theme.palette.background.paper,
                                             padding: '10px',
                                             borderRadius: '5px',
+                                            boxShadow: `0 4px 6px ${theme.palette.grey[500]}`,
                                         }}
                                     >
-                                        <p>
-                                            Month:{' '}
-                                            {String(
-                                                dataset[dataIndex]?.month,
-                                            ) ?? ''}
-                                        </p>
-                                        <p>
-                                            Net Salary:{' '}
-                                            {String(
-                                                dataset[dataIndex]?.netSalary ??
-                                                    '',
-                                            )}
-                                        </p>
-                                        <p>
-                                            Gross Salary:{' '}
-                                            {String(
-                                                dataset[dataIndex]
-                                                    ?.grossSalary ?? '',
-                                            )}
-                                        </p>
-                                        <p>
-                                            Bonus:{' '}
-                                            {String(
-                                                dataset[dataIndex]?.bonus,
-                                            ) ?? ''}
-                                        </p>
-                                        <p>
-                                            Health Insurance:{' '}
-                                            {String(
-                                                dataset[dataIndex]
-                                                    ?.healthInsurance,
-                                            ) ?? ''}
-                                        </p>
-                                        <p>
-                                            Social Security:{' '}
-                                            {String(
-                                                dataset[dataIndex]
-                                                    ?.socialSecurity,
-                                            ) ?? ''}
-                                        </p>
+                                        <p>Month: {data?.month ?? ''}</p>
+                                        <p>Net Salary: {data?.netSalary ?? ''}</p>
+                                        <p>Gross Salary: {data?.grossSalary ?? ''}</p>
+                                        <p>Bonus: {data?.bonus ?? ''}</p>
+                                        <p>Health Insurance: {data?.healthInsurance ?? ''}</p>
+                                        <p>Social Security: {data?.socialSecurity ?? ''}</p>
                                     </div>
                                 )
                             },

@@ -9,7 +9,6 @@ import {
     DevicesOutlined as DevicesIcon,
     GroupAddOutlined as GroupAddIcon,
 } from '@mui/icons-material'
-
 import { useContext, useState } from 'react'
 import style from './sidebar.module.css'
 import { Link, useNavigate } from 'react-router-dom'
@@ -43,6 +42,7 @@ export const SideBar = () => {
             return newState
         })
     }
+
 
     return (
         <div className={style.sidebarContainer}>
@@ -97,6 +97,7 @@ export const SideBar = () => {
                         }`}
                     >
                         <Link to="/candidates" className={style.dropdownItem}>
+                        
                             Candidates{' '}
                         </Link>
                         <Link to="/interview" className={style.dropdownItem}>

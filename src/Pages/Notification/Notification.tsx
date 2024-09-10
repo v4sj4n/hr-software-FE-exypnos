@@ -55,8 +55,10 @@ const NotificationDropdown: React.FC = () => {
         setIsOpen(false)
         } else if(notification.type === "vacation") {
             removeNotification(notification._id)
-            navigate(`/vacation?vacationType=requests&page=1&limit=5&selectedVacation=${notification.typeId}`)
-            console.log('Notification typesss:',`/vacation?vacationType=requests&page=1&limit=5&selectedVacation=${notification.typeId}`)
+            navigate(`/vacation?vacationType=requests&selectedVacation=${notification.typeId}`)
+        } else if(notification.type === "candidates") {
+            removeNotification(notification._id)
+            navigate(`/view/${notification.typeId}`)
         }
        console.log('Notification typesss:', notification.type)
     }
@@ -65,11 +67,11 @@ const NotificationDropdown: React.FC = () => {
         switch (type) {
             case 'events':
                 return '#007bff'
-            case 'success':
-                return '#28a745'
+            case 'vacation':
+                return 'green'
             case 'warning':
                 return '#ffc107'
-            case 'error':
+            case 'vocation':
                 return '#dc3545'
             default:
                 return '#6c757d'

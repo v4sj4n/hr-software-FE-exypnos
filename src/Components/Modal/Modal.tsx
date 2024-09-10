@@ -34,6 +34,7 @@ export const ModalComponent: React.FC<ModalContentProps> = ({
         padding,
     }
 
+    
     return (
         <Modal
             aria-labelledby="transition-modal-title"
