@@ -19,18 +19,18 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     )
 
     const { currentUser } = useAuth()
-    const isAdmin = currentUser?.role === 'admin'
+    const isAdmin = currentUser?.role === 'hr'
     const typesofEvent = ['sports', 'teambuilding', 'training', 'other']
     const { data: users = [] } = useGetAllUsers()
     console.log('gertiiiiiiiiiiiiiiiiiiiiii', users)
-    const allEmails = users.map((user) => user.auth.email)
+    const allEmails = users.map((user) => user.auth?.email)
+    console.log('allEmails', allEmails)
 
     const handleSeeEventDetails = async (event: EventsData) => {
         try {
             const res = await AxiosInstance.get(`/event/${event._id}`)
             console.log('res', res)
             setSelectedEvent(res.data)
-            console.log('handleSeeEventDetails', event)
             setShowEventModal(true)
         } catch (err) {
             console.log(err)
@@ -43,7 +43,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     useEffect(() => {
         if (eventId) {
             handleSeeEventDetails({ _id: eventId } as unknown as EventsData)
-            console.log('eventId', eventId)
         }
     }, [eventId])
 

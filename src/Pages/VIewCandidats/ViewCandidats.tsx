@@ -64,6 +64,7 @@ export default function ViewCandidats() {
 
                         <div className={style.section}>
                             <div className={style.label}>Age</div>
+
                             <div className={style.value}>
                                 {applicant?.dob ? calculateAge(applicant.dob.split("T")[0]) : 'N/A'}
                             </div>
