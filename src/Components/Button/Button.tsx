@@ -1,21 +1,22 @@
-import './Button.css'
-import { ButtonTypes } from './ButtonTypes'
-import React, { CSSProperties } from 'react'
-
-type ButtonType = (typeof ButtonTypes)[keyof typeof ButtonTypes]
-
-interface ButtonStyles extends CSSProperties {
-    backgroundColor?: string
-    color?: string
-    borderColor?: string
-    width?: string | number
-    height?: string | number
-    fontSize?: string | number
-    padding?: string
-    margin?: string
-    borderRadius?: string | number
+import React from 'react';
+import { useTheme } from '@mui/material/styles';
+import { ButtonTypes } from './ButtonTypes';
+import './Button.css';
+type ButtonType = (typeof ButtonTypes)[keyof typeof ButtonTypes];
+interface ButtonStyles {
+    backgroundColor?: string;
+    color?: string;
+    borderColor?: string;
+    width?: string | number;
+    height?: string | number;
+    fontSize?: string | number;
+    padding?: string;
+    margin?: string;
+    borderRadius?: string | number;
+    display?: string;
+    justifyContent?: string;
+    alignItems?: string;
 }
-
 interface ButtonProps extends ButtonStyles {
     isSubmit?: boolean;
     type: ButtonType;
@@ -23,9 +24,8 @@ interface ButtonProps extends ButtonStyles {
     disabled?: boolean;
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
     icon?: React.ReactNode;
-    cursor?: string;    
+    cursor?: string;
 }
-
 const Button: React.FC<ButtonProps> = ({
     isSubmit,
     type,
@@ -35,8 +35,7 @@ const Button: React.FC<ButtonProps> = ({
     onClick,
     ...restProps
 }) => {
-    const theme = useTheme(); 
-
+    const theme = useTheme();
     const getButtonClass = (): string => {
         switch (type) {
             case ButtonTypes.PRIMARY:
@@ -51,7 +50,6 @@ const Button: React.FC<ButtonProps> = ({
                 return 'primaryBtn';
         }
     };
-
     const dynamicStyles: React.CSSProperties = {
         backgroundColor:
             type === ButtonTypes.PRIMARY
@@ -70,22 +68,19 @@ const Button: React.FC<ButtonProps> = ({
                 ? theme.palette.primary.main
                 : theme.palette.text.secondary,
                 cursor: disabled ? 'default' : 'pointer',
-
-        ...restProps, 
+        ...restProps,
     };
-
     return (
         <button
             disabled={disabled}
             type={isSubmit ? 'submit' : 'button'}
             onClick={onClick}
-            className={getButtonClass()} 
-            style={dynamicStyles} 
+            className={getButtonClass()}
+            style={dynamicStyles}
         >
             {btnText}
             {icon}
         </button>
     );
 };
-
 export default Button;

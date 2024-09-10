@@ -1,4 +1,5 @@
 import AxiosInstance from '@/Helpers/Axios'
+import { CreateVacationFormFields } from '@/Schemas/Vacations/CreateVacation.schema'
 import { VacationFormFields } from '@/Schemas/Vacations/Vacation.schema'
 
 const LIMIT = 5
@@ -39,4 +40,9 @@ export const updateVacation = async (
     vacation: VacationFormFields,
 ) => {
     return (await AxiosInstance.patch(`/vacation/${id}`, vacation)).data
+}
+export const createVacation = async (
+    vacation: CreateVacationFormFields,
+) => {
+    return (await AxiosInstance.post(`/vacation`, vacation)).data
 }

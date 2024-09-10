@@ -1,12 +1,15 @@
 import { MouseEvent, useContext, useEffect } from 'react'
-import VacationProvider, { VacationContext } from './VacationContext'
+import  {VacationProvider, VacationContext } from './VacationContext'
 import { VacationTable } from './components/VacationTable'
 import style from './style/vacation.module.scss'
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { EmployeesWithVacations } from './components/EmployeesWithVacations'
+import Button from '@/Components/Button/Button'
+import { ButtonTypes } from '@/Components/Button/ButtonTypes'
+import { CreateVacationForm } from './components/form/CreateVacationForm'
 
 function VacationComponent() {
-    const { searchParams, setSearchParams } = useContext(VacationContext)
+    const { searchParams, setSearchParams, createVacationToggler } = useContext(VacationContext)
     const handleChange = (
         event: MouseEvent<HTMLElement>,
         newAlignment: string,
@@ -38,6 +41,8 @@ function VacationComponent() {
                     display: 'flex',
                     justifyContent: 'end',
                     marginTop: '1rem',
+                    marginBottom: '1rem',
+                    gap: '1rem',
                 }}
             >
                 <ToggleButtonGroup
@@ -60,7 +65,9 @@ function VacationComponent() {
                         </ToggleButton>
                     ))}
                 </ToggleButtonGroup>
+                    <Button type={ButtonTypes.PRIMARY} btnText={"Add Vacation"} onClick={createVacationToggler}  />
             </div>
+            {searchParams.get("createVacation") &&  <CreateVacationForm />}
             <div>
                 {searchParams.get('vacationType') === 'requests' ? (
                     <VacationTable />
