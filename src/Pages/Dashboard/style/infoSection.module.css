@@ -1,5 +1,5 @@
 .infoSection h2 {
-    color: #2457a3;
+    color: #1c449ad7;
     text-align: left;
     padding: 0%;
 }
@@ -13,7 +13,7 @@
 .blueDot {
     height: 10px;
     width: 10px;
-    background-color: #2469ff;
+    background-color: #6683da;
     border-radius: 50%;
     margin-right: 10px;
     flex-shrink: 0;

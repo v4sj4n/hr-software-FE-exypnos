@@ -10,53 +10,58 @@ export type UserPromotion = {
     firstName: string
     lastName: string
     position: string
-    grade: string
+    grade: string 
+    averageRating: number 
 }
+
 export default function UserCard() {
     const { currentUser } = useAuth()
     const navigate = useNavigate()
 
-    const handleNavigate = (id: string) => {
-        navigate(`/userPromotion?id=${id}`)
+    const handleNavigate = (id: string): void => {
+        console.log("Navigating to:", `/promotion?id=${id}`);
+        navigate(`/promotion/${id}`);
     }
 
-    const [value, setValue] = useState<UserPromotion[] | null>(null)
+    const [value, setValue] = useState<UserPromotion[] | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await AxiosInstance<UserPromotion[]>(`/user`)
-            let data: UserPromotion[] = response.data
-            setValue(data)
-            console.log('dataUser', data)
+            try {
+                const response = await AxiosInstance.get<UserPromotion[]>(
+                    `/rating/user?avarageRating=true`,
+                )
+                setValue(response.data)
+                console.log("Fetched user data:", response.data)
+            } catch (error) {
+                console.error("Error fetching user data:", error)
+            }
         }
 
         fetchData()
-    }, [currentUser])
-
+    }, [])
+  
     return (
-        <div className={style.secondDiv}>
-            {value &&
-                value.map(
-                    (item, index) => (
-                        console.log('item', item._id),
-                        (
-                            <Card
-                                key={index}
-                                borderRadius="5px"
-                                onClick={() => handleNavigate(item._id)}
-                            >
-                                <div>
-                                    <h3>
-                                        {item.firstName} {item.lastName}
-                                    </h3>
-                                    <p>Position: {item._id}</p>
-                                    <p>Position: {item.position}</p>
-                                    <p>Grade: {item.grade}</p>
-                                </div>
-                            </Card>
-                        )
-                    ),
-                )}
+        <div className={style.userGrid}>
+            {value && value.map((item) => (
+                currentUser?._id?.toString() !== item._id.toString() && (
+                    <Card 
+                        key={item._id} 
+                        borderRadius='5px' 
+                        width='100%'
+                        backgroundColor='white' 
+                        onClick={() => handleNavigate(item._id)} 
+                        className={style.userCard}
+                    >
+                        <div>
+                            <h3>{item.firstName} {item.lastName}</h3>
+                            <p>Position: {item.position}</p>
+                            <p>Grade: {item.grade}</p>
+                            <p>Rating: {item.averageRating}</p>
+                        </div>
+                    </Card>
+                )
+            ))}
         </div>
     )
 }

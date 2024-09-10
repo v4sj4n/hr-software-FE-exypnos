@@ -3,6 +3,7 @@ import style from './style/holdings.module.scss'
 import HoldingsProvider from './HoldingsContext.tsx'
 import { HoldingsSearchFilter } from './Component/SearchFilters.tsx'
 
+
 function HoldingsComponent() {
     return (
         <main className={style.main}>

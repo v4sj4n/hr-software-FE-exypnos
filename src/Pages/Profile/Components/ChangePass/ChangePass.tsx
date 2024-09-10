@@ -66,6 +66,12 @@ function ChangePassContent() {
                     marginTop="9px"
                 />
             </div>
+            <Button
+                type={ButtonTypes.SECONDARY}
+                btnText="Forget Password"
+                width="350px"
+                marginTop="9px"
+            />
         </>
     )
 }

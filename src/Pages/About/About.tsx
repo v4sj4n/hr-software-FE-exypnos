@@ -1,12 +1,14 @@
-import image from '/Images/oficePic.jpg'
-import styles from './Style/About.module.css'
-import image5 from '/Images/employe.webp'
-import ImageCarousel from './Component/ImageCarousel'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
-import { useEffect } from 'react'
-// import Example from '@/Components/Carosel/Carosel';
-import Stepper from './Component/Stepper'
+
+
+
+import image from '/Images/office.jpg';
+import styles from './Style/About.module.css';
+import image5 from '/Images/employe.webp';
+import ImageCarousel from './Component/ImageCarousel';
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from 'react';
+import Stepper from './Component/Stepper';
 
 const About = () => {
     const images = [
@@ -18,22 +20,22 @@ const About = () => {
     ]
 
     useEffect(() => {
-        AOS.init({ once: true })
-    }, [])
+        AOS.init({ once: true });
+    }, []);
 
     return (
         <div className={styles.container}>
             <div className={styles.heroSection}>
-                <img src={image} alt="Hero" className={styles.heroImage} />
-                <h1 className={styles.mainTitle}>About CodeVider</h1>
+                <div className={styles.overlay}>
+                    <img src={image} alt="Hero" className={styles.heroImage} />
+                </div>
+                <h1 className={styles.mainTitle} >
+                    About CodeVider
+                </h1>
             </div>
 
             <div className={styles.infoContainer}>
-                <div
-                    data-aos="fade-up"
-                    data-aos-duration="1000"
-                    className={styles.infoSection}
-                >
+                <div data-aos="fade-up" data-aos-duration="1000" className={styles.infoSection}>
                     <h2>Who We Are</h2>
                     <p>
                         CodeVider is an Albanian-based web development
@@ -56,11 +58,7 @@ const About = () => {
                     </p>
                 </div>
 
-                <div
-                    data-aos="fade-up"
-                    data-aos-duration="1500"
-                    className={styles.infoSection}
-                >
+                <div data-aos="fade-up" data-aos-duration="1500" className={styles.infoSection}>
                     <h2>What We Do</h2>
                     <p>
                         Our services span front-end, back-end, and database
@@ -78,56 +76,40 @@ const About = () => {
                         addressed. This approach guarantees that the development
                         process is as smooth and transparent as possible.
                     </p>
-                </div>
-                <div
-                    data-aos="fade-up"
-                    data-aos-duration="1500"
-                    className={styles.Stepper}
-                >
                     <Stepper />
                 </div>
 
-                <div
-                    data-aos="fade-up"
-                    data-aos-duration="2000"
-                    className={styles.infoSection}
-                >
+                <div data-aos="fade-up" data-aos-duration="2000" className={styles.infoSection}>
                     <h2>Our Mission</h2>
                     <p>
                         To deliver innovative and efficient web solutions that
-                        drive business growth and user satisfaction.
-                    </p>
-                    <p>
-                        Beyond the technical aspects, we also offer consultation
-                        services to help you define your project's scope, choose
+                         drive business growth and user satisfaction.
+                     </p>
+                     <p>
+                         Beyond the technical aspects, we also offer consultation
+                         services to help you define your project's scope, choose
                         the right technologies, and plan for future growth. Our
-                        goal is to be more than just a service provider—we aim
-                        to be a trusted partner in your digital transformation
-                        journey.
-                    </p>
-                    <p>
-                        Whether you're building a new application from scratch,
-                        upgrading an existing system, or integrating new
-                        features, CodeVider is here to help you achieve your
-                        business goals with top-notch web development services.
-                    </p>
+                         goal is to be more than just a service provider—we aim
+                         to be a trusted partner in your digital transformation
+                         journey.
+                     </p>
+                     <p>
+                         Whether you're building a new application from scratch,
+                                                  upgrading an existing system, or integrating new
+                       features, CodeVider is here to help you achieve your
+                         business goals with top-notch web development services.
+                     </p>
                 </div>
             </div>
 
-            <div
-                data-aos="fade-up"
-                data-aos-duration="2000"
-                className={styles.carouselSection}
-            >
+            <div className={styles.carouselSection} data-aos="fade-up" data-aos-duration="2000">
                 <h3 className={styles.carouselTitle}>Our Team</h3>
                 <div className={styles.carouselContainer}>
-                    {images && images.length > 0 ? (
-                        <ImageCarousel images={images} />
-                    ) : (
-                        <p>No images available</p>
-                    )}
+                    <ImageCarousel images={images} />
                 </div>
             </div>
+
+          
 
             <div className={styles.ctaContainer}>
                 <a
@@ -135,12 +117,13 @@ const About = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.cta}
+                    data-aos="fade-up" data-aos-duration="1000"
                 >
                     Discover More About CodeVider
                 </a>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default About
+export default About;

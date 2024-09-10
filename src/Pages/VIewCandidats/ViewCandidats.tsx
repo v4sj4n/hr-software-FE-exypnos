@@ -1,10 +1,11 @@
-import Card from '../../Components/Card/Card'
-import style from './styles/ViewCandidats.module.css'
-import { useApplicantById } from './Hook'
-import Button from '../../Components/Button/Button'
-import { ButtonTypes } from '../../Components/Button/ButtonTypes'
-import { ModalComponent } from '../../Components/Modal/Modal'
-import Input from '@/Components/Input/Index'
+import Card from '../../Components/Card/Card';
+import style from './styles/ViewCandidats.module.css';
+import { useApplicantById } from './Hook';
+import Button from '../../Components/Button/Button';
+import { ButtonTypes } from '../../Components/Button/ButtonTypes';
+import { ModalComponent } from '../../Components/Modal/Modal';
+import Input from '@/Components/Input/Index';
+
 export default function ViewCandidats() {
     const {
         applicant,
@@ -21,7 +22,19 @@ export default function ViewCandidats() {
         handleCloseConfirmationModal,
         customSubject,
         setCustomSubject,
-    } = useApplicantById()
+    } = useApplicantById();
+
+    const calculateAge = (dob: string): number => {
+        const birthDate = new Date(dob);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDifference = today.getMonth() - birthDate.getMonth();
+
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    };
 
     return (
         <div className={style.container}>
@@ -51,7 +64,10 @@ export default function ViewCandidats() {
 
                         <div className={style.section}>
                             <div className={style.label}>Age</div>
-                            <div className={style.value}>{applicant?.dob.split('T')}</div>
+
+                            <div className={style.value}>
+                                {applicant?.dob ? calculateAge(applicant.dob.split("T")[0]) : 'N/A'}
+                            </div>
                         </div>
                         <div className={style.border}></div>
 

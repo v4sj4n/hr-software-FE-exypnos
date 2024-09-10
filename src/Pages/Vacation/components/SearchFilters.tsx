@@ -10,10 +10,23 @@ import {
     Box,
     radioClasses,
 } from '@mui/joy'
+import { CssVarsProvider, extendTheme } from '@mui/joy/styles'
+
 import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
 import { VacationContext } from '../VacationContext'
 
 export const EmployeesWithVacationsSearchFilter = () => {
+    const theme = extendTheme({
+        components: {
+            JoyRadioGroup: {
+                styleOverrides: {
+                    root: {
+                        '--Radio-radius': '7.5px', 
+                    },
+                },
+            },
+        },
+    })
     const { searchParams, setSearchParams } = useContext(VacationContext)
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchParams((prev) => {
@@ -70,93 +83,96 @@ export const EmployeesWithVacationsSearchFilter = () => {
                 initialValue={searchParams.get('search') || ''}
                 onChange={onSearchChange}
             />
-            <Box sx={{ display: 'flex', gap: 2 }}>
-                <FormLabel
-                    id="filter-user-choices"
-                    sx={{
-                        fontWeight: 'xl',
-                        textTransform: 'uppercase',
-                        fontSize: 'xs',
-                        letterSpacing: '0.1em',
-                    }}
-                >
-                    Filter by
-                </FormLabel>
-                <RadioGroup
-                    aria-labelledby="product-size-attribute"
-                    defaultValue={
-                        searchParams.get('users')
-                            ? searchParams.get('users')
-                            : 'all'
-                    }
-                    sx={{
-                        gap: 1,
+            <CssVarsProvider theme={theme}>
+                <Box sx={{ display: 'flex', gap: 2 }}>
+                    <FormLabel
+                        id="filter-user-choices"
+                        sx={{
+                            fontWeight: 'xl',
+                            textTransform: 'uppercase',
+                            fontSize: 'xs',
+                            letterSpacing: '0.1em',
+                        }}
+                    >
+                        Filter by
+                    </FormLabel>
+                    <RadioGroup
+                        aria-labelledby="product-size-attribute"
+                        defaultValue={
+                            searchParams.get('users')
+                                ? searchParams.get('users')
+                                : 'all'
+                        }
+                        sx={{
+                            gap: 1,
 
-                        flexWrap: 'wrap',
-                        flexDirection: 'row',
-                    }}
-                    onChange={handleChange}
-                >
-                    {userFilterChoices.map((usersFilter) => (
-                        <Sheet
-                            key={usersFilter}
-                            sx={{
-                                position: 'relative',
-                                height: 40,
-                                flexShrink: 0,
-                                padding: '0.333rem 1rem',
-                                display: 'flex',
-                                alignItems: 'center',
-                                alignSelf: 'end',
-                                borderRadius: 7.5,
-                                justifyContent: 'center',
-                                '--joy-focus-outlineOffset': '4px',
-                                '--joy-palette-focusVisible': (theme) =>
-                                    theme.vars.palette.neutral.outlinedBorder,
-                                [`& .${radioClasses.checked}`]: {
-                                    [`& .${radioClasses.label}`]: {
-                                        fontWeight: 'lg',
+                            flexWrap: 'wrap',
+                            flexDirection: 'row',
+                        }}
+                        onChange={handleChange}
+                    >
+                        {userFilterChoices.map((usersFilter) => (
+                            <Sheet
+                                key={usersFilter}
+                                sx={{
+                                    position: 'relative',
+                                    height: 40,
+                                    flexShrink: 0,
+                                    padding: '0.333rem 1rem',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    alignSelf: 'end',
+                                    borderRadius: 7.5,
+                                    justifyContent: 'center',
+                                    '--joy-focus-outlineOffset': '4px',
+                                    '--joy-palette-focusVisible': (theme) =>
+                                        theme.vars.palette.neutral
+                                            .outlinedBorder,
+                                    [`& .${radioClasses.checked}`]: {
+                                        [`& .${radioClasses.label}`]: {
+                                            fontWeight: 'lg',
+                                        },
+                                        [`& .${radioClasses.action}`]: {
+                                            '--variant-borderWidth': '1px',
+                                            borderColor: 'text.secondary',
+                                        },
                                     },
-                                    [`& .${radioClasses.action}`]: {
-                                        '--variant-borderWidth': '1px',
-                                        borderColor: 'text.secondary',
-                                    },
-                                },
-                                [`& .${radioClasses.action}.${radioClasses.focusVisible}`]:
-                                    {
-                                        outlineWidth: '2px',
-                                    },
-                            }}
-                        >
-                            <TooltipImproved
-                                text={
-                                    usersFilter === 'ALL'
-                                        ? 'All Employees'
-                                        : usersFilter === 'W Vacations'
-                                          ? 'Employees with Vacations'
-                                          : 'Employees without Vacations'
-                                }
-                                placement="top"
-                                offset={[0, 5]}
+                                    [`& .${radioClasses.action}.${radioClasses.focusVisible}`]:
+                                        {
+                                            outlineWidth: '2px',
+                                        },
+                                }}
                             >
-                                <Radio
-                                    color="neutral"
-                                    overlay
-                                    disableIcon
-                                    value={
+                                <TooltipImproved
+                                    text={
                                         usersFilter === 'ALL'
-                                            ? 'all'
+                                            ? 'All Employees'
                                             : usersFilter === 'W Vacations'
-                                              ? 'with'
-                                              : 'without'
+                                              ? 'Employees with Vacations'
+                                              : 'Employees without Vacations'
                                     }
-                                    label={usersFilter}
-                                />
-                            </TooltipImproved>
-                        </Sheet>
-                    ))}
-                </RadioGroup>
-            </Box>
+                                    placement="top"
+                                    offset={[0, 5]}
+                                >
+                                    <Radio
+                                        color="neutral"
+                                        overlay
+                                        disableIcon
+                                        value={
+                                            usersFilter === 'ALL'
+                                                ? 'all'
+                                                : usersFilter === 'W Vacations'
+                                                  ? 'with'
+                                                  : 'without'
+                                        }
+                                        label={usersFilter}
+                                    />
+                                </TooltipImproved>
+                            </Sheet>
+                        ))}
+                    </RadioGroup>
+                </Box>
+            </CssVarsProvider>
         </div>
     )
 }

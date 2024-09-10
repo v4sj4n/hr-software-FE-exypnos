@@ -19,8 +19,10 @@
 }
 
 .welcome {
-    background-image: url('/Images/blue.jpg');
-    color: #2457a3;
+    background-color: var(--soft-white);
+
+    color: #1e299ebd;
+    background: rgba(255, 255, 255, 0.7);
     border-radius: 15px;
     padding: 2.5rem 2rem;
     margin-bottom: 20px;
@@ -53,7 +55,7 @@
     padding: 1.25rem;
     flex: 1 1 200px;
     box-shadow: 0 3px 9px rgba(0, 0, 0, 0.1);
-    color: #2457a3;
+    color: #5f43b2;
     text-align: center;
 }
 
@@ -66,7 +68,7 @@
 }
 
 .cardYellow {
-    background-image: linear-gradient(180deg, #d8b4f2, #b68ce6);
+    background-image: linear-gradient(180deg, #d8b4f2, #8f56cfbd);
 }
 
 .cardPurple {
@@ -92,7 +94,7 @@
 }
 
 .employeeProfile {
-    background-color: white;
+    background: rgba(255, 255, 255, 0.7);
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -102,7 +104,7 @@
 
 h2,
 h3 {
-    color: #2457a3;
+    color: #1c449ad7;
     margin-bottom: 0;
     margin-top: 0;
 }

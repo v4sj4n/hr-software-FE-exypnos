@@ -55,11 +55,12 @@ export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({
 
         try {
             const response = await AxiosInstance.post('/auth/updatepassword', {
-                currentPassword,
+                oldPassword: currentPassword,
                 newPassword,
             })
 
             if (response.status === 200) {
+                
                 setSuccess('Password updated successfully')
                 setCurrentPassword('')
                 setNewPassword('')
