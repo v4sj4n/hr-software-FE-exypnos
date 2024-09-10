@@ -15,6 +15,7 @@ const DashboardContent: React.FC = () => {
     const { currentUser } = useAuth()
     const userName = currentUser ? currentUser.firstName : 'User'
     const isAdmin = currentUser?.role === 'admin'
+    
 
     return (
         <div className={style.dashboardContainer}>

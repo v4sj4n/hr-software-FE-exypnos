@@ -44,6 +44,7 @@ export const SideBar = () => {
         })
     }
 
+
     return (
         <div className={style.sidebarContainer}>
             <nav className={` ${isOpen ? style.navOpen : style.navClosed}`}>
@@ -97,6 +98,7 @@ export const SideBar = () => {
                         }`}
                     >
                         <Link to="/candidates" className={style.dropdownItem}>
+                        
                             Candidates{' '}
                         </Link>
                         <Link to="/interview" className={style.dropdownItem}>
