@@ -11,6 +11,11 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
     const [month, setMonth] = useState<number | undefined>(undefined)
     const [year, setYear] = useState<number | undefined>(undefined)
+    const [fullName, setFullName] = useState('')
+    const [bonus, setBonus] = useState<number | undefined>(undefined)
+    const [minNetSalary, setMinNetSalary] = useState<number | undefined>(undefined)
+    const [maxNetSalary, setMaxNetSalary] = useState<number | undefined>(undefined)
+    const [workingDays, setWorkingDays] = useState<number | undefined>(undefined)
     const [page, setPage] = useState(0)
     const [pageSize, setPageSize] = useState(5)
 
@@ -25,16 +30,10 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
         data: PayrollRow[]
         totalPages: number
     }> => {
-        console.log('data', month, year, page, pageSize)
         const response = await AxiosInstance.get<{
             data: PayrollRow[]
             totalPages: number
-        }>(`/salary?month=${month}&year=${year}&limit=${pageSize}&page=${page}`)
-        console.log(
-            'provv',
-            `/salary?month=${month}&year=${year}&limit=${pageSize}&page=${page}`,
-        )
-        console.log('Fetched payroll:', response.data)
+        }>(`/salary?month=${month}&year=${year}&bonus=${bonus}&maxNetSalary=${maxNetSalary}&minNetSalary=${minNetSalary}&workingDays=${workingDays}&fullName=${fullName}&limit=${pageSize}&page=${page}`)
         return response.data
     }
 
@@ -43,7 +42,7 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
         isPending,
         isError,
     } = useQuery<{ data: PayrollRow[]; totalPages: number }, Error>({
-        queryKey: ['payroll', month, year, page, pageSize],
+        queryKey: ['payroll', month, year, page, pageSize, fullName, workingDays, minNetSalary, maxNetSalary, bonus],
         queryFn: () => fetchPayroll(),
     })
 
@@ -76,6 +75,7 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
         { field: 'socialSecurity', headerName: 'Social Security', flex: 1.5 },
         { field: 'grossSalary', headerName: 'Gross Salary', flex: 1 },
         { field: 'year', headerName: 'Year', flex: 1.5 },
+        { field: 'bonus', headerName: 'Bonus', flex: 1.2 },
         { field: 'bonusDescription', headerName: 'Bonus Description', flex: 2 },
         { field: 'tax', headerName: 'Tax', flex: 2 },
     ]
@@ -94,10 +94,15 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
         headerTextColors,
         getRowId,
         handleRowClick,
+        setFullName,
+        setMaxNetSalary, 
+        setMinNetSalary,
         setMonth,
         setYear,
         isPending,
         isError,
+        setBonus,
+        setWorkingDays,
         page,
         pageSize,
         totalPages: payrollData?.totalPages ?? 0,

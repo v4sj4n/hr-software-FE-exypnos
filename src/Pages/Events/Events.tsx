@@ -47,7 +47,6 @@ function EventsContentAndComponents() {
         isLoading,
         onSearchChange,
         searchEvent,
-
     } = useGetAllEvents()
 
     const { ref, inView } = useInView()

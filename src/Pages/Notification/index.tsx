@@ -7,6 +7,7 @@ interface Notification {
     title: string
     type: string
     typeId: string
+    content: string
 }
 
 export const useGetAllNotifications = () => {

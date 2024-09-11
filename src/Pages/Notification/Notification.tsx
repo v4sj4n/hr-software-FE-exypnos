@@ -13,12 +13,12 @@ import { useNavigate } from 'react-router-dom'
 import { useGetAllNotifications } from '.'
 import AxiosInstance from '@/Helpers/Axios'
 
-
 interface Notification {
     _id: number
     title: string
     type: string
     typeId: string
+    content: string
 }
 
 const NotificationDropdown: React.FC = () => {
@@ -59,8 +59,10 @@ const NotificationDropdown: React.FC = () => {
         } else if(notification.type === "candidates") {
             removeNotification(notification._id)
             navigate(`/view/${notification.typeId}`)
+        }  else if(notification.type === "allVacation") {
+            removeNotification(notification._id)
+            navigate(`/vacation?vacationType=requests&page=0&limit=5`)
         }
-       console.log('Notification typesss:', notification.type)
     }
 
     const getColorByType = (type: string) => {
@@ -126,10 +128,10 @@ const NotificationDropdown: React.FC = () => {
                                             variant="subtitle1"
                                             sx={{ fontWeight: 'bold' }}
                                         >
-                                            {notification.type}
+                                            {notification.title} 
                                         </Typography>
                                         <Typography variant="body2">
-                                            {notification.title}
+                                           {notification.content}
                                         </Typography>
                                     </Box>
                                     <IconButton
