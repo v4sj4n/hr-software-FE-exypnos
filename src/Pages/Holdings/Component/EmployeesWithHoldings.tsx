@@ -94,7 +94,7 @@ export const EmployeesWithHoldings = () => {
                                                 </p>
                                             ))
                                         ) : (
-                                            <p>No vacations this year</p>
+                                            <p>No holdings</p>
                                         )}
                                     </div>
                                     <Button
