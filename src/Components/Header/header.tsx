@@ -15,7 +15,6 @@ import NotificationDropdown from '@/Pages/Notification/Notification'
 import { ClickAwayListener } from '@mui/material'
 import ThemeSwitcher from '@/Theme/ThemeSwitcher'
 
-
 export const HeaderContent = () => {
     const { isSidebarOpen: isOpen, toggleSidebar } =
         useContext(SidebarHeaderContext)
@@ -58,7 +57,7 @@ export const HeaderContent = () => {
                 )}
             </div>
             <div className={style.headerRight}>
-            <ThemeSwitcher /> 
+                <ThemeSwitcher />
 
                 <div className={style.icon}>
                     <NotificationDropdown />

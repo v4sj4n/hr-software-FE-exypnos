@@ -21,7 +21,7 @@ export const EmployeesWithVacationsSearchFilter = () => {
             JoyRadioGroup: {
                 styleOverrides: {
                     root: {
-                        '--Radio-radius': '7.5px', 
+                        '--Radio-radius': '7.5px',
                     },
                 },
             },

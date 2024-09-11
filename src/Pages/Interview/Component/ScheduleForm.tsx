@@ -31,7 +31,7 @@ interface RescheduleModalProps {
         notes: string,
         customMessage: string,
         customSubject: string,
-        useCustomEmail: boolean  // New flag to indicate if custom email should be used
+        useCustomEmail: boolean, // New flag to indicate if custom email should be used
     ) => void
     selectedInterview: Interview
     isReschedule: boolean
@@ -66,7 +66,13 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
 
         if (interviewDate) {
             // Pass useCustomEmail flag to handleSchedule
-            handleSchedule(interviewDate, notes, customMessage, customSubject, useCustomEmail)
+            handleSchedule(
+                interviewDate,
+                notes,
+                customMessage,
+                customSubject,
+                useCustomEmail,
+            )
         } else {
             console.error('Interview date is required')
         }
@@ -112,7 +118,9 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
                     control={
                         <Checkbox
                             checked={useCustomEmail}
-                            onChange={(e) => setUseCustomEmail(e.target.checked)}
+                            onChange={(e) =>
+                                setUseCustomEmail(e.target.checked)
+                            }
                             color="primary"
                         />
                     }

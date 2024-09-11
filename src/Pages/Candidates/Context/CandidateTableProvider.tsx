@@ -19,9 +19,14 @@ export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({
         setPage(model.page)
         setPageSize(model.pageSize)
     }
-    const fetchCandidates = async (): Promise<{data : CandidateRow[], totalPages: number}> => {
-        
-        const response = await AxiosInstance.get<{ data: CandidateRow[], totalPages: number}>(`/applicant?page=${page}&limit=${pageSize}`)
+    const fetchCandidates = async (): Promise<{
+        data: CandidateRow[]
+        totalPages: number
+    }> => {
+        const response = await AxiosInstance.get<{
+            data: CandidateRow[]
+            totalPages: number
+        }>(`/applicant?page=${page}&limit=${pageSize}`)
         console.log(`/applicants?page=${page}&limit=${pageSize}`)
         console.log('apppplicantt', response.data)
         return response.data
@@ -39,21 +44,21 @@ export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const navigate = useNavigate()
 
-    const rows: CandidateRow[] = applicants?.data.map((applicant, index) => ({
-        
-        id: (page * pageSize) + index,
-        originalId: applicant._id,
-        fullName: `${applicant.firstName} ${applicant.lastName}`,
-        email: applicant.email,
-        phoneNumber: applicant.phoneNumber,
-        experience: applicant.experience,
-        applicationMethod: applicant.applicationMethod,
-        age: applicant.age,
-        positionApplied: applicant.positionApplied,
-        technologiesUsed: applicant.technologiesUsed,
-        salaryExpectations: applicant.salaryExpectations,
-        status: applicant.status,
-    })) ?? []
+    const rows: CandidateRow[] =
+        applicants?.data.map((applicant, index) => ({
+            id: page * pageSize + index,
+            originalId: applicant._id,
+            fullName: `${applicant.firstName} ${applicant.lastName}`,
+            email: applicant.email,
+            phoneNumber: applicant.phoneNumber,
+            experience: applicant.experience,
+            applicationMethod: applicant.applicationMethod,
+            age: applicant.age,
+            positionApplied: applicant.positionApplied,
+            technologiesUsed: applicant.technologiesUsed,
+            salaryExpectations: applicant.salaryExpectations,
+            status: applicant.status,
+        })) ?? []
 
     const columns = [
         { field: 'id', headerName: 'ID', flex: 0.5 },
@@ -71,9 +76,9 @@ export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({
                           ? 'orange'
                           : params.value === 'rejected'
                             ? 'red'
-                             :params.value === 'employed'
-                        ? 'purple'
-                            : ''
+                            : params.value === 'employed'
+                              ? 'purple'
+                              : ''
                 return <StatusBadge status={params.value} color={color} />
             },
         },

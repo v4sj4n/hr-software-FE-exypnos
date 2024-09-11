@@ -23,7 +23,7 @@ interface Notification {
 
 const NotificationDropdown: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false)
-    const { notifications, setNotifications } = useGetAllNotifications() 
+    const { notifications, setNotifications } = useGetAllNotifications()
     const navigate = useNavigate()
 
     const handleToggleDropdown = () => {
@@ -44,22 +44,27 @@ const NotificationDropdown: React.FC = () => {
         try {
             await AxiosInstance.patch(`notification/${notificationId}`)
         } catch (error) {
-            console.error(`Error removing notification ${notificationId}:`, error)
+            console.error(
+                `Error removing notification ${notificationId}:`,
+                error,
+            )
         }
     }
 
     const handleNotificationClick = (notification: Notification) => {
-        if(notification.type === 'events') {
-              removeNotification(notification._id)
-        navigate(`/events?event=${notification.typeId}`)
-        setIsOpen(false)
-        } else if(notification.type === "vacation") {
+        if (notification.type === 'events') {
             removeNotification(notification._id)
-            navigate(`/vacation?vacationType=requests&selectedVacation=${notification.typeId}`)
-        } else if(notification.type === "candidates") {
+            navigate(`/events?event=${notification.typeId}`)
+            setIsOpen(false)
+        } else if (notification.type === 'vacation') {
+            removeNotification(notification._id)
+            navigate(
+                `/vacation?vacationType=requests&selectedVacation=${notification.typeId}`,
+            )
+        } else if (notification.type === 'candidates') {
             removeNotification(notification._id)
             navigate(`/view/${notification.typeId}`)
-        }  else if(notification.type === "allVacation") {
+        } else if (notification.type === 'allVacation') {
             removeNotification(notification._id)
             navigate(`/vacation?vacationType=requests&page=0&limit=5`)
         }
@@ -128,10 +133,10 @@ const NotificationDropdown: React.FC = () => {
                                             variant="subtitle1"
                                             sx={{ fontWeight: 'bold' }}
                                         >
-                                            {notification.title} 
+                                            {notification.title}
                                         </Typography>
                                         <Typography variant="body2">
-                                           {notification.content}
+                                            {notification.content}
                                         </Typography>
                                     </Box>
                                     <IconButton

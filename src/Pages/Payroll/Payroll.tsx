@@ -4,6 +4,11 @@ import { usePayrollContext } from './Context/PayrollTableContext'
 import { PayrollProvider } from './Context/PayrollTableProvider'
 import style from './styles/Payroll.module.css'
 import { RingLoader } from 'react-spinners'
+import { Collapse } from '@mui/material'
+import { useState } from 'react'
+import { ButtonTypes } from '@/Components/Button/ButtonTypes'
+import Button from '@/Components/Button/Button'
+import { Close, FilterList } from '@mui/icons-material'
 function PayrollContent() {
     const {
         rows,
@@ -31,99 +36,139 @@ function PayrollContent() {
         setMonth(parseInt(monthString))
     }
 
-    const handleFullNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFullNameChange = (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
         setFullName(event.target.value)
     }
 
-const handleWorkingDaysChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setWorkingDays(parseInt(event.target.value))
-}
+    const handleWorkingDaysChange = (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        setWorkingDays(parseInt(event.target.value))
+    }
 
-const handleMinSalaryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMinNetSalary(parseFloat(event.target.value))
-}
+    const handleMinSalaryChange = (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        setMinNetSalary(parseFloat(event.target.value))
+    }
 
-const handleMaxSalaryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMaxNetSalary(parseFloat(event.target.value))
-}
+    const handleMaxSalaryChange = (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        setMaxNetSalary(parseFloat(event.target.value))
+    }
 
-const handleBonusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setBonus(parseFloat(event.target.value))
-}
+    const handleBonusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setBonus(parseFloat(event.target.value))
+    }
+
+    const [showFilters, setShowFilters] = useState(false)
 
     return (
         <div className={style.payroll}>
             <div
-                style={{ alignSelf: 'flex-end', position: 'absolute', top: 77, display: 'flex' }}
-            >
-                <Input
-                    width={250}
-                    name="Filter"
-                    type="month"
-                    label="Month & Year"
-                    IsUsername
-                    onChange={handleDateChange}
-                />
-                  <Input
-                    width={250}
-                    name="fullName"
-                    type="text"
-                    label="Full Name"
-                    IsUsername
-                    onChange={handleFullNameChange}
-                />
-                 <Input
-                    width={250}
-                    name="workingDays"
-                    type="text"
-                    label="Working Days"
-                    IsUsername
-                    onChange={handleWorkingDaysChange}
-                />
-                 <Input
-                    width={250}
-                    name="maxNetSalary"
-                    type="text"
-                    label="Max Net Salary"
-                    IsUsername
-                    onChange={handleMaxSalaryChange}
-                />
-                 <Input
-                    width={250}
-                    name="minNetSalary"
-                    type="text"
-                    label="Min Net Salary"
-                    IsUsername
-                    onChange={handleMinSalaryChange}
-                />
-                   <Input
-                    width={250}
-                    name="bonus"
-                    type="text"
-                    label="Bonus"
-                    IsUsername
-                    onChange={handleBonusChange}
-                />
-            </div>
-           {isPending ? <div
                 style={{
+                    alignSelf: 'flex-end',
+                    position: 'absolute',
+                    top: 77,
                     display: 'flex',
-                    fontSize: '30px',
-                    justifyContent: 'center',
-                    marginTop: '50px',
                 }}
             >
-                <RingLoader />
-            </div> :  <DataTable
-                rows={rows}
-                columns={columns}
-                getRowId={getRowId}
-                handleRowClick={handleRowClick}
-                totalPages={totalPages}
-                page={page}
-                pageSize={pageSize}
-                onPaginationModelChange={handlePaginationModelChange}
-            />}
+                <Button
+                    btnText=""
+                    borderColor="transparent"
+                    type={ButtonTypes.SECONDARY}
+                    onClick={() => setShowFilters((prev) => !prev)}
+                    icon={showFilters ? <Close /> : <FilterList />}
+                />
+                <Collapse
+                    in={showFilters}
+                    timeout="auto"
+                    orientation="horizontal"
+                >
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            marginLeft: 10,
+                        }}
+                    >
+                        <Input
+                            width={150}
+                            name="Filter"
+                            type="month"
+                            label="Month & Year"
+                            IsUsername
+                            onChange={handleDateChange}
+                        />
+                        <Input
+                            width={150}
+                            name="fullName"
+                            type="text"
+                            label="Full Name"
+                            IsUsername
+                            onChange={handleFullNameChange}
+                        />
+                        <Input
+                            width={150}
+                            name="workingDays"
+                            type="text"
+                            label="Working Days"
+                            IsUsername
+                            onChange={handleWorkingDaysChange}
+                        />
+                        <Input
+                            width={150}
+                            name="maxNetSalary"
+                            type="text"
+                            label="Max Net Salary"
+                            IsUsername
+                            onChange={handleMaxSalaryChange}
+                        />
+                        <Input
+                            width={150}
+                            name="minNetSalary"
+                            type="text"
+                            label="Min Net Salary"
+                            IsUsername
+                            onChange={handleMinSalaryChange}
+                        />
+                        <Input
+                            width={150}
+                            name="bonus"
+                            type="text"
+                            label="Bonus"
+                            IsUsername
+                            onChange={handleBonusChange}
+                        />
+                    </div>
+                </Collapse>
+            </div>
+            {isPending ? (
+                <div
+                    style={{
+                        display: 'flex',
+                        fontSize: '30px',
+                        justifyContent: 'center',
+                        marginTop: '50px',
+                    }}
+                >
+                    <RingLoader />
+                </div>
+            ) : (
+                <DataTable
+                    rows={rows}
+                    columns={columns}
+                    getRowId={getRowId}
+                    handleRowClick={handleRowClick}
+                    totalPages={totalPages}
+                    page={page}
+                    pageSize={pageSize}
+                    onPaginationModelChange={handlePaginationModelChange}
+                />
+            )}
         </div>
     )
 }

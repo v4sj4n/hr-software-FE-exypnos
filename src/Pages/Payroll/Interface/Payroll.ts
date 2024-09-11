@@ -20,10 +20,12 @@ export interface PayrollContextType {
     setMinNetSalary: (maxNetSalary: number) => void
     setBonus: (bonus: number) => void
     isPending: boolean
-    netSalary: number | undefined;  
-    page: number 
-    setFilters: React.Dispatch<React.SetStateAction<Record<string,
-    string | boolean>>>; filters: Record<string, string | boolean>;
+    netSalary: number | undefined
+    page: number
+    setFilters: React.Dispatch<
+        React.SetStateAction<Record<string, string | boolean>>
+    >
+    filters: Record<string, string | boolean>
     pageSize: number
     totalPages: number
     handlePaginationModelChange: (paginationModel: GridPaginationModel) => void

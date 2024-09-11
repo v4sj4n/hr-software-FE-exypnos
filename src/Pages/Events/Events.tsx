@@ -114,7 +114,7 @@ function EventsContentAndComponents() {
                     {events?.pages.map((page) =>
                         page.data.map((event: EventsData) => (
                             <Card
-                            backgroundColor='rgba(255, 255, 255, 0.7)'
+                                backgroundColor="rgba(255, 255, 255, 0.7)"
                                 key={event._id}
                                 borderRadius="5px"
                                 border="1px solid #EBEBEB"
@@ -186,7 +186,7 @@ function EventsContentAndComponents() {
                                         btnText={
                                             isAdmin ? 'See Details' : 'Vote'
                                         }
-                                        color='#2457a3'
+                                        color="#2457a3"
                                         type={ButtonTypes.SECONDARY}
                                         onClick={() =>
                                             handleSeeEventDetails(event)

@@ -15,7 +15,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
 import { useAuth } from '@/Context/AuthProvider'
 
-
 export const SideBar = () => {
     const { isSidebarOpen: isOpen } = useContext(SidebarHeaderContext)
     const { currentUser } = useAuth()
@@ -141,7 +140,9 @@ export const SideBar = () => {
                         </Link>
                         <div
                             onClick={() => {
-                                hr ? navigate('promotion') : navigate(`/promotion/${currentUserID}`);
+                                hr
+                                    ? navigate('promotion')
+                                    : navigate(`/promotion/${currentUserID}`)
                             }}
                             className={style.dropdownItem}
                         >
@@ -240,15 +241,10 @@ export const SideBar = () => {
                                 {isOpen && (
                                     <span className={style.text}>About</span>
                                 )}
-
-                               
                             </div>
-                            
                         </Link>
-                        
                     </div>
-                    <div >
-                                                    </div>
+                    <div></div>
                 </div>
             </nav>
         </div>
