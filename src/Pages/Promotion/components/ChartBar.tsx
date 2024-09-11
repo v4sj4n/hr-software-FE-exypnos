@@ -15,8 +15,9 @@ import { getMonthName } from '@/Pages/Payroll/utils/Utils'
 const valueFormatter = (value: number | null) => `${value} ALL`
 
 export type Salary = {
+    year: number
     netSalary: number
-    month: number
+    month: string
     healthInsurance: number
     socialSecurity: number
     grossSalary: number
@@ -54,6 +55,9 @@ export default function ChartBar({ id }: { id: string }) {
             const response = await AxiosInstance<Salary[]>(
                 `/salary/user/${id}?graph=true`,
             )
+            response.data.forEach((item) => {
+                item.month = getMonthName(Number(item.month) + 1)
+            })
             setDataset(response.data)
         }
 
@@ -92,7 +96,8 @@ export default function ChartBar({ id }: { id: string }) {
                                             boxShadow: `0 4px 6px ${theme.palette.grey[500]}`,
                                         }}
                                     >
-                                        <p>Month: {getMonthName(data?.month + 1) ?? ''}</p>
+                                        <p>Month: {data?.month ?? ''}</p>
+                                        <p>Year: {data?.year ?? ''}</p>
                                         <p>Net Salary: {data?.netSalary ?? ''}</p>
                                         <p>Gross Salary: {data?.grossSalary ?? ''}</p>
                                         <p>Bonus: {data?.bonus ?? ''}</p>
