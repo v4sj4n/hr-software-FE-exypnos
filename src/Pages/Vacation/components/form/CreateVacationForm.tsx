@@ -12,12 +12,14 @@ import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { CreateVacationSchema } from '@/Schemas/Vacations/CreateVacation.schema'
 import { useCreateVacation } from '../../Hook'
+import { AxiosError } from 'axios'
 
 export const CreateVacationForm = () => {
-    const { searchParams, createVacationToggler } = useContext(VacationContext)
+    const { searchParams, createVacationToggler, setToastConfigs } =
+        useContext(VacationContext)
     const [error, setError] = useState<string | null>(null)
 
-    const { mutate, isError, isSuccess } = useCreateVacation()
+    const { mutate, isError, error: mutationError } = useCreateVacation()
 
     const form = useForm<{
         description: string
@@ -33,6 +35,26 @@ export const CreateVacationForm = () => {
         },
         onSubmit: async ({ value }) => {
             mutate({ vacation: value })
+            if (isError) {
+                setToastConfigs({
+                    isOpen: true,
+                    message:
+                        mutationError?.message || 'Failed to create vacation',
+                    severity: 'error',
+                })
+                if (mutationError instanceof AxiosError)
+                    setError(mutationError.response?.data)
+                else {
+                    setError('something happened')
+                }
+            } else {
+                setToastConfigs({
+                    isOpen: true,
+                    message: 'Vacation created successfully',
+                    severity: 'success',
+                })
+                createVacationToggler()
+            }
         },
     })
     return (
@@ -97,9 +119,13 @@ export const CreateVacationForm = () => {
                                             'maternity',
                                         ]}
                                         value={value}
-                                        onChange={(newValue: 'vacation' | 'sick' | 'personal' | 'maternity' ) =>
-                                            handleChange(newValue)
-                                        }
+                                        onChange={(
+                                            newValue:
+                                                | 'vacation'
+                                                | 'sick'
+                                                | 'personal'
+                                                | 'maternity',
+                                        ) => handleChange(newValue)}
                                     />
                                     {errors && <ErrorText>{errors}</ErrorText>}
                                 </div>
