@@ -10,8 +10,8 @@ export type UserPromotion = {
     firstName: string
     lastName: string
     position: string
-    grade: string 
-    averageRating: number 
+    grade: string
+    averageRating: number
 }
 
 export default function UserCard() {
@@ -19,11 +19,11 @@ export default function UserCard() {
     const navigate = useNavigate()
 
     const handleNavigate = (id: string): void => {
-        console.log("Navigating to:", `/promotion?id=${id}`);
-        navigate(`/promotion/${id}`);
+        console.log('Navigating to:', `/promotion?id=${id}`)
+        navigate(`/promotion/${id}`)
     }
 
-    const [value, setValue] = useState<UserPromotion[] | null>(null);
+    const [value, setValue] = useState<UserPromotion[] | null>(null)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,15 +32,15 @@ export default function UserCard() {
                     `/rating/user?avarageRating=true`,
                 )
                 setValue(response.data)
-                console.log("Fetched user data:", response.data)
+                console.log('Fetched user data:', response.data)
             } catch (error) {
-                console.error("Error fetching user data:", error)
+                console.error('Error fetching user data:', error)
             }
         }
 
         fetchData()
     }, [])
-  
+
     return (
         <div className={style.userGrid}>
             {value && value.map((item) => (

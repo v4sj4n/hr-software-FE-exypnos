@@ -1,6 +1,3 @@
-
-
-
 import image from '/Images/office.jpg';
 import styles from './Style/About.module.css';
 import image5 from '/Images/employe.webp';
@@ -67,6 +64,7 @@ const About = () => {
                 <div data-aos="fade-up" data-aos-duration="1500" className={styles.infoSection}>
                     <h2 style={themeStyle}>What We Do</h2>
                     <p style={themeStyle}>
+
                         Our services span front-end, back-end, and database
                         development, with a focus on cost savings, time
                         efficiency, and flexibility. We adhere to agile
@@ -84,7 +82,6 @@ const About = () => {
                     </p>
                     <Stepper />
                 </div>
-
                 <div data-aos="fade-up" data-aos-duration="2000" className={styles.infoSection}  >
                     <h2 style={themeStyle}>Our Mission</h2>
                     <p  style={themeStyle}>
@@ -115,21 +112,20 @@ const About = () => {
                 </div>
             </div>
 
-          
-
             <div className={styles.ctaContainer}>
                 <a
                     href="https://www.codevider.com/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.cta}
-                    data-aos="fade-up" data-aos-duration="1000"
+                    data-aos="fade-up"
+                    data-aos-duration="1000"
                 >
                     Discover More About CodeVider
                 </a>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default About;
+export default About
