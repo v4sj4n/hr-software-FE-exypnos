@@ -1,5 +1,5 @@
-import React from 'react'
-import { useTheme } from '@mui/material/styles'
+import { useTheme } from '@mui/material'
+import './Button.css'
 import { ButtonTypes } from './ButtonTypes'
 import './Button.css'
 type ButtonType = (typeof ButtonTypes)[keyof typeof ButtonTypes]
@@ -18,13 +18,13 @@ interface ButtonStyles {
     alignItems?: string
 }
 interface ButtonProps extends ButtonStyles {
-    isSubmit?: boolean
-    type: ButtonType
-    btnText: string | JSX.Element
-    disabled?: boolean
-    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
-    icon?: React.ReactNode
-    cursor?: string
+    isSubmit?: boolean;
+    type: ButtonType;
+    btnText: string | JSX.Element;
+    disabled?: boolean;
+    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+    icon?: React.ReactNode;
+    cursor?: string;
 }
 const Button: React.FC<ButtonProps> = ({
     isSubmit,
@@ -35,7 +35,7 @@ const Button: React.FC<ButtonProps> = ({
     onClick,
     ...restProps
 }) => {
-    const theme = useTheme()
+    const theme = useTheme();
     const getButtonClass = (): string => {
         switch (type) {
             case ButtonTypes.PRIMARY:
@@ -49,7 +49,8 @@ const Button: React.FC<ButtonProps> = ({
             default:
                 return 'primaryBtn'
         }
-    }
+    };
+
     const dynamicStyles: React.CSSProperties = {
         backgroundColor:
             type === ButtonTypes.PRIMARY
@@ -67,9 +68,10 @@ const Button: React.FC<ButtonProps> = ({
             type === ButtonTypes.PRIMARY || type === ButtonTypes.TERTIARY
                 ? theme.palette.primary.main
                 : theme.palette.text.secondary,
-        cursor: disabled ? 'default' : 'pointer',
+                cursor: disabled ? 'default' : 'pointer',
         ...restProps,
-    }
+    };
+  
     return (
         <button
             disabled={disabled}
@@ -81,6 +83,8 @@ const Button: React.FC<ButtonProps> = ({
             {btnText}
             {icon}
         </button>
-    )
-}
-export default Button
+
+    );
+};
+export default Button;
+

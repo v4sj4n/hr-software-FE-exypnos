@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import CheckIcon from '@mui/icons-material/Check'
 import DeleteIcon from '@mui/icons-material/Delete'
-import EditCalendarIcon from '@mui/icons-material/EditCalendar'
-import { Tooltip, Tabs, Tab } from '@mui/material'
+import EditCalendarIcon from '@mui/icons-material/EditCalendar';
+import { Tooltip, Tabs, Tab, useTheme } from '@mui/material'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-import { InterviewProvider, useInterviewContext } from './Hook/InterviewContext'
+import { Interview, InterviewProvider, useInterviewContext } from './Hook/InterviewContext'
 import style from './styles/Interview.module.css'
 import Button from '@/Components/Button/Button'
 import RescheduleModal from './Component/ScheduleForm'
@@ -138,6 +138,10 @@ function InterviewKanbanContent() {
             error instanceof Error ? error.message : 'Unknown error'
         return <div>Error loading interviews: {errorMessage}</div>
     }
+    const theme = useTheme()
+    const applicantCountStyle ={
+        color: theme.palette.text.primary,
+    }
 
     return (
         <div className={style.kanbanBoard}>
@@ -208,7 +212,7 @@ function InterviewKanbanContent() {
                     <div key={currentTab} className={style.kanbanColumn}>
                         <h2>
                             {currentTab.toUpperCase()}
-                            <span className={style.applicantCount}>
+                            <span className={style.applicantCount} style={applicantCountStyle}>
                                 ({filteredInterviews.length})
                             </span>
                         </h2>
@@ -225,23 +229,22 @@ function InterviewKanbanContent() {
                                             here.
                                         </p>
                                     ) : (
-                                        filteredInterviews.map(
-                                            (interview, index) => (
-                                                <Draggable
-                                                    key={interview._id.toString()}
-                                                    draggableId={interview._id.toString()}
-                                                    index={index}
-                                                >
-                                                    {(provided) => (
-                                                        <div
-                                                            ref={
-                                                                provided.innerRef
-                                                            }
-                                                            {...provided.draggableProps}
-                                                            {...provided.dragHandleProps}
-                                                            className={
-                                                                style.kanbanItem
-                                                            }
+                                        filteredInterviews.map((interview, index) => (
+                                            <Draggable
+                                                key={interview._id.toString()}
+                                                draggableId={interview._id.toString()}
+                                                index={index}
+                                            >
+                                                {(provided) => (
+                                                    <div
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        className={style.kanbanItem}
+                                                    >
+                                                        <h3 style={applicantCountStyle}
+                                                            onClick={() => handleNavigateToProfile(interview._id.toString())}
+                                                            className={style.candidateName}
                                                         >
                                                             <h3
                                                                 onClick={() =>

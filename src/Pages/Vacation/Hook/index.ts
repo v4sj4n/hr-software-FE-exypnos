@@ -5,6 +5,7 @@ import {
     useQueryClient,
 } from '@tanstack/react-query'
 import {
+    createVacation,
     getAllVacations,
     getUsersWithVacations,
     getUserWithVacations,
@@ -14,6 +15,7 @@ import {
 import { useContext } from 'react'
 import { VacationContext } from '../VacationContext'
 import { VacationFormFields } from '@/Schemas/Vacations/Vacation.schema'
+import { CreateVacationFormFields } from '@/Schemas/Vacations/CreateVacation.schema'
 
 export const useGetVacations = () => {
     const { searchParams } = useContext(VacationContext)
@@ -91,6 +93,28 @@ export const useUpdateVacation = () => {
             queryClient.invalidateQueries({
                 queryKey: [searchParams.get('selectedVacation') as string],
             })
+        },
+    })
+}
+export const useCreateVacation = () => {
+    // const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: ({ vacation }: { vacation: CreateVacationFormFields }) =>
+            createVacation(
+                vacation,
+            ),
+        onSuccess: () => {
+            console.log("HELLO")
+            // queryClient.invalidateQueries({
+            //     queryKey: ['vacations'],
+            // })
+            // queryClient.invalidateQueries({
+            //     queryKey: ['vacation'],
+            // })
+            // queryClient.invalidateQueries({
+            //     queryKey: [searchParams.get('selectedVacation') as string],
+            // })
         },
     })
 }

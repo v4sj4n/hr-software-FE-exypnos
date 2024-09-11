@@ -6,10 +6,10 @@
 }
 
 .heroSection {
-    position: relative;
-    text-align: center;
-    height: 70vh;
-    overflow: hidden;
+  position: relative;
+  text-align: center;
+  height: 40vh; 
+  overflow: hidden;
 }
 
 .heroImage {
@@ -21,7 +21,7 @@
 }
 
 .heroSection:hover .heroImage {
-    transform: scale(1.05); /* Parallax effect */
+  transform: scale(1.05); 
 }
 
 .heroSection::before {
@@ -61,16 +61,16 @@
 }
 
 .infoContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 40px;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 15px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-    z-index: 2; /* Ensure proper stacking */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  z-index: 2; 
 }
 
 .infoContainer:hover {
@@ -101,26 +101,26 @@
 }
 
 .infoSection p:hover {
-    color: #3f67b7; /* Text hover color change for interaction */
+  color: #3F67B7; 
 }
 
 .carouselSection {
-    padding: 60px 0;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-    transition: background-color 0.3s ease;
-    background: rgba(255, 255, 255, 0.7);
-    margin-top: 50px; /* Add space above carousel to avoid overlapping */
-    z-index: 1; /* Ensure proper stacking */
+  padding: 60px 0;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s ease;
+  background: rgba(255, 255, 255, 0.7);
+  margin-top: 50px; 
+  z-index: 1; 
 }
 
 .carouselTitle {
-    font-size: 2.4rem;
-    color: #3f67b7;
-    margin-bottom: 30px;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    text-align: center;
+  font-size: 2.4rem;
+  color: #ffffff;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-align: center;
 }
 
 .ctaContainer {

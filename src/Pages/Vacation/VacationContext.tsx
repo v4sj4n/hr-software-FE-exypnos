@@ -13,6 +13,7 @@ interface VacationContextType {
     setSearchParams: Dispatch<SetStateAction<URLSearchParams>>
     handleOpenViewVacationModalOpen: (id: string) => void
     handleCloseVacationModalOpen: () => void
+    createVacationToggler: () => void
     toastConfigs: {
         message: string | null
         severity: 'success' | 'error'
@@ -33,6 +34,7 @@ const defaultContextValue: VacationContextType = {
     setSearchParams: () => {},
     handleOpenViewVacationModalOpen: () => {},
     handleCloseVacationModalOpen: () => {},
+    createVacationToggler: () => {},
     toastConfigs: {
         message: null,
         severity: 'success',
@@ -45,12 +47,24 @@ const defaultContextValue: VacationContextType = {
 export const VacationContext =
     createContext<VacationContextType>(defaultContextValue)
 
-const VacationProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const VacationProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [searchParams, setSearchParams] = useSearchParams()
+    const createVacationToggler = () => {
+        if (searchParams.get('createVacation') === null) {
+            setSearchParams((prev) => {
+                const newParams = new URLSearchParams(prev)
+                newParams.set('createVacation', 'true')
+                return newParams
+            })
+        } else {
+            setSearchParams((prev) => {
+                const newParams = new URLSearchParams(prev)
+                newParams.delete('createVacation')
+                return newParams
+            })
+        }
+    }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [viewVacationModalOpen, setViewVacationModalOpen] =
-        useState<boolean>(false)
     const handleOpenViewVacationModalOpen = (id: string) => {
         setSearchParams((prev) => {
             const newParams = new URLSearchParams(prev)
@@ -59,7 +73,6 @@ const VacationProvider: FC<{ children: ReactNode }> = ({ children }) => {
         })
     }
     const handleCloseVacationModalOpen = () => {
-        setViewVacationModalOpen(false)
         setSearchParams((prevParams) => {
             const newParams = new URLSearchParams(prevParams)
             newParams.delete('selectedVacation')
@@ -91,6 +104,7 @@ const VacationProvider: FC<{ children: ReactNode }> = ({ children }) => {
                 setSearchParams,
                 handleOpenViewVacationModalOpen,
                 handleCloseVacationModalOpen,
+                createVacationToggler,
                 toastConfigs,
                 setToastConfigs,
                 handleToastClose,
@@ -100,5 +114,3 @@ const VacationProvider: FC<{ children: ReactNode }> = ({ children }) => {
         </VacationContext.Provider>
     )
 }
-
-export default VacationProvider

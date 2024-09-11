@@ -43,30 +43,25 @@ export default function UserCard() {
 
     return (
         <div className={style.userGrid}>
-            {value &&
-                value.map(
-                    (item) =>
-                        currentUser?._id?.toString() !==
-                            item._id.toString() && (
-                            <Card
-                                key={item._id}
-                                borderRadius="5px"
-                                width="100%"
-                                backgroundColor="white"
-                                onClick={() => handleNavigate(item._id)}
-                                className={style.userCard}
-                            >
-                                <div>
-                                    <h3>
-                                        {item.firstName} {item.lastName}
-                                    </h3>
-                                    <p>Position: {item.position}</p>
-                                    <p>Grade: {item.grade}</p>
-                                    <p>Rating: {item.averageRating}</p>
-                                </div>
-                            </Card>
-                        ),
-                )}
+            {value && value.map((item) => (
+                currentUser?._id?.toString() !== item._id.toString() && (
+                    <Card 
+                        key={item._id} 
+                        borderRadius='5px' 
+                        width='100%'
+                        backgroundColor='rgba(255, 255, 255, 0.7)'
+                        onClick={() => handleNavigate(item._id)} 
+                        className={style.userCard}
+                    >
+                        <div>
+                            <h3>{item.firstName} {item.lastName}</h3>
+                            <p>Position: {item.position}</p>
+                            <p>Grade: {item.grade}</p>
+                            <p>Rating: {item.averageRating}</p>
+                        </div>
+                    </Card>
+                )
+            ))}
         </div>
     )
 }
