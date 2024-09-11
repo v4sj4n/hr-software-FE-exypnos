@@ -72,8 +72,9 @@ function PayrollContent() {
                 style={{
                     alignSelf: 'flex-end',
                     position: 'absolute',
-                    top: 77,
+                    top: 64,
                     display: 'flex',
+                    alignItems: 'center',
                 }}
             >
                 <Button
@@ -87,6 +88,7 @@ function PayrollContent() {
                     in={showFilters}
                     timeout="auto"
                     orientation="horizontal"
+                    
                 >
                     <div
                         style={{
@@ -100,7 +102,7 @@ function PayrollContent() {
                             name="Filter"
                             type="month"
                             label="Month & Year"
-                            IsUsername
+                            isFilter
                             onChange={handleDateChange}
                         />
                         <Input
@@ -108,39 +110,39 @@ function PayrollContent() {
                             name="fullName"
                             type="text"
                             label="Full Name"
-                            IsUsername
+                            isFilter
                             onChange={handleFullNameChange}
                         />
                         <Input
                             width={150}
                             name="workingDays"
-                            type="text"
+                              type="number"
                             label="Working Days"
-                            IsUsername
+                            isFilter
                             onChange={handleWorkingDaysChange}
                         />
                         <Input
                             width={150}
                             name="maxNetSalary"
-                            type="text"
+                                 type="number"
                             label="Max Net Salary"
-                            IsUsername
+                            isFilter
                             onChange={handleMaxSalaryChange}
                         />
                         <Input
                             width={150}
                             name="minNetSalary"
-                            type="text"
+                                type="number"
                             label="Min Net Salary"
-                            IsUsername
+                            isFilter
                             onChange={handleMinSalaryChange}
                         />
                         <Input
                             width={150}
                             name="bonus"
-                            type="text"
+                            type="number"
                             label="Bonus"
-                            IsUsername
+                            isFilter
                             onChange={handleBonusChange}
                         />
                     </div>

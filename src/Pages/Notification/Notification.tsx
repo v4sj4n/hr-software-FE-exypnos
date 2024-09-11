@@ -76,7 +76,7 @@ const NotificationDropdown: React.FC = () => {
                 return '#007bff'
             case 'vacation':
                 return 'green'
-            case 'warning':
+            case 'candidates':
                 return '#ffc107'
             case 'vocation':
                 return '#dc3545'
