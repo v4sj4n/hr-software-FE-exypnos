@@ -34,7 +34,7 @@ export default function Rating({ id }: { id: string }) {
     }
 
     const handleEditChange = (
-        event: React.ChangeEvent<{}>,
+        _event: React.ChangeEvent<{}>,
         value: number | null,
         fieldName: string,
     ) => {
@@ -209,7 +209,9 @@ export default function Rating({ id }: { id: string }) {
                         onClick={update}
                         type={ButtonTypes.PRIMARY}
                         btnText="Update"
-                        width="350px"
+                        width="200px"
+                        marginTop="10px"
+                        
                     />
                 </ModalComponent>
             )}

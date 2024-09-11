@@ -1,14 +1,16 @@
-import AxiosInstance from '@/Helpers/Axios'
-import Card from '@/Components/Card/Card'
-import { useEffect, useState } from 'react'
-import Button from '@/Components/Button/Button'
-import { ButtonTypes } from '@/Components/Button/ButtonTypes'
+import React, { useEffect, useState } from 'react'
+import { useTheme } from '@mui/material/styles'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { useTheme } from '@mui/material/styles'
-import { useAuth } from '@/Context/AuthProvider'
-import { ModalComponent } from '@/Components/Modal/Modal'
 import CloseIcon from '@mui/icons-material/Close'
+import AxiosInstance from '@/Helpers/Axios'
+import Card from '@/Components/Card/Card'
+import Button from '@/Components/Button/Button'
+import { ButtonTypes } from '@/Components/Button/ButtonTypes'
+import { ModalComponent } from '@/Components/Modal/Modal'
+import { useAuth } from '@/Context/AuthProvider'
+import Input from '@/Components/Input/Index'
+import Selecter from '@/Components/Input/components/Select/Selecter'
 
 export type Promotion = {
     _id: string
@@ -19,32 +21,115 @@ export type Promotion = {
 
 export default function PromotionCard({ id }: { id: string }) {
     const { currentUser } = useAuth()
-    const [dataset, setDataset] = useState<Promotion[]>([])
+    const [promotions, setPromotions] = useState<Promotion[]>([])
     const [showModal, setShowModal] = useState(false)
-    const [promotionId, setPromotionId] = useState<string | null>(null)
+    const [modalType, setModalType] = useState<
+        'create' | 'edit' | 'delete' | null
+    >(null)
+    const [selectedPromotion, setSelectedPromotion] =
+        useState<Promotion | null>(null)
+    const [formData, setFormData] = useState({
+        position: '',
+        grade: '',
+        startDate: '',
+    })
+    const PositionType = [
+        'hr',
+        'ceo',
+        'designer',
+        'backend_developer',
+        'frontend_developer',
+        'fullstack_developer',
+        'tester',
+        'devops',
+    ]
+
+    const GradeType = ['junior', 'mid', 'senior']
     const theme = useTheme()
 
     useEffect(() => {
-        const fetchData = async () => {
-            const response = await AxiosInstance.get(`/promotion/${id}`)
-            setDataset(response.data)
+        fetchPromotions()
+    }, [id])
+
+    const fetchPromotions = async () => {
+        try {
+            const response = await AxiosInstance.get(`/promotion/user/${id}`)
+            setPromotions(response.data)
+        } catch (error) {
+            console.error('Error fetching promotions:', error)
         }
+    }
 
-        fetchData()
-    }, [])
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
 
-    function handleDelete(id: string): void {
-        AxiosInstance.delete(`/promotion/${id}`)
-        setDataset(dataset.filter((item) => item._id !== id))
-        setShowModal(false)
+    const handleCreate = async () => {
+        try {
+            setShowModal(false)
+            await AxiosInstance.post(`/promotion`, {
+                userId: id,
+                grade: formData.grade,
+                position: formData.position,
+                startDate: formData.startDate,
+            })
+            fetchPromotions()
+        } catch (error) {
+            console.error('Error creating promotion:', error)
+        }
+    }
+
+    const handleUpdate = async () => {
+        if (!selectedPromotion) return
+        try {
+            setShowModal(false)
+            await AxiosInstance.patch(
+                `/promotion/${selectedPromotion._id}`,
+                formData,
+            )
+            fetchPromotions()
+        } catch (error) {
+            console.error('Error updating promotion:', error)
+        }
+    }
+
+    const handleDelete = async () => {
+        if (!selectedPromotion) return
+        try {
+            setShowModal(false)
+            await AxiosInstance.delete(`/promotion/${selectedPromotion._id}`)
+            setPromotions(
+                promotions.filter((item) => item._id !== selectedPromotion._id),
+            )
+        } catch (error) {
+            console.error('Error deleting promotion:', error)
+        }
+    }
+
+    const openModal = (
+        type: 'create' | 'edit' | 'delete',
+        promotion?: Promotion,
+    ) => {
+        setModalType(type)
+        setSelectedPromotion(promotion || null)
+        if (type === 'edit' && promotion) {
+            setFormData({
+                position: promotion.position,
+                grade: promotion.grade,
+                startDate: promotion.startDate.split('T')[0],
+            })
+        } else {
+            setFormData({ position: '', grade: '', startDate: '' })
+        }
+        setShowModal(true)
     }
 
     return (
         <Card gap="16px" flex="1" backgroundColor="rgba(255, 255, 255, 0.7)">
             <h3>Promotion</h3>
-            {dataset.map((item, index) => (
+            {promotions.map((item) => (
                 <Card
-                    key={index}
+                    key={item._id}
                     backgroundColor={theme.palette.background.default}
                 >
                     <div>
@@ -72,10 +157,7 @@ export default function PromotionCard({ id }: { id: string }) {
                                 color="#2457A3"
                                 borderColor="#2457A3"
                                 icon={<EditIcon />}
-                                onClick={() => {
-                                    setShowModal(true)
-                                    setPromotionId(item._id)
-                                }}
+                                onClick={() => openModal('edit', item)}
                             />
                             <Button
                                 btnText=" "
@@ -88,10 +170,7 @@ export default function PromotionCard({ id }: { id: string }) {
                                 justifyContent="center"
                                 alignItems="center"
                                 icon={<DeleteIcon />}
-                                onClick={() => {
-                                    setShowModal(true)
-                                    setPromotionId(item._id)
-                                }}
+                                onClick={() => openModal('delete', item)}
                             />
                         </div>
                     )}
@@ -99,13 +178,23 @@ export default function PromotionCard({ id }: { id: string }) {
             ))}
             {showModal && (
                 <ModalComponent
-                padding='15px'
+                    padding="15px"
                     open={showModal}
-                    handleClose={() => setShowModal(false)}
+                    handleClose={() => {}}
                 >
-                    <div style={{display:'flex', justifyContent:'space-between', margin:'0'}}>
-                            <h2>Confirm Deletion</h2> 
-                             <CloseIcon
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            margin: '0',
+                        }}
+                    >
+                        <h2>
+                            {modalType === 'delete'
+                                ? 'Confirm Deletion'
+                                : `${modalType === 'edit' ? 'Edit' : 'Create'} Promotion`}
+                        </h2>
+                        <CloseIcon
                             style={{
                                 cursor: 'pointer',
                                 padding: '0',
@@ -113,7 +202,9 @@ export default function PromotionCard({ id }: { id: string }) {
                             }}
                             onClick={() => setShowModal(false)}
                         />
-                            </div>
+                    </div>
+                    {modalType === 'delete' ? (
+                        <>
                             <p>
                                 Are you sure you want to delete this promotion?
                             </p>
@@ -124,9 +215,7 @@ export default function PromotionCard({ id }: { id: string }) {
                                     borderColor="#d32f2f"
                                     btnText="Confirm"
                                     width="100%"
-                                    onClick={() =>
-                                        handleDelete(promotionId as string)
-                                    }
+                                    onClick={handleDelete}
                                 />
                                 <Button
                                     btnText="Cancel"
@@ -135,17 +224,72 @@ export default function PromotionCard({ id }: { id: string }) {
                                     onClick={() => setShowModal(false)}
                                 />
                             </div>
-                      
+                        </>
+                    ) : (
+                        <>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    gap: '10px',
+                                    flexDirection: 'column',
+                                    margin: '10px 0 10px 0',
+                                }}
+                            >
+                                <Selecter
+                                    name="position"
+                                    label="Position"
+                                    multiple={false}
+                                    value={formData.position}
+                                    options={PositionType}
+                                    onChange={(newValue) =>
+                                        setFormData({
+                                            ...formData,
+                                            position: newValue as string,
+                                        })
+                                    }
+                                />
+                                <Selecter
+                                    name="grade"
+                                    label="Grade"
+                                    multiple={false}
+                                    value={formData.grade}
+                                    options={GradeType}
+                                    onChange={(newValue) =>
+                                        setFormData({
+                                            ...formData,
+                                            grade: newValue as string,
+                                        })
+                                    }
+                                />
+                                <Input
+                                    IsUsername
+                                    type="datetime-local"
+                                    name="startDate"
+                                    label="Start Date"
+                                    value={formData.startDate}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                            <Button
+                                type={ButtonTypes.PRIMARY}
+                                btnText={
+                                    modalType === 'edit' ? 'Update' : 'Create'
+                                }
+                                onClick={
+                                    modalType === 'edit'
+                                        ? handleUpdate
+                                        : handleCreate
+                                }
+                            />
+                        </>
+                    )}
                 </ModalComponent>
             )}
-
             {currentUser?.role === 'hr' && (
                 <Button
                     type={ButtonTypes.PRIMARY}
                     btnText="Create New Promotion"
-                    onClick={() => {
-                        setShowModal(true)
-                    }}
+                    onClick={() => openModal('create')}
                 />
             )}
         </Card>
