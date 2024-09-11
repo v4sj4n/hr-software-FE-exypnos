@@ -68,7 +68,7 @@ export const TableStyles = {
         fontFamily: '"Outfit", sans-serif',
         borderTopLeftRadius: '5px',
         borderTopRightRadius: '5px',
-        colors:'rgba(255, 255, 255, 0.7)'
+        colors: 'rgba(255, 255, 255, 0.7)',
     },
     '& .MuiDataGrid-row': {
         backgroundColor: 'rgba(255, 255, 255, 0.7)',
@@ -110,7 +110,6 @@ export const TableStyles = {
     '& .css-levciy-MuiTablePagination-displayedRows': {
         margin: '0',
     },
-    
 }
 
 export const autoCompleteStyles = {

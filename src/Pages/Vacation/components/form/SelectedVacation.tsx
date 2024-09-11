@@ -5,10 +5,8 @@ import { useGetVacation } from '../../Hook'
 import { VacationForm } from './VacationForm'
 
 export const SelectedVacation = () => {
-    const {
-        searchParams,
-        handleCloseVacationModalOpen: handleClose,
-    } = useContext(VacationContext)
+    const { searchParams, handleCloseVacationModalOpen: handleClose } =
+        useContext(VacationContext)
 
     const vacation = useGetVacation()
 
@@ -19,7 +17,7 @@ export const SelectedVacation = () => {
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
-            open={searchParams.get("selectedVacation") !== null}
+            open={searchParams.get('selectedVacation') !== null}
             onClose={handleClose}
             closeAfterTransition
             slots={{ backdrop: Backdrop }}
@@ -29,7 +27,7 @@ export const SelectedVacation = () => {
                 },
             }}
         >
-            <Fade in={searchParams.get("selectedVacation") !== null}>
+            <Fade in={searchParams.get('selectedVacation') !== null}>
                 <Card
                     sx={{
                         position: 'absolute',

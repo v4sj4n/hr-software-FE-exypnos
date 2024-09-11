@@ -31,10 +31,13 @@ export default function PromotionCard({ id }: { id: string }) {
     }, [])
 
     return (
-        <Card gap="16px" flex="1" backgroundColor='rgba(255, 255, 255, 0.7)'>
+        <Card gap="16px" flex="1" backgroundColor="rgba(255, 255, 255, 0.7)">
             <h3>Promotion</h3>
             {dataset.map((item, index) => (
-                <Card key={index} backgroundColor={theme.palette.background.default}>
+                <Card
+                    key={index}
+                    backgroundColor={theme.palette.background.default}
+                >
                     <div>
                         <h3>Position: {item.position}</h3>
                         <p>Grade: {item.grade}</p>

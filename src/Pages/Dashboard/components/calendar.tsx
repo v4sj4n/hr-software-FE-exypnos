@@ -39,7 +39,6 @@ function ServerDay(
         !props.outsideCurrentMonth &&
         highlightedDays.indexOf(props.day.date()) >= 0
 
-       
     return (
         <Badge
             key={props.day.toString()}
@@ -93,7 +92,6 @@ export default function Calendar() {
         setHighlightedDays([])
         fetchHighlightedDays(date)
     }
-  
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>

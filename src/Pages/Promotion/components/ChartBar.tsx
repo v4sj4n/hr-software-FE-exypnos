@@ -79,24 +79,36 @@ export default function ChartBar({ id }: { id: string }) {
                         slots={{
                             axisContent: (props: ChartsAxisContentProps) => {
                                 const { dataIndex } = props
-                                if (dataIndex === undefined ) return null
+                                if (dataIndex === undefined) return null
                                 const data = dataset[dataIndex]
 
                                 return (
                                     <div
                                         style={{
-                                            backgroundColor: theme.palette.background.paper,
+                                            backgroundColor:
+                                                theme.palette.background.paper,
                                             padding: '10px',
                                             borderRadius: '5px',
                                             boxShadow: `0 4px 6px ${theme.palette.grey[500]}`,
                                         }}
                                     >
                                         <p>Month: {data?.month ?? ''}</p>
-                                        <p>Net Salary: {data?.netSalary ?? ''}</p>
-                                        <p>Gross Salary: {data?.grossSalary ?? ''}</p>
+                                        <p>
+                                            Net Salary: {data?.netSalary ?? ''}
+                                        </p>
+                                        <p>
+                                            Gross Salary:{' '}
+                                            {data?.grossSalary ?? ''}
+                                        </p>
                                         <p>Bonus: {data?.bonus ?? ''}</p>
-                                        <p>Health Insurance: {data?.healthInsurance ?? ''}</p>
-                                        <p>Social Security: {data?.socialSecurity ?? ''}</p>
+                                        <p>
+                                            Health Insurance:{' '}
+                                            {data?.healthInsurance ?? ''}
+                                        </p>
+                                        <p>
+                                            Social Security:{' '}
+                                            {data?.socialSecurity ?? ''}
+                                        </p>
                                     </div>
                                 )
                             },

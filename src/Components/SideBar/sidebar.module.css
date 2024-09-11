@@ -40,10 +40,10 @@
     background: white;
 }
 .item:hover .icon {
-    color: #2457A3;
+    color: #2457a3;
 }
 .item:hover .link {
-    color: #2457A3;
+    color: #2457a3;
 }
 .link {
     color: rgba(0, 0, 0, 0.8);
@@ -92,7 +92,7 @@
     border-bottom: none;
 }
 .dropdownItem:hover {
-    color: #2457A3;
+    color: #2457a3;
     background-color: white;
 }
 .icon {

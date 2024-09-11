@@ -17,7 +17,6 @@ const InfoSection: React.FC = () => {
     })
 
     console.log('events', events)
-    
 
     return (
         <div className={style.infoSection}>

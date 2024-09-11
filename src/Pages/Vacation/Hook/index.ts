@@ -101,11 +101,9 @@ export const useCreateVacation = () => {
 
     return useMutation({
         mutationFn: ({ vacation }: { vacation: CreateVacationFormFields }) =>
-            createVacation(
-                vacation,
-            ),
+            createVacation(vacation),
         onSuccess: () => {
-            console.log("HELLO")
+            console.log('HELLO')
             // queryClient.invalidateQueries({
             //     queryKey: ['vacations'],
             // })

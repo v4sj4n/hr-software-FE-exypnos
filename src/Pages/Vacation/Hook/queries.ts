@@ -41,8 +41,6 @@ export const updateVacation = async (
 ) => {
     return (await AxiosInstance.patch(`/vacation/${id}`, vacation)).data
 }
-export const createVacation = async (
-    vacation: CreateVacationFormFields,
-) => {
+export const createVacation = async (vacation: CreateVacationFormFields) => {
     return (await AxiosInstance.post(`/vacation`, vacation)).data
 }
