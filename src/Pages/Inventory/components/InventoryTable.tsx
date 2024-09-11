@@ -1,14 +1,11 @@
 import { CircularProgress } from '@mui/material'
-
 import { useContext, useEffect } from 'react'
 import { InventoryContext } from '../InventoryContext'
 import { GridPaginationModel, GridRenderCellParams } from '@mui/x-data-grid'
 import style from '../style/inventoryTable.module.scss'
 import DataTable from '@/Components/Table/Table'
-
-// Icons
 import { Laptop, Monitor } from '@mui/icons-material'
-import { useAllInventoryItems } from '../Hook/hook'
+import { useAllInventoryItems } from '../Hook'
 import { SingleInventoryItem } from './SingleInventoryItem'
 import { Asset } from '@/Pages/Holdings/TAsset'
 import { StatusBadge } from '@/Components/StatusBadge/StatusBadge'

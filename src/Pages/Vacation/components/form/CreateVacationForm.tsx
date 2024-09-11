@@ -1,62 +1,25 @@
 import { Backdrop, Modal, Fade, Card } from '@mui/material'
 import { VacationContext } from '../../VacationContext'
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import style from '../../style/vacationForm.module.scss'
-import dayjs from 'dayjs'
 import { valibotValidator } from '@tanstack/valibot-form-adapter'
-import { useForm } from '@tanstack/react-form'
 import Selecter from '@/Components/Input/components/Select/Selecter'
 import Input from '@/Components/Input/Index'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { CreateVacationSchema } from '@/Schemas/Vacations/CreateVacation.schema'
-import { useCreateVacation } from '../../Hook'
-import { AxiosError } from 'axios'
+import { useCreateVacationForm } from '../../Hook'
 
 export const CreateVacationForm = () => {
-    const { searchParams, createVacationToggler, setToastConfigs } =
-        useContext(VacationContext)
-    const [error, setError] = useState<string | null>(null)
+    const {
+        searchParams,
+        createVacationToggler,
+        errors: { createError: error },
+    } = useContext(VacationContext)
 
-    const { mutate, isError, error: mutationError } = useCreateVacation()
+    const { form } = useCreateVacationForm()
 
-    const form = useForm<{
-        description: string
-        type: 'vacation' | 'sick' | 'personal' | 'maternity'
-        startDate: string
-        endDate: string
-    }>({
-        defaultValues: {
-            description: '',
-            type: 'vacation',
-            startDate: dayjs(new Date()).format('YYYY-MM-DD'),
-            endDate: dayjs(new Date()).add(2, 'day').format('YYYY-MM-DD'),
-        },
-        onSubmit: async ({ value }) => {
-            mutate({ vacation: value })
-            if (isError) {
-                setToastConfigs({
-                    isOpen: true,
-                    message:
-                        mutationError?.message || 'Failed to create vacation',
-                    severity: 'error',
-                })
-                if (mutationError instanceof AxiosError)
-                    setError(mutationError.response?.data)
-                else {
-                    setError('something happened')
-                }
-            } else {
-                setToastConfigs({
-                    isOpen: true,
-                    message: 'Vacation created successfully',
-                    severity: 'success',
-                })
-                createVacationToggler()
-            }
-        },
-    })
     return (
         <Modal
             aria-labelledby="transition-modal-title"
