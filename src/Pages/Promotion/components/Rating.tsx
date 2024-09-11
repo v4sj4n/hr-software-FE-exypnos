@@ -2,13 +2,17 @@ import AxiosInstance from '@/Helpers/Axios'
 import Card from '@/Components/Card/Card'
 import { useEffect, useState } from 'react'
 import style from '../styles/promotion.module.css'
-import BasicRating from './Stars'
+import { BasicRating, ChangeRating } from './Stars'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import EditIcon from '@mui/icons-material/Edit'
-import { useTheme } from '@mui/material/styles' 
+import { useTheme } from '@mui/material/styles'
+import { ModalComponent } from '@/Components/Modal/Modal'
+import CloseIcon from '@mui/icons-material/Close'
+import { useAuth } from '@/Context/AuthProvider'
 
 export type Rating = {
+    _id: string
     productivityScore: number
     teamCollaborationScore: number
     technicalSkillLevel: number
@@ -17,25 +21,69 @@ export type Rating = {
 }
 
 export default function Rating({ id }: { id: string }) {
+    const { currentUser } = useAuth()
     console.log('id', id)
-    const [value, setValue] = useState<Rating[] | null>(null)
     const theme = useTheme()
+    const [ratings, setRatings] = useState<Rating[] | null>(null)
+    const [updateRating, setUpdateRating] = useState<Rating | null>(null)
+    const [open, setOpen] = useState(false)
+
+    const handleOpen = (rating: Rating) => {
+        setUpdateRating(rating)
+        setOpen(true)
+    }
+
+    const handleEditChange = (
+        event: React.ChangeEvent<{}>,
+        value: number | null,
+        fieldName: string,
+    ) => {
+        if (updateRating && value !== null) {
+            setUpdateRating((prevRating) => ({
+                ...prevRating!,
+                [fieldName]: value,
+            }))
+        }
+    }
+
+    const update = async () => {
+        if (!updateRating) return
+
+        const updatedRating = {
+            productivityScore: updateRating.productivityScore,
+            teamCollaborationScore: updateRating.teamCollaborationScore,
+            technicalSkillLevel: updateRating.technicalSkillLevel,
+            clientFeedbackRating: updateRating.clientFeedbackRating,
+        }
+
+        try {
+            const response = await AxiosInstance.patch(
+                `/rating/${updateRating._id}`,
+                updatedRating,
+            )
+            console.log('Rating updated successfully:', response.data)
+            setRatings((prevRatings) =>
+                (prevRatings ?? []).map((rating) =>
+                    rating._id === updateRating._id ? response.data : rating,
+                ),
+            )
+            setOpen(false)
+        } catch (error) {
+            console.error('Error updating rating:', error)
+        }
+    }
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await AxiosInstance<Rating[]>(
-                `/rating/user?id=${id}`,
-            )
-            let data: Rating[] = response.data
-            setValue(data)
-            console.log('dataRating', data)
+            const response = await AxiosInstance.get(`/rating/user?id=${id}`)
+            setRatings(response.data)
         }
 
         fetchData()
-    }, [])
+    }, [id])
 
     return (
-        <Card backgroundColor='rgba(255, 255, 255, 0.7)'>
+        <Card backgroundColor="rgba(255, 255, 255, 0.7)">
             <h3
                 style={{
                     padding: 0,
@@ -46,51 +94,125 @@ export default function Rating({ id }: { id: string }) {
                 Rating
             </h3>
             <div className={style.secondDiv}>
-                {value &&
-                    value.map((item, index) => (
-                        <Card key={index} gap="10px" backgroundColor={theme.palette.background.default}>
-                            <h3>{item.projectId.name}</h3>
+                {ratings &&
+                    ratings.map((rating) => (
+                        <Card
+                            key={rating._id}
+                            backgroundColor={theme.palette.background.default}
+                        >
+                            <h4>{rating.projectId.name}</h4>
                             <div className={style.grid}>
                                 <BasicRating
-                                    type={'ProductivityScore'}
-                                    value={item.productivityScore}
+                                    type="Productivity Score"
+                                    value={rating.productivityScore}
                                 />
                                 <BasicRating
-                                    type={'TeamCollaborationScore'}
-                                    value={item.teamCollaborationScore}
+                                    type="Team Collaboration Score"
+                                    value={rating.teamCollaborationScore}
                                 />
                                 <BasicRating
-                                    type={'TechnicalSkillLevel'}
-                                    value={item.technicalSkillLevel}
+                                    type="Technical Skill Level"
+                                    value={rating.technicalSkillLevel}
                                 />
                                 <BasicRating
-                                    type={'ClientFeedbackRating'}
-                                    value={item.clientFeedbackRating}
-                                />
-                            </div>{' '}
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'flex-end',
-                                    width: '100%',
-                                }}
-                            >
-                                <Button
-                                    type={ButtonTypes.SECONDARY}
-                                    btnText=""
-                                    width="40px"
-                                    height="30px"
-                                    display="flex"
-                                    justifyContent="center"
-                                    alignItems="center"
-                                    color="#2457A3"
-                                    borderColor="#2457A3"
-                                    icon={<EditIcon />}
+                                    type="Client Feedback Rating"
+                                    value={rating.clientFeedbackRating}
                                 />
                             </div>
+                            {currentUser?.role === 'hr' && (
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        justifyContent: 'flex-end',
+                                        width: '100%',
+                                    }}
+                                >
+                                    <Button
+                                        type={ButtonTypes.SECONDARY}
+                                        btnText=""
+                                        width="40px"
+                                        height="30px"
+                                        display="flex"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        color="#2457A3"
+                                        borderColor="#2457A3"
+                                        icon={<EditIcon />}
+                                        onClick={() => handleOpen(rating)}
+                                    />
+                                </div>
+                            )}
                         </Card>
                     ))}
             </div>
+
+            {open && updateRating && (
+                <ModalComponent open={open} handleClose={() => setOpen(false)}>
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <h3>Change Rating</h3>
+                        <CloseIcon
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => setOpen(false)}
+                        />{' '}
+                    </div>
+                    <ChangeRating
+                        label="Productivity Score"
+                        name="productivityScore"
+                        value={updateRating.productivityScore}
+                        onChange={(event, value) =>
+                            handleEditChange(event, value, 'productivityScore')
+                        }
+                    />
+                    <ChangeRating
+                        label="Team Collaboration Score"
+                        name="teamCollaborationScore"
+                        value={updateRating.teamCollaborationScore}
+                        onChange={(event, value) =>
+                            handleEditChange(
+                                event,
+                                value,
+                                'teamCollaborationScore',
+                            )
+                        }
+                    />
+                    <ChangeRating
+                        label="Technical Skill Level"
+                        name="technicalSkillLevel"
+                        value={updateRating.technicalSkillLevel}
+                        onChange={(event, value) =>
+                            handleEditChange(
+                                event,
+                                value,
+                                'technicalSkillLevel',
+                            )
+                        }
+                    />
+                    <ChangeRating
+                        label="Client Feedback Rating"
+                        name="clientFeedbackRating"
+                        value={updateRating.clientFeedbackRating}
+                        onChange={(event, value) =>
+                            handleEditChange(
+                                event,
+                                value,
+                                'clientFeedbackRating',
+                            )
+                        }
+                    />
+
+                    <Button
+                        onClick={update}
+                        type={ButtonTypes.PRIMARY}
+                        btnText="Update"
+                        width="350px"
+                    />
+                </ModalComponent>
+            )}
         </Card>
     )
 }
