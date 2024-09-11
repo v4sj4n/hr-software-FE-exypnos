@@ -7,55 +7,53 @@ import {
     useMutation,
     useQueryClient,
 } from '@tanstack/react-query'
-import { fetchEvents } from '../utils/utils'
+import {  fetchEvents } from '../utils/utils'
 import { debounce } from '@/Helpers/debounce'
 
 export const useGetAllEvents = () => {
-    const [searchParams, setSearchParams] = useSearchParams()
-    const [searchEvent, setSearchEvent] = useState(
-        searchParams.get('search') || '',
-    )
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchEvent, setSearchEvent] = useState(searchParams.get('search') || ''); 
 
     const query = useInfiniteQuery({
-        queryKey: ['events', searchEvent],
-        queryFn: ({ pageParam = 0 }) =>
-            fetchEvents(searchEvent || '', pageParam),
+        queryKey: ['events', searchEvent],  
+        queryFn: ({ pageParam = 0 }) => fetchEvents(searchEvent || '', pageParam),
         initialPageParam: 0,
         getNextPageParam: (lastPage, allPages) => {
             if (lastPage.length < 6) {
-                return undefined
+                return undefined;
             }
-            return allPages.length
+            return allPages.length;
         },
-    })
+    });
 
     const debouncedSetSearchParams = debounce((value: string) => {
         setSearchParams((prev: URLSearchParams) => {
-            const newParams = new URLSearchParams(prev)
+            const newParams = new URLSearchParams(prev);
             if (value) {
-                newParams.set('search', value)
+                newParams.set('search', value);
             } else {
-                newParams.delete('search')
+                newParams.delete('search');
             }
-            return newParams
-        })
-    }, 500)
+            return newParams;
+        });
+    }, 500);
 
+    
     const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchEvent(e.target.value)
-        debouncedSetSearchParams(e.target.value)
-    }
+        setSearchEvent(e.target.value);  
+        debouncedSetSearchParams(e.target.value); 
+    };
 
     useEffect(() => {
-        setSearchEvent(searchParams.get('search') || '')
-    }, [searchParams])
+        setSearchEvent(searchParams.get('search') || ''); 
+    }, [searchParams]);
 
     return {
         ...query,
         searchEvent,
         onSearchChange,
-    }
-}
+    };
+};
 
 export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
     const queryClient = useQueryClient()

@@ -85,11 +85,7 @@ export const VacationTable = () => {
             renderCell: (param: GridRenderCellParams) => {
                 return (
                     <span
-                        onClick={() =>
-                            handleOpenViewVacationModalOpen(
-                                param.value as string,
-                            )
-                        }
+                        onClick={() => handleOpenViewVacationModalOpen(param.value as string)}
                         className={style.viewButton}
                     >
                         View

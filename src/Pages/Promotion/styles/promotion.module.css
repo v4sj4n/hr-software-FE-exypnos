@@ -32,12 +32,13 @@
     flex: 1;
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 10px;
-    width: 100%;
+.grid{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+  width: 100%;
 }
+
 
 .userGrid {
     display: grid;
@@ -51,14 +52,14 @@
         grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     }
 }
-.userCard {
+  .userCard {
     transition: all 0.3s ease;
     cursor: pointer;
-    width: 100%;
-}
-
-.userCard:hover {
+    width: 100%; 
+  }
+  
+  .userCard:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: rgba(255, 255, 255, 0.7);
-}
+    background-color: rgba(255, 255, 255, 0.7);;
+  }

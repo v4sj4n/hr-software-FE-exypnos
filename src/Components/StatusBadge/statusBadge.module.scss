@@ -40,8 +40,8 @@ $lightblue-color: #add8e6;
     background-color: $lightblue-color;
 }
 
-.purpleBadge {
+.purpleBadge{
     @include badge;
     color: #1f1f1fd0;
-    background-color: #c4bfea;
+    background-color: #C4BFEA;
 }

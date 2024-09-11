@@ -1,9 +1,12 @@
 import { CircularProgress } from '@mui/material'
+
 import { useContext, useEffect } from 'react'
 import { InventoryContext } from '../InventoryContext'
 import { GridPaginationModel, GridRenderCellParams } from '@mui/x-data-grid'
 import style from '../style/inventoryTable.module.scss'
 import DataTable from '@/Components/Table/Table'
+
+// Icons
 import { Laptop, Monitor } from '@mui/icons-material'
 import { useAllInventoryItems } from '../Hook/hook'
 import { SingleInventoryItem } from './SingleInventoryItem'
@@ -29,7 +32,6 @@ export const InventoryTable = () => {
 
     if (isError) return <div>Error: {error.message}</div>
     if (isPending) return <CircularProgress />
-    if (!data || !data.data) return <div>No data available</div>
 
     const rows = data.data.map((asset: Asset) => ({
         id: asset._id,
@@ -145,9 +147,9 @@ export const InventoryTable = () => {
         <>
             <DataTable
                 onPaginationModelChange={handlePaginationModelChange}
-                page={Number(searchParams.get('page')!) || 0}
-                pageSize={Number(searchParams.get('limit')!) || 5}
-                totalPages={data.totalPages || 1}
+                page={Number(searchParams.get('page')!)}
+                pageSize={Number(searchParams.get('limit')!)}
+                totalPages={data.totalPages}
                 rows={rows}
                 columns={columns}
                 getRowId={getRowId}

@@ -115,9 +115,7 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
                     control={
                         <Checkbox
                             checked={useCustomEmail}
-                            onChange={(e) =>
-                                setUseCustomEmail(e.target.checked)
-                            }
+                            onChange={(e) => setUseCustomEmail(e.target.checked)}
                             color="primary"
                         />
                     }

@@ -15,7 +15,6 @@ import NotificationDropdown from '@/Pages/Notification/Notification'
 import { ClickAwayListener } from '@mui/material'
 import ThemeSwitcher from '@/Theme/ThemeSwitcher'
 
-
 import { useTheme } from '@mui/material/styles' 
 
 export const HeaderContent = () => {
@@ -126,6 +125,5 @@ const Header: React.FC = () => {
             <HeaderContent />
         </EventsProvider>
     )
-
 } 
 export default Header

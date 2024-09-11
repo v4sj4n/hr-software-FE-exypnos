@@ -50,13 +50,12 @@ export default function Router() {
         },
         {
             path: '/',
-
+            
             element: (
                 <>
                     <PrivateRoute />
                 </>
-            ),
-            children: [
+            ),            children: [
                 {
                     path: '/employees',
                     element: <Employees />,
@@ -67,7 +66,7 @@ export default function Router() {
                 },
                 {
                     path: '/promotion/:id',
-                    element: <UserPromotion />,
+                    element: <UserPromotion/>,
                 },
                 { path: '/dashboard', element: <Dashboard />, index: false },
                 {

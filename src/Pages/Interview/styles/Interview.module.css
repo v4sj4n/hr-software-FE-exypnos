@@ -1,3 +1,4 @@
+
 .kanbanBoard {
     display: flex;
     flex-direction: column;
@@ -19,7 +20,7 @@
 }
 
 .filterField {
-    background-color: #e0dfff; /* Input background color */
+    background-color: #E0DFFF; /* Input background color */
     border: 1px solid #bcc2cc;
     border-radius: 5px;
     padding: 10px;
@@ -31,12 +32,14 @@
     justify-content: space-between;
     gap: 20px;
     height: auto;
+    
+
 }
-.kanbanColumns h2 {
+.kanbanColumns h2{
     color: #373535;
 }
 .kanbanColumn {
-    background-color: transparent;
+    background-color: transparent; 
     border-radius: 10px;
     padding: 20px;
     width: 100%;
@@ -60,10 +63,10 @@
 
 .candidateName {
     font-weight: bold;
-    color: #1c449ad7;
+    color: #1c449ad7; 
     cursor: pointer;
     margin-bottom: 8px;
-}
+} 
 
 .applicantCount {
     color: #79a9d9;
@@ -81,40 +84,40 @@
 }
 
 .kanbanList p {
-    color: #373535;
+    color: #373535; 
 }
 
 .tabs {
     margin-bottom: 20px;
-    border-bottom: 2px solid #c4bfea;
+    border-bottom: 2px solid #C4BFEA; 
 }
 
 .MuiTab-root {
-    color: #4a3c82 !important;
+    color: #4A3C82 !important; 
     font-weight: bold !important;
 }
 
 .Mui-selected {
-    color: #d1c2ff !important;
+    color: #D1C2FF !important; 
     font-weight: bold !important;
 }
 
 .MuiButton-root {
-    background-color: #4a3c82 !important;
-    color: #ffffff !important;
+    background-color: #4A3C82 !important; 
+    color: #FFFFFF !important; 
 }
 
 .MuiButton-root:hover {
-    background-color: #6a52a8 !important;
+    background-color: #6A52A8 !important; 
 }
 
 .MuiTooltip-tooltip {
-    background-color: #4a3c82 !important;
-    color: #ffffff !important;
+    background-color: #4A3C82 !important; 
+    color: #FFFFFF !important; 
 }
 
 .rescheduleModal {
-    background-color: #ffffff;
+    background-color: #FFFFFF;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
