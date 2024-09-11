@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
     "@mui/icons-material": "^5.16.6",
     "@mui/joy": "^5.0.0-beta.48",
     "@mui/lab": "^5.0.0-alpha.173",
@@ -31,6 +32,7 @@
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.11",
     "dotenv": "^16.4.5",
+    "exypnos": "file:",
     "primereact": "^10.8.2",
     "react": "^18.3.1",
     "react-beautiful-dnd": "^13.1.1",

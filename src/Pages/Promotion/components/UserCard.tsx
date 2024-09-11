@@ -49,7 +49,7 @@ export default function UserCard() {
                         key={item._id} 
                         borderRadius='5px' 
                         width='100%'
-                        backgroundColor='white' 
+                        backgroundColor='rgba(255, 255, 255, 0.7)'
                         onClick={() => handleNavigate(item._id)} 
                         className={style.userCard}
                     >

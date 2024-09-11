@@ -1,22 +1,22 @@
-import React from 'react';
-import { useTheme } from '@mui/material/styles';
-import { ButtonTypes } from './ButtonTypes';
-import './Button.css';
-type ButtonType = (typeof ButtonTypes)[keyof typeof ButtonTypes];
-interface ButtonStyles {
-    backgroundColor?: string;
-    color?: string;
-    borderColor?: string;
-    width?: string | number;
-    height?: string | number;
-    fontSize?: string | number;
-    padding?: string;
-    margin?: string;
-    borderRadius?: string | number;
-    display?: string;
-    justifyContent?: string;
-    alignItems?: string;
+import { useTheme } from '@mui/material'
+import './Button.css'
+import { ButtonTypes } from './ButtonTypes'
+import React, { CSSProperties } from 'react'
+
+type ButtonType = (typeof ButtonTypes)[keyof typeof ButtonTypes]
+
+interface ButtonStyles extends CSSProperties {
+    backgroundColor?: string
+    color?: string
+    borderColor?: string
+    width?: string | number
+    height?: string | number
+    fontSize?: string | number
+    padding?: string
+    margin?: string
+    borderRadius?: string | number
 }
+
 interface ButtonProps extends ButtonStyles {
     isSubmit?: boolean;
     type: ButtonType;
