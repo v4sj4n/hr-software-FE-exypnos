@@ -9,6 +9,7 @@ export interface EventsData {
     email: string[]
     time: string
     creatingTime: string
+    data: EventsData[]
     file: string
     location: string
     type: string
@@ -104,5 +105,4 @@ export interface EventsContextProps {
     handleLocationChange: (address: string) => void
     hideToast?: () => void
     createdEvents: EventsData[]
-    formatDate: (date: string) => string
 }

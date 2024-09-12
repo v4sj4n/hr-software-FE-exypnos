@@ -1,9 +1,16 @@
 import React, { useState } from 'react'
-import { Card, Typography, IconButton, Badge, Box, ClickAwayListener } from '@mui/material'
+import {
+    Card,
+    Typography,
+    IconButton,
+    Badge,
+    Box,
+    ClickAwayListener,
+} from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import { useNavigate } from 'react-router-dom'
-import { useGetAllNotifications } from './Hook/index'
+import { useGetAllNotifications } from '.'
 import AxiosInstance from '@/Helpers/Axios'
 
 interface Notification {

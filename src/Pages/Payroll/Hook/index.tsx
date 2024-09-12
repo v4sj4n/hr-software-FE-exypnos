@@ -9,6 +9,7 @@ export const usePayroll = (month?: number, year?: number) => {
         queryFn: async () => {
             const url = `/salary${month !== undefined ? `?month=${month}` : ''}${year !== undefined ? `&year${year}` : ''}`
             const response = await AxiosInstance.get<PayrollRow[]>(url)
+            console.log(response.data)
             return response.data
         },
     })
@@ -19,6 +20,7 @@ export const usePayrollUserId = (month?: number, year?: number) => {
     return useQuery<PayrollRow[], Error>({
         queryKey: ['payrollId', id, month, year],
         queryFn: async () => {
+            console.log(id)
             const url = `/salary/user/${id}${month !== undefined ? `?month=${month}` : ''}${year !== undefined ? `&year=${year}` : ''}`
             const response = await AxiosInstance.get<PayrollRow[]>(url)
             return response.data

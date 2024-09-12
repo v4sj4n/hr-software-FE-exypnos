@@ -1,5 +1,23 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { AuthContextType, User } from './Interface'
+
+export interface User {
+    email: string
+    _id: number
+    name: string
+    firstName: string
+    lastName: string
+    phone: string
+    role: string
+    imageUrl: string
+}
+
+interface AuthContextType {
+    isAuthenticated: boolean
+    userRole: string | null
+    currentUser: User | null
+    login: (access_token: string, role: string, user: User) => void
+    logout: () => void
+}
 
 export const AuthContext = React.createContext<AuthContextType | undefined>(
     undefined,
@@ -24,13 +42,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const access_token = localStorage.getItem('access_token')
         const storedUserRole = localStorage.getItem('user_role')
         const storedUserData = localStorage.getItem('user')
-     
+        console.log('Token from localStorage:', access_token)
         if (access_token && storedUserRole && storedUserData) {
             const user: User = JSON.parse(storedUserData)
             setIsAuthenticated(true)
             setUserRole(storedUserRole)
             setCurrentUser(user)
-        } 
+            console.log('User authenticated with role:', storedUserRole)
+        } else {
+            console.log('No token or role found')
+        }
     }, [])
 
     const login = (access_token: string, role: string, user: User) => {
