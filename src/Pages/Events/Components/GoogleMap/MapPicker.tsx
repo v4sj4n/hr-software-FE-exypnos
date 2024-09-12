@@ -150,7 +150,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
     }
 
     return (
-        <div>
+        <div style={{marginTop: '10px'}}>
             {showInput && (
                 <>
                     <Input
