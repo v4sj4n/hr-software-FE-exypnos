@@ -15,6 +15,8 @@ interface RecruitmentContextType {
     showModal: boolean
     setShowModal: Dispatch<SetStateAction<boolean>>
     fileInputRef: RefObject<HTMLInputElement>
+    fileName: string | null
+    setFileName: Dispatch<SetStateAction<string | null>>
 }
 
 const defaultContextValue: RecruitmentContextType = {
@@ -23,6 +25,8 @@ const defaultContextValue: RecruitmentContextType = {
     showModal: false,
     setShowModal: () => {},
     fileInputRef: { current: null },
+    fileName: null,
+    setFileName: () => {},
 }
 
 export const RecruitmentContext =
@@ -34,6 +38,7 @@ export const RecruitmentProvider: FC<{ children: ReactNode }> = ({
     const [error, setError] = useState<string | null>(null)
     const [showModal, setShowModal] = useState(false)
     const fileInputRef = useRef<HTMLInputElement>(null)
+    const [fileName, setFileName] = useState<string | null>(null)
 
     return (
         <RecruitmentContext.Provider
@@ -43,6 +48,8 @@ export const RecruitmentProvider: FC<{ children: ReactNode }> = ({
                 showModal,
                 setShowModal,
                 fileInputRef,
+                fileName,
+                setFileName,
             }}
         >
             {children}

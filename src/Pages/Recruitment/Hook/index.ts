@@ -62,10 +62,10 @@ export const useRecruitmentForm = () => {
                     },
                 )
                 if ([200, 201].includes(response.status)) {
+                    console.log(true)
                     setShowModal(true)
                 }
             } catch (err: unknown) {
-                console.log(err)
                 if (err instanceof AxiosError) {
                     if (err?.response?.data?.message) {
                         setError(err?.response?.data?.message)

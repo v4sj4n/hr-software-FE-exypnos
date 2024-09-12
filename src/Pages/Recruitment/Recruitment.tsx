@@ -1,4 +1,4 @@
-import Button1 from '../../Components/Button/Button'
+import MyButton from '../../Components/Button/Button'
 import { ButtonTypes } from '../../Components/Button/ButtonTypes'
 import Input from '../../Components/Input/Index'
 import logo from '/Images/recruitmentLogo.png'
@@ -18,13 +18,22 @@ import {
     foundMethod,
     technologies,
 } from './Component/RecruitmentData'
-import { RecruitmentContext } from './Context/RecruitmentContext'
+import {
+    RecruitmentContext,
+    RecruitmentProvider,
+} from './Context/RecruitmentContext'
 import { useRecruitmentForm } from './Hook'
 import { RecruitmentSchema } from '@/Schemas/Recruitment/Recruitment.schema'
 
-export default function Recruitment() {
-    const { error, showModal, setShowModal, fileInputRef } =
-        useContext(RecruitmentContext)
+function RecruitmentBase() {
+    const {
+        error,
+        showModal,
+        setShowModal,
+        fileInputRef,
+        fileName,
+        setFileName,
+    } = useContext(RecruitmentContext)
     const { form } = useRecruitmentForm()
     return (
         <main className={style.background}>
@@ -358,11 +367,17 @@ export default function Recruitment() {
                             handleChange,
                         }) => (
                             <div className={style.fileInput}>
+                                <p>{fileName || 'No file selected'}</p>
                                 <Button
                                     component="label"
                                     variant="contained"
                                     startIcon={<CloudUploadIcon />}
-                                    className={style.uploadButton}
+                                    style={{
+                                        backgroundColor: '#2469FF',
+                                        color: '#FFFFFF',
+                                        boxShadow: 'none',
+                                        fontFamily: 'Outfit, sans-serif',
+                                    }}
                                     fullWidth
                                 >
                                     Upload CV
@@ -370,6 +385,9 @@ export default function Recruitment() {
                                         type="file"
                                         style={{ display: 'none' }}
                                         onChange={(e) => {
+                                            const file =
+                                                e.target.files?.[0] || null
+                                            setFileName(file?.name || null)
                                             handleChange(e.target.files)
                                         }}
                                         accept=".pdf,.doc,.docx"
@@ -380,17 +398,17 @@ export default function Recruitment() {
                             </div>
                         )}
                     />
-
-                    <Button1
+                    <MyButton
                         type={ButtonTypes.SECONDARY}
                         btnText="Reset"
                         width="100%"
                         onClick={() => {
                             console.log('Resetting form')
                             form.reset()
+                            setFileName(null)
                         }}
                     />
-                    <Button1
+                    <MyButton
                         type={ButtonTypes.TERTIARY}
                         btnText={
                             form.state.isSubmitting ? 'Submitting...' : 'Submit'
@@ -402,15 +420,22 @@ export default function Recruitment() {
                 {error && <ErrorText>{error}</ErrorText>}
             </Card>
             <img alt="image" src={image} className={style.illustration} />
-            {showModal && (
-                <Toast
-                    message="Please check your inbox or spam to confirm your identity."
-                    onClose={() => setShowModal(false)}
-                    open={showModal}
-                    severity={'success'}
-                />
-            )}
+
+            <Toast
+                message="Please check your inbox or spam to confirm your identity."
+                onClose={() => setShowModal(false)}
+                open={showModal}
+                severity={'success'}
+            />
         </main>
+    )
+}
+
+export default function Recruitment() {
+    return (
+        <RecruitmentProvider>
+            <RecruitmentBase />
+        </RecruitmentProvider>
     )
 }
 
