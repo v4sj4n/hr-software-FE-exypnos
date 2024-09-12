@@ -1,7 +1,7 @@
 import Card from '@/Components/Card/Card'
 import style from './style/userVacations.module.scss'
 
-import { VacationProvider } from './VacationContext'
+import VacationProvider from './VacationContext'
 import { useGetUserWithVacations } from './Hook'
 import { Vacation } from './TVacation'
 import { Check, Close, AccessTime } from '@mui/icons-material'

@@ -2,7 +2,7 @@ import Box from '@mui/material/Box'
 import Rating from '@mui/material/Rating'
 import Typography from '@mui/material/Typography'
 
- function BasicRating({
+export default function BasicRating({
     type,
     value,
 }: {
@@ -16,30 +16,3 @@ import Typography from '@mui/material/Typography'
         </Box>
     )
 }
-
-
- function ChangeRating({
-    label,
-    name,
-    value,
-    onChange,
-}: {
-    label: string
-    name: string
-    value: number
-    onChange: (event: React.ChangeEvent<{}>, value: number | null) => void
-}): JSX.Element {
-
-  return (
-    <Box sx={{ '& > legend': { mt: 2 } }}>
-      <Typography component="legend">{label}</Typography>
-      <Rating
-        name={name}
-        value={value}
-        onChange={onChange}
-      />
-    </Box>
-  );
-}
-
-export { BasicRating , ChangeRating };

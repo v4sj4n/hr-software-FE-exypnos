@@ -11,17 +11,9 @@ export const StatusBadge = ({
 }) => {
     switch (color) {
         case 'red':
-            return (
-                <span className={style.redBadge}>
-                    {addDot && '●'} {status}
-                </span>
-            )
+            return <span className={style.redBadge}>● {status}</span>
         case 'purple':
-            return (
-                <span className={style.purpleBadge}>
-                    {addDot && '●'} {status}
-                </span>
-            )
+            return <span className={style.purpleBadge}>● {status}</span>
         case 'green':
             return (
                 <span className={style.greenBadge}>

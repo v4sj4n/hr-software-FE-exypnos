@@ -2,16 +2,35 @@ import { useContext } from 'react'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Input from '@/Components/Input/Index'
+import { useForm } from '@tanstack/react-form'
 import { InventoryContext } from '../../InventoryContext'
-import { useCreateItemForm } from '../../Hook'
+import { useCreateInventoryItem } from '../../Hook/hook'
+import { valibotValidator } from '@tanstack/valibot-form-adapter'
 import style from '../../style/createItemForm.module.scss'
 import Selecter from '@/Components/Input/components/Select/Selecter'
+import { minLength, nonEmpty, picklist, pipe, string } from 'valibot'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
-import { CreateInventoryItemSchema } from '@/Schemas/Inventory/CreateInventoryItem.schema'
 
 export const CreateItemForm = () => {
-    const { handleCloseCreateModalOpen, error } = useContext(InventoryContext)
-    const { form } = useCreateItemForm()
+    const { handleCloseCreateModalOpen } = useContext(InventoryContext)
+    const { mutate, isError, error } = useCreateInventoryItem()
+
+    const form = useForm({
+        defaultValues: {
+            type: 'laptop',
+            serialNumber: '',
+        },
+        onSubmit: async ({ value }) => {
+            mutate({
+                type: value.type as 'laptop' | 'monitor',
+                serialNumber: value.serialNumber,
+            })
+            if (isError) {
+                console.log(error)
+            }
+        },
+        validatorAdapter: valibotValidator(),
+    })
 
     return (
         <>
@@ -27,7 +46,10 @@ export const CreateItemForm = () => {
                 <div>
                     <form.Field
                         validators={{
-                            onChange: CreateInventoryItemSchema.entries.type,
+                            onChange: picklist(
+                                ['laptop', 'monitor'],
+                                "Please select an item type of 'laptop' or'monitor'",
+                            ),
                         }}
                         name="type"
                         children={(field) => (
@@ -56,8 +78,14 @@ export const CreateItemForm = () => {
                     <form.Field
                         name="serialNumber"
                         validators={{
-                            onChange:
-                                CreateInventoryItemSchema.entries.serialNumber,
+                            onChange: pipe(
+                                string('Serial Number is required'),
+                                nonEmpty('Please type your serial number'),
+                                minLength(
+                                    10,
+                                    'Serial Number should be at least 10 characters long',
+                                ),
+                            ),
                         }}
                         children={(field) => (
                             <div>
@@ -99,7 +127,6 @@ export const CreateItemForm = () => {
                         isSubmit
                     />
                 </div>
-                {error && <ErrorText>{error}</ErrorText>}
             </form>
         </>
     )

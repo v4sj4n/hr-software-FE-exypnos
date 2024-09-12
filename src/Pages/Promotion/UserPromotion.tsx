@@ -14,10 +14,7 @@ export default function UserPromotion() {
         <>
             <div className={style.container}>
                 <div className={style.firstDiv}>
-                    <Card
-                        padding="20px"
-                        backgroundColor="rgba(255, 255, 255, 0.7)"
-                    >
+                    <Card padding="20px">
                         <ChartBar id={id} />
                     </Card>
                     <Rating id={id} />

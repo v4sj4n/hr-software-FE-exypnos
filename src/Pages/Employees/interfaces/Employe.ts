@@ -2,7 +2,6 @@ import React from 'react'
 import { GridColDef, GridPaginationModel, GridRowParams } from '@mui/x-data-grid'
 
 export interface EmployeeRow {
-    imageUrl: string | undefined
     id: number
     originalId: number
     role: string

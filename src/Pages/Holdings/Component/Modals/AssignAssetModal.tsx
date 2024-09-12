@@ -1,40 +1,64 @@
 import { ModalComponent } from '@/Components/Modal/Modal'
-import { useContext, useEffect, useCallback } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { HoldingsContext } from '../../HoldingsContext'
 import AxiosInstance from '@/Helpers/Axios'
 import { Asset } from '../../TAsset'
+import { useHandleItemAssigner } from '../../Hook'
 import { Autocomplete, CircularProgress, TextField } from '@mui/material'
 import { inputStyles } from '@/Components/Input/Styles'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Input from '@/Components/Input/Index'
+import { useForm } from '@tanstack/react-form'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
+import { valibotValidator } from '@tanstack/valibot-form-adapter'
 import { minLength, nonEmpty, pipe, string } from 'valibot'
 import style from '../../style/assignAssetModal.module.scss'
-import { useAssignAssetForm } from '../../Hook'
 
 export const AssignAssetModal = () => {
     const {
         searchParams,
         handleCloseOnModal: handleClose,
-        isOpenAssignAsset: isOpen,
-        setIsOpenAssignAsset: setIsOpen,
-        optionsAssignAsset: options,
-        setOptionsAssignAsset: setOptions,
-        autocompleteLoadingAssignAsset: autocompleteLoading,
-        setAutocompleteLoadingAssignAsset: setAutocompleteLoading,
-        autocompleteValueAssignAsset: autocompleteValue,
-        setAutocompleteValueAssignAsset: setAutocompleteValue,
+        setToastConfigs,
     } = useContext(HoldingsContext)
 
-    const { form } = useAssignAssetForm()
+    const [isOpen, setIsOpen] = useState(false)
+    const [options, setOptions] = useState<Asset[]>([])
+    const [autocompleteLoading, setAutocompleteLoading] = useState(false)
+    const [autocompleteValue, setAutocompleteValue] = useState<Asset | null>(
+        null,
+    )
 
-    const fetchAssets = useCallback(async () => {
-        const { data } = await AxiosInstance.get<Asset[]>(
-            '/asset?availability=available',
-        )
-        setOptions(data)
-    }, [setOptions])
+    const { mutateAsync, error } = useHandleItemAssigner()
+
+    const form = useForm({
+        defaultValues: {
+            assetId: '',
+            date: new Date().toISOString().split('T')[0],
+        },
+        onSubmit: async ({ value }) => {
+            await mutateAsync({
+                assetId: value.assetId as string,
+                userId: searchParams.get('selectedUser') as string,
+                date: value.date,
+            })
+            if (error) {
+                setToastConfigs({
+                    isOpen: true,
+                    message: 'Error assigning item',
+                    severity: 'error',
+                })
+            } else {
+                setToastConfigs({
+                    isOpen: true,
+                    message: 'Item assigned successfully',
+                    severity: 'success',
+                })
+                handleClose()
+            }
+        },
+        validatorAdapter: valibotValidator(),
+    })
 
     useEffect(() => {
         let active = true
@@ -42,19 +66,23 @@ export const AssignAssetModal = () => {
         if (!isOpen) {
             return undefined
         }
+        console.log(options)
 
         setAutocompleteLoading(true)
-        fetchAssets().then(() => {
+        ;(async () => {
             if (active) {
-                setAutocompleteLoading(false)
+                const { data } = await AxiosInstance.get<Asset[]>(
+                    '/asset?availability=available',
+                )
+                setOptions(data)
             }
-        })
+            setAutocompleteLoading(false)
+        })()
 
         return () => {
             active = false
         }
-    }, [isOpen, fetchAssets, setAutocompleteLoading])
-
+    }, [isOpen])
     return (
         <ModalComponent
             open={!!searchParams.get('assignItem')}

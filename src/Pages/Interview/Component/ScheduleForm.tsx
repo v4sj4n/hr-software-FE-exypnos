@@ -1,7 +1,7 @@
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Input from '@/Components/Input/Index'
-import { Box, Checkbox, FormControlLabel, useTheme } from '@mui/material'
+import { Box, Checkbox, FormControlLabel } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { ModalComponent } from '../../../Components/Modal/Modal'
 
@@ -31,7 +31,7 @@ interface RescheduleModalProps {
         notes: string,
         customMessage: string,
         customSubject: string,
-        useCustomEmail: boolean,
+        useCustomEmail: boolean, // New flag to indicate if custom email should be used
     ) => void
     selectedInterview: Interview
     isReschedule: boolean
@@ -48,12 +48,7 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
     const [notes, setNotes] = useState('')
     const [customMessage, setCustomMessage] = useState('')
     const [customSubject, setCustomSubject] = useState('')
-    const [useCustomEmail, setUseCustomEmail] = useState(false)
-
-    const theme = useTheme()
-    const themeStyle = {
-        color: theme.palette.text.primary,
-    }
+    const [useCustomEmail, setUseCustomEmail] = useState(false) // New state for custom email toggle
 
     useEffect(() => {
         const initialDate =
@@ -70,6 +65,7 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
         e.preventDefault()
 
         if (interviewDate) {
+            // Pass useCustomEmail flag to handleSchedule
             handleSchedule(
                 interviewDate,
                 notes,
@@ -90,7 +86,7 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
                 component="form"
                 sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
             >
-                <h2 style={themeStyle}>
+                <h2>
                     {isReschedule
                         ? 'Reschedule Interview'
                         : 'Schedule Interview'}
@@ -117,6 +113,7 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
                     name="notes"
                 />
 
+                {/* Checkbox for custom email */}
                 <FormControlLabel
                     control={
                         <Checkbox

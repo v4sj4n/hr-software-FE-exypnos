@@ -2,10 +2,10 @@ import { useContext } from 'react'
 import { ModalComponent } from '@/Components/Modal/Modal'
 import QrCodeIcon from '@mui/icons-material/QrCode'
 import { InventoryContext } from '../InventoryContext'
-import { useGetOneInventoryItem } from '../Hook'
+import { useGetOneInventoryItem } from '../Hook/hook'
 import style from '../style/singleInventoryItem.module.scss'
 import { TitleCaser } from '@/Helpers/TitleCaser'
-import { ItemHistory } from '../types'
+import { ItemHistory } from '../InventoryType'
 import dayjs from 'dayjs'
 
 export const SingleInventoryItem = () => {
@@ -24,7 +24,7 @@ export const SingleInventoryItem = () => {
             ) : (
                 <>
                     <div className={style.titleContainer}>
-                        {data && <h3>{data.type && TitleCaser(data?.type)}</h3>}
+                        <h3>{data.type && TitleCaser(data?.type)}</h3>
                         <div>
                             <p className={style.sn}>
                                 {data?.serialNumber}

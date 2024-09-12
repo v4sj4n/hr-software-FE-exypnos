@@ -2,30 +2,24 @@ import {
     array,
     check,
     email,
+    InferInput,
     instance,
     isoDate,
     maxSize,
     mimeType,
     minLength,
     object,
-    picklist,
     pipe,
     regex,
-    startsWith,
     string,
     transform,
 } from 'valibot'
 import dayjs from 'dayjs'
-import {
-    experience as experienceList,
-    foundMethod as applicationMethodList,
-    technologies as technologiesList,
-} from '@/Pages/Recruitment/Component/RecruitmentData'
 
 export const RecruitmentSchema = object({
-    applicationMethod: picklist(
-        applicationMethodList,
-        'Please pick one value from the list',
+    applicationMethod: pipe(
+        string('Application Method is required'),
+        minLength(1, 'Enter an applying method'),
     ),
     dob: pipe(
         string('Please enter a date'),
@@ -39,7 +33,10 @@ export const RecruitmentSchema = object({
         }, 'You must be between 18-65 years old'),
     ),
     email: pipe(string('Email is required'), email('Invalid email format')),
-    experience: picklist(experienceList, 'Please pick one value from the list'),
+    experience: pipe(
+        string('Previous Working Experience is required'),
+        minLength(1, 'Select a previous working experience'),
+    ),
     file: pipe(
         instance(FileList, 'Please enter a file'),
         check((input) => input.length > 0),
@@ -59,8 +56,10 @@ export const RecruitmentSchema = object({
 
     phoneNumber: pipe(
         string('Phone Number is required'),
-        regex(/^6[789]\d{7}$/, 'Invalid phone number format'),
-        startsWith('6', 'The number should start with a 6   '),
+        regex(
+            /^[\\+]?[(]?[0-9]{3}[)]?[-\s\\.]?[0-9]{3}[-\s\\.]?[0-9]{4,6}$/,
+            'Invalid phone number format',
+        ),
     ),
 
     positionApplied: pipe(
@@ -73,7 +72,22 @@ export const RecruitmentSchema = object({
     ),
 
     technologiesUsed: pipe(
-        array(picklist(technologiesList, 'Technologies Used is required')),
+        array(string('Technologies Used is required')),
         minLength(1, 'Choose at least one technology'),
     ),
 })
+export type RecruitmentFormFields = InferInput<typeof RecruitmentSchema>
+
+export const RecruitmentFormFieldsDefaultValues = {
+    applicationMethod: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phoneNumber: '',
+    dob: '',
+    experience: '',
+    positionApplied: '',
+    technologiesUsed: [],
+    salaryExpectations: '',
+    file: undefined,
+}

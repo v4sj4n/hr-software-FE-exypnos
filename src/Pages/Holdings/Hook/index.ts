@@ -13,8 +13,6 @@ import {
     handleItemAssign,
     handleItemReturn,
 } from './queries'
-import { useForm } from '@tanstack/react-form'
-import { valibotValidator } from '@tanstack/valibot-form-adapter'
 
 export const useEmployeesWithHoldings = () => {
     const { searchParams } = useContext(HoldingsContext)
@@ -103,85 +101,4 @@ export const useHandleItemReturner = () => {
             })
         },
     })
-}
-
-export const useAssignAssetForm = () => {
-    const { mutateAsync, error } = useHandleItemAssigner()
-    const {
-        searchParams,
-        handleCloseOnModal: handleClose,
-        setToastConfigs,
-    } = useContext(HoldingsContext)
-
-    const form = useForm({
-        defaultValues: {
-            assetId: '',
-            date: new Date().toISOString().split('T')[0],
-        },
-        onSubmit: async ({ value }) => {
-            await mutateAsync({
-                assetId: value.assetId as string,
-                userId: searchParams.get('selectedUser') as string,
-                date: value.date,
-            })
-            if (error) {
-                setToastConfigs({
-                    isOpen: true,
-                    message: 'Error assigning item',
-                    severity: 'error',
-                })
-            } else {
-                setToastConfigs({
-                    isOpen: true,
-                    message: 'Item assigned successfully',
-                    severity: 'success',
-                })
-                handleClose()
-            }
-        },
-        validatorAdapter: valibotValidator(),
-    })
-    return { form }
-}
-
-export const useReturnAssetForm = () => {
-    const { handleCloseOnModal: handleClose, setToastConfigs } =
-        useContext(HoldingsContext)
-    const itemGetter = useGetItem()
-
-    const { mutateAsync, error } = useHandleItemReturner()
-
-    const form = useForm({
-        defaultValues: {
-            status: 'available',
-            returnDate: new Date().toISOString().split('T')[0],
-        },
-
-        onSubmit: async ({ value }) => {
-            console.log(value)
-            await mutateAsync({
-                assetId: itemGetter.data._id,
-                status: value.status,
-                returnDate: value.returnDate,
-            })
-            console.log(error)
-            if (error) {
-                setToastConfigs({
-                    isOpen: true,
-                    message: 'Error returning item',
-                    severity: 'error',
-                })
-            } else {
-                setToastConfigs({
-                    isOpen: true,
-                    message: 'Item returned successfully',
-                    severity: 'success',
-                })
-                handleClose()
-            }
-        },
-        validatorAdapter: valibotValidator(),
-    })
-
-    return { form, itemGetter }
 }

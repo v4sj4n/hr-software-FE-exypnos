@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 import { ThemeProvider as MuiThemeProvider, Theme } from '@mui/material/styles'
 import { deepBlueTheme, purpleTheme } from './Theme'
 
@@ -21,26 +21,13 @@ export const useThemeContext = () => {
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-    const getInitialTheme = () => {
-        const storedTheme = localStorage.getItem('isPurpleTheme')
-        return storedTheme ? JSON.parse(storedTheme) : false
-    }
-
-    const [isPurpleTheme, setIsPurpleTheme] = useState(getInitialTheme)
+    const [isPurpleTheme, setIsPurpleTheme] = useState(false)
 
     const currentTheme = isPurpleTheme ? purpleTheme : deepBlueTheme
 
     const toggleTheme = () => {
-        setIsPurpleTheme((prevTheme: any) => {
-            const newTheme = !prevTheme
-            localStorage.setItem('isPurpleTheme', JSON.stringify(newTheme))
-            return newTheme
-        })
+        setIsPurpleTheme((prevTheme) => !prevTheme)
     }
-
-    useEffect(() => {
-        localStorage.setItem('isPurpleTheme', JSON.stringify(isPurpleTheme))
-    }, [isPurpleTheme])
 
     return (
         <ThemeContext.Provider

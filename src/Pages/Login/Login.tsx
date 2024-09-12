@@ -1,32 +1,61 @@
-import { useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '@/Context/AuthProvider'
-import { LoginContext, LoginProvider } from './LoginContext'
-import { useFormLogin } from './Hook'
-import { LoginSchema } from '@/Schemas/Login/Login.schema'
+import Card from '../../Components/Card/Card'
+import Input from '../../Components/Input/Index'
+import Button from '../../Components/Button/Button'
+import { ButtonTypes } from '../../Components/Button/ButtonTypes'
 import img from '/Images/HeroImage.png'
 import logo from '/Images/image_1-removebg-preview.png'
-import Card from '@/Components/Card/Card'
-import Input from '@/Components/Input/Index'
-import Button from '@/Components/Button/Button'
-import { RingLoader } from 'react-spinners'
-import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-import { ErrorText } from '@/Components/Error/ErrorTextForm'
+import { useLogin } from './Hook'
 import style from './styles/Login.module.css'
+import { LoginSchema } from '@/Schemas/Login/Login.schema'
+import AxiosInstance from '@/Helpers/Axios'
+import { useAuth } from '@/Context/AuthProvider'
+import { AxiosError } from 'axios'
+import { ErrorText } from '@/Components/Error/ErrorTextForm'
 
-const LoginComponent = () => {
-    const { isAuthenticated } = useAuth()
+import { useEffect, useState } from 'react'
+import { RingLoader } from 'react-spinners'
+import { useForm } from '@tanstack/react-form'
+import { valibotValidator } from '@tanstack/valibot-form-adapter'
+
+const Login: React.FC = () => {
+    const { login, isAuthenticated } = useAuth()
     const navigate = useNavigate()
-    const {
-        checkingIsAuthenticated,
-        setCheckingIsAuthenticated,
-        error,
-        setError,
-        setShowPassword,
-        showPassword,
-    } = useContext(LoginContext)
+    const { showPassword, handleClickShowPassword } = useLogin()
+    const [error, setError] = useState<string | null>(null)
 
-    const { form } = useFormLogin(setError)
+    const form = useForm({
+        defaultValues: {
+            email: '',
+            password: '',
+        },
+        validatorAdapter: valibotValidator(),
+        onSubmit: async ({ value }) => {
+            try {
+                const res = await AxiosInstance.post('/auth/signin', value)
+                const user = res.data.data.user
+                const role = user.role
+                const access_token = res.data.data.access_token
+                login(access_token, role, user)
+            } catch (err: unknown) {
+                if (err instanceof AxiosError) {
+                    if (err?.response?.data?.message) {
+                        setError(err?.response?.data?.message)
+                        return
+                    }
+                    if (err.code === 'ERR_NETWORK') {
+                        setError(
+                            'No internet connection. Please try again later.',
+                        )
+                        return
+                    }
+                }
+                setError('An error occurred. Please try again later.')
+            }
+        },
+    })
+
+    const [checkingIsAuthenticated, setCheckingIsAuthenticated] = useState(true)
 
     useEffect(() => {
         if (localStorage.getItem('access_token')) {
@@ -35,11 +64,19 @@ const LoginComponent = () => {
         } else {
             setCheckingIsAuthenticated(false)
         }
-    }, [isAuthenticated, navigate, setCheckingIsAuthenticated])
+    }, [isAuthenticated, navigate])
 
     if (checkingIsAuthenticated)
         return (
-            <div className={style.checkIsAuthenticated}>
+            <div
+                style={{
+                    height: '50vw',
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
                 <RingLoader />
             </div>
         )
@@ -70,7 +107,13 @@ const LoginComponent = () => {
                         validators={{
                             onChange: LoginSchema.entries.email,
                         }}
-                        children={(field) => (
+                        children={({
+                            state: {
+                                value,
+                                meta: { errors },
+                            },
+                            handleChange,
+                        }) => (
                             <div>
                                 <Input
                                     label="Email"
@@ -78,16 +121,14 @@ const LoginComponent = () => {
                                     IsUsername
                                     width="350px"
                                     type="email"
-                                    value={field.state.value}
+                                    value={value}
                                     onChange={(e) =>
-                                        field.handleChange(e.target.value)
+                                        handleChange(e.target.value)
                                     }
                                 />
 
-                                {field.state.meta.errors && (
-                                    <ErrorText>
-                                        {field.state.meta.errors.join(', ')}
-                                    </ErrorText>
+                                {errors && (
+                                    <ErrorText>{errors.join(', ')}</ErrorText>
                                 )}
                             </div>
                         )}
@@ -98,28 +139,28 @@ const LoginComponent = () => {
                         validators={{
                             onChange: LoginSchema.entries.password,
                         }}
-                        children={(field) => (
+                        children={({
+                            state: {
+                                value,
+                                meta: { errors },
+                            },
+                            handleChange,
+                        }) => (
                             <div>
                                 <Input
                                     label={'Password'}
                                     id="outlined-adornment-password"
                                     name="password"
                                     type={showPassword}
-                                    onClick={() =>
-                                        setShowPassword(!showPassword)
-                                    }
+                                    onClick={handleClickShowPassword}
                                     width="350px"
                                     isPassword
-                                    value={field.state.value}
+                                    value={value}
                                     onChange={(e) =>
-                                        field.handleChange(e.target.value)
+                                        handleChange(e.target.value)
                                     }
                                 />
-                                {field.state.meta.errors && (
-                                    <ErrorText>
-                                        {field.state.meta.errors}
-                                    </ErrorText>
-                                )}
+                                {errors && <ErrorText>{errors}</ErrorText>}
                             </div>
                         )}
                     />
@@ -145,10 +186,4 @@ const LoginComponent = () => {
     )
 }
 
-export default function Login() {
-    return (
-        <LoginProvider>
-            <LoginComponent />
-        </LoginProvider>
-    )
-}
+export default Login

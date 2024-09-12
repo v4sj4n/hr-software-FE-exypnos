@@ -1,15 +1,15 @@
 import { CircularProgress } from '@mui/material'
 import { useGetVacations } from '../Hook'
+import { Vacation } from '../TVacation'
 import DataTable from '@/Components/Table/Table'
 import { GridPaginationModel, GridRenderCellParams } from '@mui/x-data-grid'
 import { dateFormatter } from '@/Helpers/dateFormater'
 import style from '../style/vacationTable.module.scss'
 import { useContext, useEffect } from 'react'
 import { VacationContext } from '../VacationContext'
-import { SelectedVacationModal } from './form/SelectedVacationModal'
+import { SelectedVacation } from './form/SelectedVacation'
 import { StatusBadge } from '@/Components/StatusBadge/StatusBadge'
 import Toast from '@/Components/Toast/Toast'
-import { Vacation } from '../types'
 
 export const VacationTable = () => {
     const {
@@ -61,17 +61,8 @@ export const VacationTable = () => {
             field: 'status',
             headerName: 'Status',
             flex: 1,
-            renderCell: ({ value }: GridRenderCellParams) => {
-                const color =
-                    value === 'pending'
-                        ? 'orange'
-                        : value === 'accepted'
-                          ? 'green'
-                          : value === 'rejected'
-                            ? 'red'
-                            : ''
-                return <StatusBadge color={color} status={value} />
-            },
+            renderCell: (param: GridRenderCellParams) =>
+                StatusRenderer(param.value),
         },
         {
             field: 'startDate',
@@ -121,7 +112,7 @@ export const VacationTable = () => {
                 columns={columns}
                 getRowId={getRowId}
             />
-            {searchParams.get('selectedVacation') && <SelectedVacationModal />}
+            {searchParams.get('selectedVacation') && <SelectedVacation />}
             <Toast
                 open={toastConfigs.isOpen}
                 onClose={handleToastClose}
@@ -130,4 +121,16 @@ export const VacationTable = () => {
             />
         </>
     )
+}
+
+const StatusRenderer = (value: string) => {
+    const color =
+        value === 'pending'
+            ? 'orange'
+            : value === 'accepted'
+              ? 'green'
+              : value === 'rejected'
+                ? 'red'
+                : ''
+    return <StatusBadge color={color} status={value} />
 }

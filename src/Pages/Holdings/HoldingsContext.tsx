@@ -7,7 +7,6 @@ import {
     useState,
 } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Asset } from './TAsset'
 
 interface HoldingsContextType {
     searchParams: URLSearchParams
@@ -36,14 +35,6 @@ interface HoldingsContextType {
         }>
     >
     handleCloseOnModal: () => void
-    isOpenAssignAsset: boolean
-    setIsOpenAssignAsset: Dispatch<SetStateAction<boolean>>
-    optionsAssignAsset: Asset[]
-    setOptionsAssignAsset: Dispatch<SetStateAction<Asset[]>>
-    autocompleteLoadingAssignAsset: boolean
-    setAutocompleteLoadingAssignAsset: Dispatch<SetStateAction<boolean>>
-    autocompleteValueAssignAsset: Asset | null
-    setAutocompleteValueAssignAsset: Dispatch<SetStateAction<Asset | null>>
 }
 
 const defaultContextValue: HoldingsContextType = {
@@ -62,14 +53,6 @@ const defaultContextValue: HoldingsContextType = {
     },
     setItemReturnConfigs: () => {},
     handleCloseOnModal: () => {},
-    isOpenAssignAsset: false,
-    setIsOpenAssignAsset: () => {},
-    optionsAssignAsset: [],
-    setOptionsAssignAsset: () => {},
-    autocompleteLoadingAssignAsset: false,
-    setAutocompleteLoadingAssignAsset: () => {},
-    autocompleteValueAssignAsset: null,
-    setAutocompleteValueAssignAsset: () => {},
 }
 
 export const HoldingsContext =
@@ -78,12 +61,6 @@ export const HoldingsContext =
 const HoldingsProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [searchParams, setSearchParams] = useSearchParams()
 
-    const [isOpenAssignAsset, setIsOpenAssignAsset] = useState(false)
-    const [optionsAssignAsset, setOptionsAssignAsset] = useState<Asset[]>([])
-    const [autocompleteLoadingAssignAsset, setAutocompleteLoadingAssignAsset] =
-        useState(false)
-    const [autocompleteValueAssignAsset, setAutocompleteValueAssignAsset] =
-        useState<Asset | null>(null)
     const [toastConfigs, setToastConfigs] = useState<{
         message: string | null
         severity: 'success' | 'error'
@@ -133,14 +110,6 @@ const HoldingsProvider: FC<{ children: ReactNode }> = ({ children }) => {
                 itemReturnConfigs,
                 setItemReturnConfigs,
                 handleCloseOnModal,
-                isOpenAssignAsset,
-                setIsOpenAssignAsset,
-                optionsAssignAsset,
-                setOptionsAssignAsset,
-                autocompleteLoadingAssignAsset,
-                setAutocompleteLoadingAssignAsset,
-                autocompleteValueAssignAsset,
-                setAutocompleteValueAssignAsset,
             }}
         >
             {children}

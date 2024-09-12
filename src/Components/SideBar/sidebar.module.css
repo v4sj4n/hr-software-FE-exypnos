@@ -92,7 +92,7 @@
     border-bottom: none;
 }
 .dropdownItem:hover {
-    color: #2457a3;
+    color: #5f43b2;
     background-color: white;
 }
 .icon {
@@ -111,6 +111,7 @@
 }
 
 .text {
+    /* line-height: 100%; */
     margin: 0;
 }
 

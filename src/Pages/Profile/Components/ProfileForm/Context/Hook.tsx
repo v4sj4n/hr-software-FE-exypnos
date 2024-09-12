@@ -15,7 +15,7 @@ export const useGetAndUpdateUserById = () => {
     const { userRole, currentUser } = useAuth()
 
     const isCurrentUser = currentUser?._id === id
-    const isAdmin = userRole === 'hr'
+    const isAdmin = userRole === 'admin' || userRole === 'hr'
 
     useEffect(() => {
         setIsLoading(true)
@@ -66,7 +66,7 @@ export const useGetAndUpdateUserById = () => {
             firstName: user.firstName,
             lastName: user.lastName,
             phone: user.phone,
-
+            email: user.auth.email,
             pob: user.pob,
             dob: user.dob,
             gender: user.gender,

@@ -1,28 +1,23 @@
-import React, { isValidElement, ReactElement } from 'react'
-import { Tooltip as MaterialTooltip, Zoom } from '@mui/material'
-import { Tooltip as JoyTooltip } from '@mui/joy'
-
-// Define a union type for placement
-type TooltipPlacement =
-    | 'top'
-    | 'bottom'
-    | 'left'
-    | 'right'
-    | 'top-start'
-    | 'top-end'
-    | 'bottom-start'
-    | 'bottom-end'
-    | 'left-start'
-    | 'left-end'
-    | 'right-start'
-    | 'right-end'
+import { Tooltip, Zoom } from '@mui/material'
+import { isValidElement, ReactNode } from 'react'
 
 interface TooltipImprovedProps {
-    children: ReactElement
+    children: ReactNode
     text: string
-    placement?: TooltipPlacement
+    placement?:
+        | 'top'
+        | 'bottom-end'
+        | 'bottom-start'
+        | 'bottom'
+        | 'left-end'
+        | 'left-start'
+        | 'left'
+        | 'right-end'
+        | 'right-start'
+        | 'right'
+        | 'top-end'
+        | 'top-start'
     offset?: [number, number]
-    useJoy?: boolean
 }
 
 export const TooltipImproved: React.FC<TooltipImprovedProps> = ({
@@ -30,47 +25,32 @@ export const TooltipImproved: React.FC<TooltipImprovedProps> = ({
     text,
     placement = 'top',
     offset = [0, 0],
-    useJoy = false,
 }) => {
-    // Ensure children is a valid React element
     if (!isValidElement(children)) {
-        console.warn('TooltipImproved: children must be a valid React element')
-        return children
-    }
-
-    if (useJoy) {
-        return (
-            <JoyTooltip
-                title={text}
-                placement={placement}
-                sx={{
-                    '--Tooltip-offset': `${offset[1]}px`,
-                }}
-            >
-                {children}
-            </JoyTooltip>
-        )
+        return null
     }
 
     return (
-        <MaterialTooltip
+        <Tooltip
             title={text}
             arrow
             enterDelay={456}
             placement={placement}
             TransitionComponent={Zoom}
-            PopperProps={{
-                modifiers: [
-                    {
-                        name: 'offset',
-                        options: {
-                            offset: offset,
+            slotProps={{
+                popper: {
+                    modifiers: [
+                        {
+                            name: 'offset',
+                            options: {
+                                offset: offset,
+                            },
                         },
-                    },
-                ],
+                    ],
+                },
             }}
         >
             {children}
-        </MaterialTooltip>
+        </Tooltip>
     )
 }

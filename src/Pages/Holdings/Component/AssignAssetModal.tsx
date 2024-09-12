@@ -61,8 +61,8 @@ export default function AssignAssetModal() {
         >
             <form
                 onSubmit={async (event: FormEvent<HTMLFormElement>) => {
-                    event.preventDefault()
                     itemAssigner.mutate({
+                        event,
                         assetId: assetId as string,
                         userId: userId as string,
                         date,

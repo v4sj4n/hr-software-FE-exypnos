@@ -1,5 +1,4 @@
 import AxiosInstance from '@/Helpers/Axios'
-import { Asset, UsersWithHoldings, UserWithHoldings } from '../TAsset'
 
 const LIMIT = 5
 
@@ -11,24 +10,21 @@ export const getHoldings = async ({
     pageParam: number
     users: string
     search: string
-}): Promise<UsersWithHoldings> => {
+}) => {
     const response = await AxiosInstance.get(
         `/asset/user?users=${users}&search=${search}&page=${pageParam}&limit=${LIMIT}`,
     )
     return {
         data: response.data.data,
         totalPages: response.data.totalPages,
-        all: response.data.all,
     }
 }
 
-export const getUserHoldings = async (
-    userId: string,
-): Promise<UserWithHoldings> => {
+export const getUserHoldings = async (userId: string) => {
     return (await AxiosInstance.get(`/asset/user/${userId}`)).data
 }
 
-export const getItem = async (itemId: string): Promise<Asset> => {
+export const getItem = async (itemId: string) => {
     console.log('Getting item:', itemId)
     return (await AxiosInstance.get(`/asset/${itemId}`)).data
 }

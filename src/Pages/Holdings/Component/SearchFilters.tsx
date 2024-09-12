@@ -12,11 +12,10 @@ import {
     radioClasses,
 } from '@mui/joy'
 import { CssVarsProvider, extendTheme } from '@mui/joy/styles'
-// import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
+import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
 
 export const HoldingsSearchFilter = () => {
     const { searchParams, setSearchParams } = useContext(HoldingsContext)
-
     const theme = extendTheme({
         components: {
             JoyRadioGroup: {
@@ -143,8 +142,7 @@ export const HoldingsSearchFilter = () => {
                                         },
                                 }}
                             >
-                                {/* <TooltipImproved
-                                PROBLEME KUR ESHTE INSTALUAR THEME PURPLE / BLUE
+                                <TooltipImproved
                                     text={
                                         usersFilter === 'ALL'
                                             ? 'All Employees'
@@ -154,21 +152,21 @@ export const HoldingsSearchFilter = () => {
                                     }
                                     placement="top"
                                     offset={[0, 5]}
-                                > */}
-                                <Radio
-                                    color="neutral"
-                                    overlay
-                                    disableIcon
-                                    value={
-                                        usersFilter === 'ALL'
-                                            ? 'all'
-                                            : usersFilter === 'W ASSETS'
-                                              ? 'with'
-                                              : 'without'
-                                    }
-                                    label={usersFilter}
-                                />
-                                {/* </TooltipImproved> */}
+                                >
+                                    <Radio
+                                        color="neutral"
+                                        overlay
+                                        disableIcon
+                                        value={
+                                            usersFilter === 'ALL'
+                                                ? 'all'
+                                                : usersFilter === 'W ASSETS'
+                                                  ? 'with'
+                                                  : 'without'
+                                        }
+                                        label={usersFilter}
+                                    />
+                                </TooltipImproved>
                             </Sheet>
                         ))}
                     </RadioGroup>

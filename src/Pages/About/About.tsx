@@ -6,7 +6,6 @@ import AOS from 'aos'
 import 'aos/dist/aos.css'
 import { useEffect } from 'react'
 import Stepper from './Component/Stepper'
-import { useTheme } from '@mui/material'
 
 const About = () => {
     const images = [
@@ -20,10 +19,6 @@ const About = () => {
     useEffect(() => {
         AOS.init({ once: true })
     }, [])
-    const theme = useTheme()
-    const themeStyle = {
-        color: theme.palette.text.primary,
-    }
 
     return (
         <div className={styles.container}>
@@ -40,9 +35,8 @@ const About = () => {
                     data-aos-duration="1000"
                     className={styles.infoSection}
                 >
-                    <h2 style={themeStyle}>Who We Are </h2>
-
-                    <p style={themeStyle}>
+                    <h2>Who We Are</h2>
+                    <p>
                         CodeVider is an Albanian-based web development
                         outsourcing company offering full-stack development
                         services. We specialize in building commercial-grade web
@@ -52,7 +46,7 @@ const About = () => {
                         managers who bring a wealth of experience to every
                         project.
                     </p>
-                    <p style={themeStyle}>
+                    <p>
                         Since our founding, we've partnered with clients from a
                         variety of industries, including finance, healthcare,
                         education, and e-commerce, to deliver solutions that are
@@ -68,15 +62,15 @@ const About = () => {
                     data-aos-duration="1500"
                     className={styles.infoSection}
                 >
-                    <h2 style={themeStyle}>What We Do</h2>
-                    <p style={themeStyle}>
+                    <h2>What We Do</h2>
+                    <p>
                         Our services span front-end, back-end, and database
                         development, with a focus on cost savings, time
                         efficiency, and flexibility. We adhere to agile
                         methodologies and ensure seamless communication through
                         dedicated project managers.
                     </p>
-                    <p style={themeStyle}>
+                    <p>
                         Communication is key to the success of any project,
                         which is why we assign dedicated project managers to
                         each engagement. These project managers act as your main
@@ -93,12 +87,12 @@ const About = () => {
                     data-aos-duration="2000"
                     className={styles.infoSection}
                 >
-                    <h2 style={themeStyle}>Our Mission</h2>
-                    <p style={themeStyle}>
+                    <h2>Our Mission</h2>
+                    <p>
                         To deliver innovative and efficient web solutions that
                         drive business growth and user satisfaction.
                     </p>
-                    <p style={themeStyle}>
+                    <p>
                         Beyond the technical aspects, we also offer consultation
                         services to help you define your project's scope, choose
                         the right technologies, and plan for future growth. Our
@@ -106,7 +100,7 @@ const About = () => {
                         to be a trusted partner in your digital transformation
                         journey.
                     </p>
-                    <p style={themeStyle}>
+                    <p>
                         Whether you're building a new application from scratch,
                         upgrading an existing system, or integrating new
                         features, CodeVider is here to help you achieve your
@@ -120,9 +114,7 @@ const About = () => {
                 data-aos="fade-up"
                 data-aos-duration="2000"
             >
-                <h3 className={styles.carouselTitle} style={themeStyle}>
-                    Our Team
-                </h3>
+                <h3 className={styles.carouselTitle}>Our Team</h3>
                 <div className={styles.carouselContainer}>
                     <ImageCarousel images={images} />
                 </div>

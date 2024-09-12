@@ -5,7 +5,7 @@ import { GridPaginationModel, GridRenderCellParams } from '@mui/x-data-grid'
 import style from '../style/inventoryTable.module.scss'
 import DataTable from '@/Components/Table/Table'
 import { Laptop, Monitor } from '@mui/icons-material'
-import { useAllInventoryItems } from '../Hook'
+import { useAllInventoryItems } from '../Hook/hook'
 import { SingleInventoryItem } from './SingleInventoryItem'
 import { Asset } from '@/Pages/Holdings/TAsset'
 import { StatusBadge } from '@/Components/StatusBadge/StatusBadge'
@@ -29,6 +29,7 @@ export const InventoryTable = () => {
 
     if (isError) return <div>Error: {error.message}</div>
     if (isPending) return <CircularProgress />
+    if (!data || !data.data) return <div>No data available</div>
 
     const rows = data.data.map((asset: Asset) => ({
         id: asset._id,
@@ -144,9 +145,9 @@ export const InventoryTable = () => {
         <>
             <DataTable
                 onPaginationModelChange={handlePaginationModelChange}
-                page={Number(searchParams.get('page')!)}
-                pageSize={Number(searchParams.get('limit')!)}
-                totalPages={data.totalPages}
+                page={Number(searchParams.get('page')!) || 0}
+                pageSize={Number(searchParams.get('limit')!) || 5}
+                totalPages={data.totalPages || 1}
                 rows={rows}
                 columns={columns}
                 getRowId={getRowId}
