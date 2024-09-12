@@ -4,6 +4,7 @@ import React from 'react'
 export interface PayrollContextType {
     rows: PayrollRowSpecifc[]
     columns: GridColDef[]
+    headerTextColors: { [key: string]: string }
     getRowId: (row: PayrollRowSpecifc) => number
     setMonth: (month: number) => void
     setYear: (year: number) => void

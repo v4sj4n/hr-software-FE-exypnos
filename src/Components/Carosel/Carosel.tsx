@@ -1,7 +1,6 @@
 import React from 'react'
 import Carousel from 'react-material-ui-carousel'
 import { Paper, Typography } from '@mui/material'
-import styles from './carosel.module.css'
 
 interface CarouselProps {
     images: string[]
@@ -31,7 +30,13 @@ const Item: React.FC<ItemProps> = ({ image }) => {
             <img
                 src={image}
                 alt="Event"
-                className={styles.img}
+                style={{
+                    width: '100%',
+                    height: '200px',
+                    objectFit: 'contain',
+                    border: 'none',
+                    display: 'block',
+                }}
             />
         </Paper>
     )

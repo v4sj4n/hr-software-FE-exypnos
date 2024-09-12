@@ -38,7 +38,6 @@ function EventsContentAndComponents() {
         eventToDeleteId,
         handleSeeEventDetails,
         handleOpenDrawer,
-        formatDate
     } = useEvents()
 
     const {
@@ -50,14 +49,23 @@ function EventsContentAndComponents() {
         searchEvent,
     } = useGetAllEvents()
 
-const { ref, inView } = useInView()
-
+    const { ref, inView } = useInView()
 
     useEffect(() => {
         if (inView) {
             fetchNextPage()
         }
     }, [fetchNextPage, inView])
+
+    if (isLoading) {
+        return (
+            <div className={style.grid}>
+                <EventsContentLoader />
+                <EventsContentLoader />
+                <EventsContentLoader />
+            </div>
+        )
+    }
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -68,32 +76,42 @@ const { ref, inView } = useInView()
                 onClose={toastOpen ? handleToastClose : handleUpdateToastClose}
             />
             <Forms />
-            <div   style={{
+            <div
+                style={{
                     display: 'flex',
                     gap: '10px',
                     alignSelf: 'flex-end',
                     alignItems: 'center',
                     position: 'absolute',
                     top: 77,
-                }} >
-               <Input
-                IsUsername
-                type="search"
-                label="search"
-                name="Search"
-                width={250}
-                iconPosition="end"
-                icon={<SearchOutlinedIcon />}
-                value={searchEvent}
-                onChange={onSearchChange}   
-            />
-     {isAdmin ? <Button  btnText="Create Event" padding="10px" width="150px" 
-     type={ButtonTypes.PRIMARY} onClick={() => handleOpenDrawer('create')} />
-                 :  '' }
+                }}
+            >
+                <Input
+                    IsUsername
+                    type="search"
+                    label="search"
+                    name="Search"
+                    width={250}
+                    iconPosition="end"
+                    icon={<SearchOutlinedIcon />}
+                    value={searchEvent}
+                    onChange={onSearchChange}
+                />
+                {isAdmin ? (
+                    <Button
+                        btnText="Create Event"
+                        padding="10px"
+                        width="150px"
+                        type={ButtonTypes.PRIMARY}
+                        onClick={() => handleOpenDrawer('create')}
+                    />
+                ) : (
+                    ''
+                )}
             </div>
             <div className={style.contanier}>
                 <div className={style.grid}>
-                    {isLoading ? <EventsContentLoader /> : events?.pages.map((page) =>
+                    {events?.pages.map((page) =>
                         page.data.map((event: EventsData) => (
                             <Card
                                 backgroundColor="rgba(255, 255, 255, 0.7)"
@@ -103,8 +121,16 @@ const { ref, inView } = useInView()
                                 padding="20px"
                             >
                                 <div className={style.titleContainer}>
-                                    <div className={style.title}> {event.title} </div>
-                                    {isAdmin && <LongMenu event={event} /> }
+                                    <div className={style.title}>
+                                        {event.title}
+                                    </div>
+                                    {isAdmin && (
+                                        <Tooltip title="Menu Item">
+                                            <div>
+                                                <LongMenu event={event} />
+                                            </div>
+                                        </Tooltip>
+                                    )}
                                 </div>
                                 <div className={style.description}>
                                     {event.description}
@@ -113,22 +139,58 @@ const { ref, inView } = useInView()
                                     <div className={style.dateContainer}>
                                         <div className={style.data}>
                                             <Tooltip title="Date">
-                                            <div> <CalendarTodayIcon sx={{ height: 20,idth: 20, color: '#2457a3'}}/> </div>
+                                                <div>
+                                                    <CalendarTodayIcon
+                                                        sx={{
+                                                            height: 20,
+                                                            width: 20,
+                                                            color: '#2457a3',
+                                                        }}
+                                                    />
+                                                </div>
                                             </Tooltip>
-                                            {formatDate(event.startDate)} - {formatDate(event.endDate)}
+                                            {new Date(
+                                                event.startDate,
+                                            ).toLocaleDateString('en-US', {
+                                                month: 'long',
+                                                day: 'numeric',
+                                                year: 'numeric',
+                                            })}{' '}
+                                            -{' '}
+                                            {new Date(
+                                                event.endDate,
+                                            ).toLocaleDateString('en-US', {
+                                                month: 'long',
+                                                day: 'numeric',
+                                                year: 'numeric',
+                                            })}
                                         </div>
                                     </div>
                                     <div className={style.data}>
                                         <Tooltip title="Location">
-                                    <div> <LocationOnOutlinedIcon sx={{ height: 20, width: 20, color: '#2457a3'}} /> </div>
+                                            <div>
+                                                <LocationOnOutlinedIcon
+                                                    sx={{
+                                                        height: 20,
+                                                        width: 20,
+                                                        color: '#2457a3',
+                                                    }}
+                                                />
+                                            </div>
                                         </Tooltip>
-                                        <div className={style.location}>{event.location}</div>
+                                        <div className={style.location}>
+                                            {event.location}
+                                        </div>
                                     </div>
                                     <Button
-                                        btnText={ isAdmin ? 'See Details' : 'Vote'}
+                                        btnText={
+                                            isAdmin ? 'See Details' : 'Vote'
+                                        }
                                         color="#2457a3"
                                         type={ButtonTypes.SECONDARY}
-                                        onClick={() =>handleSeeEventDetails(event)}
+                                        onClick={() =>
+                                            handleSeeEventDetails(event)
+                                        }
                                         cursor="pointer"
                                         padding="8px"
                                     />
@@ -139,10 +201,24 @@ const { ref, inView } = useInView()
                 </div>
                 {showModal && (
                     <ModalComponent open={showModal} handleClose={closeModal}>
-                        <div className={style.modal}>
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '15px',
+                            }}
+                        >
                             <div className={style.title}>Confirm Action.</div>
-                            <div> Are you sure you want to delete this event?</div>
-                            <div className={style.modalCnt}>
+                            <div>
+                                Are you sure you want to delete this event?
+                            </div>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    gap: '10px',
+                                    marginTop: '20px',
+                                }}
+                            >
                                 <Button
                                     type={ButtonTypes.PRIMARY}
                                     backgroundColor="#D32F2F"
