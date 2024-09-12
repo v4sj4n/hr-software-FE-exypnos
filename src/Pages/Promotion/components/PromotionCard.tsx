@@ -154,187 +154,180 @@ export default function PromotionCard({ id }: { id: string }) {
 
     return (
         <>
-            <Toast
-                severity={toastSeverity}
-                open={toastOpen}
-                message={toastMessage}
-                onClose={handleCloseToast}
-            />
-            <Card
-                gap="16px"
-                flex="1"
-                backgroundColor="rgba(255, 255, 255, 0.7)"
-            >
-                <h3>Promotion</h3>
-                {promotions.map((item) => (
-                    <Card
-                        key={item._id}
-                        backgroundColor={theme.palette.background.default}
-                    >
-                        <div>
-                            <h3>Position: {item.position}</h3>
-                            <p>Grade: {item.grade}</p>
-                            <p>Date: {item.startDate.split('T')[0]}</p>
-                        </div>
-                        {currentUser?.role === 'hr' && (
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'flex-end',
-                                    width: '100%',
-                                    gap: '10px',
-                                }}
-                            >
-                                <Button
-                                    type={ButtonTypes.SECONDARY}
-                                    btnText=""
-                                    width="40px"
-                                    height="30px"
-                                    display="flex"
-                                    justifyContent="center"
-                                    alignItems="center"
-                                    color="#2457A3"
-                                    borderColor="#2457A3"
-                                    icon={<EditIcon />}
-                                    onClick={() => openModal('edit', item)}
-                                />
-                                <Button
-                                    btnText=" "
-                                    type={ButtonTypes.SECONDARY}
-                                    width="35px"
-                                    height="30px"
-                                    color="#C70039"
-                                    borderColor="#C70039"
-                                    display="flex"
-                                    justifyContent="center"
-                                    alignItems="center"
-                                    icon={<DeleteIcon />}
-                                    onClick={() => openModal('delete', item)}
-                                />
-                            </div>
-                        )}
-                    </Card>
-                ))}
-                {showModal && (
-                    <ModalComponent
-                        padding="15px"
-                        open={showModal}
-                        handleClose={() => {}}
-                    >
+        <Toast
+            severity={toastSeverity }
+            open={toastOpen}
+            message={ toastMessage }
+            onClose={ handleCloseToast}
+        />
+        <Card gap="16px" flex="1" backgroundColor="rgba(255, 255, 255, 0.7)">
+            <h3>Promotion</h3>
+            {promotions.map((item) => (
+                <Card
+                    key={item._id}
+                    backgroundColor={theme.palette.background.default}
+                >
+                    <div>
+                        <h3>Position: {item.position}</h3>
+                        <p>Grade: {item.grade}</p>
+                        <p>Date: {item.startDate.split('T')[0]}</p>
+                    </div>
+                    {currentUser?.role === 'hr' && (
                         <div
                             style={{
                                 display: 'flex',
-                                justifyContent: 'space-between',
-                                margin: '0',
+                                justifyContent: 'flex-end',
+                                width: '100%',
+                                gap: '10px',
                             }}
                         >
-                            <h2>
-                                {modalType === 'delete'
-                                    ? 'Confirm Deletion'
-                                    : `${modalType === 'edit' ? 'Edit' : 'Create'} Promotion`}
-                            </h2>
-                            <CloseIcon
-                                style={{
-                                    cursor: 'pointer',
-                                    padding: '0',
-                                    margin: '0',
-                                }}
-                                onClick={() => setShowModal(false)}
+                            <Button
+                                type={ButtonTypes.SECONDARY}
+                                btnText=""
+                                width="40px"
+                                height="30px"
+                                display="flex"
+                                justifyContent="center"
+                                alignItems="center"
+                                color="#2457A3"
+                                borderColor="#2457A3"
+                                icon={<EditIcon />}
+                                onClick={() => openModal('edit', item)}
+                            />
+                            <Button
+                                btnText=" "
+                                type={ButtonTypes.SECONDARY}
+                                width="35px"
+                                height="30px"
+                                color="#C70039"
+                                borderColor="#C70039"
+                                display="flex"
+                                justifyContent="center"
+                                alignItems="center"
+                                icon={<DeleteIcon />}
+                                onClick={() => openModal('delete', item)}
                             />
                         </div>
-                        {modalType === 'delete' ? (
-                            <>
-                                <p>
-                                    Are you sure you want to delete this
-                                    promotion?
-                                </p>
-                                <div style={{ display: 'flex', gap: '10px' }}>
-                                    <Button
-                                        type={ButtonTypes.PRIMARY}
-                                        backgroundColor="#d32f2f"
-                                        borderColor="#d32f2f"
-                                        btnText="Confirm"
-                                        width="100%"
-                                        onClick={handleDelete}
-                                    />
-                                    <Button
-                                        btnText="Cancel"
-                                        width="100%"
-                                        type={ButtonTypes.SECONDARY}
-                                        onClick={() => setShowModal(false)}
-                                    />
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        gap: '10px',
-                                        flexDirection: 'column',
-                                        margin: '10px 0 10px 0',
-                                    }}
-                                >
-                                    <Selecter
-                                        name="position"
-                                        label="Position"
-                                        multiple={false}
-                                        value={formData.position}
-                                        options={PositionType}
-                                        onChange={(newValue) =>
-                                            setFormData({
-                                                ...formData,
-                                                position: newValue as string,
-                                            })
-                                        }
-                                    />
-                                    <Selecter
-                                        name="grade"
-                                        label="Grade"
-                                        multiple={false}
-                                        value={formData.grade}
-                                        options={GradeType}
-                                        onChange={(newValue) =>
-                                            setFormData({
-                                                ...formData,
-                                                grade: newValue as string,
-                                            })
-                                        }
-                                    />
-                                    <Input
-                                        IsUsername
-                                        type="datetime-local"
-                                        name="startDate"
-                                        label="Start Date"
-                                        value={formData.startDate}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
+                    )}
+                </Card>
+            ))}
+            {showModal && (
+                <ModalComponent
+                    padding="15px"
+                    open={showModal}
+                    handleClose={() => {}}
+                >
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            margin: '0',
+                        }}
+                    >
+                        <h2>
+                            {modalType === 'delete'
+                                ? 'Confirm Deletion'
+                                : `${modalType === 'edit' ? 'Edit' : 'Create'} Promotion`}
+                        </h2>
+                        <CloseIcon
+                            style={{
+                                cursor: 'pointer',
+                                padding: '0',
+                                margin: '0',
+                            }}
+                            onClick={() => setShowModal(false)}
+                        />
+                    </div>
+                    {modalType === 'delete' ? (
+                        <>
+                            <p>
+                                Are you sure you want to delete this promotion?
+                            </p>
+                            <div style={{ display: 'flex', gap: '10px' }}>
                                 <Button
                                     type={ButtonTypes.PRIMARY}
-                                    btnText={
-                                        modalType === 'edit'
-                                            ? 'Update'
-                                            : 'Create'
-                                    }
-                                    onClick={
-                                        modalType === 'edit'
-                                            ? handleUpdate
-                                            : handleCreate
+                                    backgroundColor="#d32f2f"
+                                    borderColor="#d32f2f"
+                                    btnText="Confirm"
+                                    width="100%"
+                                    onClick={handleDelete}
+                                />
+                                <Button
+                                    btnText="Cancel"
+                                    width="100%"
+                                    type={ButtonTypes.SECONDARY}
+                                    onClick={() => setShowModal(false)}
+                                />
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    gap: '10px',
+                                    flexDirection: 'column',
+                                    margin: '10px 0 10px 0',
+                                }}
+                            >
+                                <Selecter
+                                    name="position"
+                                    label="Position"
+                                    multiple={false}
+                                    value={formData.position}
+                                    options={PositionType}
+                                    onChange={(newValue) =>
+                                        setFormData({
+                                            ...formData,
+                                            position: newValue as string,
+                                        })
                                     }
                                 />
-                            </>
-                        )}
-                    </ModalComponent>
-                )}
-                {currentUser?.role === 'hr' && (
-                    <Button
-                        type={ButtonTypes.PRIMARY}
-                        btnText="Create New Promotion"
-                        onClick={() => openModal('create')}
-                    />
-                )}
-            </Card>
+                                <Selecter
+                                    name="grade"
+                                    label="Grade"
+                                    multiple={false}
+                                    value={formData.grade}
+                                    options={GradeType}
+                                    onChange={(newValue) =>
+                                        setFormData({
+                                            ...formData,
+                                            grade: newValue as string,
+                                        })
+                                    }
+                                />
+                                <Input
+                                    IsUsername
+                                    type="datetime-local"
+                                    name="startDate"
+                                    label="Start Date"
+                                    value={formData.startDate}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                            <Button
+                                type={ButtonTypes.PRIMARY}
+                                btnText={
+                                    modalType === 'edit' ? 'Update' : 'Create'
+                                }
+                                onClick={
+                                    modalType === 'edit'
+                                        ? handleUpdate
+                                        : handleCreate
+                                }
+                            />
+                        </>
+                    )}
+                </ModalComponent>
+            )}
+            {currentUser?.role === 'hr' && (
+                <Button
+                    type={ButtonTypes.PRIMARY}
+                    btnText="Create New Promotion"
+                    onClick={() => openModal('create')}
+                />
+            )}
+        </Card>
         </>
     )
 }
