@@ -7,11 +7,12 @@ import Header from '@/Components/Header/header'
 
 const PrivateRoute = () => {
     const isAuthenticated = !!localStorage.getItem('access_token')
+    const theme = useTheme()
 
     if (!isAuthenticated) {
         return <Navigate to="/" />
     }
-    const theme = useTheme()
+   
 
     return (
         <>

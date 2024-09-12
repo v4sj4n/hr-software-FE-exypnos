@@ -149,14 +149,7 @@ function PayrollContent() {
                 </Collapse>
             </div>
             {isPending ? (
-                <div
-                    style={{
-                        display: 'flex',
-                        fontSize: '30px',
-                        justifyContent: 'center',
-                        marginTop: '50px',
-                    }}
-                >
+                <div className={style.ring}>
                     <RingLoader />
                 </div>
             ) : (

@@ -28,21 +28,6 @@ function SpecificUserPayrollContent() {
         setMonth(parseInt(monthString))
     }
 
-    if (isPending)
-        return (
-            <div
-                style={{
-                    display: 'flex',
-                    fontSize: '30px',
-                    justifyContent: 'center',
-                    marginTop: '50px',
-                }}
-            >
-                {' '}
-                <RingLoader />
-            </div>
-        )
-
     return (
         <div className={style.payroll}>
             <div
@@ -67,24 +52,19 @@ function SpecificUserPayrollContent() {
                     onChange={handleDateChange}
                 />
             </div>
-            <DataTable
-                rows={rows}
-                columns={columns}
-                getRowId={getRowId}
-                totalPages={totalPages}
-                page={page}
-                pageSize={pageSize}
-                onPaginationModelChange={handlePaginationModelChange}
-            />
-            <div
-                style={{
-                    width: '500px',
-                    marginTop: '30px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '20px',
-                }}
-            ></div>
+            { isPending ? <div className={style.ring}>
+                    <RingLoader />
+                </div> :
+                    <DataTable
+                        rows={rows}
+                        columns={columns}
+                        getRowId={getRowId}
+                        totalPages={totalPages}
+                        page={page}
+                        pageSize={pageSize}
+                        onPaginationModelChange={handlePaginationModelChange}
+                    />
+            }
         </div>
     )
 }
