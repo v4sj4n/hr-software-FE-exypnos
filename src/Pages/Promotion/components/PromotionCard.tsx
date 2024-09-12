@@ -11,6 +11,7 @@ import { ModalComponent } from '@/Components/Modal/Modal'
 import { useAuth } from '@/Context/AuthProvider'
 import Input from '@/Components/Input/Index'
 import Selecter from '@/Components/Input/components/Select/Selecter'
+import Toast from '@/Components/Toast/Toast'
 
 export type Promotion = {
     _id: string
@@ -23,6 +24,11 @@ export default function PromotionCard({ id }: { id: string }) {
     const { currentUser } = useAuth()
     const [promotions, setPromotions] = useState<Promotion[]>([])
     const [showModal, setShowModal] = useState(false)
+    const [toastOpen, setToastOpen] = useState(false)
+    const [toastMessage, setToastMessage] = useState('')
+    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
+        'success',
+    )
     const [modalType, setModalType] = useState<
         'create' | 'edit' | 'delete' | null
     >(null)
@@ -74,7 +80,13 @@ export default function PromotionCard({ id }: { id: string }) {
                 startDate: formData.startDate,
             })
             fetchPromotions()
+            setToastOpen(true)
+            setToastMessage('Promotion created successfully')
+            setToastSeverity('success')
         } catch (error) {
+            setToastOpen(true)
+            setToastMessage('Error creating promotion')
+            setToastSeverity('error')
             console.error('Error creating promotion:', error)
         }
     }
@@ -88,7 +100,13 @@ export default function PromotionCard({ id }: { id: string }) {
                 formData,
             )
             fetchPromotions()
+            setToastOpen(true)
+            setToastMessage('Rating updated successfully')
+            setToastSeverity('success')
         } catch (error) {
+            setToastOpen(true)
+            setToastMessage('Error updating promotion')
+            setToastSeverity('error')
             console.error('Error updating promotion:', error)
         }
     }
@@ -101,7 +119,13 @@ export default function PromotionCard({ id }: { id: string }) {
             setPromotions(
                 promotions.filter((item) => item._id !== selectedPromotion._id),
             )
+            setToastOpen(true)
+            setToastMessage('Rating delete successfully')
+            setToastSeverity('success')
         } catch (error) {
+            setToastOpen(true)
+            setToastMessage('Error deleting promotion')
+            setToastSeverity('error')
             console.error('Error deleting promotion:', error)
         }
     }
@@ -124,7 +148,18 @@ export default function PromotionCard({ id }: { id: string }) {
         setShowModal(true)
     }
 
+    const handleCloseToast = () => {
+        setToastOpen(false)
+    }
+
     return (
+        <>
+        <Toast
+            severity={toastSeverity }
+            open={toastOpen}
+            message={ toastMessage }
+            onClose={ handleCloseToast}
+        />
         <Card gap="16px" flex="1" backgroundColor="rgba(255, 255, 255, 0.7)">
             <h3>Promotion</h3>
             {promotions.map((item) => (
@@ -293,5 +328,6 @@ export default function PromotionCard({ id }: { id: string }) {
                 />
             )}
         </Card>
+        </>
     )
 }
