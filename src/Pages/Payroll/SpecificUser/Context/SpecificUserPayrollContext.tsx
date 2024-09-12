@@ -1,5 +1,5 @@
 import React from 'react'
-import { PayrollContextSpecific } from '../interface'
+import { PayrollContextSpecific } from '../interface/interface'
 
 export const usePayrollContextSpecific = () => {
     const context = React.useContext(PayrollContextSpecific)

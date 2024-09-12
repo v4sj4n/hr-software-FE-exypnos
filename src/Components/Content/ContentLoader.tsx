@@ -14,37 +14,36 @@ export default function EventsContentLoader() {
             }}
         >
             <Stack spacing={2}>
-                {/* Title Skeleton */}
+
                 <Skeleton
                     variant="text"
                     sx={{ fontSize: '1.5rem', width: '60%' }}
                 />
 
-                {/* Description Skeleton */}
+            
                 <Skeleton
                     variant="text"
                     sx={{ fontSize: '1rem', width: '80%' }}
                 />
 
-                {/* Date */}
+             
                 <Skeleton
                     variant="rectangular"
                     sx={{ width: '100%', height: '24px' }}
                 />
 
-                {/* Location */}
                 <Skeleton
                     variant="rectangular"
                     sx={{ width: '100%', height: '24px' }}
                 />
 
-                {/* See Details Button Skeleton */}
+             
                 <Skeleton
                     variant="rectangular"
                     sx={{ width: '100%', height: '30px', borderRadius: '16px' }}
                 />
 
-                {/* Three Dots Menu Skeleton */}
+       
                 <Skeleton
                     variant="circular"
                     width={24}
