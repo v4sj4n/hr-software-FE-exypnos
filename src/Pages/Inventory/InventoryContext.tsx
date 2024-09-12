@@ -9,6 +9,8 @@ import {
 import { useSearchParams } from 'react-router-dom'
 
 interface AssetContextType {
+    error: string | null
+    setError: Dispatch<SetStateAction<string | null>>
     createModalOpen: boolean
     handleCloseCreateModalOpen: () => void
     handleOpenCreateModalOpen: () => void
@@ -20,6 +22,8 @@ interface AssetContextType {
 }
 
 const defaultContextValue: AssetContextType = {
+    error: null,
+    setError: () => {},
     searchParams: new URLSearchParams(),
     setSearchParams: () => {},
     createModalOpen: false,
@@ -36,6 +40,7 @@ export const InventoryContext =
 export const InventoryProvider: FC<{ children: ReactNode }> = ({
     children,
 }) => {
+    const [error, setError] = useState<string | null>(null)
     const [createModalOpen, setCreateModalOpen] = useState<boolean>(false)
     const handleCloseCreateModalOpen = () => setCreateModalOpen(false)
     const handleOpenCreateModalOpen = () => setCreateModalOpen(true)
@@ -47,6 +52,8 @@ export const InventoryProvider: FC<{ children: ReactNode }> = ({
     return (
         <InventoryContext.Provider
             value={{
+                error,
+                setError,
                 searchParams,
                 setSearchParams,
                 createModalOpen,

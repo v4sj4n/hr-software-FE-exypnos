@@ -29,10 +29,6 @@ export const EmployeesWithHoldings = () => {
     const { ref, inView } = useInView()
 
     useEffect(() => {
-        setSearchParams(new URLSearchParams())
-    }, [])
-
-    useEffect(() => {
         if (inView) {
             fetchNextPage()
         }
@@ -94,7 +90,7 @@ export const EmployeesWithHoldings = () => {
                                                 </p>
                                             ))
                                         ) : (
-                                            <p>No vacations this year</p>
+                                            <p>No holdings</p>
                                         )}
                                     </div>
                                     <Button

@@ -1,42 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import styles from './Carousel.module.css';
+import React, { useState, useEffect } from 'react'
+import styles from './Carousel.module.css'
 
 interface Image {
-    src: string;
-    alt: string;
-    name?: string;
+    src: string
+    alt: string
+    name?: string
 }
 
 interface ImageCarouselProps {
-    images: Image[];
-    autoPlay?: boolean;
-    autoPlayInterval?: number;
+    images: Image[]
+    autoPlay?: boolean
+    autoPlayInterval?: number
 }
 
-const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, autoPlay = true, autoPlayInterval = 3000 }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [isHovered, setIsHovered] = useState(false);
+const ImageCarousel: React.FC<ImageCarouselProps> = ({
+    images,
+    autoPlay = true,
+    autoPlayInterval = 3000,
+}) => {
+    const [currentIndex, setCurrentIndex] = useState(0)
+    const [isHovered, setIsHovered] = useState(false)
 
     const nextSlide = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    };
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length)
+    }
 
     const prevSlide = () => {
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
-    };
+        setCurrentIndex(
+            (prevIndex) => (prevIndex - 1 + images.length) % images.length,
+        )
+    }
 
     const goToSlide = (index: number) => {
-        setCurrentIndex(index);
-    };
+        setCurrentIndex(index)
+    }
 
     useEffect(() => {
         if (autoPlay && !isHovered) {
             const interval = setInterval(() => {
-                nextSlide();
-            }, autoPlayInterval);
-            return () => clearInterval(interval);
+                nextSlide()
+            }, autoPlayInterval)
+            return () => clearInterval(interval)
         }
-    }, [autoPlay, isHovered, currentIndex]);
+    }, [autoPlay, isHovered, currentIndex])
 
     return (
         <div
@@ -46,24 +52,37 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, autoPlay = true, 
         >
             <div className={styles.carouselInner}>
                 {images.map((image, index) => {
-                    const position = (index - currentIndex + images.length) % images.length;
+                    const position =
+                        (index - currentIndex + images.length) % images.length
 
                     return (
                         <div
                             key={index}
                             className={`${styles.carouselItem} ${position === 0 ? styles.active : ''}`}
                         >
-                            <img src={image.src} alt={image.alt} className={styles.carouselImage} />
-                            {image.name && <p className={styles.imageName}>{image.name}</p>}
+                            <img
+                                src={image.src}
+                                alt={image.alt}
+                                className={styles.carouselImage}
+                            />
+                            {image.name && (
+                                <p className={styles.imageName}>{image.name}</p>
+                            )}
                         </div>
-                    );
+                    )
                 })}
             </div>
 
-            <button onClick={prevSlide} className={`${styles.carouselButton} ${styles.prev}`}>
+            <button
+                onClick={prevSlide}
+                className={`${styles.carouselButton} ${styles.prev}`}
+            >
                 &lt;
             </button>
-            <button onClick={nextSlide} className={`${styles.carouselButton} ${styles.next}`}>
+            <button
+                onClick={nextSlide}
+                className={`${styles.carouselButton} ${styles.next}`}
+            >
                 &gt;
             </button>
 
@@ -78,7 +97,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, autoPlay = true, 
                 ))}
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default ImageCarousel;
+export default ImageCarousel

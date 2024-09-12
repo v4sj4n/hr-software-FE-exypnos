@@ -9,6 +9,16 @@ import {
 import { useSearchParams } from 'react-router-dom'
 
 interface VacationContextType {
+    errors: {
+        createError: string | null
+        updateError: string | null
+    }
+    setErrors: Dispatch<
+        SetStateAction<{
+            createError: string | null
+            updateError: string | null
+        }>
+    >
     searchParams: URLSearchParams
     setSearchParams: Dispatch<SetStateAction<URLSearchParams>>
     handleOpenViewVacationModalOpen: (id: string) => void
@@ -30,6 +40,11 @@ interface VacationContextType {
 }
 
 const defaultContextValue: VacationContextType = {
+    errors: {
+        createError: null,
+        updateError: null,
+    },
+    setErrors: () => {},
     searchParams: new URLSearchParams(),
     setSearchParams: () => {},
     handleOpenViewVacationModalOpen: () => {},
@@ -48,6 +63,13 @@ export const VacationContext =
     createContext<VacationContextType>(defaultContextValue)
 
 export const VacationProvider: FC<{ children: ReactNode }> = ({ children }) => {
+    const [errors, setErrors] = useState<{
+        createError: string | null
+        updateError: string | null
+    }>({
+        createError: null,
+        updateError: null,
+    })
     const [searchParams, setSearchParams] = useSearchParams()
     const createVacationToggler = () => {
         if (searchParams.get('createVacation') === null) {
@@ -100,6 +122,8 @@ export const VacationProvider: FC<{ children: ReactNode }> = ({ children }) => {
     return (
         <VacationContext.Provider
             value={{
+                errors,
+                setErrors,
                 searchParams,
                 setSearchParams,
                 handleOpenViewVacationModalOpen,

@@ -90,7 +90,8 @@ export default function ChartBar({ id }: { id: string }) {
                                 return (
                                     <div
                                         style={{
-                                            backgroundColor: theme.palette.background.paper,
+                                            backgroundColor:
+                                                theme.palette.background.paper,
                                             padding: '10px',
                                             borderRadius: '5px',
                                             boxShadow: `0 4px 6px ${theme.palette.grey[500]}`,
@@ -101,8 +102,14 @@ export default function ChartBar({ id }: { id: string }) {
                                         <p>Net Salary: {data?.netSalary ?? ''}</p>
                                         <p>Gross Salary: {data?.grossSalary ?? ''}</p>
                                         <p>Bonus: {data?.bonus ?? ''}</p>
-                                        <p>Health Insurance: {data?.healthInsurance ?? ''}</p>
-                                        <p>Social Security: {data?.socialSecurity ?? ''}</p>
+                                        <p>
+                                            Health Insurance:{' '}
+                                            {data?.healthInsurance ?? ''}
+                                        </p>
+                                        <p>
+                                            Social Security:{' '}
+                                            {data?.socialSecurity ?? ''}
+                                        </p>
                                     </div>
                                 )
                             },

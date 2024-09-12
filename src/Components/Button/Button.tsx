@@ -18,13 +18,13 @@ interface ButtonStyles extends CSSProperties {
 }
 
 interface ButtonProps extends ButtonStyles {
-    isSubmit?: boolean;
-    type: ButtonType;
-    btnText: string | JSX.Element;
-    disabled?: boolean;
-    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-    icon?: React.ReactNode;
-    cursor?: string;
+    isSubmit?: boolean
+    type: ButtonType
+    btnText: string | JSX.Element
+    disabled?: boolean
+    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
+    icon?: React.ReactNode
+    cursor?: string
 }
 const Button: React.FC<ButtonProps> = ({
     isSubmit,
@@ -35,41 +35,41 @@ const Button: React.FC<ButtonProps> = ({
     onClick,
     ...restProps
 }) => {
-    const theme = useTheme();
+    const theme = useTheme()
     const getButtonClass = (): string => {
         switch (type) {
             case ButtonTypes.PRIMARY:
-                return 'primaryBtn';
+                return 'primaryBtn'
             case ButtonTypes.SECONDARY:
-                return 'secondaryBtn';
+                return 'secondaryBtn'
             case ButtonTypes.TERTIARY:
-                return 'tertiaryBtn';
+                return 'tertiaryBtn'
             case ButtonTypes.DISABLED:
-                return 'disabled';
+                return 'disabled'
             default:
-                return 'primaryBtn';
+                return 'primaryBtn'
         }
-    };
+    }
     const dynamicStyles: React.CSSProperties = {
         backgroundColor:
             type === ButtonTypes.PRIMARY
                 ? theme.palette.primary.main
                 : type === ButtonTypes.SECONDARY
-                ? 'transparent'
-                : undefined,
+                  ? 'transparent'
+                  : undefined,
         color:
             type === ButtonTypes.PRIMARY || type === ButtonTypes.TERTIARY
                 ? '#fff'
                 : type === ButtonTypes.SECONDARY
-                ? theme.palette.text.secondary
-                : undefined,
+                  ? theme.palette.text.secondary
+                  : undefined,
         borderColor:
             type === ButtonTypes.PRIMARY || type === ButtonTypes.TERTIARY
                 ? theme.palette.primary.main
                 : theme.palette.text.secondary,
-                cursor: disabled ? 'default' : 'pointer',
+        cursor: disabled ? 'default' : 'pointer',
         ...restProps,
-    };
+    }
     return (
         <button
             disabled={disabled}
@@ -81,6 +81,6 @@ const Button: React.FC<ButtonProps> = ({
             {btnText}
             {icon}
         </button>
-    );
-};
-export default Button;
+    )
+}
+export default Button

@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react'
 import {
-    SettingsOutlined as SettingsOutlinedIcon,
     Logout as LogoutIcon,
     PermIdentity as PermIdentityIcon,
     Menu as MenuIcon,
@@ -15,7 +14,7 @@ import NotificationDropdown from '@/Pages/Notification/Notification'
 import { ClickAwayListener } from '@mui/material'
 import ThemeSwitcher from '@/Theme/ThemeSwitcher'
 
-import { useTheme } from '@mui/material/styles' 
+import { useTheme } from '@mui/material/styles'
 
 export const HeaderContent = () => {
     const { isSidebarOpen: isOpen, toggleSidebar } =
@@ -34,11 +33,11 @@ export const HeaderContent = () => {
     const handleProfileClick = () => {
         navigate(`/profile/${currentUser?._id}`)
     }
-    
+
     const theme = useTheme()
     const dropdownItemStyle = {
-        color: theme.palette.text.primary, 
-        backgroundColor: theme.palette.background.paper, 
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.background.paper,
     }
 
     return (
@@ -65,7 +64,7 @@ export const HeaderContent = () => {
                 )}
             </div>
             <div className={style.headerRight}>
-                <ThemeSwitcher /> 
+                <ThemeSwitcher />
 
                 <div className={style.icon}>
                     <NotificationDropdown />
@@ -91,25 +90,23 @@ export const HeaderContent = () => {
                             <div className={style.dropdown}>
                                 <div
                                     className={style.dropdownItem}
-                                    style={dropdownItemStyle}  
+                                    style={dropdownItemStyle}
                                     onClick={handleProfileClick}
                                 >
                                     Profile <PermIdentityIcon />
                                 </div>
 
-                     
                                 <div
                                     className={style.dropdownItem}
-                                    style={dropdownItemStyle}  
+                                    style={dropdownItemStyle}
                                     onClick={handleLogout}
                                 >
                                     Logout <LogoutIcon />
                                 </div>
                                 <div
                                     className={style.dropdownItem}
-                                    style={dropdownItemStyle}  
-                                >
-                </div>
+                                    style={dropdownItemStyle}
+                                ></div>
                             </div>
                         )}
                     </div>
@@ -125,5 +122,5 @@ const Header: React.FC = () => {
             <HeaderContent />
         </EventsProvider>
     )
-} 
+}
 export default Header

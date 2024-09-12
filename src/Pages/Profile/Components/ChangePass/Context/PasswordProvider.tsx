@@ -60,7 +60,6 @@ export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({
             })
 
             if (response.status === 200) {
-                
                 setSuccess('Password updated successfully')
                 setCurrentPassword('')
                 setNewPassword('')
