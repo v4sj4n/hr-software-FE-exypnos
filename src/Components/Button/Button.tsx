@@ -1,9 +1,11 @@
-import React from 'react'
-import { useTheme } from '@mui/material/styles'
-import { ButtonTypes } from './ButtonTypes'
+import { useTheme } from '@mui/material'
 import './Button.css'
+import { ButtonTypes } from './ButtonTypes'
+import React, { CSSProperties } from 'react'
+
 type ButtonType = (typeof ButtonTypes)[keyof typeof ButtonTypes]
-interface ButtonStyles {
+
+interface ButtonStyles extends CSSProperties {
     backgroundColor?: string
     color?: string
     borderColor?: string
@@ -13,10 +15,8 @@ interface ButtonStyles {
     padding?: string
     margin?: string
     borderRadius?: string | number
-    display?: string
-    justifyContent?: string
-    alignItems?: string
 }
+
 interface ButtonProps extends ButtonStyles {
     isSubmit?: boolean
     type: ButtonType

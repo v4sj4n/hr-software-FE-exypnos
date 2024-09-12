@@ -1,6 +1,6 @@
 import { useGetUsersWithVacations } from '../Hook/index.ts'
 import { CircularProgress } from '@mui/material'
-import { UserWithVacations } from '../TVacation.ts'
+import { UserWithVacation } from '../types.ts'
 import style from '../style/employeesWithVacations.module.scss'
 import { useContext, useEffect } from 'react'
 import { VacationContext } from '../VacationContext'
@@ -40,7 +40,7 @@ export const EmployeesWithVacations = () => {
         <div className={style.employeesContainer}>
             <EmployeesWithVacationsSearchFilter />
             {data?.pages.map((page) =>
-                page.data.map((user: UserWithVacations) => (
+                page.data.map((user: UserWithVacation) => (
                     <SimpleCollapsableCard
                         key={user._id}
                         user={user}

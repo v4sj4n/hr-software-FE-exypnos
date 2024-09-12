@@ -7,153 +7,25 @@ import Card from '../../Components/Card/Card'
 import Button from '@mui/material/Button'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
-import { useRef, useState } from 'react'
+import { useContext } from 'react'
 import Toast from '@/Components/Toast/Toast'
-import { useForm, ValidationError } from '@tanstack/react-form'
+import { ValidationError } from '@tanstack/react-form'
 import Selecter from '@/Components/Input/components/Select/Selecter'
 import style from './style/Recruitment.module.css'
 import { valibotValidator } from '@tanstack/valibot-form-adapter'
 import {
-    array,
-    check,
-    email,
-    isoDate,
-    minLength,
-    picklist,
-    pipe,
-    regex,
-    string,
-} from 'valibot'
-import dayjs from 'dayjs'
-import AxiosInstance from '@/Helpers/Axios'
-import { AxiosError } from 'axios'
+    experience,
+    foundMethod,
+    technologies,
+} from './Component/RecruitmentData'
+import { RecruitmentContext } from './Context/RecruitmentContext'
+import { useRecruitmentForm } from './Hook'
+import { RecruitmentSchema } from '@/Schemas/Recruitment/Recruitment.schema'
 
 export default function Recruitment() {
-    const form = useForm<{
-        applicationMethod: string
-        dob: string
-        email: string
-        experience: string
-        file: FileList | null
-        firstName: string
-        lastName: string
-        phoneNumber: string
-        positionApplied: string
-        salaryExpectations: string
-        technologiesUsed: string[]
-    }>({
-        defaultValues: {
-            applicationMethod: '',
-            dob: new Date().toISOString().split('T')[0],
-            email: '',
-            experience: '',
-            file: null,
-            firstName: '',
-            lastName: '',
-            phoneNumber: '',
-            positionApplied: '',
-            salaryExpectations: '',
-            technologiesUsed: [],
-        },
-        onSubmit: async ({ value }) => {
-            try {
-                const formData = new FormData()
-                formData.append('applicationMethod', value.applicationMethod)
-                formData.append('dob', value.dob)
-                formData.append('email', value.email)
-                formData.append('experience', value.experience)
-                if (value.file && value.file.length > 0) {
-                    formData.append('file', value.file[0])
-                }
-                formData.append('firstName', value.firstName)
-                formData.append('lastName', value.lastName)
-                formData.append('phoneNumber', value.phoneNumber)
-                formData.append('positionApplied', value.positionApplied)
-                formData.append('salaryExpectations', value.salaryExpectations)
-                formData.append(
-                    'technologiesUsed',
-                    JSON.stringify(value.technologiesUsed),
-                )
-
-                const response = await AxiosInstance.post(
-                    '/applicant',
-                    formData,
-                    {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
-                    },
-                )
-                if ([200, 201].includes(response.status)) {
-                    setShowModal(true)
-                }
-            } catch (err: unknown) {
-                console.log(err)
-                if (err instanceof AxiosError) {
-                    if (err?.response?.data?.message) {
-                        setError(err?.response?.data?.message)
-                        return
-                    }
-                    if (err.code === 'ERR_NETWORK') {
-                        setError(
-                            'No internet connection. Please try again later.',
-                        )
-                        return
-                    }
-                    setError('An error occurred while creating your applicant')
-                }
-            }
-        },
-    })
-
-    const technologies = [
-        'Angular',
-        'AWS',
-        'Azure',
-        'CSS',
-        'Docker',
-        'Express.js',
-        'Google Cloud',
-        'HTML',
-        'Java',
-        'JavaScript',
-        'jQuery',
-        'Kubernetes',
-        'MongoDB',
-        'Nestjs',
-        'Node.js',
-        'PHP',
-        'Python',
-        'React',
-        'Ruby',
-        'SASS',
-        'TypeScript',
-        'Vue.js',
-    ]
-
-    const foundMethod = [
-        'LinkedIn',
-        'Instagram',
-        'Telegram',
-        'Your Connections',
-        'Other',
-    ]
-
-    const experience = [
-        '0-1 year',
-        '1-3 years',
-        '3-5 years',
-        '5-7 years',
-        '7-10 years',
-        '10+ years',
-    ]
-
-    const [showModal, setShowModal] = useState(false)
-
-    const fileInputRef = useRef<HTMLInputElement>(null)
-    const [fileName, setFileName] = useState<string | null>(null)
-    const [error, setError] = useState<string | null>(null)
-
+    const { error, showModal, setShowModal, fileInputRef } =
+        useContext(RecruitmentContext)
+    const { form } = useRecruitmentForm()
     return (
         <main className={style.background}>
             <Card
@@ -177,13 +49,7 @@ export default function Recruitment() {
                         name="firstName"
                         validatorAdapter={valibotValidator()}
                         validators={{
-                            onChange: pipe(
-                                string('First Name is required'),
-                                minLength(
-                                    2,
-                                    'First Name needs to be at least 2 characters',
-                                ),
-                            ),
+                            onChange: RecruitmentSchema.entries.firstName,
                         }}
                         children={({
                             handleChange,
@@ -211,13 +77,7 @@ export default function Recruitment() {
                         name="lastName"
                         validatorAdapter={valibotValidator()}
                         validators={{
-                            onChange: pipe(
-                                string('Last Name is required'),
-                                minLength(
-                                    2,
-                                    'Last Name needs to be at least 2 characters',
-                                ),
-                            ),
+                            onChange: RecruitmentSchema.entries.lastName,
                         }}
                         children={({
                             handleChange,
@@ -244,10 +104,7 @@ export default function Recruitment() {
                         name="email"
                         validatorAdapter={valibotValidator()}
                         validators={{
-                            onChange: pipe(
-                                string('Email is required'),
-                                email('Invalid email format'),
-                            ),
+                            onChange: RecruitmentSchema.entries.email,
                         }}
                         children={({
                             state: {
@@ -275,16 +132,7 @@ export default function Recruitment() {
                         name="dob"
                         validatorAdapter={valibotValidator()}
                         validators={{
-                            onChange: pipe(
-                                string('Please enter a date'),
-                                isoDate('Please enter a date.'),
-                                check((input) => {
-                                    const birthDate = dayjs(input)
-                                    const currDate = dayjs()
-                                    const age = currDate.diff(birthDate, 'year')
-                                    return age >= 18 && age <= 65
-                                }, 'You must be between 18-65 years old'),
-                            ),
+                            onChange: RecruitmentSchema.entries.dob,
                         }}
                         children={({
                             state: {
@@ -313,13 +161,7 @@ export default function Recruitment() {
                         name="phoneNumber"
                         validatorAdapter={valibotValidator()}
                         validators={{
-                            onChange: pipe(
-                                string('Phone Number is required'),
-                                regex(
-                                    /^[\\+]?[(]?[0-9]{3}[)]?[-\s\\.]?[0-9]{3}[-\s\\.]?[0-9]{4,6}$/,
-                                    'Invalid phone number format',
-                                ),
-                            ),
+                            onChange: RecruitmentSchema.entries.phoneNumber,
                         }}
                         children={({
                             state: {
@@ -330,6 +172,12 @@ export default function Recruitment() {
                         }) => (
                             <div>
                                 <Input
+                                    icon={
+                                        <p className={style.numberPrefix}>
+                                            +355
+                                        </p>
+                                    }
+                                    iconPosition="start"
                                     label="Phone Number"
                                     name="phoneNumber"
                                     IsUsername
@@ -347,10 +195,8 @@ export default function Recruitment() {
                         name="applicationMethod"
                         validatorAdapter={valibotValidator()}
                         validators={{
-                            onChange: pipe(
-                                string('Application Method is required'),
-                                minLength(1, 'Enter an applying method'),
-                            ),
+                            onChange:
+                                RecruitmentSchema.entries.applicationMethod,
                         }}
                         children={({
                             state: {
@@ -379,10 +225,7 @@ export default function Recruitment() {
                         name="positionApplied"
                         validatorAdapter={valibotValidator()}
                         validators={{
-                            onChange: pipe(
-                                string('Position Applied is required'),
-                                minLength(1, 'Write a work position'),
-                            ),
+                            onChange: RecruitmentSchema.entries.positionApplied,
                         }}
                         children={({
                             state: {
@@ -410,10 +253,8 @@ export default function Recruitment() {
                         name="salaryExpectations"
                         validatorAdapter={valibotValidator()}
                         validators={{
-                            onChange: pipe(
-                                string('Salary Expectation is required'),
-                                minLength(3, 'Enter a wage expectation'),
-                            ),
+                            onChange:
+                                RecruitmentSchema.entries.salaryExpectations,
                         }}
                         children={({
                             state: {
@@ -440,10 +281,7 @@ export default function Recruitment() {
                         name="experience"
                         validatorAdapter={valibotValidator()}
                         validators={{
-                            onChange: picklist(
-                                experience,
-                                'Please select your experience level',
-                            ),
+                            onChange: RecruitmentSchema.entries.experience,
                         }}
                         children={({
                             state: {
@@ -471,15 +309,8 @@ export default function Recruitment() {
                         name="technologiesUsed"
                         validatorAdapter={valibotValidator()}
                         validators={{
-                            onChange: pipe(
-                                array(
-                                    picklist(
-                                        technologies,
-                                        'Please select your preferred technologies',
-                                    ),
-                                ),
-                                minLength(1, 'Choose at least one technology'),
-                            ),
+                            onChange:
+                                RecruitmentSchema.entries.technologiesUsed,
                         }}
                         children={({
                             state: {
@@ -527,17 +358,11 @@ export default function Recruitment() {
                             handleChange,
                         }) => (
                             <div className={style.fileInput}>
-                                <p>{fileName || 'No file selected'}</p>
                                 <Button
                                     component="label"
                                     variant="contained"
                                     startIcon={<CloudUploadIcon />}
-                                    style={{
-                                        backgroundColor: '#2469FF',
-                                        color: '#FFFFFF',
-                                        boxShadow: 'none',
-                                        fontFamily: 'Outfit, sans-serif',
-                                    }}
+                                    className={style.uploadButton}
                                     fullWidth
                                 >
                                     Upload CV
@@ -545,9 +370,6 @@ export default function Recruitment() {
                                         type="file"
                                         style={{ display: 'none' }}
                                         onChange={(e) => {
-                                            const file =
-                                                e.target.files?.[0] || null
-                                            setFileName(file?.name || null)
                                             handleChange(e.target.files)
                                         }}
                                         accept=".pdf,.doc,.docx"
