@@ -11,7 +11,6 @@ import { ModalComponent } from '@/Components/Modal/Modal'
 import CloseIcon from '@mui/icons-material/Close'
 import { useAuth } from '@/Context/AuthProvider'
 import Toast from '@/Components/Toast/Toast'
-import { set } from 'lodash'
 
 export type Rating = {
     _id: string
@@ -24,7 +23,6 @@ export type Rating = {
 
 export default function Rating({ id }: { id: string }) {
     const { currentUser } = useAuth()
-    console.log('id', id)
     const theme = useTheme()
     const [ratings, setRatings] = useState<Rating[] | null>(null)
     const [updateRating, setUpdateRating] = useState<Rating | null>(null)
