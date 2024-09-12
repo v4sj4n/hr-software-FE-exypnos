@@ -17,7 +17,6 @@ const Input: React.FC<InputProps> = (props) => {
                 return null
         }
     }
-    
 
     return <div>{renderInput()}</div>
 }
