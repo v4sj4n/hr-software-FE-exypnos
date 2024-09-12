@@ -74,9 +74,10 @@ function VacationComponent() {
             </div>
             {searchParams.get('createVacation') && <CreateVacationForm />}
             <div>
-                {searchParams.get('vacationType') === 'requests' ? (
+                {searchParams.get('vacationType') === 'requests' && (
                     <VacationTable />
-                ) : (
+                )}
+                {searchParams.get('vacationType') === 'userLeaves' && (
                     <EmployeesWithVacations />
                 )}
             </div>

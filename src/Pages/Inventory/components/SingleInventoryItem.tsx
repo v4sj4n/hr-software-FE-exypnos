@@ -5,7 +5,7 @@ import { InventoryContext } from '../InventoryContext'
 import { useGetOneInventoryItem } from '../Hook'
 import style from '../style/singleInventoryItem.module.scss'
 import { TitleCaser } from '@/Helpers/TitleCaser'
-import { ItemHistory } from '../InventoryType'
+import { ItemHistory } from '../types'
 import dayjs from 'dayjs'
 
 export const SingleInventoryItem = () => {
@@ -24,7 +24,7 @@ export const SingleInventoryItem = () => {
             ) : (
                 <>
                     <div className={style.titleContainer}>
-                        <h3>{data.type && TitleCaser(data?.type)}</h3>
+                        {data && <h3>{data.type && TitleCaser(data?.type)}</h3>}
                         <div>
                             <p className={style.sn}>
                                 {data?.serialNumber}

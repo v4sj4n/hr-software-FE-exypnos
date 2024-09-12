@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react'
 import {
-    SettingsOutlined as SettingsOutlinedIcon,
     Logout as LogoutIcon,
     PermIdentity as PermIdentityIcon,
     Menu as MenuIcon,

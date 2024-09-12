@@ -29,10 +29,6 @@ export const EmployeesWithHoldings = () => {
     const { ref, inView } = useInView()
 
     useEffect(() => {
-        setSearchParams(new URLSearchParams())
-    }, [])
-
-    useEffect(() => {
         if (inView) {
             fetchNextPage()
         }
