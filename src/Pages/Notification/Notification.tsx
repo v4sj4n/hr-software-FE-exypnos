@@ -27,17 +27,15 @@ const NotificationDropdown: React.FC = () => {
     const { currentUser } = useAuth()
     const theme = useTheme()
     const [isOpen, setIsOpen] = useState(false)
-    const [page, setPage] = useState(0)
+    const [page, setPage] = useState(1)
     const { notifications, setNotifications } = useGetAllNotifications()
-    const [allNotifation, setAllNotifications] =
-        useState<Notification[]>(notifications)
     const navigate = useNavigate()
     const handleToggleDropdown = () => {
         setIsOpen(!isOpen)
-        setAllNotifications(notifications)
+        setNotifications(notifications)
     }
     const handleDismiss = (id: number) => {
-        setAllNotifications((notifications) =>
+        setNotifications((notifications) =>
             notifications.filter((notification) => notification._id !== id),
         )
     }
@@ -108,11 +106,10 @@ const NotificationDropdown: React.FC = () => {
     const showMore = async () => {
         try {
             const result = await AxiosInstance.get(
-                `notification/user/${currentUser?._id}?isRead=false`,
+                `notification/user/${currentUser?._id}?page=${page}$limit=5`,
             )
-            setAllNotifications([...allNotifation, ...result.data])
+            setNotifications([...notifications, ...result.data.data])
             setPage(page + 1)
-            console.log('Show more:', allNotifation)
         } catch (error) {
             console.error('Error showing all notifications:', error)
         }
@@ -125,7 +122,7 @@ const NotificationDropdown: React.FC = () => {
                         <NotificationsIcon />
                     </Badge>
                 </IconButton>
-                {isOpen && allNotifation.length > 0 &&(
+                {isOpen && notifications.length > 0 &&(
                     <Box
                         sx={{
                             position: 'absolute',
@@ -158,7 +155,7 @@ const NotificationDropdown: React.FC = () => {
                             </div>
                         )}
 
-                        {allNotifation.map((notification) => (
+                        {notifications.map((notification) => (
                             <Card
                                 key={notification._id}
                                 sx={{
@@ -207,7 +204,7 @@ const NotificationDropdown: React.FC = () => {
                                 </Box>
                             </Card>
                         ))}
-                        {allNotifation.length > 5 && (
+                        {notifications.length > 5 && (
                             <div style={{ textAlign: 'end' }}>
                                 <a href="#" onClick={showMore}>
                                     Show more

@@ -16,10 +16,10 @@ export const useGetAllNotifications = () => {
     const fetchNotifications = async (userId: string) => {
         try {
             const response = await AxiosInstance.get(
-                `notification/user/${userId}?isRead=false`,
+                `notification/user/${userId}?page=0&limit=5`,
             )
-            setNotifications(response.data)
-            console.log('Notification fetch:', response.data)
+            setNotifications(response.data.data)
+            console.log('Notification fetch:', response.data.data)
         } catch (error) {
             console.error('Error fetching notifications:', error)
         }
