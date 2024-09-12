@@ -367,17 +367,11 @@ function RecruitmentBase() {
                             handleChange,
                         }) => (
                             <div className={style.fileInput}>
-                                <p>{fileName || 'No file selected'}</p>
                                 <Button
                                     component="label"
                                     variant="contained"
                                     startIcon={<CloudUploadIcon />}
-                                    style={{
-                                        backgroundColor: '#2469FF',
-                                        color: '#FFFFFF',
-                                        boxShadow: 'none',
-                                        fontFamily: 'Outfit, sans-serif',
-                                    }}
+                                    className={style.uploadButton}
                                     fullWidth
                                 >
                                     Upload CV
@@ -385,9 +379,6 @@ function RecruitmentBase() {
                                         type="file"
                                         style={{ display: 'none' }}
                                         onChange={(e) => {
-                                            const file =
-                                                e.target.files?.[0] || null
-                                            setFileName(file?.name || null)
                                             handleChange(e.target.files)
                                         }}
                                         accept=".pdf,.doc,.docx"
