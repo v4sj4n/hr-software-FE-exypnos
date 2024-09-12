@@ -11,7 +11,6 @@ interface Notification {
     title: string
     type: string
     typeId: string
-    content: string
 }
 
 const NotificationDropdown: React.FC = () => {
@@ -57,10 +56,8 @@ const NotificationDropdown: React.FC = () => {
         } else if (notification.type === 'candidates') {
             removeNotification(notification._id)
             navigate(`/view/${notification.typeId}`)
-        } else if (notification.type === 'allVacation') {
-            removeNotification(notification._id)
-            navigate(`/vacation?vacationType=requests&page=0&limit=5`)
         }
+        console.log('Notification typesss:', notification.type)
     }
 
     const getColorByType = (type: string) => {
@@ -69,7 +66,7 @@ const NotificationDropdown: React.FC = () => {
                 return '#007bff'
             case 'vacation':
                 return 'green'
-            case 'candidates':
+            case 'warning':
                 return '#ffc107'
             case 'vocation':
                 return '#dc3545'
@@ -126,10 +123,10 @@ const NotificationDropdown: React.FC = () => {
                                             variant="subtitle1"
                                             sx={{ fontWeight: 'bold' }}
                                         >
-                                            {notification.title}
+                                            {notification.type}
                                         </Typography>
                                         <Typography variant="body2">
-                                            {notification.content}
+                                            {notification.title}
                                         </Typography>
                                     </Box>
                                     <IconButton

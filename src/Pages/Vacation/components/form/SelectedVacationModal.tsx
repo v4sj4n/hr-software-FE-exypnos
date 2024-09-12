@@ -2,9 +2,9 @@ import { Backdrop, Modal, Fade, Card, CircularProgress } from '@mui/material'
 import { useContext } from 'react'
 import { VacationContext } from '../../VacationContext'
 import { useGetVacation } from '../../Hook'
-import { VacationForm } from './VacationForm'
+import { UpdateVacationForm } from './UpdateVacationForm'
 
-export const SelectedVacation = () => {
+export const SelectedVacationModal = () => {
     const { searchParams, handleCloseVacationModalOpen: handleClose } =
         useContext(VacationContext)
 
@@ -41,7 +41,7 @@ export const SelectedVacation = () => {
                         width: '33vw',
                     }}
                 >
-                    <VacationForm data={vacation} />
+                    <UpdateVacationForm data={vacation} />
                 </Card>
             </Fade>
         </Modal>

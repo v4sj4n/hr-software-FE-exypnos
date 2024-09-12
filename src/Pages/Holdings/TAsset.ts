@@ -26,3 +26,9 @@ export type UserWithHoldings = {
     assets: Asset[]
     role: string
 }
+
+export type UsersWithHoldings = {
+    data: UserWithHoldings[]
+    totalPages: number
+    all: number
+}
