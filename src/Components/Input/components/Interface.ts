@@ -12,7 +12,6 @@ export interface InputProps {
     IsUsername?: boolean
     inputRef?: React.RefObject<HTMLInputElement>
     isCheckBox?: boolean
-    isFilter?: boolean
     type?: boolean | string
     isPassword?: boolean
     icon?: React.ReactNode

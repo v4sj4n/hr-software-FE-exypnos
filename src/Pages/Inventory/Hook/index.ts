@@ -6,7 +6,9 @@ import {
     getAllInventoryItems,
     getOneInventoryItem,
 } from './queries'
-import { CreateInventoryItemFormFields } from '@/Schemas/Inventory/CreateInventoryItem.schema'
+import { valibotValidator } from '@tanstack/valibot-form-adapter'
+import { useForm } from '@tanstack/react-form'
+import { AxiosError } from 'axios'
 
 export const useAllInventoryItems = () => {
     const { searchParams } = useContext(InventoryContext)
@@ -57,4 +59,40 @@ export const useCreateInventoryItem = () => {
             handleCloseCreateModalOpen()
         },
     })
+}
+
+export const useCreateItemForm = () => {
+    const { setError } = useContext(InventoryContext)
+    const { mutate, isError, error } = useCreateInventoryItem()
+
+    const form = useForm({
+        defaultValues: {
+            type: 'laptop',
+            serialNumber: '',
+        },
+        onSubmit: async ({ value }) => {
+            mutate({
+                type: value.type as 'laptop' | 'monitor',
+                serialNumber: value.serialNumber,
+            })
+            if (isError) {
+                if (error instanceof AxiosError) {
+                    if (error?.response?.data?.message) {
+                        setError(error?.response?.data?.message)
+                        return
+                    }
+                    if (error.code === 'ERR_NETWORK') {
+                        setError(
+                            'No internet connection. Please try again later.',
+                        )
+                        return
+                    }
+                }
+                setError('An error occurred. Please try again later.')
+            }
+        },
+        validatorAdapter: valibotValidator(),
+    })
+
+    return { form }
 }

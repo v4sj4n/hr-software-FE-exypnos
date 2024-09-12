@@ -15,11 +15,9 @@ function CandidatesCoontext() {
         pageSize,
         isPending,
     } = useCandidateContext()
-
-
-    return (
-        <> {
-            isPending ? (<div
+    if (isPending)
+        return (
+            <div
                 style={{
                     display: 'flex',
                     fontSize: '30px',
@@ -27,20 +25,21 @@ function CandidatesCoontext() {
                     marginTop: '200px',
                 }}
             >
+                {' '}
                 <RingLoader />
-            </div>) :
-                <DataTable
-                    getRowId={getRowId}
-                    columns={columns}
-                    rows={rows}
-                    handleRowClick={handleRowClick}
-                    totalPages={totalPages}
-                    page={page}
-                    pageSize={pageSize}
-                    onPaginationModelChange={handlePaginationModelChange}
-                />
-        }
-        </>
+            </div>
+        )
+    return (
+        <DataTable
+            getRowId={getRowId}
+            columns={columns}
+            rows={rows}
+            handleRowClick={handleRowClick}
+            totalPages={totalPages}
+            page={page}
+            pageSize={pageSize}
+            onPaginationModelChange={handlePaginationModelChange}
+        />
     )
 }
 

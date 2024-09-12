@@ -1,0 +1,20 @@
+.statusAcctive {
+    background-color: #02a700;
+    color: #ffffff;
+    padding: 5px 20px 5px 20px;
+    border-radius: 60px;
+}
+
+.statusRejected {
+    background-color: #d32f2f;
+    color: #ffffff;
+    padding: 5px 20px 5px 20px;
+    border-radius: 60px;
+}
+
+/* .statusPending {
+    background-color: orange;
+    color: #ffffff;
+    padding: 5px 20px 5px 20px;
+    border-radius: 60px;
+} */
