@@ -64,6 +64,7 @@ function PayrollContent() {
         setBonus(parseFloat(event.target.value))
     }
 
+    
     const [showFilters, setShowFilters] = useState(false)
 
     return (
