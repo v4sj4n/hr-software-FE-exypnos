@@ -1,14 +1,12 @@
 import React, { useState } from 'react'
-import { PayrollContextSpecific, PayrollRowSpecifc } from '../interface'
+import { PayrollContextSpecific, PayrollRowSpecifc } from '../interface/interface'
 import { GridPaginationModel } from '@mui/x-data-grid'
 import AxiosInstance from '@/Helpers/Axios'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { getMonthName } from '../../utils/Utils'
 
-export const PayrollProviderSpecific: React.FC<{
-    children: React.ReactNode
-}> = ({ children }) => {
+export const PayrollProviderSpecific: React.FC<{ children: any}> = ({ children }) => {
     const { id } = useParams()
     const [month, setMonth] = useState<number | undefined>(undefined)
     const [year, setYear] = useState<number | undefined>(undefined)
@@ -20,23 +18,13 @@ export const PayrollProviderSpecific: React.FC<{
         setPageSize(model.pageSize)
     }
 
-    const fetchPayroll = async (): Promise<{
-        data: PayrollRowSpecifc[]
-        totalPages: number
-    }> => {
-        const response = await AxiosInstance.get<{
-            data: PayrollRowSpecifc[]
-            totalPages: number
-        }>(
-            `/salary/user/${id}?month=${month}&year=${year}&limit=${pageSize}&page=${page}`,
-        )
+    const fetchPayroll = async () => {
+        const response = await AxiosInstance.get<{ data: PayrollRowSpecifc[], totalPages: number}>
+        ( `/salary/user/${id}?month=${month}&year=${year}&limit=${pageSize}&page=${page}`)
         return response.data
     }
 
-    const { data: payrollId, isPending } = useQuery<
-        { data: PayrollRowSpecifc[]; totalPages: number },
-        Error
-    >({
+    const { data: payrollId, isPending } = useQuery<{ data: PayrollRowSpecifc[]; totalPages: number },Error>({
         queryKey: ['payrollId', month, year, page, pageSize],
         queryFn: () => fetchPayroll(),
     })
@@ -72,14 +60,11 @@ export const PayrollProviderSpecific: React.FC<{
         { field: 'bonusDescription', headerName: 'bonusDescription', flex: 2 },
     ]
 
-    const headerTextColors = { firstName: '#0000FF' }
-
     const getRowId = (row: PayrollRowSpecifc) => row.id
 
     const contextValue = {
         rows,
         columns,
-        headerTextColors,
         getRowId,
         setMonth,
         setYear,
@@ -88,9 +73,7 @@ export const PayrollProviderSpecific: React.FC<{
         pageSize,
         totalPages: payrollId?.totalPages ?? 0,
         handlePaginationModelChange,
-        fullName: payrollId?.data[0]
-            ? `${payrollId.data[0].userId.firstName} ${payrollId.data[0].userId.lastName}`
-            : '',
+        fullName: payrollId?.data[0] ? `${payrollId.data[0].userId.firstName} ${payrollId.data[0].userId.lastName}` : '',
     }
 
     return (

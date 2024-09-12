@@ -1,21 +1,12 @@
 import React, { useState } from 'react'
-import {
-    GridPaginationModel,
-    GridRenderCellParams,
-    GridRowParams,
-} from '@mui/x-data-grid'
+import { GridPaginationModel, GridRenderCellParams, GridRowParams} from '@mui/x-data-grid'
 import { Link, useNavigate } from 'react-router-dom'
-import {
-    EmployeeContext,
-    EmployeeRow,
-    UserProfileData,
-} from '../interfaces/Employe'
+import { EmployeeContext, EmployeeRow, UserProfileData } from '../interfaces/Employe'
 import AxiosInstance from '@/Helpers/Axios'
 import { useQuery } from '@tanstack/react-query'
 
-export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({
-    children,
-}) => {
+export const EmployeeProvider: React.FC<{ children: any }> = ({children}) => {
+
     const [page, setPage] = useState(0)
     const [pageSize, setPageSize] = useState(5)
 
@@ -24,23 +15,12 @@ export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({
         setPageSize(model.pageSize)
     }
 
-    const fetchEmployes = async (): Promise<{
-        data: UserProfileData[]
-        totalPages: number
-    }> => {
-        const response = await AxiosInstance.get<{
-            data: UserProfileData[]
-            totalPages: number
-        }>(`/user?page=${page}&limit=${pageSize}`)
-        console.log('path:', `/user?page=${page}&limit=${pageSize}`)
-        console.log('Fetched users:', response.data)
+    const fetchEmployes = async () => {
+        const response = await AxiosInstance.get(`/user?page=${page}&limit=${pageSize}`)
         return response.data
     }
 
-    const { data: users, isPending } = useQuery<
-        { data: UserProfileData[]; totalPages: number },
-        Error
-    >({
+    const { data: users, isPending } = useQuery<{ data: UserProfileData[]; totalPages: number },Error>({
         queryKey: ['users', page, pageSize],
         queryFn: () => fetchEmployes(),
     })
@@ -63,8 +43,7 @@ export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({
         { field: 'email', headerName: 'Email', width: 150, flex: 1 },
         { field: 'phone', headerName: 'Phone', width: 150, flex: 1 },
         { field: 'role', headerName: 'Role', width: 100, flex: 1 },
-        {
-            field: 'actions',
+        { field: 'actions',
             headerName: 'Actions',
             width: 120,
             renderCell: (params: GridRenderCellParams) => (
@@ -78,10 +57,6 @@ export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({
         },
     ]
 
-    const headerTextColors = {
-        firstName: '#0000FF',
-    }
-
     const getRowId = (row: EmployeeRow) => row.id
 
     const handleRowClick = (params: GridRowParams) => {
@@ -91,7 +66,6 @@ export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({
     const contextValue = {
         rows,
         columns,
-        headerTextColors,
         getRowId,
         handleRowClick,
         handlePaginationModelChange,
