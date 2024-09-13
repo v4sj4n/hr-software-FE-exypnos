@@ -2,13 +2,11 @@ import { Backdrop, Modal, Fade, Card, CircularProgress } from '@mui/material'
 import { useContext } from 'react'
 import { VacationContext } from '../../VacationContext'
 import { useGetVacation } from '../../Hook'
-import { VacationForm } from './VacationForm'
+import { UpdateVacationForm } from './UpdateVacationForm'
 
-export const SelectedVacation = () => {
-    const {
-        searchParams,
-        handleCloseVacationModalOpen: handleClose,
-    } = useContext(VacationContext)
+export const SelectedVacationModal = () => {
+    const { searchParams, handleCloseVacationModalOpen: handleClose } =
+        useContext(VacationContext)
 
     const vacation = useGetVacation()
 
@@ -19,7 +17,7 @@ export const SelectedVacation = () => {
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
-            open={searchParams.get("selectedVacation") !== null}
+            open={searchParams.get('selectedVacation') !== null}
             onClose={handleClose}
             closeAfterTransition
             slots={{ backdrop: Backdrop }}
@@ -29,7 +27,7 @@ export const SelectedVacation = () => {
                 },
             }}
         >
-            <Fade in={searchParams.get("selectedVacation") !== null}>
+            <Fade in={searchParams.get('selectedVacation') !== null}>
                 <Card
                     sx={{
                         position: 'absolute',
@@ -43,7 +41,7 @@ export const SelectedVacation = () => {
                         width: '33vw',
                     }}
                 >
-                    <VacationForm data={vacation} />
+                    <UpdateVacationForm data={vacation} />
                 </Card>
             </Fade>
         </Modal>

@@ -1,15 +1,12 @@
-
-
-
-import image from '/Images/office.jpg';
-import styles from './Style/About.module.css';
-import image5 from '/Images/employe.webp';
-import ImageCarousel from './Component/ImageCarousel';
-import AOS from "aos";
-import "aos/dist/aos.css";
-import { useEffect } from 'react';
-import Stepper from './Component/Stepper';
-import { useTheme } from '@mui/material';
+import image from '/Images/office.jpg'
+import styles from './Style/About.module.css'
+import image5 from '/Images/employe.webp'
+import ImageCarousel from './Component/ImageCarousel'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
+import { useEffect } from 'react'
+import Stepper from './Component/Stepper'
+import { useTheme } from '@mui/material'
 
 const About = () => {
     const images = [
@@ -21,10 +18,10 @@ const About = () => {
     ]
 
     useEffect(() => {
-        AOS.init({ once: true });
-    }, []);
-    const theme = useTheme();
-    const  themeStyle={
+        AOS.init({ once: true })
+    }, [])
+    const theme = useTheme()
+    const themeStyle = {
         color: theme.palette.text.primary,
     }
 
@@ -34,15 +31,17 @@ const About = () => {
                 <div className={styles.overlay}>
                     <img src={image} alt="Hero" className={styles.heroImage} />
                 </div>
-                <h1 className={styles.mainTitle}  >
-                    About CodeVider
-                </h1>
+                <h1 className={styles.mainTitle}>About CodeVider</h1>
             </div>
 
-            <div className={styles.infoContainer }>
-                <div data-aos="fade-up" data-aos-duration="1000" className={styles.infoSection}>
+            <div className={styles.infoContainer}>
+                <div
+                    data-aos="fade-up"
+                    data-aos-duration="1000"
+                    className={styles.infoSection}
+                >
                     <h2 style={themeStyle}>Who We Are </h2>
-                    
+
                     <p style={themeStyle}>
                         CodeVider is an Albanian-based web development
                         outsourcing company offering full-stack development
@@ -64,7 +63,11 @@ const About = () => {
                     </p>
                 </div>
 
-                <div data-aos="fade-up" data-aos-duration="1500" className={styles.infoSection}>
+                <div
+                    data-aos="fade-up"
+                    data-aos-duration="1500"
+                    className={styles.infoSection}
+                >
                     <h2 style={themeStyle}>What We Do</h2>
                     <p style={themeStyle}>
                         Our services span front-end, back-end, and database
@@ -72,7 +75,7 @@ const About = () => {
                         efficiency, and flexibility. We adhere to agile
                         methodologies and ensure seamless communication through
                         dedicated project managers.
-                    </p >
+                    </p>
                     <p style={themeStyle}>
                         Communication is key to the success of any project,
                         which is why we assign dedicated project managers to
@@ -85,26 +88,30 @@ const About = () => {
                     <Stepper />
                 </div>
 
-                <div data-aos="fade-up" data-aos-duration="2000" className={styles.infoSection}  >
+                <div
+                    data-aos="fade-up"
+                    data-aos-duration="2000"
+                    className={styles.infoSection}
+                >
                     <h2 style={themeStyle}>Our Mission</h2>
-                    <p  style={themeStyle}>
+                    <p style={themeStyle}>
                         To deliver innovative and efficient web solutions that
-                         drive business growth and user satisfaction.
-                     </p>
-                     <p style={themeStyle}>
-                         Beyond the technical aspects, we also offer consultation
-                         services to help you define your project's scope, choose
+                        drive business growth and user satisfaction.
+                    </p>
+                    <p style={themeStyle}>
+                        Beyond the technical aspects, we also offer consultation
+                        services to help you define your project's scope, choose
                         the right technologies, and plan for future growth. Our
-                         goal is to be more than just a service provider—we aim
-                         to be a trusted partner in your digital transformation
-                         journey.
-                     </p>
-                     <p style={themeStyle}>
-                         Whether you're building a new application from scratch,
-                                                  upgrading an existing system, or integrating new
-                       features, CodeVider is here to help you achieve your
-                         business goals with top-notch web development services.
-                     </p>
+                        goal is to be more than just a service provider—we aim
+                        to be a trusted partner in your digital transformation
+                        journey.
+                    </p>
+                    <p style={themeStyle}>
+                        Whether you're building a new application from scratch,
+                        upgrading an existing system, or integrating new
+                        features, CodeVider is here to help you achieve your
+                        business goals with top-notch web development services.
+                    </p>
                 </div>
                 <div className={styles} data-aos="fade-up" data-aos-duration="2000">
 
@@ -127,13 +134,14 @@ const About = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.cta}
-                    data-aos="fade-up" data-aos-duration="1000"
+                    data-aos="fade-up"
+                    data-aos-duration="1000"
                 >
                     Discover More About CodeVider
                 </a>
             {/* </div> */}
         </div>
-    );
-};
+    )
+}
 
-export default About;
+export default About

@@ -1,7 +1,7 @@
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Input from '@/Components/Input/Index'
-import { Box, Checkbox, FormControlLabel,useTheme } from '@mui/material'
+import { Box, Checkbox, FormControlLabel, useTheme } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { ModalComponent } from '../../../Components/Modal/Modal'
 
@@ -31,7 +31,7 @@ interface RescheduleModalProps {
         notes: string,
         customMessage: string,
         customSubject: string,
-        useCustomEmail: boolean 
+        useCustomEmail: boolean,
     ) => void
     selectedInterview: Interview
     isReschedule: boolean
@@ -48,10 +48,10 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
     const [notes, setNotes] = useState('')
     const [customMessage, setCustomMessage] = useState('')
     const [customSubject, setCustomSubject] = useState('')
-    const [useCustomEmail, setUseCustomEmail] = useState(false) 
+    const [useCustomEmail, setUseCustomEmail] = useState(false)
 
-    const theme = useTheme();
-    const  themeStyle={
+    const theme = useTheme()
+    const themeStyle = {
         color: theme.palette.text.primary,
     }
 
@@ -70,7 +70,13 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
         e.preventDefault()
 
         if (interviewDate) {
-            handleSchedule(interviewDate, notes, customMessage, customSubject, useCustomEmail)
+            handleSchedule(
+                interviewDate,
+                notes,
+                customMessage,
+                customSubject,
+                useCustomEmail,
+            )
         } else {
             console.error('Interview date is required')
         }
@@ -115,7 +121,9 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
                     control={
                         <Checkbox
                             checked={useCustomEmail}
-                            onChange={(e) => setUseCustomEmail(e.target.checked)}
+                            onChange={(e) =>
+                                setUseCustomEmail(e.target.checked)
+                            }
                             color="primary"
                         />
                     }

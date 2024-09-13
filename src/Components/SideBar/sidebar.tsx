@@ -277,15 +277,10 @@ export const SideBar = () => {
                                 {isOpen && (
                                     <span className={style.text}>About</span>
                                 )}
-
-                               
                             </div>
-                            
                         </Link>
-                        
                     </div>
-                    <div >
-                                                    </div>
+                    <div></div>
                 </div>
             </nav>
         </div>

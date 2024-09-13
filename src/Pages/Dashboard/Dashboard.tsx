@@ -21,18 +21,18 @@ const DashboardContent: React.FC = () => {
     const isAdmin = currentUser?.role === 'hr'
 
     const fetchUserProfile = async () => {
-        const response = await AxiosInstance.get('/user');
+        const response = await AxiosInstance.get('/user')
         console.log('Fetched user profile:', response.data)
-        return response.data 
+        return response.data
     }
 
     const { data: UserProfileData } = useQuery({
         queryKey: ['userProfile'],
         queryFn: fetchUserProfile,
-    });
+    })
 
-    console.log('UserProfileData', UserProfileData);
- const navigate = useNavigate()
+    console.log('UserProfileData', UserProfileData)
+    const navigate = useNavigate()
     return (
         <div className={style.dashboardContainer}>
             <div className={style.mainContent}>
@@ -78,14 +78,31 @@ const DashboardContent: React.FC = () => {
                         </div>
                     </div>
                     <div className={style.middleRow}>
-                        <Card1 padding="20px" borderRadius="15px" flex="1" backgroundColor="rgba(255, 255, 255, 0.7)">
-                            <h2 style={{ justifyContent: 'flex-start' }}>Calendar</h2>
+                        <Card1
+                            padding="20px"
+                            borderRadius="15px"
+                            flex="1"
+                            backgroundColor="rgba(255, 255, 255, 0.7)"
+                        >
+                            <h2 style={{ justifyContent: 'flex-start' }}>
+                                Calendar
+                            </h2>
                             <Calendar />
                         </Card1>
-                        <Card1 padding="20px" borderRadius="15px" flex="2" backgroundColor="rgba(255, 255, 255, 0.7)">
+                        <Card1
+                            padding="20px"
+                            borderRadius="15px"
+                            flex="2"
+                            backgroundColor="rgba(255, 255, 255, 0.7)"
+                        >
                             <InfoSection />
                         </Card1>
-                        <Card1 padding="20px" borderRadius="15px" flex="2" backgroundColor="rgba(255, 255, 255, 0.7)">
+                        <Card1
+                            padding="20px"
+                            borderRadius="15px"
+                            flex="2"
+                            backgroundColor="rgba(255, 255, 255, 0.7)"
+                        >
                             <h2>Employee Status</h2>
                             <PieChartComponent />
                         </Card1>
@@ -100,35 +117,40 @@ const DashboardContent: React.FC = () => {
                     >
                         <h2>Team</h2>
                         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                            {UserProfileData?.map((employee: UserProfileData) => (
-                                <div
-                                    key={employee._id}
-                                    style={{
-                                        margin: '10px',
-                                        padding: '10px',
-                                        backgroundColor: 'transparent',
-                                        textAlign: 'center',
-                                    }}
-                                >
-                                    <img
-                                        src={employee.imageUrl} 
-                                        alt={`${employee.firstName} ${employee.lastName}`}
+                            {UserProfileData?.map(
+                                (employee: UserProfileData) => (
+                                    <div
+                                        key={employee._id}
                                         style={{
-                                            width: '100px',
-                                            height: '100px',
-                                            borderRadius: '50%',
-                                            objectFit: 'cover',
-                                            cursor: 'pointer',
-
+                                            margin: '10px',
+                                            padding: '10px',
+                                            backgroundColor: 'transparent',
+                                            textAlign: 'center',
                                         }}
-                                        onClick={() => navigate(`/profile/${employee._id}`)}
-                                    />
-                                    <p>{employee.firstName} {employee.lastName}
-                                        
-                                    </p>
-                                    
-                                </div>
-                            ))}
+                                    >
+                                        <img
+                                            src={employee.imageUrl}
+                                            alt={`${employee.firstName} ${employee.lastName}`}
+                                            style={{
+                                                width: '100px',
+                                                height: '100px',
+                                                borderRadius: '50%',
+                                                objectFit: 'cover',
+                                                cursor: 'pointer',
+                                            }}
+                                            onClick={() =>
+                                                navigate(
+                                                    `/profile/${employee._id}`,
+                                                )
+                                            }
+                                        />
+                                        <p>
+                                            {employee.firstName}{' '}
+                                            {employee.lastName}
+                                        </p>
+                                    </div>
+                                ),
+                            )}
                         </div>
                     </Card1>
                 </div>
@@ -145,4 +167,4 @@ const Dashboard: React.FC = () => {
     )
 }
 
-export default Dashboard;
+export default Dashboard

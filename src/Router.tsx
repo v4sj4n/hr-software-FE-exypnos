@@ -2,7 +2,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import ViewCandidats from './Pages/VIewCandidats/ViewCandidats.tsx'
 import PrivateRoute from './Context/ProtectedRoute.tsx'
 import Candidates from './Pages/Candidates/Candidates.tsx'
-import CreateEmplye from './Pages/CreateEmploye.tsx'
 import Dashboard from './Pages/Dashboard/Dashboard.tsx'
 import Employees from './Pages/Employees/Employees.tsx'
 import Events from './Pages/Events/Events.tsx'
@@ -50,12 +49,13 @@ export default function Router() {
         },
         {
             path: '/',
-            
+
             element: (
                 <>
                     <PrivateRoute />
                 </>
-            ),            children: [
+            ),
+            children: [
                 {
                     path: '/employees',
                     element: <Employees />,
@@ -66,7 +66,7 @@ export default function Router() {
                 },
                 {
                     path: '/promotion/:id',
-                    element: <UserPromotion/>,
+                    element: <UserPromotion />,
                 },
                 { path: '/dashboard', element: <Dashboard />, index: false },
                 {
@@ -96,10 +96,6 @@ export default function Router() {
                 {
                     path: '/payroll',
                     element: <Payroll />,
-                },
-                {
-                    path: '/createEmplye',
-                    element: <CreateEmplye />,
                 },
                 {
                     path: '/structure',

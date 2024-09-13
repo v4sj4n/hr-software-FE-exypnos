@@ -1,15 +1,15 @@
 import { CircularProgress } from '@mui/material'
 import { useGetVacations } from '../Hook'
-import { Vacation } from '../TVacation'
 import DataTable from '@/Components/Table/Table'
 import { GridPaginationModel, GridRenderCellParams } from '@mui/x-data-grid'
 import { dateFormatter } from '@/Helpers/dateFormater'
 import style from '../style/vacationTable.module.scss'
 import { useContext, useEffect } from 'react'
 import { VacationContext } from '../VacationContext'
-import { SelectedVacation } from './form/SelectedVacation'
+import { SelectedVacationModal } from './form/SelectedVacationModal'
 import { StatusBadge } from '@/Components/StatusBadge/StatusBadge'
 import Toast from '@/Components/Toast/Toast'
+import { Vacation } from '../types'
 
 export const VacationTable = () => {
     const {
@@ -61,8 +61,17 @@ export const VacationTable = () => {
             field: 'status',
             headerName: 'Status',
             flex: 1,
-            renderCell: (param: GridRenderCellParams) =>
-                StatusRenderer(param.value),
+            renderCell: ({ value }: GridRenderCellParams) => {
+                const color =
+                    value === 'pending'
+                        ? 'orange'
+                        : value === 'accepted'
+                          ? 'green'
+                          : value === 'rejected'
+                            ? 'red'
+                            : ''
+                return <StatusBadge color={color} status={value} />
+            },
         },
         {
             field: 'startDate',
@@ -85,7 +94,11 @@ export const VacationTable = () => {
             renderCell: (param: GridRenderCellParams) => {
                 return (
                     <span
-                        onClick={() => handleOpenViewVacationModalOpen(param.value as string)}
+                        onClick={() =>
+                            handleOpenViewVacationModalOpen(
+                                param.value as string,
+                            )
+                        }
                         className={style.viewButton}
                     >
                         View
@@ -108,7 +121,7 @@ export const VacationTable = () => {
                 columns={columns}
                 getRowId={getRowId}
             />
-            {searchParams.get('selectedVacation') && <SelectedVacation />}
+            {searchParams.get('selectedVacation') && <SelectedVacationModal />}
             <Toast
                 open={toastConfigs.isOpen}
                 onClose={handleToastClose}
@@ -117,16 +130,4 @@ export const VacationTable = () => {
             />
         </>
     )
-}
-
-const StatusRenderer = (value: string) => {
-    const color =
-        value === 'pending'
-            ? 'orange'
-            : value === 'accepted'
-              ? 'green'
-              : value === 'rejected'
-                ? 'red'
-                : ''
-    return <StatusBadge color={color} status={value} />
 }

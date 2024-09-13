@@ -42,7 +42,6 @@ function EmployeesContent() {
                 page={page}
                 pageSize={pageSize}
                 onPaginationModelChange={handlePaginationModelChange}
-                
             />
         </div>
     )

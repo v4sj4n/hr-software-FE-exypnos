@@ -1,16 +1,16 @@
+import { useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import Card from '../../Components/Card/Card'
-import Input from '../../Components/Input/Index'
-import Button from '../../Components/Button/Button'
-import { ButtonTypes } from '../../Components/Button/ButtonTypes'
+import { useAuth } from '@/Context/AuthProvider'
+import { LoginContext, LoginProvider } from './LoginContext'
+import { useFormLogin } from './Hook'
+import { LoginSchema } from '@/Schemas/Login/Login.schema'
 import img from '/Images/HeroImage.png'
 import logo from '/Images/image_1-removebg-preview.png'
-import { useLogin } from './Hook'
-import style from './styles/Login.module.css'
-import { LoginSchema } from '@/Schemas/Login/Login.schema'
-import AxiosInstance from '@/Helpers/Axios'
-import { useAuth } from '@/Context/AuthProvider'
-import { AxiosError } from 'axios'
+import Card from '@/Components/Card/Card'
+import Input from '@/Components/Input/Index'
+import Button from '@/Components/Button/Button'
+import { RingLoader } from 'react-spinners'
+import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import { useTheme } from '@mui/material'
 import { useEffect, useState } from 'react'
@@ -18,8 +18,8 @@ import { RingLoader } from 'react-spinners'
 import { useForm } from '@tanstack/react-form'
 import { valibotValidator } from '@tanstack/valibot-form-adapter'
 
-const Login: React.FC = () => {
-    const { login, isAuthenticated } = useAuth()
+const LoginComponent = () => {
+    const { isAuthenticated } = useAuth()
     const navigate = useNavigate()
     const { showPassword, handleClickShowPassword } = useLogin()
     const [error, setError] = useState<string | null>(null)
@@ -66,19 +66,11 @@ const Login: React.FC = () => {
         } else {
             setCheckingIsAuthenticated(false)
         }
-    }, [isAuthenticated, navigate])
+    }, [isAuthenticated, navigate, setCheckingIsAuthenticated])
 
     if (checkingIsAuthenticated)
         return (
-            <div
-                style={{
-                    height: '50vw',
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
+            <div className={style.checkIsAuthenticated}>
                 <RingLoader />
             </div>
         )
@@ -109,13 +101,7 @@ const Login: React.FC = () => {
                         validators={{
                             onChange: LoginSchema.entries.email,
                         }}
-                        children={({
-                            state: {
-                                value,
-                                meta: { errors },
-                            },
-                            handleChange,
-                        }) => (
+                        children={(field) => (
                             <div>
                                 <Input
                                     label="Email"
@@ -123,14 +109,16 @@ const Login: React.FC = () => {
                                     IsUsername
                                     width="350px"
                                     type="email"
-                                    value={value}
+                                    value={field.state.value}
                                     onChange={(e) =>
-                                        handleChange(e.target.value)
+                                        field.handleChange(e.target.value)
                                     }
                                 />
 
-                                {errors && (
-                                    <ErrorText>{errors.join(', ')}</ErrorText>
+                                {field.state.meta.errors && (
+                                    <ErrorText>
+                                        {field.state.meta.errors.join(', ')}
+                                    </ErrorText>
                                 )}
                             </div>
                         )}
@@ -141,28 +129,28 @@ const Login: React.FC = () => {
                         validators={{
                             onChange: LoginSchema.entries.password,
                         }}
-                        children={({
-                            state: {
-                                value,
-                                meta: { errors },
-                            },
-                            handleChange,
-                        }) => (
+                        children={(field) => (
                             <div>
                                 <Input
                                     label={'Password'}
                                     id="outlined-adornment-password"
                                     name="password"
                                     type={showPassword}
-                                    onClick={handleClickShowPassword}
+                                    onClick={() =>
+                                        setShowPassword(!showPassword)
+                                    }
                                     width="350px"
                                     isPassword
-                                    value={value}
+                                    value={field.state.value}
                                     onChange={(e) =>
-                                        handleChange(e.target.value)
+                                        field.handleChange(e.target.value)
                                     }
                                 />
-                                {errors && <ErrorText>{errors}</ErrorText>}
+                                {field.state.meta.errors && (
+                                    <ErrorText>
+                                        {field.state.meta.errors}
+                                    </ErrorText>
+                                )}
                             </div>
                         )}
                     />
@@ -188,4 +176,10 @@ const Login: React.FC = () => {
     )
 }
 
-export default Login
+export default function Login() {
+    return (
+        <LoginProvider>
+            <LoginComponent />
+        </LoginProvider>
+    )
+}

@@ -3,6 +3,7 @@ import UsernameInput from './components/Text/Text'
 import PasswordInput from './components/Password/Password'
 import CheckboxInput from './components/Checkbox/Checkbox'
 import { InputProps } from './components/Interface'
+import Filter from './components/Filter/Filter'
 
 const Input: React.FC<InputProps> = (props) => {
     const renderInput = () => {
@@ -13,6 +14,8 @@ const Input: React.FC<InputProps> = (props) => {
                 return <PasswordInput {...props} />
             case props.isCheckBox:
                 return <CheckboxInput {...props} />
+                case props.isFilter:
+                return <Filter {...props} />
             default:
                 return null
         }
