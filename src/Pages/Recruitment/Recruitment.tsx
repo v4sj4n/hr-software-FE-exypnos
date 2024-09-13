@@ -361,6 +361,8 @@ export default function Recruitment() {
                         }) => (
                             <div>
                                 <Selecter
+                                     width='100%'
+
                                     label="Applying Method"
                                     name="applicationMethod"
                                     multiple={false}
@@ -454,6 +456,7 @@ export default function Recruitment() {
                         }) => (
                             <div className={style.spanTwoDiv}>
                                 <Selecter
+                                width='100%'
                                     multiple={false}
                                     label="Experience"
                                     name="experience"
@@ -490,6 +493,8 @@ export default function Recruitment() {
                         }) => (
                             <div className={style.spanTwoDiv}>
                                 <Selecter
+                                 width='100%'
+
                                     options={technologies}
                                     multiple
                                     label="Technologies"
@@ -570,6 +575,7 @@ export default function Recruitment() {
                     />
                     <Button1
                         type={ButtonTypes.TERTIARY}
+                        // width='70px'
                         btnText={
                             form.state.isSubmitting ? 'Submitting...' : 'Submit'
                         }

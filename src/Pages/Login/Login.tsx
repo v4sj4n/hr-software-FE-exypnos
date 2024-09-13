@@ -12,7 +12,7 @@ import AxiosInstance from '@/Helpers/Axios'
 import { useAuth } from '@/Context/AuthProvider'
 import { AxiosError } from 'axios'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
-
+import { useTheme } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { RingLoader } from 'react-spinners'
 import { useForm } from '@tanstack/react-form'
@@ -23,6 +23,8 @@ const Login: React.FC = () => {
     const navigate = useNavigate()
     const { showPassword, handleClickShowPassword } = useLogin()
     const [error, setError] = useState<string | null>(null)
+    const theme= useTheme()
+    const backgroundTint= {background: theme.palette.background.default}
 
     const form = useForm({
         defaultValues: {
@@ -84,14 +86,14 @@ const Login: React.FC = () => {
     return (
         <div className={style.container}>
             <div className={style.content}>
-                <img className={style.img} alt="img" src={img} />
+                <img className={style.img} alt="img" src={img}  />
                 <Link className={style.slogan} to="/">
                     Code With Love
                 </Link>
             </div>
             <Card padding="30px" gap="20px">
                 <div className={style.cardLogoStyle}>
-                    <img className={style.img2} alt="img" src={logo} />
+                    <img className={style.img2} alt="img" src={logo}  />
                 </div>
                 <div className={style.title}>Login</div>
                 <form

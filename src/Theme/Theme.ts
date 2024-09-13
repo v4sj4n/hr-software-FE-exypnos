@@ -7,12 +7,12 @@ export const deepBlueTheme = createTheme({
       main: '#2469ff',
     },
     background: {
-      default: '#D7EBF2',  // Background color for the main content
-      paper: '#FFFFFF',  // Card color remains consistent
+      default: '#D7EBF2',  
+      paper: '#FFFFFF',  
     },
     text: {
-      primary: '#1c449ad7',  // Black font color
-      secondary: '#001F54',  // Blue font color
+      primary: '#1c449ad7',  
+      secondary: '#001F54',  
     },
   },
   components: {
@@ -29,6 +29,7 @@ export const deepBlueTheme = createTheme({
     },
   },
 });
+
 
 export const purpleTheme = createTheme({
   palette: {

@@ -33,62 +33,68 @@ function InterviewKanbanContent() {
     } = useInterviewContext()
 
     const [currentPhase, setCurrentPhase] = useState<string>('first_interview')
-    const [startDate, setStartDate] = useState<string | null>(null)
-    const [endDate, setEndDate] = useState<string | null>(null)
+    const [startDate, setStartDate] = useState<string>('')
+    const [endDate, setEndDate] = useState<string>('')
     const [currentTab, setCurrentTab] = useState<string>('first_interview')
-    const [filteredInterviews, setFilteredInterviews] = useState<Interview[]>(interviews)
+    const [filteredInterviews, setFilteredInterviews] = useState<Interview[]>([])
     const [isFiltered, setIsFiltered] = useState(false)
 
     useEffect(() => {
-        fetchFilteredInterviews()
+        fetchFilteredInterviews().then(setFilteredInterviews)
     }, [])
 
     useEffect(() => {
-        if (isFiltered) {
-            const tabFilteredInterviews = filteredInterviews.filter((interview) => {
-                if (currentTab === 'first_interview' && interview.currentPhase === 'first_interview') return true
-                if (currentTab === 'second_interview' && interview.currentPhase === 'second_interview') return true
-                if (currentTab === 'rejected' && interview.status === 'rejected') return true
-                if (currentTab === 'employed' && interview.status === 'employed') return true
-                return false
-            })
-            setFilteredInterviews(tabFilteredInterviews)
-        } else {
-            const tabFilteredInterviews = interviews.filter((interview) => {
-                if (currentTab === 'first_interview' && interview.currentPhase === 'first_interview') return true
-                if (currentTab === 'second_interview' && interview.currentPhase === 'second_interview') return true
-                if (currentTab === 'rejected' && interview.status === 'rejected') return true
-                if (currentTab === 'employed' && interview.status === 'employed') return true
-                return false
-            })
-            setFilteredInterviews(tabFilteredInterviews)
+        filterInterviews()
+    }, [currentTab, interviews, isFiltered, startDate, endDate])
+
+    const filterInterviews = () => {
+        let filtered = interviews.filter((interview) => {
+            if (currentTab === 'first_interview' && interview.currentPhase === 'first_interview') return true
+            if (currentTab === 'second_interview' && interview.currentPhase === 'second_interview') return true
+            if (currentTab === 'rejected' && interview.status === 'rejected') return true
+            if (currentTab === 'employed' && interview.status === 'employed') return true
+            return false
+        })
+
+        if (isFiltered && startDate && endDate) {
+            const start = new Date(startDate as string);
+            const end = new Date(endDate as string);
+            end.setHours(23, 59, 59, 999); 
+        
+            filtered = filtered.filter((interview) => {
+                const interviewDateRaw = interview.currentPhase === 'second_interview'
+                    ? interview.secondInterviewDate
+                    : interview.firstInterviewDate;
+                
+                if (interviewDateRaw) {
+                    const interviewDate = new Date(interviewDateRaw);
+                    return interviewDate >= start && interviewDate <= end;
+                }
+        
+                return false;
+            });
         }
-    }, [currentTab, interviews, isFiltered])
+        
+        setFilteredInterviews(filtered);
+    }        
 
     const handleTabChange = (_event: React.SyntheticEvent, newValue: string) => {
         setCurrentTab(newValue)
     }
 
     const handleApplyFilter = () => {
-        console.log('Applying filter with:', { currentPhase, startDate, endDate })
-        fetchFilteredInterviews(
-            currentPhase,
-            startDate ? new Date(startDate) : undefined,
-            endDate ? new Date(endDate) : undefined,
-        ).then((filteredData) => {
-            setFilteredInterviews(filteredData)
-            setIsFiltered(true)
-            setCurrentTab(currentPhase)
-        })
+        setIsFiltered(true)
+        setCurrentTab(currentPhase)
     }
 
     const handleClearFilter = () => {
         setIsFiltered(false)
         setCurrentPhase('first_interview')
-        setStartDate(null)
-        setEndDate(null)
-        fetchFilteredInterviews()
+        setStartDate('')
+        setEndDate('')
+        setCurrentTab('first_interview')
     }
+
 
     if (loading) return <div>Loading...</div>
     if (error) {
@@ -104,13 +110,15 @@ function InterviewKanbanContent() {
         <div className={style.kanbanBoard}>
             <div className={style.filterContainer}>
                 <Selecter
-                    name="currentPhase"
+name="currentPhase"
                     label="Current Phase"
                     multiple={false}
                     value={currentPhase}
+                    width='250px'
                     options={phases}
-                    onChange={(newValue) => setCurrentPhase(newValue)}
-                />
+    onChange={(newValue) => setCurrentPhase(Array.isArray(newValue) ? newValue[0] : newValue)}
+
+/>
                 <Input
                     IsUsername
                     name=""
