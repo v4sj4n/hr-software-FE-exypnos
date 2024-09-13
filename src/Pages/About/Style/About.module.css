@@ -124,25 +124,8 @@
 }
 
 .ctaContainer {
-    text-align: center;
-    margin-top: 50px;
+  text-align: center;
+  margin-top: 50px;
+  width: 100%;
 }
 
-.cta {
-    background-color: #0066cc;
-    color: rgba(255, 255, 255, 0.7);
-    padding: 15px 30px;
-    text-decoration: none;
-    border-radius: 30px; /* More rounded for a modern look */
-    transition:
-        background-color 0.3s ease,
-        transform 0.3s ease;
-    font-size: 1.2rem;
-    letter-spacing: 1px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds shadow for depth */
-}
-
-.cta:hover {
-    background-color: #004d99;
-    transform: scale(1.05); /* Slightly scales up on hover */
-}

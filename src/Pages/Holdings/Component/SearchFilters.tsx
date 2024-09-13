@@ -14,6 +14,7 @@ import {
 import { CssVarsProvider, extendTheme } from '@mui/joy/styles'
 // import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
 
+
 export const HoldingsSearchFilter = () => {
     const { searchParams, setSearchParams } = useContext(HoldingsContext)
 
@@ -105,7 +106,7 @@ export const HoldingsSearchFilter = () => {
                         }
                         sx={{
                             gap: 1,
-
+                            backgroundColor: 'transparent',
                             flexWrap: 'wrap',
                             flexDirection: 'row',
                         }}

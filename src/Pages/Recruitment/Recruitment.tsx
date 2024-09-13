@@ -216,6 +216,8 @@ function RecruitmentBase() {
                         }) => (
                             <div>
                                 <Selecter
+                                     width='100%'
+
                                     label="Applying Method"
                                     name="applicationMethod"
                                     multiple={false}
@@ -301,6 +303,7 @@ function RecruitmentBase() {
                         }) => (
                             <div className={style.spanTwoDiv}>
                                 <Selecter
+                                width='100%'
                                     multiple={false}
                                     label="Experience"
                                     name="experience"
@@ -330,6 +333,8 @@ function RecruitmentBase() {
                         }) => (
                             <div className={style.spanTwoDiv}>
                                 <Selecter
+                                 width='100%'
+
                                     options={technologies}
                                     multiple
                                     label="Technologies"
@@ -410,6 +415,7 @@ function RecruitmentBase() {
                     />
                     <MyButton
                         type={ButtonTypes.TERTIARY}
+                        // width='70px'
                         btnText={
                             form.state.isSubmitting ? 'Submitting...' : 'Submit'
                         }

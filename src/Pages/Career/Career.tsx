@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import style from './Style/Career.module.css'
 import Button from '@/Components/Button/Button'
+
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import {
     useGetAllEvents,
@@ -17,7 +18,7 @@ import worker3 from '/public/Images/happyWork3.jpeg'
 import worker2 from '/public/Images/happyWorkers2.jpg'
 import { Link } from 'react-router-dom'
 
-const Careers = () => {
+export const Careers = () => {
     const { events, setEvents, isLoading } = useGetAllEvents()
     const { createEvent, handleChange, event, createEventError } =
         useCreateEvent(setEvents)

@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react'
-import {
-    Logout as LogoutIcon,
+import {    Logout as LogoutIcon,
     PermIdentity as PermIdentityIcon,
     Menu as MenuIcon,
 } from '@mui/icons-material'
@@ -13,8 +12,7 @@ import { EventsProvider } from '@/Pages/Events/Context/EventsContext'
 import NotificationDropdown from '@/Pages/Notification/Notification'
 import { ClickAwayListener } from '@mui/material'
 import ThemeSwitcher from '@/Theme/ThemeSwitcher'
-
-import { useTheme } from '@mui/material/styles'
+import { useTheme } from '@mui/material/styles' 
 
 export const HeaderContent = () => {
     const { isSidebarOpen: isOpen, toggleSidebar } =
