@@ -11,9 +11,8 @@ import {
     radioClasses,
 } from '@mui/joy'
 import { CssVarsProvider, extendTheme } from '@mui/joy/styles'
-
-import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
 import { VacationContext } from '../VacationContext'
+// import { TooltipImproved } from '@/Components/Tooltip/Tooltip'
 
 export const EmployeesWithVacationsSearchFilter = () => {
     const theme = extendTheme({
@@ -143,6 +142,8 @@ export const EmployeesWithVacationsSearchFilter = () => {
                                         },
                                 }}
                             >
+                                {/*
+                                PROBLEME KUR ESHTE INSTALUAR THEME PURPLE / BLUE
                                 <TooltipImproved
                                     text={
                                         usersFilter === 'ALL'
@@ -153,21 +154,21 @@ export const EmployeesWithVacationsSearchFilter = () => {
                                     }
                                     placement="top"
                                     offset={[0, 5]}
-                                >
-                                    <Radio
-                                        color="neutral"
-                                        overlay
-                                        disableIcon
-                                        value={
-                                            usersFilter === 'ALL'
-                                                ? 'all'
-                                                : usersFilter === 'W Vacations'
-                                                  ? 'with'
-                                                  : 'without'
-                                        }
-                                        label={usersFilter}
-                                    />
-                                </TooltipImproved>
+                                > */}
+                                <Radio
+                                    color="neutral"
+                                    overlay
+                                    disableIcon
+                                    value={
+                                        usersFilter === 'ALL'
+                                            ? 'all'
+                                            : usersFilter === 'W Vacations'
+                                              ? 'with'
+                                              : 'without'
+                                    }
+                                    label={usersFilter}
+                                />
+                                {/* </TooltipImproved> */}
                             </Sheet>
                         ))}
                     </RadioGroup>

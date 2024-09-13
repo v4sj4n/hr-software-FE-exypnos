@@ -5,10 +5,3 @@
     width: 100%;
     gap: 20px;
 }
-
-.ring{
-display: flex;
-font-size: 30px;
-justify-content: center;
-margin-top: 50px;
-}
