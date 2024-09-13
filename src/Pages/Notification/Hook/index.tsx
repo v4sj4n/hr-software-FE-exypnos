@@ -7,6 +7,7 @@ interface Notification {
     type: string
     typeId: string
     content: string
+    date: string
     isRead: boolean
 }
 export const useGetAllNotifications = () => {
@@ -16,10 +17,9 @@ export const useGetAllNotifications = () => {
     const fetchNotifications = async (userId: string) => {
         try {
             const response = await AxiosInstance.get(
-                `notification/user/${userId}?page=0&limit=5`,
+                `notification/user/${userId}?period=today`,
             )
-            setNotifications(response.data.data)
-            console.log('Notification fetch:', response.data.data)
+            setNotifications(response.data)
         } catch (error) {
             console.error('Error fetching notifications:', error)
         }
@@ -29,6 +29,5 @@ export const useGetAllNotifications = () => {
             fetchNotifications(currentUserId.toString())
         }
     }, [currentUserId])
-    console.log('Notifications:', notifications)
     return { notifications, setNotifications }
 }
