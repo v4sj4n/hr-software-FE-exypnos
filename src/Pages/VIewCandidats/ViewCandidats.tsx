@@ -137,8 +137,7 @@ export default function ViewCandidats() {
                                         ? style.statusActive
                                         : applicant?.status === 'rejected'
                                           ? style.statusRejected
-                                          : //   : style.statusPending
-                                            ''
+                                          : ''
                                 }`}
                             >
                                 {applicant?.status}
@@ -187,22 +186,12 @@ export default function ViewCandidats() {
                     }}
                 >
                     <div className={style.label}>Create Interview:</div>
-                    {/* {applicant?.status !== 'active' && (  */}
                     <Button
                         type={ButtonTypes.PRIMARY}
                         btnText="Create Interview"
                         width="100%"
                         onClick={() => handleOpenModal('active')}
                     />
-
-                    {/* {applicant?.status !== 'rejected' && (
-                        <Button
-                            type={ButtonTypes.PRIMARY}
-                            btnText="Reject"
-                            width="100%"
-                            onClick={() => handleOpenModal('reject')}
-                        />
-                    )} */}
                 </div>
             </Card>
             {showModal && (

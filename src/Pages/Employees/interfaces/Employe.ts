@@ -18,7 +18,6 @@ export interface EmployeeRow {
 export interface EmployeeContextType {
     rows: EmployeeRow[]
     columns: GridColDef[]
-    headerTextColors: { [key: string]: string }
     isPending: boolean
     getRowId: (row: EmployeeRow) => number
     handleRowClick: (params: GridRowParams) => void
