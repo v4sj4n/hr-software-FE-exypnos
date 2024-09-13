@@ -1,7 +1,6 @@
 import { DataGrid,  GridValidRowModel } from '@mui/x-data-grid'
 import { TableStyles } from '../Input/Styles'
 import { DataTableProps } from './Interface'
-
 export default function DataTable<T extends GridValidRowModel>({
     rows,
     columns,

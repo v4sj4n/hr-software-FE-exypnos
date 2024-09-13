@@ -12,52 +12,21 @@ import Button from '@/Components/Button/Button'
 import { RingLoader } from 'react-spinners'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
-import { useTheme } from '@mui/material'
-import { useEffect, useState } from 'react'
-import { RingLoader } from 'react-spinners'
-import { useForm } from '@tanstack/react-form'
-import { valibotValidator } from '@tanstack/valibot-form-adapter'
+import style from './styles/Login.module.css'
 
 const LoginComponent = () => {
     const { isAuthenticated } = useAuth()
     const navigate = useNavigate()
-    const { showPassword, handleClickShowPassword } = useLogin()
-    const [error, setError] = useState<string | null>(null)
-    const theme= useTheme()
-    const backgroundTint= {background: theme.palette.background.default}
+    const {
+        checkingIsAuthenticated,
+        setCheckingIsAuthenticated,
+        error,
+        setError,
+        setShowPassword,
+        showPassword,
+    } = useContext(LoginContext)
 
-    const form = useForm({
-        defaultValues: {
-            email: '',
-            password: '',
-        },
-        validatorAdapter: valibotValidator(),
-        onSubmit: async ({ value }) => {
-            try {
-                const res = await AxiosInstance.post('/auth/signin', value)
-                const user = res.data.data.user
-                const role = user.role
-                const access_token = res.data.data.access_token
-                login(access_token, role, user)
-            } catch (err: unknown) {
-                if (err instanceof AxiosError) {
-                    if (err?.response?.data?.message) {
-                        setError(err?.response?.data?.message)
-                        return
-                    }
-                    if (err.code === 'ERR_NETWORK') {
-                        setError(
-                            'No internet connection. Please try again later.',
-                        )
-                        return
-                    }
-                }
-                setError('An error occurred. Please try again later.')
-            }
-        },
-    })
-
-    const [checkingIsAuthenticated, setCheckingIsAuthenticated] = useState(true)
+    const { form } = useFormLogin(setError)
 
     useEffect(() => {
         if (localStorage.getItem('access_token')) {
@@ -78,14 +47,14 @@ const LoginComponent = () => {
     return (
         <div className={style.container}>
             <div className={style.content}>
-                <img className={style.img} alt="img" src={img}  />
+                <img className={style.img} alt="img" src={img} />
                 <Link className={style.slogan} to="/">
                     Code With Love
                 </Link>
             </div>
             <Card padding="30px" gap="20px">
                 <div className={style.cardLogoStyle}>
-                    <img className={style.img2} alt="img" src={logo}  />
+                    <img className={style.img2} alt="img" src={logo} />
                 </div>
                 <div className={style.title}>Login</div>
                 <form
