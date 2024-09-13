@@ -76,10 +76,6 @@ const NotificationDropdown: React.FC = () => {
             )
         } else if (notification.type === 'candidates') {
             navigate(`/view/${notification.typeId}`)
-        } else if (notification.type === 'allVacation') {
-            navigate(`/vacation?vacationType=requests&page=0&limit=5`)
-        } else if (notification.type === 'allCandidates') {
-            navigate(`/candidates`)
         }
     }
 
@@ -94,12 +90,6 @@ const NotificationDropdown: React.FC = () => {
                 return 'green'
             case 'candidates':
                 return 'purple'
-            case 'allVacation':
-                return 'green'
-            case 'allApplication':
-                return 'purple'
-            default:
-                return '#6C757D'
         }
     }
 
