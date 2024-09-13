@@ -41,7 +41,6 @@ export interface applicantsData {
 export interface CandidateContextType {
     rows: CandidateRow[]
     columns: GridColDef[]
-    headerTextColors: { [key: string]: string }
     getRowId: (row: CandidateRow) => number
     handleRowClick: (params: GridRowParams) => void
     isPending: boolean

@@ -1,37 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import Checkbox from '@mui/material/Checkbox'
 import { Tooltip } from '@mui/material'
-import styles from './EventsPoll.module.css'
+import styles from './style/EventsPoll.module.css'
 import AxiosInstance from '@/Helpers/Axios'
 import { useAuth } from '@/Context/AuthProvider'
-
-interface Voter {
-    _id: string
-    firstName: string
-    lastName: string
-}
-
-interface PollOption {
-    option: string
-    votes: number
-    voters: Voter[]
-}
-
-interface Poll {
-    question: string
-    options: PollOption[]
-}
-
-interface EventPollProps {
-    poll: Poll
-    eventId: number
-    userId: number | undefined
-}
+import { EventPollProps, Poll, PollOption, Voter } from './Interface/Interface'
 
 const EventPoll: React.FC<EventPollProps> = ({ poll, eventId, userId }) => {
     const { currentUser } = useAuth()
     const [localPoll, setLocalPoll] = useState<Poll>(poll)
-    const isAdmin = currentUser?.role === 'admin'
+    const isAdmin = currentUser?.role === 'hr'
 
     useEffect(() => {
         setLocalPoll(poll)

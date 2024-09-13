@@ -14,17 +14,16 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     const [showEventModal, setShowEventModal] = useState<boolean>(false)
     const [selectedEvent, setSelectedEvent] = useState<EventsData | null>(null)
     const [drawerOpen, setDrawerOpen] = useState(false)
-    const [drawerAction, setDrawerAction] = useState<'create' | 'edit'>(
-        'create',
-    )
-
+    const [drawerAction, setDrawerAction] = useState<'create' | 'edit'>('create')
+    const { data: users = [] } = useGetAllUsers()
     const { currentUser } = useAuth()
     const isAdmin = currentUser?.role === 'hr'
     const typesofEvent = ['sports', 'teambuilding', 'training', 'other']
-    const { data: users = [] } = useGetAllUsers()
-    console.log('gertiiiiiiiiiiiiiiiiiiiiii', users)
     const allEmails = users.map((user) => user.auth?.email)
-    console.log('allEmails', allEmails)
+
+    const formatDate = (date: string): string => {
+        return date.split('T')[0].replace(/-/g, '/');
+    };
 
     const handleSeeEventDetails = async (event: EventsData) => {
         try {
@@ -38,6 +37,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     const [searchParams] = useSearchParams()
+
     const eventId = searchParams.get('event')
 
     useEffect(() => {
@@ -82,7 +82,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         handleFileUpload,
         eventPhotos,
         handleLocationChange,
-
         createdEvents,
     } = useCreateEvent(handleCloseDrawer)
 
@@ -174,6 +173,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
                 handleFileUpload,
                 eventPhotos,
                 createdEvents,
+                formatDate
             }}
         >
             {children}
