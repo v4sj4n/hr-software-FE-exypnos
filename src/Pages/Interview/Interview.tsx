@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import CheckIcon from '@mui/icons-material/Check'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditCalendarIcon from '@mui/icons-material/EditCalendar'
 import { Tooltip, Tabs, Tab, useTheme } from '@mui/material'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-import {
-    Interview,
-    InterviewProvider,
-    useInterviewContext,
-} from './Hook/InterviewContext'
+import { InterviewProvider, useInterviewContext } from './Hook/InterviewContext'
 import style from './styles/Interview.module.css'
 import Button from '@/Components/Button/Button'
 import RescheduleModal from './Component/ScheduleForm'
@@ -20,7 +15,6 @@ function InterviewKanbanContent() {
     const {
         loading,
         error,
-        fetchFilteredInterviews,
         isReschedule,
         selectedInterview,
         isModalOpen,
@@ -33,82 +27,26 @@ function InterviewKanbanContent() {
         formatDate,
         phases,
         handleAccept,
-        interviews,
+        handleApplyFilter,
+        handleClearFilter,
+        handleTabChange,
+        currentTab,
+        currentPhase,
+        startDate,
+        endDate,
+        setCurrentPhase,
+        setStartDate,
+        setEndDate,
+        filteredInterviews,
+        isFiltered
     } = useInterviewContext()
-
-    const [currentPhase, setCurrentPhase] = useState<string>('first_interview')
-    const [startDate, setStartDate] = useState<string>('')
-    const [endDate, setEndDate] = useState<string>('')
-    const [currentTab, setCurrentTab] = useState<string>('first_interview')
-    const [filteredInterviews, setFilteredInterviews] = useState<Interview[]>([])
-    const [isFiltered, setIsFiltered] = useState(false)
-
-    useEffect(() => {
-        fetchFilteredInterviews().then(setFilteredInterviews)
-    }, [])
-
-    useEffect(() => {
-        filterInterviews()
-    }, [currentTab, interviews, isFiltered, startDate, endDate])
-
-    const filterInterviews = () => {
-        let filtered = interviews.filter((interview) => {
-            if (currentTab === 'first_interview' && interview.currentPhase === 'first_interview') return true
-            if (currentTab === 'second_interview' && interview.currentPhase === 'second_interview') return true
-            if (currentTab === 'rejected' && interview.status === 'rejected') return true
-            if (currentTab === 'employed' && interview.status === 'employed') return true
-            return false
-        })
-
-        if (isFiltered && startDate && endDate) {
-            const start = new Date(startDate as string);
-            const end = new Date(endDate as string);
-            end.setHours(23, 59, 59, 999); 
-        
-            filtered = filtered.filter((interview) => {
-                const interviewDateRaw = interview.currentPhase === 'second_interview'
-                    ? interview.secondInterviewDate
-                    : interview.firstInterviewDate;
-                
-                if (interviewDateRaw) {
-                    const interviewDate = new Date(interviewDateRaw);
-                    return interviewDate >= start && interviewDate <= end;
-                }
-        
-                return false;
-            });
-        }
-        
-        setFilteredInterviews(filtered);
-    }        
-
-    const handleTabChange = (
-        _event: React.SyntheticEvent,
-        newValue: string,
-    ) => {
-        setCurrentTab(newValue)
-    }
-
-    const handleApplyFilter = () => {
-        setIsFiltered(true)
-        setCurrentTab(currentPhase)
-    }
-
-    const handleClearFilter = () => {
-        setIsFiltered(false)
-        setCurrentPhase('first_interview')
-        setStartDate('')
-        setEndDate('')
-        setCurrentTab('first_interview')
-    }
-
 
     if (loading) return <div>Loading...</div>
     if (error) {
-        const errorMessage =
-            error instanceof Error ? error.message : 'Unknown error'
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
         return <div>Error loading interviews: {errorMessage}</div>
     }
+
     const theme = useTheme()
     const applicantCountStyle = {
         color: theme.palette.text.primary,
@@ -118,15 +56,16 @@ function InterviewKanbanContent() {
         <div className={style.kanbanBoard}>
             <div className={style.filterContainer}>
                 <Selecter
-name="currentPhase"
+                    name="currentPhase"
                     label="Current Phase"
                     multiple={false}
                     value={currentPhase}
                     width='250px'
                     options={phases}
-    onChange={(newValue) => setCurrentPhase(Array.isArray(newValue) ? newValue[0] : newValue)}
-
-/>
+                    onChange={(newValue) =>
+                        setCurrentPhase(Array.isArray(newValue) ? newValue[0] : newValue)
+                    }
+                />
                 <Input
                     IsUsername
                     name=""
@@ -172,11 +111,7 @@ name="currentPhase"
                 className={style.tabs}
             >
                 {phases.map((phase) => (
-                    <Tab
-                        key={phase}
-                        value={phase}
-                        label={phase.toUpperCase()}
-                    />
+                    <Tab key={phase} value={phase} label={phase.toUpperCase()} />
                 ))}
             </Tabs>
 
@@ -185,10 +120,7 @@ name="currentPhase"
                     <div key={currentTab} className={style.kanbanColumn}>
                         <h2>
                             {currentTab.toUpperCase()}
-                            <span
-                                className={style.applicantCount}
-                                style={applicantCountStyle}
-                            >
+                            <span className={style.applicantCount} style={applicantCountStyle}>
                                 ({filteredInterviews.length})
                             </span>
                         </h2>
@@ -200,214 +132,110 @@ name="currentPhase"
                                     className={style.kanbanList}
                                 >
                                     {filteredInterviews.length === 0 ? (
-                                        <p>
-                                            Sorry, there is nothing to show
-                                            here.
-                                        </p>
+                                        <p>Sorry, there is nothing to show here.</p>
                                     ) : (
-                                        filteredInterviews.map(
-                                            (interview, index) => (
-                                                <Draggable
-                                                    key={interview._id.toString()}
-                                                    draggableId={interview._id.toString()}
-                                                    index={index}
-                                                >
-                                                    {(provided) => (
-                                                        <div
-                                                            ref={
-                                                                provided.innerRef
+                                        filteredInterviews.map((interview, index) => (
+                                            <Draggable
+                                                key={interview._id.toString()}
+                                                draggableId={interview._id.toString()}
+                                                index={index}
+                                            >
+                                                {(provided) => (
+                                                    <div
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        className={style.kanbanItem}
+                                                    >
+                                                        <h3
+                                                            style={applicantCountStyle}
+                                                            onClick={() =>
+                                                                handleNavigateToProfile(interview._id.toString())
                                                             }
-                                                            {...provided.draggableProps}
-                                                            {...provided.dragHandleProps}
-                                                            className={
-                                                                style.kanbanItem
-                                                            }
+                                                            className={style.candidateName}
                                                         >
-                                                            <h3
-                                                                style={
-                                                                    applicantCountStyle
-                                                                }
-                                                                onClick={() =>
-                                                                    handleNavigateToProfile(
-                                                                        interview._id.toString(),
-                                                                    )
-                                                                }
-                                                                className={
-                                                                    style.candidateName
-                                                                }
-                                                            >
-                                                                {`${interview.firstName} ${interview.lastName}`}{' '}
-                                                                {
-                                                                    interview.positionApplied
-                                                                }
-                                                            </h3>
-                                                            {currentTab !==
-                                                                'employed' &&
-                                                                currentTab !==
-                                                                    'applicant' && (
-                                                                    <>
-                                                                        <p>
-                                                                            <b>
-                                                                                {' '}
-                                                                                Interview
-                                                                                Date{' '}
-                                                                            </b>{' '}
-                                                                            :{' '}
-                                                                            {interview.currentPhase ===
-                                                                            'second_interview'
-                                                                                ? formatDate(
-                                                                                      interview.secondInterviewDate,
-                                                                                  )
-                                                                                : formatDate(
-                                                                                      interview.firstInterviewDate,
-                                                                                  )}
-                                                                        </p>
-                                                                        <p>
-                                                                            <b>
-                                                                                Email
-                                                                            </b>
-                                                                            :{' '}
-                                                                            {
-                                                                                interview.email
+                                                            {`${interview.firstName} ${interview.lastName}`} {interview.positionApplied}
+                                                        </h3>
+                                                        {currentTab !== 'employed' && currentTab !== 'applicant' && (
+                                                            <>
+                                                                <p>
+                                                                    <b>Interview Date:</b>{' '}
+                                                                    {interview.currentPhase === 'second_interview'
+                                                                        ? formatDate(interview.secondInterviewDate)
+                                                                        : formatDate(interview.firstInterviewDate)}
+                                                                </p>
+                                                                <p><b>Email:</b> {interview.email}</p>
+                                                                <p><b>Phone:</b> {interview.phoneNumber}</p>
+                                                                <p><b>Notes:</b> {interview.notes}</p>
+                                                            </>
+                                                        )}
+                                                        {currentTab !== 'employed' && currentTab !== 'applicant' && (
+                                                            <div className={style.buttonContainer}>
+                                                                <Tooltip title="Edit" placement="top">
+                                                                    <span>
+                                                                        <Button
+                                                                            type={ButtonTypes.SECONDARY}
+                                                                            btnText=""
+                                                                            width="40px"
+                                                                            height="30px"
+                                                                            display="flex"
+                                                                            justifyContent="center"
+                                                                            alignItems="center"
+                                                                            color="#2457A3"
+                                                                            borderColor="#2457A3"
+                                                                            icon={<EditCalendarIcon />}
+                                                                            onClick={() =>
+                                                                                handleOpenModal(interview, true)
                                                                             }
-                                                                        </p>
-                                                                        <p>
-                                                                            <b>
-                                                                                Phone
-                                                                            </b>
-                                                                            :{' '}
-                                                                            {
-                                                                                interview.phoneNumber
-                                                                            }
-                                                                        </p>
-                                                                        <p>
-                                                                            <b>
-                                                                                Notes
-                                                                            </b>
-                                                                            :{' '}
-                                                                            {
-                                                                                interview.notes
-                                                                            }
-                                                                        </p>
-                                                                    </>
-                                                                )}
-                                                            {currentTab !==
-                                                                'employed' &&
-                                                                currentTab !==
-                                                                    'applicant' && (
-                                                                    <div
-                                                                        className={
-                                                                            style.buttonContainer
-                                                                        }
-                                                                    >
-                                                                        <Tooltip
-                                                                            title="Edit"
-                                                                            placement="top"
-                                                                        >
-                                                                            <span>
+                                                                        />
+                                                                    </span>
+                                                                </Tooltip>
+                                                                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                                                                    <Tooltip title="Delete" placement="top">
+                                                                        <span>
+                                                                            {currentTab !== 'rejected' && (
                                                                                 <Button
-                                                                                    type={
-                                                                                        ButtonTypes.SECONDARY
-                                                                                    }
-                                                                                    btnText=""
-                                                                                    width="40px"
+                                                                                    btnText=" "
+                                                                                    type={ButtonTypes.SECONDARY}
+                                                                                    width="35px"
                                                                                     height="30px"
+                                                                                    color="#C70039"
+                                                                                    borderColor="#C70039"
                                                                                     display="flex"
                                                                                     justifyContent="center"
                                                                                     alignItems="center"
-                                                                                    color="#2457A3"
-                                                                                    borderColor="#2457A3"
-                                                                                    icon={
-                                                                                        <EditCalendarIcon />
-                                                                                    }
-                                                                                    onClick={() =>
-                                                                                        handleOpenModal(
-                                                                                            interview,
-                                                                                            true,
-                                                                                        )
-                                                                                    }
+                                                                                    icon={<DeleteIcon />}
+                                                                                    onClick={() => handleCancel(interview)}
+                                                                                />
+                                                                            )}
+                                                                        </span>
+                                                                    </Tooltip>
+                                                                    {currentTab !== 'applicant' && (
+                                                                        <Tooltip title="Accept" placement="top">
+                                                                            <span>
+                                                                                <Button
+                                                                                    btnText=""
+                                                                                    type={ButtonTypes.SECONDARY}
+                                                                                    width="35px"
+                                                                                    height="30px"
+                                                                                    color="rgb(2, 167, 0)"
+                                                                                    borderColor="rgb(2, 167, 0)"
+                                                                                    display="flex"
+                                                                                    justifyContent="center"
+                                                                                    alignItems="center"
+                                                                                    icon={<CheckIcon />}
+                                                                                    onClick={() => handleAccept(interview)}
                                                                                 />
                                                                             </span>
                                                                         </Tooltip>
-                                                                        <div
-                                                                            style={{
-                                                                                display:
-                                                                                    'flex',
-                                                                                justifyContent:
-                                                                                    'flex-end',
-                                                                                gap: '10px',
-                                                                            }}
-                                                                        >
-                                                                            <Tooltip
-                                                                                title="Delete"
-                                                                                placement="top"
-                                                                            >
-                                                                                <span>
-                                                                                    {currentTab !==
-                                                                                        'rejected' && (
-                                                                                        <Button
-                                                                                            btnText=" "
-                                                                                            type={
-                                                                                                ButtonTypes.SECONDARY
-                                                                                            }
-                                                                                            width="35px"
-                                                                                            height="30px"
-                                                                                            color="#C70039"
-                                                                                            borderColor="#C70039"
-                                                                                            display="flex"
-                                                                                            justifyContent="center"
-                                                                                            alignItems="center"
-                                                                                            icon={
-                                                                                                <DeleteIcon />
-                                                                                            }
-                                                                                            onClick={() =>
-                                                                                                handleCancel(
-                                                                                                    interview,
-                                                                                                )
-                                                                                            }
-                                                                                        />
-                                                                                    )}
-                                                                                </span>
-                                                                            </Tooltip>
-                                                                            {currentTab !==
-                                                                                'applicant' && (
-                                                                                <Tooltip
-                                                                                    title="Accept"
-                                                                                    placement="top"
-                                                                                >
-                                                                                    <span>
-                                                                                        <Button
-                                                                                            btnText=""
-                                                                                            type={
-                                                                                                ButtonTypes.SECONDARY
-                                                                                            }
-                                                                                            width="35px"
-                                                                                            height="30px"
-                                                                                            color="rgb(2, 167, 0)"
-                                                                                            borderColor="rgb(2, 167, 0)"
-                                                                                            display="flex"
-                                                                                            justifyContent="center"
-                                                                                            alignItems="center"
-                                                                                            icon={
-                                                                                                <CheckIcon />
-                                                                                            }
-                                                                                            onClick={() =>
-                                                                                                handleAccept(
-                                                                                                    interview,
-                                                                                                )
-                                                                                            }
-                                                                                        />
-                                                                                    </span>
-                                                                                </Tooltip>
-                                                                            )}
-                                                                        </div>
-                                                                    </div>
-                                                                )}
-                                                        </div>
-                                                    )}
-                                                </Draggable>
-                                            ),
-                                        )
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                )}
+                                            </Draggable>
+                                        ))
                                     )}
                                     {provided.placeholder}
                                 </div>
