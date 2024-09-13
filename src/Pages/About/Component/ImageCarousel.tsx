@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import styles from './Carousel.module.css';
+import styles from './Carousel.module.css'
+
 
 interface Image {
     src: string;
@@ -31,12 +32,10 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, autoPlay = true, 
 
     useEffect(() => {
         if (autoPlay && !isHovered) {
-            const interval = setInterval(() => {
-                nextSlide();
-            }, autoPlayInterval);
+            const interval = setInterval(nextSlide, autoPlayInterval);
             return () => clearInterval(interval);
         }
-    }, [autoPlay, isHovered, currentIndex]);
+    }, [autoPlay, isHovered, autoPlayInterval]);
 
     return (
         <div
@@ -44,20 +43,16 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, autoPlay = true, 
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <div className={styles.carouselInner}>
-                {images.map((image, index) => {
-                    const position = (index - currentIndex + images.length) % images.length;
-
-                    return (
-                        <div
-                            key={index}
-                            className={`${styles.carouselItem} ${position === 0 ? styles.active : ''}`}
-                        >
-                            <img src={image.src} alt={image.alt} className={styles.carouselImage} />
-                            {image.name && <p className={styles.imageName}>{image.name}</p>}
-                        </div>
-                    );
-                })}
+            <div 
+                className={styles.carouselInner} 
+                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+            >
+                {images.map((image, index) => (
+                    <div key={index} className={styles.carouselItem}>
+                        <img src={image.src} alt={image.alt} className={styles.carouselImage} />
+                        {image.name && <p className={styles.imageName}>{image.name}</p>}
+                    </div>
+                ))}
             </div>
 
             <button onClick={prevSlide} className={`${styles.carouselButton} ${styles.prev}`}>
@@ -67,7 +62,6 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, autoPlay = true, 
                 &gt;
             </button>
 
-            {/* Dots Navigation */}
             <div className={styles.dotsContainer}>
                 {images.map((_, index) => (
                     <span

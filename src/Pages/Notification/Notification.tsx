@@ -8,10 +8,11 @@ import {
     ClickAwayListener,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
-import NotificationsIcon from '@mui/icons-material/Notifications'
+import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import { useNavigate } from 'react-router-dom'
 import { useGetAllNotifications } from '.'
 import AxiosInstance from '@/Helpers/Axios'
+import {useTheme} from '@mui/material/styles'
 
 
 interface Notification {
@@ -77,13 +78,17 @@ const NotificationDropdown: React.FC = () => {
                 return '#6c757d'
         }
     }
+    const theme = useTheme()
+    const  themeStyle={
+        color: theme.palette.text.primary,
+    }
 
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
             <Box sx={{ position: 'relative', display: 'inline-block' }}>
                 <IconButton color="inherit" onClick={handleToggleDropdown}>
                     <Badge badgeContent={notifications.length} color="error">
-                        <NotificationsIcon />
+                        <NotificationsOutlinedIcon fontSize='large' style={themeStyle} />
                     </Badge>
                 </IconButton>
                 {isOpen && notifications.length > 0 && (

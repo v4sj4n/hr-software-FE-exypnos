@@ -3,11 +3,11 @@ import { useThemeContext } from './ThemeContext';
 import { Box, styled } from '@mui/material';
 
 const Slider = styled('div')<{ isPurpleTheme: boolean }>(
-  ({ theme, isPurpleTheme }) => ({
+  ({ isPurpleTheme }) => ({
     width: '50px',
     height: '25px',
     borderRadius: '15px',
-    backgroundColor: isPurpleTheme ? theme.palette.secondary.main : theme.palette.primary.main,
+    backgroundColor: isPurpleTheme ? '#725ABB' : '#4868AD',
     position: 'relative',
     cursor: 'pointer',
     transition: 'background-color 0.3s ease',
@@ -30,15 +30,13 @@ const ThemeSwitcher: React.FC = () => {
   const { toggleTheme, isPurpleTheme } = useThemeContext();
 
   const handleThemeChange = () => {
+    console.log('Current Theme:', isPurpleTheme ? 'Purple' : 'Blue');
     toggleTheme();
   };
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" >
-      
+    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
       <Slider isPurpleTheme={isPurpleTheme} onClick={handleThemeChange} />
-
-     
     </Box>
   );
 };

@@ -13,7 +13,7 @@ import { useTheme } from '@mui/material';
 
 const About = () => {
     const images = [
-        { src: image5, alt: 'Employee 1' },
+        { src: image5, alt: 'Employee 1', },
         { src: image5, alt: 'Employee 2' },
         { src: image5, alt: 'Employee 3' },
         { src: image5, alt: 'Employee 4' },
@@ -106,18 +106,22 @@ const About = () => {
                          business goals with top-notch web development services.
                      </p>
                 </div>
-            </div>
+                <div className={styles} data-aos="fade-up" data-aos-duration="2000">
 
-            <div className={styles.carouselSection} data-aos="fade-up" data-aos-duration="2000">
                 <h3 className={styles.carouselTitle} style={themeStyle}>Our Team</h3>
                 <div className={styles.carouselContainer}>
                     <ImageCarousel images={images} />
                 </div>
+                </div>
+
             </div>
+
+               
+         
 
           
 
-            <div className={styles.ctaContainer}>
+            {/* <div className={styles.ctaContainer}> */}
                 <a
                     href="https://www.codevider.com/"
                     target="_blank"
@@ -127,7 +131,7 @@ const About = () => {
                 >
                     Discover More About CodeVider
                 </a>
-            </div>
+            {/* </div> */}
         </div>
     );
 };

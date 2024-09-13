@@ -27,6 +27,17 @@ export const deepBlueTheme = createTheme({
         },
       },
     },
+    MuiIcon:{
+      styleOverrides: {
+        root: {
+          backgroundColor: '#2469ff',
+          color: '#FFFFFF',
+          '&:hover': {
+            backgroundColor: '#002E8A',
+          }
+        }
+      }
+    }
   },
 });
 
@@ -58,5 +69,16 @@ export const purpleTheme = createTheme({
         },
       },
     },
+    MuiIcon:{
+      styleOverrides: {
+        root: {
+          backgroundColor: '#BF40BF',
+          color: '#FFFFFF',
+          '&:hover': {
+            backgroundColor: '#9A31D9',
+          }
+        }
+      }
+    }
   },
 });

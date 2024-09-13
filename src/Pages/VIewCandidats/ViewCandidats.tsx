@@ -5,6 +5,8 @@ import Button from '../../Components/Button/Button';
 import { ButtonTypes } from '../../Components/Button/ButtonTypes';
 import { ModalComponent } from '../../Components/Modal/Modal';
 import Input from '@/Components/Input/Index';
+import { useState } from 'react';
+import { Checkbox, FormControlLabel } from '@mui/material';
 
 export default function ViewCandidats() {
     const {
@@ -35,6 +37,8 @@ export default function ViewCandidats() {
         }
         return age;
     };
+    const [useCustomEmail, setUseCustomEmail] = useState(false) 
+
 
     return (
         <div className={style.container}>
@@ -258,6 +262,17 @@ export default function ViewCandidats() {
                                 setFirstInterviewDate(e.target.value)
                             }
                         />
+                          <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={useCustomEmail}
+                            onChange={(e) => setUseCustomEmail(e.target.checked)}
+                            color="primary"
+                        />
+                    }
+                    label="Use custom email"
+                />{useCustomEmail && (
+                    <>
                         <Input
                             IsUsername
                             type="textarea"
@@ -278,6 +293,8 @@ export default function ViewCandidats() {
                             value={customSubject}
                             onChange={(e) => setCustomSubject(e.target.value)}
                         />
+                         </>
+                )}
                         <div
                             style={{
                                 display: 'flex',
@@ -285,6 +302,7 @@ export default function ViewCandidats() {
                                 marginTop: '20px',
                             }}
                         >
+                           
                             <Button
                                 type={ButtonTypes.PRIMARY}
                                 btnText="Send"
