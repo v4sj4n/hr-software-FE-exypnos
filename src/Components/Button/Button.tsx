@@ -1,31 +1,8 @@
 import { useTheme } from '@mui/material'
-import './Button.css'
+import './style/Button.css'
 import { ButtonTypes } from './ButtonTypes'
-import React, { CSSProperties } from 'react'
+import { ButtonProps } from './Interface/Interface'
 
-type ButtonType = (typeof ButtonTypes)[keyof typeof ButtonTypes]
-
-interface ButtonStyles extends CSSProperties {
-    backgroundColor?: string
-    color?: string
-    borderColor?: string
-    width?: string | number
-    height?: string | number
-    fontSize?: string | number
-    padding?: string
-    margin?: string
-    borderRadius?: string | number
-}
-
-interface ButtonProps extends ButtonStyles {
-    isSubmit?: boolean
-    type: ButtonType
-    btnText: string | JSX.Element
-    disabled?: boolean
-    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
-    icon?: React.ReactNode
-    cursor?: string
-}
 const Button: React.FC<ButtonProps> = ({
     isSubmit,
     type,

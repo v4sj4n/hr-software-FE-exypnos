@@ -1,27 +1,6 @@
-import {
-    DataGrid,
-    GridColDef,
-    GridRowParams,
-    GridValidRowModel,
-    GridPaginationModel,
-} from '@mui/x-data-grid'
-import React from 'react'
+import { DataGrid,  GridValidRowModel } from '@mui/x-data-grid'
 import { TableStyles } from '../Input/Styles'
-
-interface DataTableProps<T extends GridValidRowModel> {
-    rows: T[]
-    columns: GridColDef[]
-    getRowId?: (row: T) => string | number
-    height?: number | string
-    pageSizeOptions?: number[]
-    additionalStyles?: React.CSSProperties
-    handleRowClick?: (params: GridRowParams) => void
-    totalPages: number
-    page: number
-    pageSize: number
-    onPaginationModelChange: (model: GridPaginationModel) => void
-}
-
+import { DataTableProps } from './Interface'
 export default function DataTable<T extends GridValidRowModel>({
     rows,
     columns,
@@ -34,20 +13,12 @@ export default function DataTable<T extends GridValidRowModel>({
     handleRowClick,
     onPaginationModelChange,
 }: DataTableProps<T>) {
-    const columnsWithIcons = columns.map((column) => ({
-        ...column,
-        renderHeader: () => (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                {column.headerName}
-            </div>
-        ),
-    }))
 
     return (
         <div style={{ height, width: '100%' }}>
             <DataGrid
                 rows={rows}
-                columns={columnsWithIcons}
+                columns={columns}
                 getRowId={getRowId}
                 onRowClick={handleRowClick}
                 pagination
