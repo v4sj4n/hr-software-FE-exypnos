@@ -1,80 +1,127 @@
-import Input from "../../../../Components/Input/Index";
-import { ButtonTypes } from "../../../../Components/Button/ButtonTypes";
-import Button from "../../../../Components/Button/Button";
+import Input from '../../../../Components/Input/Index'
+import { ButtonTypes } from '../../../../Components/Button/ButtonTypes'
+import Button from '../../../../Components/Button/Button'
 import style from '../ProfileForm/ProfileForm.module.css'
+import { ProfileProvider } from '../ProfileForm/Context/ProfileProvider'
+import { useCreatePayroll, useUpdatePayroll } from '../ProfileForm/Context/Hook'
+import Toast from '@/Components/Toast/Toast'
 
-const Contrat = () => {
-    
+const ContratContent = () => {
+    const {
+        EditingPayroll,
+        handleUpdateChangePayroll,
+        handleUpdatePayroll,
+        toastMessage,
+        toastOpen,
+        handleToastClose,
+        toastSeverity,
+    } = useUpdatePayroll()
+
+    const {
+        handleChangePayroll,
+        payroll,
+        handleCreatePayroll,
+        createToastMessage,
+        createToastSeverity,
+        createToastOpen,
+        handleCreateToastClose,
+    } = useCreatePayroll()
+
     return (
         <div className={style.container}>
-       
-    <div className={style.title}>Contract Information</div>
+            <Toast
+                severity={EditingPayroll ? toastSeverity : createToastSeverity}
+                open={EditingPayroll ? toastOpen : createToastOpen}
+                message={EditingPayroll ? toastMessage : createToastMessage}
+                onClose={
+                    EditingPayroll ? handleToastClose : handleCreateToastClose
+                }
+            />
+            <div className={style.title}>Payroll Information</div>
+            <div className={style.forms}>
+                <Input
+                    IsUsername
+                    type="number"
+                    label="WorkingDays"
+                    name="workingDays"
+                    shrink={true}
+                    width={350}
+                    value={
+                        EditingPayroll
+                            ? EditingPayroll?.workingDays
+                            : payroll.workingDays
+                    }
+                    onChange={
+                        EditingPayroll
+                            ? handleUpdateChangePayroll
+                            : handleChangePayroll
+                    }
+                />
+                <Input
+                    IsUsername
+                    shrink={true}
+                    name="grossSalary"
+                    label="Gross salary"
+                    width={350}
+                    value={
+                        EditingPayroll
+                            ? EditingPayroll?.grossSalary
+                            : payroll.grossSalary
+                    }
+                    onChange={
+                        EditingPayroll
+                            ? handleUpdateChangePayroll
+                            : handleChangePayroll
+                    }
+                />
+            </div>
+            <div className={style.border}></div>
 
-    <div className={style.forms}>
-                <div className={style.inputWidth}>
-                    <Input IsUsername label="Pay company" name="Pay company" />
-                </div>
-                <div className={style.inputWidth}>
-                    <Input IsUsername label="Company department" name="Company department" />
-                </div>
+            <div className={style.title}>Add Bonus</div>
+
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: '350px',
+                    gap: '20px',
+                }}
+            >
+                <Input IsUsername label="Bonus" name="bonus" />
+                <Input
+                    IsUsername
+                    label="Bonus Description"
+                    name="bonusDescription"
+                    type="textarea"
+                    multiline={true}
+                    rows={3}
+                />
             </div>
 
-            <div className={style.forms}>
             <div className={style.inputWidth}>
-            <Input IsUsername label="Contract type" name="Contract type" />
+                <Button
+                    type={ButtonTypes.PRIMARY}
+                    btnText={
+                        EditingPayroll ? 'Update Payroll' : 'Create Payroll'
+                    }
+                    onClick={
+                        EditingPayroll
+                            ? handleUpdatePayroll
+                            : handleCreatePayroll
+                    }
+                    width="350px"
+                />
+            </div>
         </div>
-    </div>
-    <div className={style.border}></div>
-
-    <div className={style.forms}>
-    <div style={{display:"flex", width:"350px", gap:"20px"}}>
-            <Input IsUsername label="Start date" name="Start date" />
-            <Input IsUsername label="End date" name="End date" />
-        </div>
-        <div className={style.inputWidth}>
-            <Input IsUsername label="Weekly duration" name="Weekly duration" />
-        </div>
-    </div>
-
-    <div className={style.forms}>
-    <div className={style.inputWidth}>
-            <Input IsUsername label="Hours" name="Hours" />
-        </div>
-        <div className={style.inputWidth}>
-            <Input IsUsername label="Trial Period" name="Trial Period" />
-        </div>
-    </div>
-
-    <div className={style.border}></div>
-
-    <div className={style.forms}>
-    <div style={{display:"flex", flexDirection:"column", width:"350px", gap:"20px"}}>
-            <Input IsUsername label="Work Position" name="Work Position" />
-            <Input IsUsername label="Annual gross salary" name="Annual gross salary" />
-        </div>
-        <div  className={style.inputWidth}>
-            <Input IsUsername name="Hourly gross salary" label="Hourly gross salary" />
-        </div>
-    </div>
-
-    <div className={style.border}></div>
-    <div className={style.title}>End of Contract</div>
-
-    <div className={style.forms}>
-    <div style={{display:"flex", flexDirection:"column", width:"350px", gap:"20px"}}>
-            <Input IsUsername label="Reason" name="Reason" />
-        </div>
-        <div  className={style.inputWidth}>
-            <Input IsUsername name="Other details" label="Other details" />
-        </div>
-    </div>
-  
-    <div className={style.border}></div>
-    <div className={style.inputWidth}>
-        <Button type={ButtonTypes.PRIMARY} btnText='Save Changes' />
-    </div>
-    </div>
     )
 }
 
-export default Contrat;
+const Contrat: React.FC = () => {
+    return (
+        <ProfileProvider>
+            <ContratContent />
+        </ProfileProvider>
+    )
+}
+
+export default Contrat

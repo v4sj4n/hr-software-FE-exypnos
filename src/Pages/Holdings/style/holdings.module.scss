@@ -1,0 +1,55 @@
+@import '@/Helpers/_base.scss';
+
+.heading {
+    @include pageHeading;
+
+    > div:nth-of-type(2) {
+        border-radius: 20px !important;
+    }
+}
+
+.title {
+    @include pageTitle;
+}
+
+.main {
+    @include mainPage;
+}
+
+@media (max-width: 785px) {
+    .titleHeading {
+        .title {
+            grid-column: span 3;
+            font-weight: bold;
+            align-self: baseline;
+        }
+
+        > div:nth-of-type(2) {
+            grid-column: span 2;
+        }
+    }
+}
+
+.mainContainer {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.selectedUserContainer {
+    flex: 2;
+    height: 75svh;
+    border-radius: 0.5rem;
+    border: #8f8f8f solid 1px;
+    overflow: hidden;
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.1);
+}
+
+.noItemsOnSelectedUser {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75svh;
+    background-color: #0000000d;
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.1);
+}

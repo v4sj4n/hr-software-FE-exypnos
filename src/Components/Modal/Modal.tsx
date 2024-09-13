@@ -1,48 +1,56 @@
 import { ReactNode } from 'react'
-import Backdrop from '@mui/material/Backdrop'
-import Modal from '@mui/material/Modal'
-import Fade from '@mui/material/Fade'
-import { Card } from '@mui/material'
+import { Backdrop, Modal, Fade, Card } from '@mui/material'
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 600,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4,
-  borderRadius: '10px',
+const defaultStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+    borderRadius: '10px',
 }
 
 interface ModalContentProps {
-  handleClose: () => void
-  open: boolean
-  children: ReactNode
+    handleClose: () => void
+    open: boolean
+    children: ReactNode
+    width?: string
+    padding?: string
+    height?: string
 }
+
 export const ModalComponent: React.FC<ModalContentProps> = ({
-  handleClose,
-  open,
-  children,
+    handleClose,
+    open,
+    children,
+    width = '500px',
+    padding = '20px',
 }) => {
-  return (
-    <Modal
-      aria-labelledby="transition-modal-title"
-      aria-describedby="transition-modal-description"
-      open={open}
-      onClose={handleClose}
-      closeAfterTransition
-      slots={{ backdrop: Backdrop }}
-      slotProps={{
-        backdrop: {
-          timeout: 500,
-        },
-      }}
-    >
-      <Fade in={open}>
-        <Card sx={style}>{children}</Card>
-      </Fade>
-    </Modal>
-  )
+    const style = {
+        ...defaultStyle,
+        width,
+        padding,
+    }
+
+    return (
+        <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            open={open}
+            onClose={handleClose}
+            closeAfterTransition
+            slots={{ backdrop: Backdrop }}
+            slotProps={{
+                backdrop: {
+                    timeout: 500,
+                },
+            }}
+        >
+            <Fade in={open}>
+                <Card sx={style}>{children}</Card>
+            </Fade>
+        </Modal>
+    )
 }

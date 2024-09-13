@@ -1,0 +1,70 @@
+.userDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &:hover {
+        background-color: #dadada25 !important;
+        cursor: pointer;
+    }
+}
+
+.mainData {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.leftMainData {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    & img {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 25%;
+    }
+
+    & div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+
+        * {
+            margin: 0;
+        }
+
+        & h3 {
+            font-size: 1.25rem;
+            color: #3a3a3a;
+        }
+
+        & p {
+            font-size: 0.8rem;
+            color: rgb(88, 88, 88);
+        }
+    }
+}
+
+.rightMainData {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 0.5rem;
+
+    * {
+        margin: 0;
+    }
+
+    & div {
+        display: flex;
+        align-items: center;
+    }
+
+    > p {
+        font-size: 0.8rem;
+        margin-right: 0.5rem;
+        color: rgb(109, 109, 109);
+    }
+}

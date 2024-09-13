@@ -1,10 +1,28 @@
-import z from "zod"
+import {
+    email,
+    InferInput,
+    minLength,
+    nonEmpty,
+    object,
+    pipe,
+    regex,
+    string,
+} from 'valibot'
 
-  
-export const loginSchema = z.object({
-    email: z.string().email({message: "This field must be a valid email address"}),
-    password: z.string().min(8, {message: "Password must be at least 8 characters long"}).regex(/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]$/
-),
+export const LoginSchema = object({
+    email: pipe(
+        string('Email is required'),
+        nonEmpty('Please type your email'),
+        email('Invalid email format'),
+    ),
+    password: pipe(
+        string('Password is required'),
+        nonEmpty('Please type your password'),
+        minLength(8, 'Password must be at least 8 characters long'),
+        regex(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/,
+            'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+        ),
+    ),
 })
-
-export type LoginFormFields = z.infer<typeof loginSchema>
+export type LoginFormFields = InferInput<typeof LoginSchema>

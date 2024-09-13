@@ -1,0 +1,62 @@
+.primaryBtn {
+    color: #ffffff;
+    border-radius: 5px;
+    border-color: #2469ff;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    /* min-width: 350px; */
+    font-size: 16px;
+    border: none;
+    display: block;
+    background: #2469ff;
+    border: 2px solid #2469ff;
+    font-family: 'Outfit', sans-serif;
+}
+
+.primaryBtn:hover {
+    color: #ffffff;
+    background: #2469ff;
+    border-color: #2469ff;
+}
+
+.secondaryBtn {
+    background: transparent;
+    color: #4b5563;
+    border-radius: 5px;
+    border: 1px solid #4b5563;
+    /* width: 300px; */
+    /* max-width: 300px; */
+    font-size: 16px;
+    text-align: center;
+    display: block;
+    font-family: 'Outfit', sans-serif;
+}
+
+.tertiaryBtn {
+    color: #ffffff;
+    border-radius: 5px;
+    border-color: #2469ff;
+    padding: 6px 0px;
+    text-align: center;
+    cursor: pointer;
+    min-width: 300px;
+    font-size: 16px;
+    border: none;
+    display: block;
+    background: #2469ff;
+    border: 2px solid #2469ff;
+}
+
+.disabled {
+    background: #cccccc;
+    color: #ffffff;
+    border-radius: 5px;
+    padding: 8px 0px;
+    text-align: center;
+    min-width: 350px;
+    font-size: 16px;
+    cursor: not-allowed;
+    border: none;
+    display: block;
+}

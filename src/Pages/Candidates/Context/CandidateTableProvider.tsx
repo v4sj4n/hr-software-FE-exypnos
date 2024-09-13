@@ -1,104 +1,103 @@
-import React from 'react';
-import { CandidateContext, CandidateRow } from '../Interfaces/Candidate';
-import { useGetAllApplicants } from '../Hook';
-import { GridRenderCellParams, GridRowParams } from '@mui/x-data-grid';
-import { Link, useNavigate } from "react-router-dom";
-import EmailIcon from '@mui/icons-material/Email';
-import PersonIcon from '@mui/icons-material/Person';
-import PhoneIcon from '@mui/icons-material/Phone';
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import ComputerIcon from '@mui/icons-material/Computer';
+import React from 'react'
+import { CandidateContext, CandidateRow } from '../Interfaces/Candidate'
+import { GridPaginationModel, GridRenderCellParams, GridRowParams } from '@mui/x-data-grid'
+import { Link, useNavigate } from 'react-router-dom'
+import { StatusBadge } from '@/Components/StatusBadge/StatusBadge'
+import AxiosInstance from '@/Helpers/Axios'
+import { useQuery } from '@tanstack/react-query'
 
-export const CandidateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { applicants } = useGetAllApplicants();
-  const navigate = useNavigate();
+export const CandidateProvider: React.FC<{ children: any }> = ({children}) => {
+    const [page, setPage] = React.useState(0)
+    const [pageSize, setPageSize] = React.useState(5)
+    const handlePaginationModelChange = (model: GridPaginationModel) => {
+        setPage(model.page)
+        setPageSize(model.pageSize)
+    }
 
-  const rows: CandidateRow[] = applicants.map((applicant, index) => ({
-    id: index + 1,
-    originalId: applicant._id,
-    fullName: `${applicant.firstName} ${applicant.lastName}`,
-    email: applicant.email,
-    phoneNumber: applicant.phoneNumber,
-    experience: applicant.experience,
-    applicationMethod: applicant.applicationMethod,
-    age: applicant.age,
-    positionApplied: applicant.positionApplied,
-    technologiesUsed: applicant.technologiesUsed,
-    salaryExpectations: applicant.salaryExpectations,
-    status: applicant.status,
-  }));
+    const fetchCandidates = async (): Promise<{ data: CandidateRow[], totalPages: number }> => {
+        const response = await AxiosInstance.get(`/applicant?page=${page}&limit=${pageSize}`)
+        return response.data
+    }
 
-  const columns = [
-    { field: 'id', headerName: 'ID', width: 10 },
-    { field: 'fullName', headerName: 'FullName', width: 130, flex: 1 },
-    { field: 'email', headerName: 'Email', width: 230, flex: 1 },
-    {
-      field: 'status',
-      headerName: 'Status',
-      width: 130,
-      renderCell: (params: GridRenderCellParams) => {
-        const color =
-          params.value === 'accepted' ? '#02a700' :
-          params.value === 'pending' ? 'orange' :
-          params.value === 'rejected' ? '#d32f2f' :
-          '';
-        return (
-          <div style={{ color: color }}>
-            {params.value}
-          </div>
-        );
-      }
-    },
-    { field: 'phoneNumber', headerName: 'Phone', width: 200, flex: 1 },
-    { field: 'positionApplied', headerName: 'Position', width: 270, flex: 1 },
-    { field: 'experience', headerName: 'Experience', width: 120, flex: 1 },
-    {
-      field: 'actions',
-      headerName: 'Actions',
-      width: 120,
-      flex: 1,
-      renderCell: (params: GridRenderCellParams) => (
-        <Link
-          style={{ textDecoration: "none", color: "#4C556B" }}
-          to={`/view/${params.row.originalId}`}
-          onClick={(e) => e.stopPropagation()}
-        >
-          View More
-        </Link>
-      ),
-    },
-  ];
+    const { data: applicants, isPending } = useQuery({
+        queryKey: ['applicants', page, pageSize],
+        queryFn: () => fetchCandidates(),
+    })
 
-  const headerIcons = {
-    email: EmailIcon,
-    fullName: PersonIcon,
-    phone: PhoneIcon,
-    date: DateRangeIcon,
-    position: ComputerIcon,
-  };
+    const navigate = useNavigate()
 
-  const headerTextColors = {
-    firstName: '#0000FF',
-  };
+    const rows: CandidateRow[] =
+        applicants?.data.map((applicant, index) => ({
+            id: page * pageSize + index + 1,
+            originalId: applicant._id,
+            fullName: `${applicant.firstName} ${applicant.lastName}`,
+            email: applicant.email,
+            phoneNumber: applicant.phoneNumber,
+            experience: applicant.experience,
+            applicationMethod: applicant.applicationMethod,
+            age: applicant.age,
+            positionApplied: applicant.positionApplied,
+            technologiesUsed: applicant.technologiesUsed,
+            salaryExpectations: applicant.salaryExpectations,
+            status: applicant.status,
+        })) ?? []
 
-  const getRowId = (row: CandidateRow) => row.id;
+    const columns = [
+        { field: 'id', headerName: 'ID', flex: 0.5 },
+        { field: 'fullName', headerName: 'FullName', flex: 1.2 },
+        { field: 'email', headerName: 'Email', flex: 2 },
+        { field: 'status', headerName: 'Status', flex: 1.3,
+            renderCell: (params: GridRenderCellParams) => {
+                const color =
+                    params.value === 'active'
+                        ? 'green'
+                        : params.value === 'pending'
+                            ? 'orange'
+                            : params.value === 'rejected'
+                                ? 'red'
+                                : params.value === 'employed'
+                                    ? 'purple'
+                                    : ''
+                return <StatusBadge status={params.value} color={color} />
+            },
+        },
+        { field: 'phoneNumber', headerName: 'Phone', flex: 1.8 },
+        { field: 'positionApplied', headerName: 'Position', flex: 1.8, },
+        { field: 'experience', headerName: 'Experience', flex: 1.3 },
+        { field: 'actions', headerName: 'Actions', flex: 1.3,
+            renderCell: (params: GridRenderCellParams) => (
+                <Link
+                    style={{ textDecoration: 'none', color: '#4C556B' }}
+                    to={`/view/${params.row.originalId}`}
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    View More
+                </Link>
+            ),
+        },
+    ]
 
-  const handleRowClick = (params: GridRowParams) => { 
-    navigate(`/view/${params.row.originalId}`);
-  };
+    const getRowId = (row: CandidateRow) => row.id
 
-  const contextValue = {
-    rows,
-    columns,
-    headerIcons,
-    headerTextColors,
-    getRowId,
-    handleRowClick,
-  };
+    const handleRowClick = (params: GridRowParams) => {
+        navigate(`/view/${params.row.originalId}`)
+    }
 
-  return (
-    <CandidateContext.Provider value={contextValue}>
-      {children}
-    </CandidateContext.Provider>
-  );
-};
+    const contextValue = {
+        rows,
+        columns,
+        getRowId,
+        handleRowClick,
+        handlePaginationModelChange,
+        page,
+        pageSize,
+        totalPages: applicants?.totalPages ?? 0,
+        isPending,
+    }
+
+    return (
+        <CandidateContext.Provider value={contextValue}>
+            {children}
+        </CandidateContext.Provider>
+    )
+}

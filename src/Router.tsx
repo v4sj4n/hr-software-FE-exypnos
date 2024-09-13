@@ -1,9 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import ViewCandidats from './Pages/VIewCandidats/ViewCandidats.tsx'
 import PrivateRoute from './Context/ProtectedRoute.tsx'
-import Assets from './Pages/Assets/Assets.tsx'
 import Candidates from './Pages/Candidates/Candidates.tsx'
-import CreateEmplye from './Pages/CreateEmploye.tsx'
 import Dashboard from './Pages/Dashboard/Dashboard.tsx'
 import Employees from './Pages/Employees/Employees.tsx'
 import Events from './Pages/Events/Events.tsx'
@@ -14,96 +12,121 @@ import Payroll from './Pages/Payroll/Payroll.tsx'
 import Profile from './Pages/Profile/Profile'
 import Recruitment from './Pages/Recruitment/Recruitment.tsx'
 import Structure from './Pages/Structure/Structure.tsx'
+import Inventory from './Pages/Inventory/Inventory.tsx'
+import Career from './Pages/Career/Career.tsx'
+import Holdings from './Pages/Holdings/Holdings.tsx'
 import Vacation from './Pages/Vacation/Vacation.tsx'
-import AssetProvider from './Pages/Assets/AssetContext.tsx'
-import { EmployeeProvider } from './Pages/Employees/Context/EmployeTableProvider.tsx'
-import { CandidateProvider } from './Pages/Candidates/Context/CandidateTableProvider.tsx'
-import VacationProvider from './Pages/Vacation/VacationContext.tsx'
+import SpecificUserPayroll from './Pages/Payroll/SpecificUser/SpecificUserPayroll.tsx'
+import About from './Pages/About/About.tsx'
+import UserVacations from './Pages/Vacation/UserVacations.tsx'
+import EmailConfirmation from './Pages/Recruitment/Component/EmailConfirmation.tsx'
+import NotFound from './Pages/NotFound/NotFound.tsx'
+import UserPromotion from './Pages/Promotion/UserPromotion.tsx'
+import Promotion from './Pages/Promotion/Promotion.tsx'
 
 export default function Router() {
-  const router = createBrowserRouter([
-    {
-      path: '/',
-      element: <Login />,
-    },
-    {
-      path: 'recruitment',
-      element: <Recruitment />,
-    },
-    {
-      path: '/forgot-password',
-      element: <ResetPass />,
-    },
+    const router = createBrowserRouter([
+        {
+            path: '/',
+            element: <Login />,
+        },
+        {
+            path: 'recruitment',
+            element: <Recruitment />,
+        },
 
-    {
-      path: '/',
-      element: <PrivateRoute />,
-      children: [
         {
-          path: 'employees',
+            path: '/applicant/confirm',
+            element: <EmailConfirmation />,
+        },
+        {
+            path: '/forgot-password',
+            element: <ResetPass />,
+        },
+        {
+            path: 'career',
+            element: <Career />,
+        },
+        {
+            path: '/',
 
-          element: (
-            <EmployeeProvider>
-              <Employees />
-            </EmployeeProvider>
-          ),
+            element: (
+                <>
+                    <PrivateRoute />
+                </>
+            ),
+            children: [
+                {
+                    path: '/employees',
+                    element: <Employees />,
+                },
+                {
+                    path: '/promotion',
+                    element: <Promotion />,
+                },
+                {
+                    path: '/promotion/:id',
+                    element: <UserPromotion />,
+                },
+                { path: '/dashboard', element: <Dashboard />, index: false },
+                {
+                    path: '/profile/:id',
+                    element: <Profile />,
+                },
+                {
+                    path: 'view/:id',
+                    element: <ViewCandidats />,
+                },
+                {
+                    path: '/holdings',
+                    element: <Holdings />,
+                },
+                {
+                    path: '/vacation',
+                    element: <Vacation />,
+                },
+                {
+                    path: '/vacation/:id',
+                    element: <UserVacations />,
+                },
+                {
+                    path: '/payroll/user/:id',
+                    element: <SpecificUserPayroll />,
+                },
+                {
+                    path: '/payroll',
+                    element: <Payroll />,
+                },
+                {
+                    path: '/structure',
+                    element: <Structure />,
+                },
+                {
+                    path: '/candidates',
+                    element: <Candidates />,
+                },
+                {
+                    path: '/events',
+                    element: <Events />,
+                },
+                {
+                    path: '/interview',
+                    element: <Interview />,
+                },
+                {
+                    path: '/historic',
+                    element: <About />,
+                },
+                {
+                    path: '/inventory',
+                    element: <Inventory />,
+                },
+            ],
         },
-        { path: '/dashboard', element: <Dashboard />, index: false },
         {
-          path: 'profile/:id',
-          element: <Profile />,
+            path: '*',
+            element: <NotFound />,
         },
-        {
-          path: 'view/:id',
-          element: <ViewCandidats />,
-        },
-        {
-          path: 'assets',
-          element: (
-            <AssetProvider>
-              <Assets />
-            </AssetProvider>
-          ),
-        },
-        {
-          path: 'payroll',
-          element: <Payroll />,
-        },
-        {
-          path: 'createEmplye',
-          element: <CreateEmplye />,
-        },
-        {
-          path: 'structure',
-          element: <Structure />,
-        },
-        {
-          path: 'candidates',
-          element: (
-            <CandidateProvider>
-              <Candidates />
-            </CandidateProvider>
-          ),
-        },
-        {
-          path: 'vacation',
-          element: (
-            <VacationProvider>
-              <Vacation />
-            </VacationProvider>
-          ),
-        },
-        {
-          path: 'events',
-          element: <Events />,
-        },
-        {
-          path: 'interview',
-          element: <Interview />,
-        },
-      ],
-    },
-  ])
-
-  return <RouterProvider router={router} />
+    ])
+    return <RouterProvider router={router} />
 }

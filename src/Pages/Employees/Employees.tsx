@@ -1,19 +1,49 @@
-import style from './style/Employees.module.css'
-import DataTable from "../../Components/Table/Table";
-import { useEmployeeContext } from './Context/EmployeTableContext';
-export default function Employees() {
-    const { rows, columns, headerIcons,  getRowId } = useEmployeeContext();
+import { RingLoader } from 'react-spinners'
+import DataTable from '../../Components/Table/Table'
+import { useEmployeeContext } from './Context/EmployeTableContext'
+import { EmployeeProvider } from './Context/EmployeTableProvider'
+import style from '../Payroll/styles/Payroll.module.css'
+function EmployeesContent() {
+    const {
+        rows,
+        columns,
+        getRowId,
+        handleRowClick,
+        handlePaginationModelChange,
+        page,
+        pageSize,
+        totalPages,
+        isPending,
+    } = useEmployeeContext()
+
     return (
-        <>
-            <div style={{ display: "flex", width: "100%", flexDirection: "column", padding: "0 16px", backgroundColor: "#F0F5FF" }}>
-                <div className={style.account}>Employee List</div>
+        <div className={style.payroll}>
+              {isPending ? (
+                <div className={style.ring}>
+                    <RingLoader />
+                </div>
+            ) : (
                 <DataTable
                     rows={rows}
                     columns={columns}
                     getRowId={getRowId}
-                    headerIcons={headerIcons}
+                    handleRowClick={handleRowClick}
+                    totalPages={totalPages}
+                    page={page}
+                    pageSize={pageSize}
+                    onPaginationModelChange={handlePaginationModelChange}
                 />
-            </div>
-        </>
-    );
+            )}
+        </div>
+    )
 }
+
+const Employees: React.FC = () => {
+    return (
+        <EmployeeProvider>
+            <EmployeesContent />
+        </EmployeeProvider>
+    )
+}
+
+export default Employees

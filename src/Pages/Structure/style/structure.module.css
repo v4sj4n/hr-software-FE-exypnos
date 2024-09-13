@@ -1,0 +1,91 @@
+.container {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow: hidden;
+}
+
+.container::-webkit-scrollbar {
+    display: none;
+}
+
+.flexColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.alignItemsCenter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.nodeImage {
+    margin-bottom: 0.75rem;
+    width: 3rem;
+    height: 3rem;
+}
+
+.nodeName {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 0.2rem;
+}
+
+.bgIndigo500 {
+    background-color: #6366f1;
+    color: white;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+.bgPurple500 {
+    background-color: #a855f7;
+    color: white;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+.bgTeal500 {
+    background-color: #14b8a6;
+    color: white;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.organizationChart :global(.p-organizationchart) {
+    padding: 0px;
+}
+
+.organizationChart
+    :global(.p-organizationchart .p-organizationchart-line-down) {
+    background-color: #ebebeb;
+}
+
+.organizationChart
+    :global(.p-organizationchart .p-organizationchart-line-left) {
+    border-right: 1px solid #ebebeb;
+}
+
+.organizationChart :global(.p-organizationchart .p-organizationchart-line-top) {
+    border-top: 1px solid #ebebeb;
+}
+
+.organizationChart
+    :global(.p-organizationchart .p-organizationchart-node-content) {
+    border: 1px solid #ebebeb;
+    padding: 0.5em 0.75em;
+}
+
+.verticalList {
+    list-style-type: none;
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.verticalList li {
+    margin-bottom: 5px;
+}

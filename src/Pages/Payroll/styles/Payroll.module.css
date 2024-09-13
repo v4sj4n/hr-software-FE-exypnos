@@ -1,0 +1,14 @@
+.payroll {
+    display: flex;
+    flex-direction: column;
+    background-color: '#F0F5FF';
+    width: 100%;
+    gap: 20px;
+}
+
+.ring{
+display: flex;
+font-size: 30px;
+justify-content: center;
+margin-top: 50px;
+}

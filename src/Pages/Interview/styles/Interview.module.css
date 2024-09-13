@@ -1,7 +1,121 @@
-.title{
-    color: #000000;
+.kanbanBoard {
     display: flex;
-    font-size: 18px;
-    font-weight: bolder;
-    margin: 16px 0px 16px 0px;    
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    height: 2000px;
+}
+
+.filterContainer {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.filterField {
+    background-color: #e0dfff; /* Input background color */
+    border: 1px solid #bcc2cc;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.kanbanColumns {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    height: auto;
+}
+.kanbanColumns h2 {
+    color: #373535;
+}
+.kanbanColumn {
+    background-color: transparent;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    height: auto;
+}
+
+.kanbanItem {
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid #bcc2cc;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    transition: transform 0.2s;
+    height: auto;
+}
+
+.kanbanItem:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.candidateName {
+    font-weight: bold;
+    color: #1c449ad7;
+    cursor: pointer;
+    margin-bottom: 8px;
+}
+
+.applicantCount {
+    color: #79a9d9;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.kanbanList {
+    margin-top: 10px;
+    max-height: 100px;
+}
+
+.kanbanList p {
+    color: #373535;
+}
+
+.tabs {
+    margin-bottom: 20px;
+    border-bottom: 2px solid #c4bfea;
+}
+
+.MuiTab-root {
+    color: #4a3c82 !important;
+    font-weight: bold !important;
+}
+
+.Mui-selected {
+    color: #d1c2ff !important;
+    font-weight: bold !important;
+}
+
+.MuiButton-root {
+    background-color: #4a3c82 !important;
+    color: #ffffff !important;
+}
+
+.MuiButton-root:hover {
+    background-color: #6a52a8 !important;
+}
+
+.MuiTooltip-tooltip {
+    background-color: #4a3c82 !important;
+    color: #ffffff !important;
+}
+
+.rescheduleModal {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }

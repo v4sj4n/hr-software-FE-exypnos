@@ -1,23 +1,14 @@
-import { useState, useEffect } from 'react';
-import AxiosInstance from '../../../Helpers/Axios';
-import { applicantsData } from '../Interfaces/Candidate';
+import { useQuery } from '@tanstack/react-query'
+import AxiosInstance from '@/Helpers/Axios'
+import { applicantsData } from '../Interfaces/Candidate'
 
 export const useGetAllApplicants = () => {
-    const [applicants, setApplicants] = useState<applicantsData[]>([]);
-    const [error, setError] = useState<string | null>(null);
-    const API_URL = import.meta.env.VITE_API_URL;
-
-    useEffect(() => {
-        AxiosInstance.get<applicantsData[]>('/applicants')
-            .then(response => {
-                setApplicants(response.data);
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                setError("Failed to fetch users. Please try again later.");
-            });
-    }, [API_URL]);
-
-    return { applicants, error };
+    return useQuery<applicantsData[], Error>({
+        queryKey: ['applicants'],
+        queryFn: async () => {
+            const response =
+                await AxiosInstance.get<applicantsData[]>('/applicant')
+            return response.data
+        },
+    })
 }

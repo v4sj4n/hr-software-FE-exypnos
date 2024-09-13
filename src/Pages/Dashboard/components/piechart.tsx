@@ -1,37 +1,30 @@
-import React from 'react';
-import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import { PieChart } from '@mui/x-charts'
 
-interface DataItem {
-  name: string;
-  value: number;
+const PieChartComponent = () => {
+    const data = [
+        { value: 50, label: 'Present' },
+        { value: 10, label: 'Absent' },
+        { value: 15, label: 'On Leave' },
+        { value: 20, label: 'Remote' },
+    ]
+
+    return (
+        <PieChart
+            height={300}
+            series={[
+                {
+                    data: [...data],
+                    innerRadius: 30,
+                    outerRadius: 105,
+                    paddingAngle: 2.5,
+                    cornerRadius: 5,
+                    startAngle: 0,
+                    endAngle: 360,
+                    cx: 125,
+                },
+            ]}
+        />
+    )
 }
 
-interface PieChartComponentProps {
-  data: DataItem[];
-}
-
-const COLORS = ['#0088FE', '#c542f5', '#9f6fd6', '#6db3e8'];
-
-const PieChartComponent: React.FC<PieChartComponentProps> = ({ data }) => {
-  return (
-    <PieChart width={350} height={270} >
-      <Pie
-        data={data}
-        cx={140}
-        cy={100}
-        innerRadius={36}
-        outerRadius={90}
-        fill="#8884d8"
-        dataKey="value"
-      >
-        {data.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-        ))}
-      </Pie>
-      <Tooltip />
-      <Legend />
-    </PieChart>
-  );
-};
-
-export default PieChartComponent;
+export default PieChartComponent

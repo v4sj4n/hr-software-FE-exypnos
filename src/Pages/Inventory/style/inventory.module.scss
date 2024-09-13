@@ -1,0 +1,13 @@
+@import '@/Helpers/_base.scss';
+
+.heading {
+    @include pageHeading;
+}
+
+.title {
+    @include pageTitle;
+}
+
+.main {
+    @include mainPage;
+}

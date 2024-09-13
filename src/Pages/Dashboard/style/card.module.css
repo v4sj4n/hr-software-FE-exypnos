@@ -1,21 +1,20 @@
-
-  
-  .card p {
-    color: #2457a3;
+.card p {
+    color: #5f43b2;
     align-items: center;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
 
-  }
-  
-  .card h2 {
-    color: #2457a3;
+.card h2 {
+    color: #5f43b2;
     font-size: medium;
-    font-weight: bold;
-align-items: center;
+    font-weight: 400;
+    align-items: center;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+}
 
-  }
-  
-  
-   
-  .cardIcon {
-font-size: large;
- }
+.cardIcon {
+    font-size: large;
+}

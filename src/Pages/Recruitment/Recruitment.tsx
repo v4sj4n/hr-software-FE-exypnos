@@ -1,162 +1,458 @@
-import Button1 from "../../Components/Button/Button";
-import { ButtonTypes } from "../../Components/Button/ButtonTypes";
-import Input from "../../Components/Input/Index";
+import MyButton from '../../Components/Button/Button'
+import { ButtonTypes } from '../../Components/Button/ButtonTypes'
+import Input from '../../Components/Input/Index'
+import logo from '/Images/recruitmentLogo.png'
+import image from '/Images/Vector-illustration-of-communication-Graphics-69695603-1-removebg-preview.png'
+import Card from '../../Components/Card/Card'
+import Button from '@mui/material/Button'
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import { ErrorText } from '@/Components/Error/ErrorTextForm'
+import { useContext } from 'react'
+import Toast from '@/Components/Toast/Toast'
+import { ValidationError } from '@tanstack/react-form'
+import Selecter from '@/Components/Input/components/Select/Selecter'
 import style from './style/Recruitment.module.css'
-import logo from '/Images/image_1-removebg-preview.png'
-import { MuiSelect } from "../../Components/Input/components/Select/autocomplete";
-import image from "/Images/Vector-illustration-of-communication-Graphics-69695603-1-removebg-preview.png"
-import { useCreateAplicant } from "./Context/Recruitment.Provider";
-import Card from "../../Components/Card/Card";
-import { styled } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { valibotValidator } from '@tanstack/valibot-form-adapter'
+import {
+    experience,
+    foundMethod,
+    technologies,
+} from './Component/RecruitmentData'
+import {
+    RecruitmentContext,
+    RecruitmentProvider,
+} from './Context/RecruitmentContext'
+import { useRecruitmentForm } from './Hook'
+import { RecruitmentSchema } from '@/Schemas/Recruitment/Recruitment.schema'
 
-const VisuallyHiddenInput = styled('input')({
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-    width: 1,
-    color: "#2469FF",
-});
+function RecruitmentBase() {
+    const {
+        error,
+        showModal,
+        setShowModal,
+        fileInputRef,
+        fileName,
+        setFileName,
+    } = useContext(RecruitmentContext)
+    const { form } = useRecruitmentForm()
+    return (
+        <main className={style.background}>
+            <Card
+                gap="20px"
+                padding="30px"
+                borderRadius=".8rem"
+                className={style.cardContainer}
+            >
+                <div className={style.header}>
+                    <img className={style.companyLogo} alt="img" src={logo} />
+                    <div className={style.title}>Apply to Codevider</div>
+                </div>
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        form.handleSubmit()
+                    }}
+                >
+                    <form.Field
+                        name="firstName"
+                        validatorAdapter={valibotValidator()}
+                        validators={{
+                            onChange: RecruitmentSchema.entries.firstName,
+                        }}
+                        children={({
+                            handleChange,
+                            state: {
+                                value,
+                                meta: { errors },
+                            },
+                        }) => (
+                            <div>
+                                <Input
+                                    label="First Name"
+                                    name="firstName"
+                                    IsUsername
+                                    value={value}
+                                    onChange={(e) =>
+                                        handleChange(e.target.value)
+                                    }
+                                />
+                                {<ErrorRenderer errors={errors} />}
+                            </div>
+                        )}
+                    />
+
+                    <form.Field
+                        name="lastName"
+                        validatorAdapter={valibotValidator()}
+                        validators={{
+                            onChange: RecruitmentSchema.entries.lastName,
+                        }}
+                        children={({
+                            handleChange,
+                            state: {
+                                value,
+                                meta: { errors },
+                            },
+                        }) => (
+                            <div>
+                                <Input
+                                    label="Last Name"
+                                    name="lastName"
+                                    IsUsername
+                                    value={value}
+                                    onChange={(e) =>
+                                        handleChange(e.target.value)
+                                    }
+                                />
+                                {<ErrorRenderer errors={errors} />}
+                            </div>
+                        )}
+                    />
+                    <form.Field
+                        name="email"
+                        validatorAdapter={valibotValidator()}
+                        validators={{
+                            onChange: RecruitmentSchema.entries.email,
+                        }}
+                        children={({
+                            state: {
+                                value,
+                                meta: { errors },
+                            },
+                            handleChange,
+                        }) => (
+                            <div>
+                                <Input
+                                    label="Email"
+                                    name="Email"
+                                    IsUsername
+                                    value={value}
+                                    onChange={(e) =>
+                                        handleChange(e.target.value)
+                                    }
+                                />
+                                {<ErrorRenderer errors={errors} />}
+                            </div>
+                        )}
+                    />
+
+                    <form.Field
+                        name="dob"
+                        validatorAdapter={valibotValidator()}
+                        validators={{
+                            onChange: RecruitmentSchema.entries.dob,
+                        }}
+                        children={({
+                            state: {
+                                value,
+                                meta: { errors },
+                            },
+                            handleChange,
+                        }) => (
+                            <div>
+                                <Input
+                                    label="Date of birth"
+                                    name="dob"
+                                    IsUsername
+                                    type="date"
+                                    shrink={true}
+                                    value={value}
+                                    onChange={(e) =>
+                                        handleChange(e.target.value)
+                                    }
+                                />
+                                {<ErrorRenderer errors={errors} />}
+                            </div>
+                        )}
+                    />
+                    <form.Field
+                        name="phoneNumber"
+                        validatorAdapter={valibotValidator()}
+                        validators={{
+                            onChange: RecruitmentSchema.entries.phoneNumber,
+                        }}
+                        children={({
+                            state: {
+                                value,
+                                meta: { errors },
+                            },
+                            handleChange,
+                        }) => (
+                            <div>
+                                <Input
+                                    icon={
+                                        <p className={style.numberPrefix}>
+                                            +355
+                                        </p>
+                                    }
+                                    iconPosition="start"
+                                    label="Phone Number"
+                                    name="phoneNumber"
+                                    IsUsername
+                                    value={value}
+                                    onChange={(e) =>
+                                        handleChange(e.target.value)
+                                    }
+                                />
+                                {<ErrorRenderer errors={errors} />}
+                            </div>
+                        )}
+                    />
+
+                    <form.Field
+                        name="applicationMethod"
+                        validatorAdapter={valibotValidator()}
+                        validators={{
+                            onChange:
+                                RecruitmentSchema.entries.applicationMethod,
+                        }}
+                        children={({
+                            state: {
+                                value,
+                                meta: { errors },
+                            },
+                            handleChange,
+                        }) => (
+                            <div>
+                                <Selecter
+                                     width='100%'
+
+                                    label="Applying Method"
+                                    name="applicationMethod"
+                                    multiple={false}
+                                    options={foundMethod}
+                                    value={value}
+                                    onChange={(newValue) =>
+                                        handleChange(newValue as string)
+                                    }
+                                />
+                                {<ErrorRenderer errors={errors} />}
+                            </div>
+                        )}
+                    />
+
+                    <form.Field
+                        name="positionApplied"
+                        validatorAdapter={valibotValidator()}
+                        validators={{
+                            onChange: RecruitmentSchema.entries.positionApplied,
+                        }}
+                        children={({
+                            state: {
+                                value,
+                                meta: { errors },
+                            },
+                            handleChange,
+                        }) => (
+                            <div>
+                                <Input
+                                    label="Work position"
+                                    name="positionApplied"
+                                    IsUsername
+                                    value={value}
+                                    onChange={(e) =>
+                                        handleChange(e.target.value)
+                                    }
+                                />
+                                {<ErrorRenderer errors={errors} />}
+                            </div>
+                        )}
+                    />
+
+                    <form.Field
+                        name="salaryExpectations"
+                        validatorAdapter={valibotValidator()}
+                        validators={{
+                            onChange:
+                                RecruitmentSchema.entries.salaryExpectations,
+                        }}
+                        children={({
+                            state: {
+                                value,
+                                meta: { errors },
+                            },
+                            handleChange,
+                        }) => (
+                            <div>
+                                <Input
+                                    label="Wage expectation"
+                                    name="salaryExpectations"
+                                    IsUsername
+                                    value={value}
+                                    onChange={(e) =>
+                                        handleChange(e.target.value)
+                                    }
+                                />
+                                {<ErrorRenderer errors={errors} />}
+                            </div>
+                        )}
+                    />
+                    <form.Field
+                        name="experience"
+                        validatorAdapter={valibotValidator()}
+                        validators={{
+                            onChange: RecruitmentSchema.entries.experience,
+                        }}
+                        children={({
+                            state: {
+                                value,
+                                meta: { errors },
+                            },
+                            handleChange,
+                        }) => (
+                            <div className={style.spanTwoDiv}>
+                                <Selecter
+                                width='100%'
+                                    multiple={false}
+                                    label="Experience"
+                                    name="experience"
+                                    options={experience}
+                                    value={value as string}
+                                    onChange={(newValue) =>
+                                        handleChange(newValue as string)
+                                    }
+                                />
+                                {<ErrorRenderer errors={errors} />}
+                            </div>
+                        )}
+                    />
+                    <form.Field
+                        name="technologiesUsed"
+                        validatorAdapter={valibotValidator()}
+                        validators={{
+                            onChange:
+                                RecruitmentSchema.entries.technologiesUsed,
+                        }}
+                        children={({
+                            state: {
+                                value,
+                                meta: { errors },
+                            },
+                            handleChange,
+                        }) => (
+                            <div className={style.spanTwoDiv}>
+                                <Selecter
+                                 width='100%'
+
+                                    options={technologies}
+                                    multiple
+                                    label="Technologies"
+                                    name="technologiesUsed"
+                                    onChange={(newValue) =>
+                                        handleChange(newValue as [])
+                                    }
+                                    value={value}
+                                />
+                                <ErrorRenderer errors={errors} />
+                            </div>
+                        )}
+                    />
+
+                    <form.Field
+                        name="file"
+                        validators={{
+                            onChange: ({ value }) => {
+                                if (!value) {
+                                    return 'File is required'
+                                }
+                                const name = value[0]?.name
+                                if (!name) {
+                                    return 'File cannot be null'
+                                }
+                                if (!name.match(/\.(pdf|docx|doc)$/i)) {
+                                    return 'Please select a valid PDF, DOCX, or DOC file'
+                                }
+                            },
+                        }}
+                        children={({
+                            state: {
+                                meta: { errors },
+                            },
+                            handleChange,
+                        }) => (
+                            <div className={style.fileInput}>
+                                <p>{fileName || 'No file selected'}</p>
+                                <Button
+                                    component="label"
+                                    variant="contained"
+                                    startIcon={<CloudUploadIcon />}
+                                    style={{
+                                        backgroundColor: '#2469FF',
+                                        color: '#FFFFFF',
+                                        boxShadow: 'none',
+                                        fontFamily: 'Outfit, sans-serif',
+                                    }}
+                                    fullWidth
+                                >
+                                    Upload CV
+                                    <input
+                                        type="file"
+                                        style={{ display: 'none' }}
+                                        onChange={(e) => {
+                                            const file =
+                                                e.target.files?.[0] || null
+                                            setFileName(file?.name || null)
+                                            handleChange(e.target.files)
+                                        }}
+                                        accept=".pdf,.doc,.docx"
+                                        ref={fileInputRef}
+                                    />
+                                </Button>
+                                {<ErrorRenderer errors={errors} />}
+                            </div>
+                        )}
+                    />
+                    <MyButton
+                        type={ButtonTypes.SECONDARY}
+                        btnText="Reset"
+                        width="100%"
+                        onClick={() => {
+                            console.log('Resetting form')
+                            form.reset()
+                            setFileName(null)
+                        }}
+                    />
+                    <MyButton
+                        type={ButtonTypes.TERTIARY}
+                        // width='70px'
+                        btnText={
+                            form.state.isSubmitting ? 'Submitting...' : 'Submit'
+                        }
+                        disabled={form.state.isSubmitting}
+                        isSubmit
+                    />
+                </form>
+                {error && <ErrorText>{error}</ErrorText>}
+            </Card>
+            <img alt="image" src={image} className={style.illustration} />
+
+            <Toast
+                message="Please check your inbox or spam to confirm your identity."
+                onClose={() => setShowModal(false)}
+                open={showModal}
+                severity={'success'}
+            />
+        </main>
+    )
+}
 
 export default function Recruitment() {
-
-    const { handleChange, aplicantFormData, handleTechnologiesChange, handleFileChange, handleCreateAplicant } = useCreateAplicant();
-
     return (
-        <div className={style.background}>
-            <div className={style.container}>
-                <Card gap="20px" padding="30px">
-                    <img className={style.img2} alt="img" src={logo} />
-                    <div className={style.title}>
-                        Apply to Codevider
-                    </div>
-                    <div style={{ display: "flex", gap: "20px" }}>
-                        <Input
-                            label="First Name"
-                            name='firstName'
-                            IsUsername
-                            width="300px"
-                            value={aplicantFormData.firstName}
-                            onChange={handleChange}
-                        />
-                        <Input
-                            label="Last Name"
-                            name='lastName'
-                            IsUsername
-                            width="300px"
-                            value={aplicantFormData.lastName}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div style={{ display: "flex", gap: "20px" }}>
-                        <Input
-                            label="Age"
-                            name='age'
-                            IsUsername
-                            width="300px"
-                            onChange={handleChange}
-                            value={aplicantFormData.age}
-                        />
-                        <Input
-                            label="Phone Number"
-                            name='phoneNumber'
-                            IsUsername
-                            width="300px"
-                            onChange={handleChange}
-                            value={aplicantFormData.phoneNumber}
-                        />
-                    </div>
-                    <div style={{ display: "flex", gap: "20px" }}>
-                        <Input
-                            label="Email"
-                            name='email'
-                            IsUsername
-                            width="300px"
-                            onChange={handleChange}
-                            value={aplicantFormData.email}
-                        />
-                        <Input
-                            label="Applying method"
-                            name='applicationMethod'
-                            IsUsername
-                            width="300px"
-                            onChange={handleChange}
-                            value={aplicantFormData.applicationMethod}
-                        />
-                    </div>
-                    <div style={{ display: "flex", gap: '20px' }}>
-                        <Input
-                            label="Work position"
-                            name='positionApplied'
-                            IsUsername
-                            width="300px"
-                            onChange={handleChange}
-                            value={aplicantFormData.positionApplied}
-                        />
-                        <Input
-                            label="Wage expectation"
-                            name='salaryExpectations'
-                            IsUsername
-                            width="300px"
-                            onChange={handleChange}
-                            value={aplicantFormData.salaryExpectations}
-                        />
-                    </div>
-                    <div style={{ display: "flex" }}>
-                        <Input
-                            label="Previous working experience"
-                            name='experience'
-                            IsUsername
-                            width="620px"
-                            onChange={handleChange}
-                            value={aplicantFormData.experience}
-                        />
-                    </div>
-                    <div style={{ display: "flex" }}>
-                        <MuiSelect value={aplicantFormData.technologiesUsed} onChange={handleTechnologiesChange} name="technologiesUsed" />
-                    </div>
-                    {/* <div style={{ display: "flex" }}>
-                    <Input
-                        label="Individual projects"
-                        name='individualProjects'
-                        IsUsername
-                        width="620px"
-                        onChange={handleChange}
-                        value={aplicantFormData.individualProjects}
-                    />
-                </div> */}
+        <RecruitmentProvider>
+            <RecruitmentBase />
+        </RecruitmentProvider>
+    )
+}
 
-                    <div style={{ display: "flex" }}>
-                        <Button
-                            component="label"
-                            variant="contained"
-                            startIcon={<CloudUploadIcon />}
-                            style={{ width: "620px", backgroundColor: "#2469FF", color: "#FFFFFF", boxShadow: "none", fontFamily: "Outfit, sans-serif",  }}
-                        >
-                            Upload CV
-                            <VisuallyHiddenInput
-                                type="file"
-                                onChange={handleFileChange}
-                                accept=".pdf,.doc,.docx"
-                            />
-                        </Button>
-                    </div>
-                    <div style={{ display: "flex", gap: "20px" }}>
-                        <Button1 type={ButtonTypes.SECONDARY} btnText="Reset" width="100%" />
-                        <Button1 type={ButtonTypes.TERTIARY} btnText="Apply" onClick={handleCreateAplicant} />
-                    </div>
-                </Card>
-            </div>
-            <img alt="image" src={image} style={{ width: "600px", height: "auto", }} />
-            {/* <div style={{ backgroundColor: "#1B5FF4", width: "120px", height: "100%", zIndex: "-1", position: "absolute", top: 0, right: 0 }}></div> */}
-        </div>
-
-
+const ErrorRenderer: React.FC<{ errors: ValidationError[] | null }> = ({
+    errors,
+}) => {
+    return (
+        <>
+            {errors && errors.length > 0 ? (
+                <ErrorText>{errors.map((error) => error).join(', ')}</ErrorText>
+            ) : null}
+        </>
     )
 }

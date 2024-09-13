@@ -1,9 +1,10 @@
-import Input from "../../../../Components/Input/Index"
-import Button from "../../../../Components/Button/Button"
-import { ButtonTypes } from "../../../../Components/Button/ButtonTypes"
-import { usePassword } from "./Context/Hook"
+import Input from '../../../../Components/Input/Index'
+import Button from '../../../../Components/Button/Button'
+import { ButtonTypes } from '../../../../Components/Button/ButtonTypes'
+import { usePassword } from './Context/Hook'
+import { PasswordProvider } from './Context/PasswordProvider'
 
-export default function ChangePass() {
+function ChangePassContent() {
     const {
         currentPassword,
         newPassword,
@@ -11,41 +12,76 @@ export default function ChangePass() {
         error,
         success,
         handleChange,
-        handleUpdatePassword
-      } = usePassword();
+        handleUpdatePassword,
+    } = usePassword()
 
     return (
         <>
-            <div>To change your password add your current password then your new password.</div>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "15px", maxWidth: "350px" }}>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '15px',
+                }}
+            >
                 {success && <div style={{ color: 'green' }}>{success}</div>}
+                <div>
+                    To change your password add your current password then your
+                    new password.
+                </div>
                 <Input
                     label="Current Password"
-                    name='currentPassword'
+                    name="currentPassword"
                     isPassword
                     type="password"
                     onChange={handleChange}
                     value={currentPassword}
+                    width="350px"
                 />
                 <Input
                     label="New Password"
-                    name='newPassword'
+                    name="newPassword"
                     isPassword
                     type="password"
                     onChange={handleChange}
                     value={newPassword}
+                    width="350px"
                 />
+
                 <Input
                     label="Confirm Password"
-                    name='confirmPassword'
+                    name="confirmPassword"
                     isPassword
                     type="password"
                     onChange={handleChange}
                     value={confirmPassword}
+                    width="350px"
                 />
                 {error && <div style={{ color: '#d32f2f' }}>{error}</div>}
-                <Button type={ButtonTypes.PRIMARY} btnText='Update Pass' onClick={handleUpdatePassword} />
-            </div>   </>
+                <Button
+                    type={ButtonTypes.PRIMARY}
+                    btnText="Update Pass"
+                    onClick={handleUpdatePassword}
+                    width="350px"
+                    marginTop="9px"
+                />
+            </div>
+            <Button
+                type={ButtonTypes.SECONDARY}
+                btnText="Forget Password"
+                width="350px"
+                marginTop="9px"
+            />
+        </>
     )
 }
+
+const ChangePass: React.FC = () => {
+    return (
+        <PasswordProvider>
+            <ChangePassContent />
+        </PasswordProvider>
+    )
+}
+
+export default ChangePass

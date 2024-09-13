@@ -1,25 +1,11 @@
-.container {
-    display: flex;
-    height: 100%; 
-    background-image: url();
-    align-items: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    position: relative;
-    top: 0;
-    left: 0;
-}
-
-
-.background{
+.background {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100vw;
     height: 100vh;
     min-height: 100%;
-    background-image: url('Images/background\ \(1\).png');
+    background-image: url('/Images/background\ \(1\).png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -30,15 +16,79 @@
     left: 0;
 }
 
-.img2 {
+.title {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 1rem;
+}
+
+.illustration {
+    width: 500px;
+    height: auto;
+}
+.companyLogo {
     width: 150px;
     height: auto;
 }
 
-.title {
-    color: #000000;
-    font-weight: bolder;
-    font-size: 20px;
-    font-family: "Outfit", sans-serif;
+.cardContainer {
+    flex: none !important;
+    width: 35vw !important;
+    > form {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        gap: 0.5rem;
+    }
 }
 
+.spanTwoDiv {
+    grid-column: 1 / span 2;
+}
+
+.fileInput {
+    grid-column: 1 / span 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    p:first-child {
+        justify-self: center;
+        font-size: 0.75rem;
+        margin-bottom: 0.5rem;
+        margin-top: 0.5rem;
+        color: #383838;
+    }
+}
+
+.uploadButton {
+    background-color: #2469ff;
+    color: #ffffff;
+    box-shadow: none;
+    font-family: 'Outfit', sans-serif;
+}
+
+.numberPrefix {
+    font-weight: 500;
+}
+
+@media (max-width: 1250px) {
+    .illustration {
+        display: none;
+    }
+
+    .cardContainer {
+        width: 55vw !important;
+    }
+}
+
+@media (max-width: 1250px) {
+    .cardContainer {
+        width: 75vw !important;
+    }
+}

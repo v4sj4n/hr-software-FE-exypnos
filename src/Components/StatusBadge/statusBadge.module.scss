@@ -1,0 +1,47 @@
+$green-color: #02a700;
+$red-color: #d32f2f;
+$orange-color: #ca8206;
+$gray-color: #4d4d4d;
+$lightblue-color: #add8e6;
+
+@mixin badge {
+    padding: 0.3rem 0.75rem;
+    border-radius: 1rem;
+    font-weight: bold;
+}
+
+.orangeBadge {
+    @include badge;
+    color: #1f1f1fd0;
+    background-color: lighten($color: $orange-color, $amount: 40);
+}
+
+.grayBadge {
+    @include badge;
+    color: #1f1f1fd0;
+    background-color: lighten($color: $gray-color, $amount: 60);
+}
+
+.greenBadge {
+    @include badge;
+    color: #1f1f1fd0;
+    background-color: lighten($color: $green-color, $amount: 50);
+}
+
+.redBadge {
+    @include badge;
+    color: #1f1f1fd0;
+    background-color: lighten($color: $red-color, $amount: 30);
+}
+
+.lightblue {
+    @include badge;
+    color: #1f1f1fd0;
+    background-color: $lightblue-color;
+}
+
+.purpleBadge {
+    @include badge;
+    color: #1f1f1fd0;
+    background-color: #c4bfea;
+}

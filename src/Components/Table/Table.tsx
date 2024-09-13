@@ -1,72 +1,47 @@
-import { DataGrid, GridColDef, GridValidRowModel, GridRowParams } from '@mui/x-data-grid';
-import React from 'react';
-import { TableStyles } from '../Input/Styles';
-import { SvgIconProps } from '@mui/material';
-interface DataTableProps<T extends GridValidRowModel> {
-  rows: T[];
-  columns: GridColDef[];
-  getRowId?: (row: T) => string | number;
-  height?: number | string;
-  initialPageSize?: number;
-  pageSizeOptions?: number[];
-  additionalStyles?: React.CSSProperties;
-  headerIcons?: { [key: string]: React.ComponentType<SvgIconProps> };
-  handleRowClick?: (params: GridRowParams) => void;
-}
+import { DataGrid,  GridValidRowModel } from '@mui/x-data-grid'
+import { TableStyles } from '../Input/Styles'
+import { DataTableProps } from './Interface'
 export default function DataTable<T extends GridValidRowModel>({
-  rows,
-  columns,
-  getRowId = (row: T) => (row).id,
-  height = "auto",
-  initialPageSize = 5,
-  pageSizeOptions = [5, 10, 20, 30],
-  headerIcons,
-  handleRowClick,
+    rows,
+    columns,
+    getRowId = (row: T) => row.id,
+    height = 'auto',
+    pageSizeOptions = [5, 10, 20, 30],
+    totalPages,
+    page,
+    pageSize,
+    handleRowClick,
+    onPaginationModelChange,
 }: DataTableProps<T>) {
-  const getRowClassName = (params: GridRowParams) => {
-    return Number(params.id) % 2 === 0 ? 'colored-row' : '';
-  };
-  const columnsWithIcons = columns.map(column => {
-    if (headerIcons && headerIcons[column.field]) {
-      const Icon = headerIcons[column.field];
-      return {
-        ...column,
-        renderHeader: () => (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Icon style={{ marginRight: '8px' }} />
-            {column.headerName}
-          </div>
-        ),
-      };
-    }
-    return column;
-  });
-  return (
-    <div style={{ height, width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columnsWithIcons}
-        getRowId={getRowId}
-        getRowClassName={getRowClassName}
-        onRowClick={handleRowClick}
-        sx={{
-          ...TableStyles,
-          '& .colored-row': {
-            backgroundColor: '#f4f4f4',
-          },
-          '& .MuiDataGrid-row': {
-            cursor: 'pointer',
-          },
-          width: '100%',
-        }}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: initialPageSize },
-          },
-        }}
-        pageSizeOptions={pageSizeOptions}
-        checkboxSelection
-      />
-    </div>
-  );
+
+    return (
+        <div style={{ height, width: '100%' }}>
+            <DataGrid
+                rows={rows}
+                columns={columns}
+                getRowId={getRowId}
+                onRowClick={handleRowClick}
+                pagination
+                paginationMode="server"
+                rowCount={totalPages * pageSize}
+                paginationModel={{ page, pageSize }}
+                onPaginationModelChange={onPaginationModelChange}
+                pageSizeOptions={pageSizeOptions}
+                autoHeight={true}
+                disableColumnFilter={true}
+                rowSelection={false}
+                disableDensitySelector={true}
+                sx={{
+                    ...TableStyles,
+                    '& .colored-row': {
+                        backgroundColor: '#5f43b2',
+                    },
+                    '& .MuiDataGrid-row': {
+                        cursor: 'pointer',
+                    },
+                    width: '100%',
+                }}
+            />
+        </div>
+    )
 }

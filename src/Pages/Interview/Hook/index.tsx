@@ -1,39 +1,60 @@
-import { useEffect, useState } from 'react';
+import { useMutation } from '@tanstack/react-query'
 
-import AxiosInstance from '../../../Helpers/Axios';
+import AxiosInstance from '@/Helpers/Axios'
 
-export interface InterviewData {
-    auth: {
-        email: string;
-    };
-    lastName: string;
-    phone: string;
-    position: string;
-    firstName: string;
-    cvAttachment: string;
-    _id: number;
-    date: string;
-    notes: string;
-    time: string;
-
+export interface applicantsData {
+    customMessage: string
+    customSubject: string
+    forEach(arg0: (applicant: applicantsData) => void): unknown
+    firstName: string
+    lastName: string
+    phoneNumber: string
+    email: string
+    positionApplied: string
+    status: string
+    _id: string
+    firstInterviewDate?: string
+    secondInterviewDate?: string
+    notes: string
+    message: string
+    currentPhase: string
+    isDeleted?: boolean
 }
+import { useQuery } from '@tanstack/react-query'
 
 export const useGetAllInterviews = () => {
-    const [interviews, setInterviews] = useState<InterviewData[]>([]);
-    const [error, setError] = useState<string | null>(null);
-    const API_URL = import.meta.env.VITE_API_URL;
+    const fetchApplicants = async () => {
+        const response = await AxiosInstance.get('/applicant')
+        return response.data
+    }
 
-    useEffect(() => {
-        AxiosInstance.get<InterviewData[]>('/interview')
-            .then(response => {
-                setInterviews(response.data);
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                setError("Failed to fetch interviewers. Please try again later.");
-            });
-    }, [API_URL]);
+    const { data, error, isLoading } = useQuery({
+        queryKey: ['applicant'],
+        queryFn: fetchApplicants,
+    })
 
-    return { interviews, error };
+    return { data, error, loading: isLoading }
+}
+
+export const useHandleReject = () => {
+    const mutation = useMutation({
+        mutationFn: async (interviewId: string) => {
+            const response = await AxiosInstance.patch(
+                `/applicant/${interviewId}`,
+                {
+                    status: 'rejected',
+                },
+            )
+            return response.data
+        },
+        onError: (error) => {
+            console.error('Failed to reject interview:', error)
+        },
+    })
+
+    return {
+        handleReject: mutation.mutate,
+        loading: mutation.isPending,
+        error: mutation.error,
+    }
 }

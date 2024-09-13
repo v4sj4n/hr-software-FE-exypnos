@@ -1,0 +1,97 @@
+/* Dropzone.module.css */
+.dropzone {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.dropzoneContent {
+    border: 2px dashed #0087f7;
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+    background-color: #f6f8fa;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.dropzoneContent:hover {
+    background-color: #e1e8ed;
+}
+
+.fileIcon {
+    font-size: 48px;
+    color: #0087f7;
+    margin-bottom: 10px;
+}
+
+.dropzoneContent p {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.previewGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;
+}
+
+.previewItem {
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100px;
+}
+
+.fileName {
+    font-size: 12px;
+    margin-top: 5px;
+    max-width: 30%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.removeButton {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    border-radius: 50%;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.removeAllButton {
+    background-color: #ff4136;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.fileCount {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+}
