@@ -9,8 +9,10 @@
     }
   ],
   "compilerOptions": {
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
     "strict": true,
-    "baseUrl": ".",
-    "paths": { "@/*": ["./src/*"] }
+    "types": ["node"]  
   }
 }

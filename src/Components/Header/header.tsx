@@ -1,43 +1,45 @@
-import { useContext, useState } from 'react'
+// src/Components/Header/Header.tsx
+import React, { useContext, useState } from 'react';
 import {
     Logout as LogoutIcon,
     PermIdentity as PermIdentityIcon,
     Menu as MenuIcon,
-} from '@mui/icons-material'
-import codeviderLogo from '/Images/codevider.png'
-import style from './header.module.css'
-import { useAuth } from '../../Context/AuthProvider'
-import { Link, useNavigate } from 'react-router-dom'
-import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
-import { EventsProvider } from '@/Pages/Events/Context/EventsContext'
-import NotificationDropdown from '@/Pages/Notification/Notification'
-import { ClickAwayListener } from '@mui/material'
-import ThemeSwitcher from '@/Theme/ThemeSwitcher'
-import { useTheme } from '@mui/material/styles'
+    Chat as ChatIcon,
+} from '@mui/icons-material';
+import codeviderLogo from '/Images/codevider.png';
+import style from './header.module.css';
+import { useAuth } from '../../Context/AuthProvider';
+import { Link, useNavigate } from 'react-router-dom';
+import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext';
+import { EventsProvider } from '@/Pages/Events/Context/EventsContext';
+import NotificationDropdown from '@/Pages/Notification/Notification';
+import { ClickAwayListener } from '@mui/material';
+import ThemeSwitcher from '@/Theme/ThemeSwitcher';
+import { useTheme } from '@mui/material/styles';
+import Chat from './Chat';  // Import Chat component
 
 export const HeaderContent = () => {
-    const { isSidebarOpen: isOpen, toggleSidebar } =
-        useContext(SidebarHeaderContext)
-    const [showDropdown, setShowDropdown] = useState(false)
+    const { isSidebarOpen: isOpen, toggleSidebar } = useContext(SidebarHeaderContext);
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [showChat, setShowChat] = useState(false);
 
-    const navigate = useNavigate()
-
-    const { logout, currentUser } = useAuth()
+    const navigate = useNavigate();
+    const { logout, currentUser } = useAuth();
 
     const handleLogout = () => {
-        logout()
-        navigate('/')
-    }
+        logout();
+        navigate('/');
+    };
 
     const handleProfileClick = () => {
-        navigate(`/profile/${currentUser?._id}`)
-    }
+        navigate(`/profile/${currentUser?._id}`);
+    };
 
-    const theme = useTheme()
+    const theme = useTheme();
     const dropdownItemStyle = {
         color: theme.palette.text.primary,
         backgroundColor: theme.palette.background.paper,
-    }
+    };
 
     return (
         <nav className={style.header}>
@@ -56,15 +58,13 @@ export const HeaderContent = () => {
                 {isOpen && (
                     <h3 className={style.title}>
                         <Link to={'/dashboard'}>
-                            <span>Code</span>
-                            Vider
+                            <span>Code</span>Vider
                         </Link>
                     </h3>
                 )}
             </div>
             <div className={style.headerRight}>
                 <ThemeSwitcher />
-
                 <div className={style.icon}>
                     <NotificationDropdown />
                 </div>
@@ -83,8 +83,6 @@ export const HeaderContent = () => {
                                 borderRadius: '50%',
                             }}
                         />
-                        <div className={style.username}></div>
-
                         {showDropdown && (
                             <div className={style.dropdown}>
                                 <div
@@ -102,24 +100,33 @@ export const HeaderContent = () => {
                                 >
                                     Logout <LogoutIcon />
                                 </div>
-                                <div
-                                    className={style.dropdownItem}
-                                    style={dropdownItemStyle}
-                                ></div>
                             </div>
                         )}
                     </div>
                 </ClickAwayListener>
+
+                {/* New Chat Icon to toggle the chat display */}
+                <div className={style.icon} onClick={() => setShowChat(!showChat)}>
+                    <ChatIcon />
+                </div>
+
+                {/* Display Chat component when showChat is true */}
+                {showChat && (
+                    <div className={style.chatDropdown}>
+                        <Chat />
+                    </div>
+                )}
             </div>
         </nav>
-    )
-}
+    );
+};
 
 const Header: React.FC = () => {
     return (
         <EventsProvider>
             <HeaderContent />
         </EventsProvider>
-    )
-}
-export default Header
+    );
+};
+
+export default Header;
