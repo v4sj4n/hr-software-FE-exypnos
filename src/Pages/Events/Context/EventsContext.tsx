@@ -14,7 +14,9 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     const [showEventModal, setShowEventModal] = useState<boolean>(false)
     const [selectedEvent, setSelectedEvent] = useState<EventsData | null>(null)
     const [drawerOpen, setDrawerOpen] = useState(false)
-    const [drawerAction, setDrawerAction] = useState<'create' | 'edit'>('create')
+    const [drawerAction, setDrawerAction] = useState<'create' | 'edit'>(
+        'create',
+    )
     const { data: users = [] } = useGetAllUsers()
     const { currentUser } = useAuth()
     const isAdmin = currentUser?.role === 'hr'
@@ -22,8 +24,8 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     const allEmails = users.map((user) => user.auth?.email)
 
     const formatDate = (date: string): string => {
-        return date.split('T')[0].replace(/-/g, '/');
-    };
+        return date.split('T')[0].replace(/-/g, '/')
+    }
 
     const handleSeeEventDetails = async (event: EventsData) => {
         try {
@@ -173,7 +175,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
                 handleFileUpload,
                 eventPhotos,
                 createdEvents,
-                formatDate
+                formatDate,
             }}
         >
             {children}

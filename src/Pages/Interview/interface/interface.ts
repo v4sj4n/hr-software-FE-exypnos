@@ -1,6 +1,6 @@
-import { Dispatch } from "react"
-import { DropResult } from "react-beautiful-dnd"
-import { applicantsData } from "../Hook"
+import { Dispatch } from 'react'
+import { DropResult } from 'react-beautiful-dnd'
+import { applicantsData } from '../Hook'
 
 export interface Interview extends applicantsData {
     phase: string
@@ -59,13 +59,12 @@ export interface InterviewContextType {
     filteredInterviews: Interview[]
     isFiltered: boolean
 
-
-   fetchFilteredInterviews: (
-    currentPhase?: string,
-    status?: string,
-    startDate?: Date,
-    endDate?: Date,
-) => Promise<Interview[]>
+    fetchFilteredInterviews: (
+        currentPhase?: string,
+        status?: string,
+        startDate?: Date,
+        endDate?: Date,
+    ) => Promise<Interview[]>
 
     setFilteredInterviews: Dispatch<React.SetStateAction<Interview[]>>
     scheduleType: 'schedule' | 'reschedule'

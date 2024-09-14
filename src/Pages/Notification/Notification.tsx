@@ -50,11 +50,11 @@ const NotificationDropdown: React.FC = () => {
     const removeNotification = async (notification: Notification) => {
         try {
             await AxiosInstance.patch(`notification/${notification._id}`)
-            const updatedNotifications = notifications.map(n => 
-                n._id === notification._id ? { ...n, isRead: true } : n
+            const updatedNotifications = notifications.map((n) =>
+                n._id === notification._id ? { ...n, isRead: true } : n,
             )
             setNotifications(updatedNotifications)
-            setLength(prev => prev - 1)
+            setLength((prev) => prev - 1)
         } catch (error) {
             console.error(
                 `Error removing notification ${notification._id}:`,
@@ -95,10 +95,15 @@ const NotificationDropdown: React.FC = () => {
 
     const markAllAsRead = async () => {
         try {
-            const updatedNotifications = notifications.map(n => ({ ...n, isRead: true }))
+            const updatedNotifications = notifications.map((n) => ({
+                ...n,
+                isRead: true,
+            }))
             for (const notification of updatedNotifications) {
                 if (!notification.isRead) {
-                    await AxiosInstance.patch(`notification/${notification._id}`)
+                    await AxiosInstance.patch(
+                        `notification/${notification._id}`,
+                    )
                 }
             }
             setNotifications(updatedNotifications)

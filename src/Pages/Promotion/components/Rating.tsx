@@ -100,10 +100,10 @@ export default function Rating({ id }: { id: string }) {
     return (
         <>
             <Toast
-                severity={toastSeverity }
+                severity={toastSeverity}
                 open={toastOpen}
-                message={ toastMessage }
-                onClose={ handleCloseToast}
+                message={toastMessage}
+                onClose={handleCloseToast}
             />
 
             <Card backgroundColor="rgba(255, 255, 255, 0.7)">

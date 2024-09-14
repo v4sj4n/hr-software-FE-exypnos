@@ -91,7 +91,7 @@ export const VacationForm: React.FC<MyComponentProps> = ({
                     }) => (
                         <div>
                             <Selecter
-                            width='100%'
+                                width="100%"
                                 label="Vacation Type"
                                 name="Vacation Type"
                                 multiple={false}
@@ -123,7 +123,7 @@ export const VacationForm: React.FC<MyComponentProps> = ({
                     }) => (
                         <div>
                             <Selecter
-                            width='100%'
+                                width="100%"
                                 label="Vacation Status"
                                 name="Vacation Status"
                                 multiple={false}

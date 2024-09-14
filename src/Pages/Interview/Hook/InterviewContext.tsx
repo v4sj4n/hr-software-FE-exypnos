@@ -1,9 +1,4 @@
-import React, {
-    createContext,
-    useState,
-    useEffect,
-    useContext,
-} from 'react'
+import React, { createContext, useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { DropResult } from 'react-beautiful-dnd'
 import { useGetAllInterviews } from '.'
@@ -113,35 +108,41 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({
         endDate?: Date,
     ): Promise<Interview[]> => {
         try {
-            const params: any = {};
-            
-            if (currentPhase) params.currentPhase = currentPhase;
-            if (status) params.status = status;
-            if (startDate) params.startDate = startDate.toISOString();  
-            if (endDate) params.endDate = endDate.toISOString();      
-    
-            console.log('Fetching with params:', params); 
-    
-            const response = await AxiosInstance.get(`/applicant`, { params });
-    
+            const params: any = {}
+
+            if (currentPhase) params.currentPhase = currentPhase
+            if (status) params.status = status
+            if (startDate) params.startDate = startDate.toISOString()
+            if (endDate) params.endDate = endDate.toISOString()
+
+            console.log('Fetching with params:', params)
+
+            const response = await AxiosInstance.get(`/applicant`, { params })
+
             if (response.status === 200) {
                 if (Array.isArray(response.data)) {
-                    const filteredData = response.data as Interview[];
-                    setFilteredInterviews(filteredData);
-                    return filteredData;
+                    const filteredData = response.data as Interview[]
+                    setFilteredInterviews(filteredData)
+                    return filteredData
                 } else {
-                    console.error('Unexpected response data format:', response.data);
-                    return [];
+                    console.error(
+                        'Unexpected response data format:',
+                        response.data,
+                    )
+                    return []
                 }
             } else {
-                console.error('Failed to fetch interviews, status code:', response.status);
-                return [];
+                console.error(
+                    'Failed to fetch interviews, status code:',
+                    response.status,
+                )
+                return []
             }
         } catch (error) {
-            console.error('Error fetching interviews:', error);
-            return [];
+            console.error('Error fetching interviews:', error)
+            return []
         }
-    };
+    }
     useEffect(() => {
         fetchFilteredInterviews().then(setFilteredInterviews)
     }, [])
@@ -152,34 +153,45 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const filterInterviews = () => {
         let filtered = interviews.filter((interview) => {
-            if (currentTab === 'first_interview' && interview.currentPhase === 'first_interview') return true
-            if (currentTab === 'second_interview' && interview.currentPhase === 'second_interview') return true
-            if (currentTab === 'rejected' && interview.status === 'rejected') return true
-            if (currentTab === 'employed' && interview.status === 'employed') return true
+            if (
+                currentTab === 'first_interview' &&
+                interview.currentPhase === 'first_interview'
+            )
+                return true
+            if (
+                currentTab === 'second_interview' &&
+                interview.currentPhase === 'second_interview'
+            )
+                return true
+            if (currentTab === 'rejected' && interview.status === 'rejected')
+                return true
+            if (currentTab === 'employed' && interview.status === 'employed')
+                return true
             return false
         })
 
         if (isFiltered && startDate && endDate) {
-            const start = new Date(startDate as string);
-            const end = new Date(endDate as string);
-            end.setHours(23, 59, 59, 999); 
-        
+            const start = new Date(startDate as string)
+            const end = new Date(endDate as string)
+            end.setHours(23, 59, 59, 999)
+
             filtered = filtered.filter((interview) => {
-                const interviewDateRaw = interview.currentPhase === 'second_interview'
-                    ? interview.secondInterviewDate
-                    : interview.firstInterviewDate;
-                
+                const interviewDateRaw =
+                    interview.currentPhase === 'second_interview'
+                        ? interview.secondInterviewDate
+                        : interview.firstInterviewDate
+
                 if (interviewDateRaw) {
-                    const interviewDate = new Date(interviewDateRaw);
-                    return interviewDate >= start && interviewDate <= end;
+                    const interviewDate = new Date(interviewDateRaw)
+                    return interviewDate >= start && interviewDate <= end
                 }
-        
-                return false;
-            });
+
+                return false
+            })
         }
-        
-        setFilteredInterviews(filtered);
-    }        
+
+        setFilteredInterviews(filtered)
+    }
 
     const handleTabChange = (
         _event: React.SyntheticEvent,
@@ -200,48 +212,57 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({
         setEndDate('')
         setCurrentTab('first_interview')
     }
-    
-  const handleOpenModal = (interview: Interview, isReschedule = false) => {
+
+    const handleOpenModal = (interview: Interview, isReschedule = false) => {
         setSelectedInterview(interview)
         setIsModalOpen(true)
         setIsReschedule(isReschedule)
     }
 
- const handleCloseModal = () => {
+    const handleCloseModal = () => {
         setIsModalOpen(false)
         setSelectedInterview(null)
     }
 
-const handleCancel = async (interview: Interview) => {
+    const handleCancel = async (interview: Interview) => {
         try {
-            const response = await AxiosInstance.patch(`/applicant/${interview._id}`, {
-                status: 'rejected', 
-                currentPhase: 'rejected',
-            });
-    
+            const response = await AxiosInstance.patch(
+                `/applicant/${interview._id}`,
+                {
+                    status: 'rejected',
+                    currentPhase: 'rejected',
+                },
+            )
+
             if (response.status === 200) {
                 setInterviews((prevInterviews) =>
                     prevInterviews.map((i) =>
                         i._id === interview._id
-                            ? { ...i, status: 'rejected', currentPhase: 'rejected' }
-                            : i
-                    )
-                );
+                            ? {
+                                  ...i,
+                                  status: 'rejected',
+                                  currentPhase: 'rejected',
+                              }
+                            : i,
+                    ),
+                )
                 setFilteredInterviews((prevInterviews) =>
-                    prevInterviews.filter((i) => i._id !== interview._id)
-                );
-    
-                setToastMessage('This candidate will now be found in the rejected tab');
-                setToastSeverity('success');
-                setToastOpen(true);
+                    prevInterviews.filter((i) => i._id !== interview._id),
+                )
+
+                setToastMessage(
+                    'This candidate will now be found in the rejected tab',
+                )
+                setToastSeverity('success')
+                setToastOpen(true)
             }
         } catch (error) {
-            console.error('Failed to cancel interview:', error);
-            setToastMessage('Failed to reject the candidate');
-            setToastSeverity('error');
-            setToastOpen(true);
+            console.error('Failed to cancel interview:', error)
+            setToastMessage('Failed to reject the candidate')
+            setToastSeverity('error')
+            setToastOpen(true)
         }
-    };
+    }
 
     const handleSchedule = async (
         interviewDate: string,
@@ -319,16 +340,14 @@ const handleCancel = async (interview: Interview) => {
             let newPhase = interview.currentPhase
             let status = interview.status
 
-        if (interview.currentPhase === 'first_interview') {
-            newPhase = 'second_interview';
-            status = 'active';
-            handleOpenModal(interview, false); 
-        } 
-        else if (interview.currentPhase === 'second_interview') {
-            
-            status = 'employed';
-            newPhase = 'employed';
-        }
+            if (interview.currentPhase === 'first_interview') {
+                newPhase = 'second_interview'
+                status = 'active'
+                handleOpenModal(interview, false)
+            } else if (interview.currentPhase === 'second_interview') {
+                status = 'employed'
+                newPhase = 'employed'
+            }
 
             const response = await AxiosInstance.patch(
                 `/applicant/${interview._id}`,
@@ -434,54 +453,54 @@ const handleCancel = async (interview: Interview) => {
     const handleNavigateToProfile = (CandidateViewId: string) => {
         navigate(`/view/${CandidateViewId}`)
     }
-return (
-    <InterviewContext.Provider
-        value={{
-            loading,
-            error,
-            interviews: filteredInterviews,
-            selectedInterview,
-            isModalOpen,
-            isReschedule,
-            allPhasesPassed,
-            handleOpenModal,
-            handleCloseModal,
-            handleSchedule,
-            handleCancel,
-            onDragEnd,
-            handleNavigateToProfile,
-            handleAccept,
-            getInterviewsByPhase: (phase: string) =>
-                getInterviewsByPhase(interviews, phase),
-            formatDate: (dateString: string | number | Date | undefined) =>
-                formatDate(dateString ?? ''),
-            phases,
-            fetchFilteredInterviews,
-            scheduleType,
-            setIsReschedule,
-            setScheduleType,
-            setFilteredInterviews,
-            handleTabChange,
-            handleApplyFilter,
-            handleClearFilter,
-            currentTab,
-            currentPhase,
-            startDate,
-            endDate,
-            setCurrentPhase,
-            setStartDate,
-            setEndDate,
-            filteredInterviews,
-            isFiltered
-        }}
-    >
-        {children}
-        <Toast
-            open={toastOpen}
-            message={toastMessage}
-            severity={toastSeverity}
-            onClose={() => false}
-        />
-    </InterviewContext.Provider>
-)
+    return (
+        <InterviewContext.Provider
+            value={{
+                loading,
+                error,
+                interviews: filteredInterviews,
+                selectedInterview,
+                isModalOpen,
+                isReschedule,
+                allPhasesPassed,
+                handleOpenModal,
+                handleCloseModal,
+                handleSchedule,
+                handleCancel,
+                onDragEnd,
+                handleNavigateToProfile,
+                handleAccept,
+                getInterviewsByPhase: (phase: string) =>
+                    getInterviewsByPhase(interviews, phase),
+                formatDate: (dateString: string | number | Date | undefined) =>
+                    formatDate(dateString ?? ''),
+                phases,
+                fetchFilteredInterviews,
+                scheduleType,
+                setIsReschedule,
+                setScheduleType,
+                setFilteredInterviews,
+                handleTabChange,
+                handleApplyFilter,
+                handleClearFilter,
+                currentTab,
+                currentPhase,
+                startDate,
+                endDate,
+                setCurrentPhase,
+                setStartDate,
+                setEndDate,
+                filteredInterviews,
+                isFiltered,
+            }}
+        >
+            {children}
+            <Toast
+                open={toastOpen}
+                message={toastMessage}
+                severity={toastSeverity}
+                onClose={() => false}
+            />
+        </InterviewContext.Provider>
+    )
 }

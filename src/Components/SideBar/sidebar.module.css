@@ -34,20 +34,20 @@
     position: relative;
     display: flex;
     align-items: center;
-    position: relative;}
+    position: relative;
+}
 .item:hover {
     background: white;
 }
 .item:hover .icon {
-    color: #2457A3;
-
+    color: #2457a3;
 }
 .item:hover .link {
     color: black;
     transform: translateY(-1px);
     opacity: 1;
     transform: translateX(10px);
-} 
+}
 .link {
     color: rgba(0, 0, 0, 0.8);
     display: flex;
@@ -87,7 +87,10 @@
     font-size: 16px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     background: transparent;
-    transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
+    transition:
+        background-color 0.5s ease,
+        color 0.5s ease,
+        box-shadow 0.5s ease;
     cursor: pointer;
     text-decoration: none;
 }

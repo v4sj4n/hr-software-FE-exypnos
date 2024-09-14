@@ -1,4 +1,8 @@
-import { GridColDef, GridPaginationModel, GridRowParams } from '@mui/x-data-grid'
+import {
+    GridColDef,
+    GridPaginationModel,
+    GridRowParams,
+} from '@mui/x-data-grid'
 import React from 'react'
 
 export interface PayrollContextType {
@@ -18,14 +22,18 @@ export interface PayrollContextType {
     isPending: boolean
     netSalary: number | undefined
     page: number
-    setFilters: React.Dispatch< React.SetStateAction<Record<string, string | boolean>>>
+    setFilters: React.Dispatch<
+        React.SetStateAction<Record<string, string | boolean>>
+    >
     filters: Record<string, string | boolean>
     pageSize: number
     totalPages: number
     handlePaginationModelChange: (paginationModel: GridPaginationModel) => void
 }
 
-export const PayrollContext = React.createContext<PayrollContextType | undefined>(undefined)
+export const PayrollContext = React.createContext<
+    PayrollContextType | undefined
+>(undefined)
 
 export interface PayrollRow {
     id: number

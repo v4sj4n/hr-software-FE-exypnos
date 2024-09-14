@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import Router from './Router.tsx'
 import { AuthProvider } from './Context/AuthProvider.tsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ThemeProvider } from './Theme/ThemeContext.tsx' 
+import { ThemeProvider } from './Theme/ThemeContext.tsx'
 
 import './index.scss'
 
