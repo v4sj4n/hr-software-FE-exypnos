@@ -1,10 +1,11 @@
-import { Interview } from './InterviewContext'
+import { useTheme } from '@mui/material'
+import { Interview } from './../interface/interface'
 
-export const formatDate = (dateString: string | number | Date) => {
+export const formatDate = (dateString: string | number | Date | undefined) => {
     if (!dateString) {
         return 'No Date Provided'
     }
-
+    
     const date = new Date(dateString)
     if (isNaN(date.getTime())) {
         return 'Invalid Date'
@@ -24,4 +25,9 @@ export const getInterviewsByPhase = (
               interview.status === 'active'
             : interview.currentPhase === phase,
     )
+}
+
+export  const theme = useTheme()
+export const applicantCountStyle = {
+    color: theme.palette.text.primary,
 }

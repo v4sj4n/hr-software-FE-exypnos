@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import {
     Card,
     Typography,
@@ -6,123 +6,121 @@ import {
     Badge,
     Box,
     ClickAwayListener,
-} from '@mui/material'
-import NotificationsIcon from '@mui/icons-material/Notifications'
-import { useNavigate } from 'react-router-dom'
-import { useGetAllNotifications } from './Hook/index'
-import AxiosInstance from '@/Helpers/Axios'
-import { useTheme } from '@mui/material/styles'
-import { useAuth } from '@/Context/AuthProvider'
+} from '@mui/material';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import { useNavigate } from 'react-router-dom';
+import { useGetAllNotifications } from './Hook/index';
+import AxiosInstance from '@/Helpers/Axios';
+import { useTheme } from '@mui/material/styles';
+import { useAuth } from '@/Context/AuthProvider';
 
 interface Notification {
-    _id: number
-    title: string
-    type: string
-    typeId: string
-    content: string
-    date: string
-    isRead: boolean
+    _id: number;
+    title: string;
+    type: string;
+    typeId: string;
+    content: string;
+    date: string;
+    isRead: boolean;
 }
 
 const NotificationDropdown: React.FC = () => {
-    const { currentUser } = useAuth()
-    const theme = useTheme()
-    const navigate = useNavigate()
-    const [isOpen, setIsOpen] = useState(false)
+    const { currentUser } = useAuth();
+    const theme = useTheme();
+    const navigate = useNavigate();
+    const [isOpen, setIsOpen] = useState(false);
     const { notifications, setNotifications } = useGetAllNotifications() ?? {
         notifications: [],
         setNotifications: () => {},
-    }
-    const [length, setLength] = useState(0)
+    };
+    const [length, setLength] = useState(0);
 
     useEffect(() => {
-        setLength(notifications.filter((n) => !n.isRead).length)
-    }, [notifications])
+        setLength(notifications.filter((n) => !n.isRead).length);
+    }, [notifications]);
 
     const handleToggleDropdown = () => {
-        setIsOpen(!isOpen)
-    }
+        setIsOpen(!isOpen);
+    };
 
     const handleClickAway = () => {
-        setIsOpen(false)
-    }
+        setIsOpen(false);
+    };
 
     const removeNotification = async (notification: Notification) => {
         try {
-            await AxiosInstance.patch(`notification/${notification._id}`)
+            await AxiosInstance.patch(`notification/${notification._id}`);
             const updatedNotifications = notifications.map((n) =>
                 n._id === notification._id ? { ...n, isRead: true } : n,
-            )
-            setNotifications(updatedNotifications)
-            setLength((prev) => prev - 1)
+            );
+            setNotifications(updatedNotifications);
+            setLength((prev) => prev - 1);
         } catch (error) {
-            console.error(
-                `Error removing notification ${notification._id}:`,
-                error,
-            )
+            console.error(`Error removing notification ${notification._id}:`, error);
         }
-    }
+    };
 
     const handleNotificationClick = (notification: Notification) => {
         if (!notification.isRead) {
-            removeNotification(notification)
+            removeNotification(notification);
         }
         if (notification.type === 'events') {
-            navigate(`/events?event=${notification.typeId}`)
-            setIsOpen(false)
+            navigate(`/events?event=${notification.typeId}`);
+            setIsOpen(false);
         } else if (notification.type === 'vacation') {
-            navigate(
-                `/vacation?vacationType=requests&selectedVacation=${notification.typeId}`,
-            )
+            navigate(`/vacation?vacationType=requests&selectedVacation=${notification.typeId}`);
         } else if (notification.type === 'candidates') {
-            navigate(`/view/${notification.typeId}`)
+            navigate(`/view/${notification.typeId}`);
+        } else if (notification.type === 'allVacation') {
+            navigate(`/vacation?vacationType=requests&page=0&limit=5`);
+        } else if (notification.type === 'allCandidates') {
+            navigate(`/candidates`);
         }
-    }
+    };
 
     const getColorByType = (type: string, isRead: boolean) => {
         if (isRead) {
-            return '#6C757D'
+            return '#6C757D';
         }
         switch (type) {
             case 'events':
-                return 'blue'
+                return 'blue';
             case 'vacation':
-                return 'green'
+                return 'green';
             case 'candidates':
-                return 'purple'
+                return 'purple';
+            case 'allVacation':
+                return 'green';
+            case 'allApplication':
+                return 'purple';
+            default:
+                return '#6C757D';
         }
-    }
+    };
 
     const markAllAsRead = async () => {
         try {
-            const updatedNotifications = notifications.map((n) => ({
-                ...n,
-                isRead: true,
-            }))
+            const updatedNotifications = notifications.map((n) => ({ ...n, isRead: true }));
             for (const notification of updatedNotifications) {
                 if (!notification.isRead) {
-                    await AxiosInstance.patch(
-                        `notification/${notification._id}`,
-                    )
+                    await AxiosInstance.patch(`notification/${notification._id}`);
                 }
             }
-            setNotifications(updatedNotifications)
-            setLength(0)
+            setNotifications(updatedNotifications);
+            setLength(0);
         } catch (error) {
-            console.error('Error marking all as read:', error)
+            console.error('Error marking all as read:', error);
         }
-    }
+    };
 
     const showAll = async () => {
         try {
-            const result = await AxiosInstance.get(
-                `notification/user/${currentUser?._id}?period=week`,
-            )
-            setNotifications(result.data)
+            const result = await AxiosInstance.get(`notification/user/${currentUser?._id}?period=week`);
+            setNotifications(result.data);
         } catch (error) {
-            console.error('Error showing all notifications:', error)
+            console.error('Error showing all notifications:', error);
         }
-    }
+    };
 
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
@@ -143,76 +141,75 @@ const NotificationDropdown: React.FC = () => {
                             bgcolor: theme.palette.background.default,
                             boxShadow: 1,
                             borderRadius: 1,
-                            overflow: 'auto',
+                            overflow: 'hidden',
                             maxHeight: 400,
-                            cursor: 'pointer',
-                            scrollbarWidth: 'none',
-                            '&::-webkit-scrollbar': {
-                                display: 'none',
-                            },
-                            msOverflowStyle: 'none',
+                            display: 'flex',
+                            flexDirection: 'column',
                         }}
                     >
-                        {notifications.map((notification) => (
-                            <Card
-                                key={notification._id}
-                                sx={{
-                                    mb: 1,
-                                    borderBottom: `4px solid ${getColorByType(
-                                        notification.type,
-                                        notification.isRead,
-                                    )}`,
-                                    bgcolor: 'rgba(255, 255, 255, 0.7)',
-                                    color: '#000',
-                                }}
-                                onClick={() => {
-                                    handleNotificationClick(notification)
-                                }}
-                            >
-                                <Box
+                        {/* Scrollable notification list */}
+                        <Box
+                            sx={{
+                                flex: 1,
+                                overflowY: 'auto',
+                                scrollbarWidth: 'none',
+                                '&::-webkit-scrollbar': {
+                                    display: 'none',
+                                },
+                            }}
+                        >
+                            {notifications.map((notification) => (
+                                <Card
+                                    key={notification._id}
                                     sx={{
-                                        padding: '8px 16px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'space-between',
+                                        mb: 1,
+                                        borderBottom: `4px solid ${getColorByType(notification.type, notification.isRead)}`,
+                                        bgcolor: 'rgba(255, 255, 255, 0.7)',
+                                        color: '#000',
                                     }}
+                                    onClick={() => handleNotificationClick(notification)}
                                 >
-                                    <Box>
-                                        <Typography
-                                            variant="subtitle2"
-                                            sx={{ fontWeight: 'bold' }}
-                                        >
-                                            {notification.title}
-                                        </Typography>
-                                        <Typography
-                                            variant="body2"
-                                            maxWidth="300px"
-                                        >
-                                            {notification.content}
-                                        </Typography>
-                                    </Box>
-                                    <Typography
-                                        variant="subtitle2"
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            removeNotification(notification)
-                                        }}
+                                    <Box
                                         sx={{
-                                            cursor: 'pointer',
-                                            color: notification.isRead
-                                                ? 'text.secondary'
-                                                : 'primary.main',
+                                            padding: '8px 16px',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
                                         }}
                                     >
-                                        {notification.isRead
-                                            ? 'Read'
-                                            : 'Mark as read'}
-                                    </Typography>
-                                </Box>
-                            </Card>
-                        ))}
-                        <div
-                            style={{
+                                        <Box>
+                                            <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
+                                                {notification.title}
+                                            </Typography>
+                                            <Typography variant="body2" maxWidth="300px">
+                                                {notification.content}
+                                            </Typography>
+                                        </Box>
+                                        <Typography
+                                            variant="subtitle2"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                removeNotification(notification);
+                                            }}
+                                            sx={{
+                                                cursor: 'pointer',
+                                                color: notification.isRead ? 'text.secondary' : 'primary.main',
+                                            }}
+                                        >
+                                            {notification.isRead ? 'Read' : 'Mark as read'}
+                                        </Typography>
+                                    </Box>
+                                </Card>
+                            ))}
+                        </Box>
+
+                        <Box
+                            sx={{
+                                position: 'sticky',
+                                bottom: 0,
+                                bgcolor: theme.palette.background.default,
+                                py: 1,
+                                borderTop: `1px solid ${theme.palette.divider}`,
                                 display: 'flex',
                                 justifyContent: 'space-between',
                             }}
@@ -233,12 +230,12 @@ const NotificationDropdown: React.FC = () => {
                             >
                                 Show all
                             </a>
-                        </div>
+                        </Box>
                     </Box>
                 )}
             </Box>
         </ClickAwayListener>
-    )
-}
+    );
+};
 
-export default NotificationDropdown
+export default NotificationDropdown;
