@@ -6,14 +6,13 @@ export interface PayrollContextType {
     columns: GridColDef[]
     headerTextColors: { [key: string]: string }
     getRowId: (row: PayrollRowSpecifc) => number
-    setMonth: (month: number) => void
-    setYear: (year: number) => void
     fullName: string | undefined
     isPending: boolean
     page: number
     pageSize: number
     totalPages: number
     handlePaginationModelChange: (paginationModel: GridPaginationModel) => void
+    handleDateChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export const PayrollContextSpecific = React.createContext<

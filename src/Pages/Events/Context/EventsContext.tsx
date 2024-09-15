@@ -28,7 +28,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     const handleSeeEventDetails = async (event: EventsData) => {
         try {
             const res = await AxiosInstance.get(`/event/${event._id}`)
-            console.log('res', res)
             setSelectedEvent(res.data)
             setShowEventModal(true)
         } catch (err) {
@@ -115,10 +114,38 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         eventToDeleteId,
     } = useDeleteEvent()
 
+    const severityB = toastOpen ? toastSeverity : updateToastSeverity
+    const openToastB = toastOpen || updateToastOpen
+    const toastMessageB = toastOpen? toastMessage : updateToastMessage
+    const closeToastB = toastOpen? handleToastClose : handleUpdateToastClose
+
+     const handleMapChange = (address: string) => {
+        if (editingEvent) {
+            handleEditChange({
+                target: {
+                    name: 'location',
+                    value: address,
+                },
+            } as React.ChangeEvent<HTMLInputElement>)
+        } else {
+            handleChange({
+                target: {
+                    name: 'location',
+                    value: address,
+                },
+            } as React.ChangeEvent<HTMLInputElement>)
+        }
+    }
+
     return (
         <EventsContext.Provider
             value={{
+                handleMapChange,
                 handleLocationChange,
+                severityB,
+                openToastB,
+                toastMessageB,
+                closeToastB,
                 createEvent,
                 updateEvent,
                 handleDelete,
@@ -137,8 +164,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
                 handleEditOptionChange,
                 toggleForm,
                 handleToggleForm,
-                handleToastClose,
-                handleUpdateToastClose,
                 showModal,
                 closeModal,
                 handleDeleteEventModal,
@@ -146,17 +171,11 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
                 setShowEventModal,
                 selectedEvent,
                 setSelectedEvent,
-                updateToastMessage,
-                updateToastOpen,
-                updateToastSeverity,
                 editPollQuestion,
                 editPollOptions,
                 type: event.type,
                 pollQuestion,
                 pollOptions,
-                toastOpen,
-                toastMessage,
-                toastSeverity,
                 endDate: event.endDate,
                 isAdmin,
                 allEmails,

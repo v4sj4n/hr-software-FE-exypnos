@@ -15,54 +15,18 @@ function PayrollContent() {
         columns,
         getRowId,
         handleRowClick,
-        setMonth,
-        setFullName,
-        setBonus,
-        setWorkingDays,
-        setYear,
         isPending,
-        setMaxNetSalary,
-        setMinNetSalary,
         page,
         pageSize,
         totalPages,
         handlePaginationModelChange,
+        handleDateChange,
+        handleFullNameChange,
+        handleWorkingDaysChange,
+        handleMinSalaryChange,
+        handleMaxSalaryChange,
+        handleBonusChange,
     } = usePayrollContext()
-
-    const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const date = event.target.value
-        const [yearString, monthString] = date.split('-')
-        setYear(parseInt(yearString))
-        setMonth(parseInt(monthString))
-    }
-
-    const handleFullNameChange = (
-        event: React.ChangeEvent<HTMLInputElement>,
-    ) => {
-        setFullName(event.target.value)
-    }
-
-    const handleWorkingDaysChange = (
-        event: React.ChangeEvent<HTMLInputElement>,
-    ) => {
-        setWorkingDays(parseInt(event.target.value))
-    }
-
-    const handleMinSalaryChange = (
-        event: React.ChangeEvent<HTMLInputElement>,
-    ) => {
-        setMinNetSalary(parseFloat(event.target.value))
-    }
-
-    const handleMaxSalaryChange = (
-        event: React.ChangeEvent<HTMLInputElement>,
-    ) => {
-        setMaxNetSalary(parseFloat(event.target.value))
-    }
-
-    const handleBonusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setBonus(parseFloat(event.target.value))
-    }
 
     const [showFilters, setShowFilters] = useState(false)
 
