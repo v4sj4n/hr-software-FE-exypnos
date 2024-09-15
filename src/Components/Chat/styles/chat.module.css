@@ -1,0 +1,2 @@
+.chatContainer { display: flex; flex-direction: column; }
+.chatMessage { margin-bottom: 10px; }
