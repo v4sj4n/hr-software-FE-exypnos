@@ -1,9 +1,9 @@
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import { InputProps } from '../Interface';
+import Box from '@mui/material/Box'
+import TextField from '@mui/material/TextField'
+import { InputProps } from '../Interface'
 
 const Filter: React.FC<InputProps> = (props) => {
-    const { onChange, type, label, name } = props;
+    const { onChange, type, label, name } = props
     return (
         <Box
             component="form"
@@ -21,24 +21,24 @@ const Filter: React.FC<InputProps> = (props) => {
                 size="small"
                 sx={{
                     '& .MuiInputBase-input': {
-                        fontSize: '16px', 
+                        fontSize: '16px',
                         fontFamily: '"Outfit", sans-serif',
                         color: '#4C556B',
                     },
-                    fontSize: '14px', 
+                    fontSize: '14px',
                 }}
                 InputLabelProps={{
                     style: {
                         color: '#4C556B',
                         fontFamily: '"Outfit", sans-serif',
-                        fontSize: '14px', 
+                        fontSize: '14px',
                         zIndex: 1,
                     },
                     shrink: true,
                 }}
             />
         </Box>
-    );
+    )
 }
 
-export default Filter;
+export default Filter

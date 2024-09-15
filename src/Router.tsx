@@ -6,7 +6,6 @@ import Dashboard from './Pages/Dashboard/Dashboard.tsx'
 import Employees from './Pages/Employees/Employees.tsx'
 import Events from './Pages/Events/Events.tsx'
 import Interview from './Pages/Interview/Interview.tsx'
-import ResetPass from './Pages/Login/Component/ResetPass'
 import Login from './Pages/Login/Login'
 import Payroll from './Pages/Payroll/Payroll.tsx'
 import Profile from './Pages/Profile/Profile'
@@ -23,6 +22,7 @@ import EmailConfirmation from './Pages/Recruitment/Component/EmailConfirmation.t
 import NotFound from './Pages/NotFound/NotFound.tsx'
 import UserPromotion from './Pages/Promotion/UserPromotion.tsx'
 import Promotion from './Pages/Promotion/Promotion.tsx'
+import ResetPassword from './Pages/ResetPassword/ResetPassword.tsx'
 
 export default function Router() {
     const router = createBrowserRouter([
@@ -40,8 +40,8 @@ export default function Router() {
             element: <EmailConfirmation />,
         },
         {
-            path: '/forgot-password',
-            element: <ResetPass />,
+            path: '/reset-password',
+            element: <ResetPassword />,
         },
         {
             path: 'career',

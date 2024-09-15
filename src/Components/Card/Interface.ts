@@ -1,5 +1,5 @@
-import { ReactNode } from "react"
-import { CSSProperties } from "styled-components"
+import { ReactNode } from 'react'
+import { CSSProperties } from 'styled-components'
 
 export interface CardProps {
     children: ReactNode

@@ -6,25 +6,25 @@
     max-width: 600px;
     margin: 0 auto;
     overflow: hidden;
-  }
-  
-  .carouselInner {
+}
+
+.carouselInner {
     display: flex;
     transition: transform 0.3s ease-in-out;
-  }
-  
-  .carouselItem {
+}
+
+.carouselItem {
     flex: 0 0 100%;
     width: 100%;
-  }
-  
-  .carouselImage {
+}
+
+.carouselImage {
     width: 100%;
     height: auto;
     display: block;
-  }
-  
-  .imageName {
+}
+
+.imageName {
     position: absolute;
     bottom: 10px;
     left: 10px;
@@ -33,9 +33,9 @@
     padding: 5px 10px;
     border-radius: 3px;
     font-size: 14px;
-  }
-  
-  .carouselButton {
+}
+
+.carouselButton {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -48,27 +48,27 @@
     color: #333;
     cursor: pointer;
     transition: background-color 0.3s ease;
-  }
-  
-  .carouselButton:hover {
+}
+
+.carouselButton:hover {
     background-color: rgba(255, 255, 255, 0.8);
-  }
-  
-  .prev {
+}
+
+.prev {
     left: 10px;
-  }
-  
-  .next {
+}
+
+.next {
     right: 10px;
-  }
-  
-  .dotsContainer {
+}
+
+.dotsContainer {
     display: flex;
     justify-content: center;
     margin-top: 10px;
-  }
-  
-  .dot {
+}
+
+.dot {
     width: 10px;
     height: 10px;
     border-radius: 50%;
@@ -76,8 +76,8 @@
     margin: 0 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-  }
-  
-  .activeDot {
+}
+
+.activeDot {
     background-color: #333;
-  }
+}

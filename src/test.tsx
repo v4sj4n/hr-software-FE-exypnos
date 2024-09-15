@@ -175,16 +175,16 @@
 //     ): Promise<Interview[]> => {
 //         try {
 //             const params: any = {};
-            
+
 //             if (currentPhase) params.currentPhase = currentPhase;
 //             if (status) params.status = status;
-//             if (startDate) params.startDate = startDate.toISOString();  
-//             if (endDate) params.endDate = endDate.toISOString();      
-    
-//             console.log('Fetching with params:', params); 
-    
+//             if (startDate) params.startDate = startDate.toISOString();
+//             if (endDate) params.endDate = endDate.toISOString();
+
+//             console.log('Fetching with params:', params);
+
 //             const response = await AxiosInstance.get(`/applicant`, { params });
-    
+
 //             if (response.status === 200) {
 //                 if (Array.isArray(response.data)) {
 //                     const filteredData = response.data as Interview[];
@@ -223,24 +223,24 @@
 //         if (isFiltered && startDate && endDate) {
 //             const start = new Date(startDate as string);
 //             const end = new Date(endDate as string);
-//             end.setHours(23, 59, 59, 999); 
-        
+//             end.setHours(23, 59, 59, 999);
+
 //             filtered = filtered.filter((interview) => {
 //                 const interviewDateRaw = interview.currentPhase === 'second_interview'
 //                     ? interview.secondInterviewDate
 //                     : interview.firstInterviewDate;
-                
+
 //                 if (interviewDateRaw) {
 //                     const interviewDate = new Date(interviewDateRaw);
 //                     return interviewDate >= start && interviewDate <= end;
 //                 }
-        
+
 //                 return false;
 //             });
 //         }
-        
+
 //         setFilteredInterviews(filtered);
-//     }        
+//     }
 
 //     const handleTabChange = (
 //         _event: React.SyntheticEvent,
@@ -261,7 +261,6 @@
 //         setEndDate('')
 //         setCurrentTab('first_interview')
 //     }
-    
 
 //     const handleOpenModal = (interview: Interview, isReschedule = false) => {
 //         setSelectedInterview(interview)
@@ -277,10 +276,10 @@
 //     const handleCancel = async (interview: Interview) => {
 //         try {
 //             const response = await AxiosInstance.patch(`/applicant/${interview._id}`, {
-//                 status: 'rejected', 
+//                 status: 'rejected',
 //                 currentPhase: 'rejected',
 //             });
-    
+
 //             if (response.status === 200) {
 //                 setInterviews((prevInterviews) =>
 //                     prevInterviews.map((i) =>
@@ -292,7 +291,7 @@
 //                 setFilteredInterviews((prevInterviews) =>
 //                     prevInterviews.filter((i) => i._id !== interview._id)
 //                 );
-    
+
 //                 setToastMessage('This candidate will now be found in the rejected tab');
 //                 setToastSeverity('success');
 //                 setToastOpen(true);
@@ -304,7 +303,6 @@
 //             setToastOpen(true);
 //         }
 //     };
-    
 
 //     const handleSchedule = async (
 //         interviewDate: string,
@@ -386,10 +384,10 @@
 //         if (interview.currentPhase === 'first_interview') {
 //             newPhase = 'second_interview';
 //             status = 'active';
-//             handleOpenModal(interview, false); 
-//         } 
+//             handleOpenModal(interview, false);
+//         }
 //         else if (interview.currentPhase === 'second_interview') {
-            
+
 //             status = 'employed';
 //             newPhase = 'employed';
 //         }

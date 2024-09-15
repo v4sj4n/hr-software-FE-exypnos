@@ -14,19 +14,16 @@ export default function EventsContentLoader() {
             }}
         >
             <Stack spacing={2}>
-
                 <Skeleton
                     variant="text"
                     sx={{ fontSize: '1.5rem', width: '60%' }}
                 />
 
-            
                 <Skeleton
                     variant="text"
                     sx={{ fontSize: '1rem', width: '80%' }}
                 />
 
-             
                 <Skeleton
                     variant="rectangular"
                     sx={{ width: '100%', height: '24px' }}
@@ -37,13 +34,11 @@ export default function EventsContentLoader() {
                     sx={{ width: '100%', height: '24px' }}
                 />
 
-             
                 <Skeleton
                     variant="rectangular"
                     sx={{ width: '100%', height: '30px', borderRadius: '16px' }}
                 />
 
-       
                 <Skeleton
                     variant="circular"
                     width={24}

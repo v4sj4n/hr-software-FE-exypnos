@@ -137,7 +137,6 @@ img {
     align-self: center;
 }
 
-
 .search {
     display: flex;
     gap: '10px';
@@ -147,14 +146,14 @@ img {
     top: 77;
 }
 
-.modal{
-display: flex;
-flex-direction: column;
-gap: 15px;
+.modal {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-.modalCnt{
- gap: 10px;
- margin-top: 20px;
- display: flex;
+.modalCnt {
+    gap: 10px;
+    margin-top: 20px;
+    display: flex;
 }

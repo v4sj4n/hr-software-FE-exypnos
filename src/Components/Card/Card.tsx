@@ -18,7 +18,6 @@ const Card: React.FC<CardProps> = ({
     marginTop,
     onClick,
 }) => {
-
     return (
         <div
             className={`${styles.card} ${className || ''}`}

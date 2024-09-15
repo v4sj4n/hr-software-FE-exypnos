@@ -14,7 +14,8 @@ export default function ColoredDemo() {
     const { data, isLoading, error } = useQuery<ProjectData[], Error>({
         queryKey: ['projects'],
         queryFn: async () => {
-            const response = await AxiosInstance.get<ProjectData[]>('/project/structure')
+            const response =
+                await AxiosInstance.get<ProjectData[]>('/project/structure')
             return response.data
         },
     })
