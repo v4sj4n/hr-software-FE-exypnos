@@ -2,15 +2,16 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import CheckIcon from '@mui/icons-material/Check'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditCalendarIcon from '@mui/icons-material/EditCalendar'
-import { Tooltip, Tabs, Tab, useTheme } from '@mui/material'
+import { Tooltip, Tabs, Tab } from '@mui/material'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-import { InterviewProvider, useInterviewContext } from './Hook/InterviewContext'
+import { useInterviewContext } from './Hook/InterviewContext'
 import style from './styles/Interview.module.css'
 import Button from '@/Components/Button/Button'
 import RescheduleModal from './Component/ScheduleForm'
 import Input from '@/Components/Input/Index'
 import Selecter from '@/Components/Input/components/Select/Selecter'
-
+import {InterviewProvider } from './Hook/InterviewProvider'
+import { applicantCountStyle } from './Hook/utils'
 function InterviewKanbanContent() {
     const {
         loading,
@@ -45,11 +46,6 @@ function InterviewKanbanContent() {
     if (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error'
         return <div>Error loading interviews: {errorMessage}</div>
-    }
-
-    const theme = useTheme()
-    const applicantCountStyle = {
-        color: theme.palette.text.primary,
     }
 
     return (
