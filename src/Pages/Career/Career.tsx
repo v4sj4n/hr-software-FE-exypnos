@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import style from './Style/Career.module.css'
 import Button from '@/Components/Button/Button'
-
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import {
     useGetAllEvents,

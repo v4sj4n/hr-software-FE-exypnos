@@ -49,7 +49,6 @@ export default function Router() {
         },
         {
             path: '/',
-
             element: (
                 <>
                     <PrivateRoute />

@@ -45,7 +45,7 @@ const ContratContent = () => {
                     label="WorkingDays"
                     name="workingDays"
                     shrink={true}
-                    width={350}
+                    width={300}
                     value={
                         EditingPayroll
                             ? EditingPayroll?.workingDays
@@ -62,7 +62,7 @@ const ContratContent = () => {
                     shrink={true}
                     name="grossSalary"
                     label="Gross salary"
-                    width={350}
+                    width={300}
                     value={
                         EditingPayroll
                             ? EditingPayroll?.grossSalary
@@ -77,7 +77,7 @@ const ContratContent = () => {
                 <Input
                     IsUsername
                     shrink={true}
-                    width={350}
+                    width={300}
                     name="extraHours"
                     label="Extra Hours"
                     value={
@@ -100,7 +100,7 @@ const ContratContent = () => {
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    width: '350px',
+                    width: '300px',
                     gap: '20px',
                 }}
             >
@@ -145,7 +145,7 @@ const ContratContent = () => {
                             ? handleUpdatePayroll
                             : handleCreatePayroll
                     }
-                    width="350px"
+                    width="300px"
                 />
             </div>
         </div>
