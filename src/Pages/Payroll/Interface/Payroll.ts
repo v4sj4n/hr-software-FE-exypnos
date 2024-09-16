@@ -29,6 +29,12 @@ export interface PayrollContextType {
     pageSize: number
     totalPages: number
     handlePaginationModelChange: (paginationModel: GridPaginationModel) => void
+    handleDateChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    handleFullNameChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    handleWorkingDaysChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    handleMinSalaryChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    handleMaxSalaryChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    handleBonusChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export const PayrollContext = React.createContext<
@@ -56,22 +62,3 @@ export interface PayrollRow {
     }
 }
 
-export interface UserPayrolls {
-    id: number
-    originalId: number
-    netSalary: number
-    workingDays: number
-    currency: string
-    bonus: number
-    bonusDescription: string
-    socialSecurity: number
-    healthInsurance: number
-    grossSalary: number
-    month: number
-    year: number
-    userId: {
-        firstName: string
-        lastName: string
-        _id: string
-    }
-}

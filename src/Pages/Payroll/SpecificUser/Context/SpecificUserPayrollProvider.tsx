@@ -76,13 +76,19 @@ export const PayrollProviderSpecific: React.FC<{
 
     const getRowId = (row: PayrollRowSpecifc) => row.id
 
+    const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const date = event.target.value
+        const [yearString, monthString] = date.split('-')
+        setYear(parseInt(yearString))
+        setMonth(parseInt(monthString))
+    }
+
     const contextValue = {
+        handleDateChange,
         rows,
         columns,
         headerTextColors,
         getRowId,
-        setMonth,
-        setYear,
         isPending,
         page,
         pageSize,

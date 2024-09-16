@@ -23,6 +23,9 @@
 
 .contanier {
     display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
 }
 
 .grid {
@@ -115,6 +118,14 @@
     display: flex;
     flex-wrap: wrap;
     width: 100%;
+    overflow-y: auto;
+    max-height: 600px;
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
+
+.Wrap::-webkit-scrollbar {
+    display: none;
 }
 
 img {
@@ -139,11 +150,11 @@ img {
 
 .search {
     display: flex;
-    gap: '10px';
-    align-self: 'flex-end';
-    align-items: 'center';
+    gap: 10px;
+    align-items: center;
+    align-self: flex-end;
     position: absolute;
-    top: 77;
+    top: 75px;
 }
 
 .modal {
