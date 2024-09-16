@@ -119,14 +119,12 @@ export const useCreatePayroll = () => {
         event: React.ChangeEvent<HTMLInputElement>
       ) => {
         const { name, value } = event.target;
-        // If the field is one that should store a number, convert the value to a number
         if (["workingDays", "grossSalary", "bonus", "extraHours"].includes(name)) {
           setPayroll((prevPayroll) => ({
             ...prevPayroll,
             [name]: value === '' ? undefined : Number(value),
           }));
         } else {
-          // Otherwise, just store the value as a string (e.g., for bonusDescription)
           setPayroll((prevPayroll) => ({
             ...prevPayroll,
             [name]: value,
