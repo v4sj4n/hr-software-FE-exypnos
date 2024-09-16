@@ -13,6 +13,7 @@ import { ButtonTypes } from '@/Components/Button/ButtonTypes.tsx'
 import { AssignAssetModal } from './Modals/AssignAssetModal.tsx'
 import { ReturnAssetModal } from './Modals/ReturnAssetModal.tsx'
 import Toast from '@/Components/Toast/Toast.tsx'
+import { useAuth } from '@/Context/AuthProvider.tsx'
 
 export const EmployeesWithHoldings = () => {
     const {
@@ -48,6 +49,10 @@ export const EmployeesWithHoldings = () => {
             return newParams
         })
     }
+    const { currentUser } = useAuth()
+
+    const hr = currentUser?.role === 'hr'
+    const currentUserID = currentUser?._id
 
     if (isError) return <div>Error: {error.message}</div>
     if (isLoading)
@@ -93,11 +98,12 @@ export const EmployeesWithHoldings = () => {
                                             <p>No holdings</p>
                                         )}
                                     </div>
+                                    {hr && (
                                     <Button
                                         btnText={'Assign asset'}
                                         type={ButtonTypes.PRIMARY}
                                         onClick={setClickedOnAssignItem}
-                                    />
+                                    /> )}
                                     {searchParams.get('assignItem') && (
                                         <AssignAssetModal />
                                     )}
