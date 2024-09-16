@@ -1,4 +1,3 @@
-import { useTheme } from '@mui/material'
 import { Interview } from './../interface/interface'
 
 export const formatDate = (dateString: string | number | Date | undefined) => {
@@ -27,7 +26,3 @@ export const getInterviewsByPhase = (
     )
 }
 
-export  const theme = useTheme()
-export const applicantCountStyle = {
-    color: theme.palette.text.primary,
-}
