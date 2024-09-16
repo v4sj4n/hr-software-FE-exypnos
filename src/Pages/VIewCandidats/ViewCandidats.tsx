@@ -1,12 +1,12 @@
-import Card from '../../Components/Card/Card';
-import style from './styles/ViewCandidats.module.css';
-import { useApplicantById } from './Hook';
-import Button from '../../Components/Button/Button';
-import { ButtonTypes } from '../../Components/Button/ButtonTypes';
-import { ModalComponent } from '../../Components/Modal/Modal';
-import Input from '@/Components/Input/Index';
-import { useState } from 'react';
-import { Checkbox, FormControlLabel } from '@mui/material';
+import Card from '../../Components/Card/Card'
+import style from './styles/ViewCandidats.module.css'
+import { useApplicantById } from './Hook'
+import Button from '../../Components/Button/Button'
+import { ButtonTypes } from '../../Components/Button/ButtonTypes'
+import { ModalComponent } from '../../Components/Modal/Modal'
+import Input from '@/Components/Input/Index'
+import { useState } from 'react'
+import { Checkbox, FormControlLabel } from '@mui/material'
 
 export default function ViewCandidats() {
     const {
@@ -38,10 +38,9 @@ export default function ViewCandidats() {
         ) {
             age--
         }
-        return age;
-    };
-    const [useCustomEmail, setUseCustomEmail] = useState(false) 
-
+        return age
+    }
+    const [useCustomEmail, setUseCustomEmail] = useState(false)
 
     return (
         <div className={style.container}>
@@ -256,39 +255,46 @@ export default function ViewCandidats() {
                                 setFirstInterviewDate(e.target.value)
                             }
                         />
-                          <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={useCustomEmail}
-                            onChange={(e) => setUseCustomEmail(e.target.checked)}
-                            color="primary"
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={useCustomEmail}
+                                    onChange={(e) =>
+                                        setUseCustomEmail(e.target.checked)
+                                    }
+                                    color="primary"
+                                />
+                            }
+                            label="Use custom email"
                         />
-                    }
-                    label="Use custom email"
-                />{useCustomEmail && (
-                    <>
-                        <Input
-                            IsUsername
-                            type="textarea"
-                            name="costumMessage"
-                            label="Message"
-                            multiline
-                            rows={3}
-                            value={customMessage}
-                            onChange={(e) => setCustomMessage(e.target.value)}
-                        />
-                        <Input
-                            IsUsername
-                            type="textarea"
-                            name="customSubject"
-                            label="Message"
-                            multiline
-                            rows={3}
-                            value={customSubject}
-                            onChange={(e) => setCustomSubject(e.target.value)}
-                        />
-                         </>
-                )}
+                        {useCustomEmail && (
+                            <>
+                                <Input
+                                    IsUsername
+                                    type="textarea"
+                                    name="costumMessage"
+                                    label="Message"
+                                    multiline
+                                    rows={3}
+                                    value={customMessage}
+                                    onChange={(e) =>
+                                        setCustomMessage(e.target.value)
+                                    }
+                                />
+                                <Input
+                                    IsUsername
+                                    type="textarea"
+                                    name="customSubject"
+                                    label="Message"
+                                    multiline
+                                    rows={3}
+                                    value={customSubject}
+                                    onChange={(e) =>
+                                        setCustomSubject(e.target.value)
+                                    }
+                                />
+                            </>
+                        )}
                         <div
                             style={{
                                 display: 'flex',
@@ -296,7 +302,6 @@ export default function ViewCandidats() {
                                 marginTop: '20px',
                             }}
                         >
-                           
                             <Button
                                 type={ButtonTypes.PRIMARY}
                                 btnText="Send"

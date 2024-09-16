@@ -13,6 +13,7 @@ import { RingLoader } from 'react-spinners'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import style from './styles/Login.module.css'
+import Toast from '@/Components/Toast/Toast'
 
 const LoginComponent = () => {
     const { isAuthenticated } = useAuth()
@@ -24,6 +25,10 @@ const LoginComponent = () => {
         setError,
         setShowPassword,
         showPassword,
+        searchParams,
+        comeFromPasswordReset,
+        setComeFromPasswordReset,
+        setSearchParams,
     } = useContext(LoginContext)
 
     const { form } = useFormLogin(setError)
@@ -36,6 +41,12 @@ const LoginComponent = () => {
             setCheckingIsAuthenticated(false)
         }
     }, [isAuthenticated, navigate, setCheckingIsAuthenticated])
+
+    useEffect(() => {
+        if (searchParams.get('reset') === 'success') {
+            setComeFromPasswordReset(true)
+        }
+    })
 
     if (checkingIsAuthenticated)
         return (
@@ -137,9 +148,23 @@ const LoginComponent = () => {
                     {error && <ErrorText>{error}</ErrorText>}
                 </form>
 
-                <Link to="/forgot-password" className={style.forgotPassword}>
+                <Link to="/reset-password" className={style.forgotPassword}>
                     Forgot your password?
                 </Link>
+
+                <Toast
+                    message="Your password was updated successfully please login to access your account"
+                    open={comeFromPasswordReset}
+                    severity="success"
+                    onClose={() => {
+                        setComeFromPasswordReset(false)
+                        setSearchParams((prev) => {
+                            const newParams = new URLSearchParams(prev)
+                            newParams.delete('reset')
+                            return newParams
+                        })
+                    }}
+                />
             </Card>
         </div>
     )

@@ -26,11 +26,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const storedUserData = localStorage.getItem('user')
      
         if (access_token && user_role && storedUserData) {
+
             const user: User = JSON.parse(storedUserData)
             setIsAuthenticated(true)
             setUserRole(user_role)
             setCurrentUser(user)
-        } 
+        }
     }, [])
 
     const login = (access_token: string, role: string, user: User) => {

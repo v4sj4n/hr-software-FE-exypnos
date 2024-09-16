@@ -90,7 +90,9 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const getRowId = (row: PayrollRow) => row.id
 
-    const handleRowClick = (params: GridRowParams) => { navigate(`/payroll/user/${params.row.originalId}`) }
+    const handleRowClick = (params: GridRowParams) => {
+        navigate(`/payroll/user/${params.row.originalId}`)
+    }
 
     const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const date = event.target.value

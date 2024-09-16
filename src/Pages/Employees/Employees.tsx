@@ -18,7 +18,7 @@ function EmployeesContent() {
 
     return (
         <div className={style.payroll}>
-              {isPending ? (
+            {isPending ? (
                 <div className={style.ring}>
                     <RingLoader />
                 </div>

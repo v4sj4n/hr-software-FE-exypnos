@@ -44,7 +44,6 @@ function EventsContentAndComponents() {
 
     const { ref, inView } = useInView()
 
-
     useEffect(() => {
         if (inView) {
             fetchNextPage()
@@ -92,7 +91,10 @@ function EventsContentAndComponents() {
                     <ModalComponent open={showModal} handleClose={closeModal}>
                         <div className={style.modal}>
                             <div className={style.title}>Confirm Action.</div>
-                            <div> Are you sure you want to delete this event?</div>
+                            <div>
+                                {' '}
+                                Are you sure you want to delete this event?
+                            </div>
                             <div className={style.modalCnt}>
                                 <Button
                                     type={ButtonTypes.PRIMARY}

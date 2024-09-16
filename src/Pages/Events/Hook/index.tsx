@@ -2,17 +2,23 @@ import { useEffect, useState } from 'react'
 import AxiosInstance from '@/Helpers/Axios'
 import { EventsCreationData, EventsData } from '../Interface/Events'
 import { useSearchParams } from 'react-router-dom'
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import {
+    useInfiniteQuery,
+    useMutation,
+    useQueryClient,
+} from '@tanstack/react-query'
 import { fetchEvents } from '../utils/utils'
 
 export const useGetAllEvents = () => {
     const [searchParams, setSearchParams] = useSearchParams()
-    const [searchEvent, setSearchEvent] = useState(searchParams.get('search') || '')
+    const [searchEvent, setSearchEvent] = useState(
+        searchParams.get('search') || '',
+    )
 
     const query = useInfiniteQuery({
         queryKey: ['events', searchEvent],
         queryFn: ({ pageParam = 0 }) =>
-        fetchEvents(searchEvent || '', pageParam),
+            fetchEvents(searchEvent || '', pageParam),
         initialPageParam: 0,
         getNextPageParam: (lastPage, allPages) => {
             if (lastPage.length < 6) {
@@ -22,7 +28,7 @@ export const useGetAllEvents = () => {
         },
     })
 
-    const search = ((value: string) => {
+    const search = (value: string) => {
         setSearchParams((prev: URLSearchParams) => {
             const newParams = new URLSearchParams(prev)
             if (value) {
@@ -32,7 +38,7 @@ export const useGetAllEvents = () => {
             }
             return newParams
         })
-    })
+    }
 
     const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchEvent(e.target.value)
@@ -42,7 +48,6 @@ export const useGetAllEvents = () => {
     useEffect(() => {
         setSearchEvent(searchParams.get('search') || '')
     }, [searchParams])
-    
 
     return {
         ...query,
@@ -55,7 +60,9 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
     const queryClient = useQueryClient()
     const [toastOpen, setToastOpen] = useState(false)
     const [toastMessage, setToastMessage] = useState('')
-    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>('success')
+    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
+        'success',
+    )
     const [eventPhotos, setEventPhotos] = useState<File[]>([])
     const [createdEvents, setCreatedEvents] = useState<EventsData[]>([])
 

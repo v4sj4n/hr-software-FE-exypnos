@@ -14,7 +14,7 @@ const Input: React.FC<InputProps> = (props) => {
                 return <PasswordInput {...props} />
             case props.isCheckBox:
                 return <CheckboxInput {...props} />
-                case props.isFilter:
+            case props.isFilter:
                 return <Filter {...props} />
             default:
                 return null

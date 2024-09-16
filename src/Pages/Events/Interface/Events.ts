@@ -105,4 +105,5 @@ export interface EventsContextProps {
     toastMessageB: string
     closeToastB: () => void
     setSearchParams: SetURLSearchParams
+
 }

@@ -45,7 +45,6 @@ function PayrollContent() {
                     in={showFilters}
                     timeout="auto"
                     orientation="horizontal"
-                    
                 >
                     <div
                         style={{
@@ -73,7 +72,7 @@ function PayrollContent() {
                         <Input
                             width={150}
                             name="workingDays"
-                              type="number"
+                            type="number"
                             label="Working Days"
                             isFilter
                             onChange={handleWorkingDaysChange}
@@ -81,7 +80,7 @@ function PayrollContent() {
                         <Input
                             width={150}
                             name="maxNetSalary"
-                                 type="number"
+                            type="number"
                             label="Max Net Salary"
                             isFilter
                             onChange={handleMaxSalaryChange}

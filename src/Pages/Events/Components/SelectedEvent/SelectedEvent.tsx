@@ -12,7 +12,8 @@ import { useEffect } from 'react'
 
 const SelectedEventCard = () => {
     const { currentUser } = useAuth()
-    const { selectedEvent, setSelectedEvent, setShowEventModal, formatDate } = useEvents()
+    const { selectedEvent, setSelectedEvent, setShowEventModal, formatDate } =
+        useEvents()
     const [, setSearchParams] = useSearchParams()
 
     useEffect(() => {
@@ -34,13 +35,20 @@ const SelectedEventCard = () => {
 
     return (
         <div className={style.Wrap}>
-            { selectedEvent?.photo && selectedEvent.photo.length > 0 ?  <Example images={selectedEvent.photo} /> : '' }
+            {selectedEvent?.photo && selectedEvent.photo.length > 0 ? (
+                <Example images={selectedEvent.photo} />
+            ) : (
+                ''
+            )}
             <div className={style.selectedEvent}>
-            <div className={style.flex}>
+                <div className={style.flex}>
                     <div className={style.title}>{selectedEvent.title}</div>
-                    <CloseOutlinedIcon style={{ cursor: 'pointer' }} 
-                    onClick={() => { setSelectedEvent(null)
-                    setShowEventModal(false) }}
+                    <CloseOutlinedIcon
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                            setSelectedEvent(null)
+                            setShowEventModal(false)
+                        }}
                     />
                 </div>
                 <div className={style.description}>
@@ -49,17 +57,23 @@ const SelectedEventCard = () => {
                 <div className={style.dataContainer}>
                     <div className={style.dateContainer}>
                         <div className={style.data}>
-                        <CalendarTodayIcon sx={{ height: 20, width: 20, color: '#6b7280' }} />
-                        {formatDate(selectedEvent.startDate)} - {formatDate(selectedEvent.endDate)}
+                            <CalendarTodayIcon
+                                sx={{ height: 20, width: 20, color: '#6b7280' }}
+                            />
+                            {formatDate(selectedEvent.startDate)} -{' '}
+                            {formatDate(selectedEvent.endDate)}
                         </div>
                     </div>
                     <div className={style.data}>
-                        <LocationOnOutlinedIcon sx={{ height: 20, width: 20, color: '#6b7280' }} />
+                        <LocationOnOutlinedIcon
+                            sx={{ height: 20, width: 20, color: '#6b7280' }}
+                        />
                         <div>{selectedEvent.location}</div>
                     </div>
                 </div>
                 <div style={{ width: '100%', height: '400px' }}>
-                    <MapComponent onLocationChange={(address, lat, lng) =>
+                    <MapComponent
+                        onLocationChange={(address, lat, lng) =>
                             console.log(address, lat, lng)
                         }
                         savedLocation={selectedEvent.location}

@@ -1,26 +1,20 @@
-import React, { useEffect, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import CheckIcon from '@mui/icons-material/Check'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditCalendarIcon from '@mui/icons-material/EditCalendar'
-import { Tooltip, Tabs, Tab, useTheme } from '@mui/material'
+import { Tooltip, Tabs, Tab,useTheme } from '@mui/material'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-import {
-    Interview,
-    InterviewProvider,
-    useInterviewContext,
-} from './Hook/InterviewContext'
+import { useInterviewContext } from './Hook/InterviewContext'
 import style from './styles/Interview.module.css'
 import Button from '@/Components/Button/Button'
 import RescheduleModal from './Component/ScheduleForm'
 import Input from '@/Components/Input/Index'
 import Selecter from '@/Components/Input/components/Select/Selecter'
-
+import {InterviewProvider } from './Hook/InterviewProvider'
 function InterviewKanbanContent() {
     const {
         loading,
         error,
-        fetchFilteredInterviews,
         isReschedule,
         selectedInterview,
         isModalOpen,
@@ -33,75 +27,19 @@ function InterviewKanbanContent() {
         formatDate,
         phases,
         handleAccept,
-        interviews,
+        handleApplyFilter,
+        handleClearFilter,
+        handleTabChange,
+        currentTab,
+        currentPhase,
+        startDate,
+        endDate,
+        setCurrentPhase,
+        setStartDate,
+        setEndDate,
+        filteredInterviews,
+        isFiltered,
     } = useInterviewContext()
-
-    const [currentPhase, setCurrentPhase] = useState<string>('first_interview')
-    const [startDate, setStartDate] = useState<string>('')
-    const [endDate, setEndDate] = useState<string>('')
-    const [currentTab, setCurrentTab] = useState<string>('first_interview')
-    const [filteredInterviews, setFilteredInterviews] = useState<Interview[]>([])
-    const [isFiltered, setIsFiltered] = useState(false)
-
-    useEffect(() => {
-        fetchFilteredInterviews().then(setFilteredInterviews)
-    }, [])
-
-    useEffect(() => {
-        filterInterviews()
-    }, [currentTab, interviews, isFiltered, startDate, endDate])
-
-    const filterInterviews = () => {
-        let filtered = interviews.filter((interview) => {
-            if (currentTab === 'first_interview' && interview.currentPhase === 'first_interview') return true
-            if (currentTab === 'second_interview' && interview.currentPhase === 'second_interview') return true
-            if (currentTab === 'rejected' && interview.status === 'rejected') return true
-            if (currentTab === 'employed' && interview.status === 'employed') return true
-            return false
-        })
-
-        if (isFiltered && startDate && endDate) {
-            const start = new Date(startDate as string);
-            const end = new Date(endDate as string);
-            end.setHours(23, 59, 59, 999); 
-        
-            filtered = filtered.filter((interview) => {
-                const interviewDateRaw = interview.currentPhase === 'second_interview'
-                    ? interview.secondInterviewDate
-                    : interview.firstInterviewDate;
-                
-                if (interviewDateRaw) {
-                    const interviewDate = new Date(interviewDateRaw);
-                    return interviewDate >= start && interviewDate <= end;
-                }
-        
-                return false;
-            });
-        }
-        
-        setFilteredInterviews(filtered);
-    }        
-
-    const handleTabChange = (
-        _event: React.SyntheticEvent,
-        newValue: string,
-    ) => {
-        setCurrentTab(newValue)
-    }
-
-    const handleApplyFilter = () => {
-        setIsFiltered(true)
-        setCurrentTab(currentPhase)
-    }
-
-    const handleClearFilter = () => {
-        setIsFiltered(false)
-        setCurrentPhase('first_interview')
-        setStartDate('')
-        setEndDate('')
-        setCurrentTab('first_interview')
-    }
-
 
     if (loading) return <div>Loading...</div>
     if (error) {
@@ -109,24 +47,26 @@ function InterviewKanbanContent() {
             error instanceof Error ? error.message : 'Unknown error'
         return <div>Error loading interviews: {errorMessage}</div>
     }
-    const theme = useTheme()
-    const applicantCountStyle = {
+      const theme = useTheme()
+     const applicantCountStyle = {
         color: theme.palette.text.primary,
     }
-
     return (
         <div className={style.kanbanBoard}>
             <div className={style.filterContainer}>
                 <Selecter
-name="currentPhase"
+                    name="currentPhase"
                     label="Current Phase"
                     multiple={false}
                     value={currentPhase}
-                    width='250px'
+                    width="250px"
                     options={phases}
-    onChange={(newValue) => setCurrentPhase(Array.isArray(newValue) ? newValue[0] : newValue)}
-
-/>
+                    onChange={(newValue) =>
+                        setCurrentPhase(
+                            Array.isArray(newValue) ? newValue[0] : newValue,
+                        )
+                    }
+                />
                 <Input
                     IsUsername
                     name=""
@@ -248,11 +188,9 @@ name="currentPhase"
                                                                     <>
                                                                         <p>
                                                                             <b>
-                                                                                {' '}
                                                                                 Interview
-                                                                                Date{' '}
+                                                                                Date:
                                                                             </b>{' '}
-                                                                            :{' '}
                                                                             {interview.currentPhase ===
                                                                             'second_interview'
                                                                                 ? formatDate(
@@ -264,27 +202,24 @@ name="currentPhase"
                                                                         </p>
                                                                         <p>
                                                                             <b>
-                                                                                Email
-                                                                            </b>
-                                                                            :{' '}
+                                                                                Email:
+                                                                            </b>{' '}
                                                                             {
                                                                                 interview.email
                                                                             }
                                                                         </p>
                                                                         <p>
                                                                             <b>
-                                                                                Phone
-                                                                            </b>
-                                                                            :{' '}
+                                                                                Phone:
+                                                                            </b>{' '}
                                                                             {
                                                                                 interview.phoneNumber
                                                                             }
                                                                         </p>
                                                                         <p>
                                                                             <b>
-                                                                                Notes
-                                                                            </b>
-                                                                            :{' '}
+                                                                                Notes:
+                                                                            </b>{' '}
                                                                             {
                                                                                 interview.notes
                                                                             }

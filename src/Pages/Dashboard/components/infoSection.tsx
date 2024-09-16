@@ -1,9 +1,11 @@
 import style from '../style/infoSection.module.css'
 import { EventsData } from '../../Events/Interface/Events'
-import dayjs from 'dayjs'
 import AxiosInstance from '@/Helpers/Axios'
 import { useQuery } from '@tanstack/react-query'
-const InfoSection: React.FC = () => {
+import { useEvents } from '@/Pages/Events/Context/EventsContext'
+import { EventsProvider } from '@/Pages/Events/Context/EventsContext'
+
+const InfoSectionContent: React.FC = () => {
     const fetchEventsDashboard = async () => {
         const response = await AxiosInstance.get(`/event`)
 
@@ -17,6 +19,7 @@ const InfoSection: React.FC = () => {
     })
 
     console.log('events', events)
+    const {formatDate} = useEvents()
 
     return (
         <div className={style.infoSection}>
@@ -40,9 +43,7 @@ const InfoSection: React.FC = () => {
                             >
                                 <h3>{event.title}</h3>
                                 <span>
-                                    {dayjs(event.startDate).format(
-                                        'ddd DD MMM YYYY',
-                                    )}
+                                   {formatDate(event.startDate)}
                                 </span>
                             </div>
                             <p>{event.description}</p>
@@ -51,6 +52,14 @@ const InfoSection: React.FC = () => {
                 ))}
             </ul>
         </div>
+    )
+}
+
+const InfoSection: React.FC = () => {
+    return(
+        <EventsProvider>
+        <InfoSectionContent/>
+    </EventsProvider>
     )
 }
 

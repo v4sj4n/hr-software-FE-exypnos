@@ -70,5 +70,4 @@ const Selecter = ({
     )
 }
 
-
 export default Selecter
