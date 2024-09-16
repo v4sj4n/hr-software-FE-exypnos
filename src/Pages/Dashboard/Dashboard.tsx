@@ -58,8 +58,9 @@ const DashboardContent: React.FC = () => {
                         {isAdmin ? (
                             <p>Here's what's happening with your team today</p>
                         ) : (
-                            ''
+                            ' Let’s achieve your goals today! '
                         )}
+                        
                     </div>
                     <div className={style.cardContainer}>
                         <div className={style.cardGreen}>

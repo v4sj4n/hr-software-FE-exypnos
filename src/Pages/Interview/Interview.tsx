@@ -4,13 +4,13 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditCalendarIcon from '@mui/icons-material/EditCalendar'
 import { Tooltip, Tabs, Tab,useTheme } from '@mui/material'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-import { useInterviewContext } from './Hook/InterviewContext'
+import { useInterviewContext } from './Context/InterviewContext'
 import style from './styles/Interview.module.css'
 import Button from '@/Components/Button/Button'
 import RescheduleModal from './Component/ScheduleForm'
 import Input from '@/Components/Input/Index'
 import Selecter from '@/Components/Input/components/Select/Selecter'
-import {InterviewProvider } from './Hook/InterviewProvider'
+import {InterviewProvider } from './Context/InterviewProvider'
 function InterviewKanbanContent() {
     const {
         loading,

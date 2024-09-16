@@ -1,6 +1,6 @@
 import { Dispatch } from 'react'
 import { DropResult } from 'react-beautiful-dnd'
-import { applicantsData }  from '@/Pages/Candidates/Interfaces/Candidate'
+// import { applicantsData }  from '@/Pages/Candidates/Interfaces/Candidate'
 
 
 export interface Interview {
@@ -73,6 +73,7 @@ export interface InterviewContextType {
     scheduleType: 'schedule' | 'reschedule'
     setScheduleType: Dispatch<React.SetStateAction<'schedule' | 'reschedule'>>
 }
+
  export interface RescheduleModalProps {
     open: boolean
     handleClose: () => void
