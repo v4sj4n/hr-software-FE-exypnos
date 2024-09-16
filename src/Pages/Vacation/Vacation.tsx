@@ -7,10 +7,15 @@ import { EmployeesWithVacations } from './components/EmployeesWithVacations'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { CreateVacationForm } from './components/form/CreateVacationForm'
+import SimpleEmployeeUI from './components/SimpleEmployee/SimpleEmployeeUI'
 
 function VacationComponent() {
-    const { searchParams, setSearchParams, createVacationToggler } =
-        useContext(VacationContext)
+    const {
+        searchParams,
+        setSearchParams,
+        pageToggleChoices,
+        createVacationToggler,
+    } = useContext(VacationContext)
     const handleChange = (
         event: MouseEvent<HTMLElement>,
         newAlignment: string,
@@ -24,16 +29,6 @@ function VacationComponent() {
             setSearchParams(new URLSearchParams({ vacationType: 'requests' }))
         }
     }, [searchParams, setSearchParams])
-    const pageToggleChoices = [
-        {
-            value: 'requests',
-            label: 'Requests',
-        },
-        {
-            value: 'userLeaves',
-            label: 'User Leaves',
-        },
-    ]
 
     return (
         <main className={style.main}>
@@ -81,6 +76,7 @@ function VacationComponent() {
                     <EmployeesWithVacations />
                 )}
             </div>
+            <SimpleEmployeeUI />
         </main>
     )
 }

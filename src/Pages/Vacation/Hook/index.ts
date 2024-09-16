@@ -8,6 +8,7 @@ import {
 import {
     createVacation,
     getAllVacations,
+    getMyVacations,
     getUsersWithVacations,
     getUserWithVacations,
     getVacation,
@@ -21,6 +22,7 @@ import { useForm } from '@tanstack/react-form'
 import dayjs from 'dayjs'
 import { valibotValidator } from '@tanstack/valibot-form-adapter'
 import { AxiosError } from 'axios'
+import { useAuth } from '@/Context/AuthProvider'
 
 export const useGetVacations = () => {
     const { searchParams } = useContext(VacationContext)
@@ -178,8 +180,8 @@ export const useCreateVacationForm = () => {
         defaultValues: {
             description: '',
             type: 'vacation',
-            startDate: dayjs(new Date()).format('YYYY-MM-DD'),
-            endDate: dayjs(new Date()).add(2, 'day').format('YYYY-MM-DD'),
+            startDate: dayjs(new Date()).add(1, 'day').format('YYYY-MM-DD'),
+            endDate: dayjs(new Date()).add(3, 'day').format('YYYY-MM-DD'),
         },
         onSubmit: async ({ value }) => {
             mutate({ vacation: value })
@@ -213,4 +215,12 @@ export const useCreateVacationForm = () => {
     })
 
     return { form }
+}
+
+export const useGetMyVacations = () => {
+    const { currentUser } = useAuth()
+    return useQuery({
+        queryKey: ['myvacations', currentUser?._id],
+        queryFn: () => getMyVacations(currentUser?._id as string),
+    })
 }

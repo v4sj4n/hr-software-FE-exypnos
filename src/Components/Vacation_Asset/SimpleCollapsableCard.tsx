@@ -1,5 +1,5 @@
 import { Asset } from '@/Pages/Holdings/TAsset'
-import { Vacation } from '@/Pages/Vacation/TVacation'
+import { Vacation } from '@/Pages/Vacation/types'
 import { ExpandLess, ExpandMore } from '@mui/icons-material'
 import { Collapse } from '@mui/material'
 import { Dispatch, MouseEvent, ReactNode } from 'react'
