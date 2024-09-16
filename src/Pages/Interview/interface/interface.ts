@@ -1,8 +1,9 @@
 import { Dispatch } from 'react'
 import { DropResult } from 'react-beautiful-dnd'
-import { applicantsData } from '../Hook'
+import { applicantsData }  from '@/Pages/Candidates/Interfaces/Candidate'
 
-export interface Interview extends applicantsData {
+
+export interface Interview {
     phase: string
     firstName: string
     lastName: string
@@ -20,7 +21,9 @@ export interface Interview extends applicantsData {
     customSubject: string
     startDate: string
     endDate: string
+    notes:string
 }
+
 
 export interface InterviewContextType {
     interviews: Interview[]
@@ -69,4 +72,17 @@ export interface InterviewContextType {
     setFilteredInterviews: Dispatch<React.SetStateAction<Interview[]>>
     scheduleType: 'schedule' | 'reschedule'
     setScheduleType: Dispatch<React.SetStateAction<'schedule' | 'reschedule'>>
+}
+ export interface RescheduleModalProps {
+    open: boolean
+    handleClose: () => void
+    handleSchedule: (
+        interviewDate: string,
+        notes: string,
+        customMessage: string,
+        customSubject: string,
+        useCustomEmail: boolean,
+    ) => void
+    selectedInterview: Interview
+    isReschedule: boolean
 }

@@ -30,6 +30,12 @@ const DashboardContent: React.FC = () => {
         queryKey: ['userProfile'],
         queryFn: fetchUserProfile,
     })
+    const handleNavigateToProfile = () => {
+        if (currentUser) {
+            navigate(`/profile/${currentUser._id}`); 
+        }
+    };
+
 
     console.log('UserProfileData', UserProfileData)
     const navigate = useNavigate()
@@ -39,7 +45,15 @@ const DashboardContent: React.FC = () => {
                 <div className={style.rightContent}>
                     <div className={style.welcome}>
                         <h2>
-                            {greeter()} {userName}!
+                            {greeter()} <span
+                                onClick={handleNavigateToProfile}
+                                className={style.userNameClickable}
+                             style={{ cursor: 'pointer'}} 
+                            >
+                                {userName}
+                            </span>
+                            !
+                          
                         </h2>
                         {isAdmin ? (
                             <p>Here's what's happening with your team today</p>
