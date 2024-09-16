@@ -1,28 +1,53 @@
-import React from 'react';
-import { useChatLogic } from '@/Pages/Chat/Hooks/useChat';
-import { useChat } from '@/Pages/Chat/context/ChatContext';
-import ChatInput from '@/Pages/Chat/components/chatinput';
-import MessageList from '@/Pages/Chat/components/messagelist';
-import UserList from '@/Pages/Chat/components/userlist';
-import '../../Pages/chat/styles/chat.module.css';  // Adjusted path to styles
+import React, { useEffect } from 'react';
+import { User } from '@/Pages/Chat/Interfaces/types';
+import { useChat } from './context/ChatContext';
+import AxiosInstance from '@/Helpers/Axios';
+import { Box, Typography } from '@mui/material';
+import UserList from './components/userlist';
+import MessageList from './components/messagelist';
+import SendMessage from './components/chatinput';
 
 const Chat: React.FC = () => {
-  const { users, recipientId, setRecipientId, messages, newMessage, setNewMessage } = useChat();
-  const { handleSendMessage } = useChatLogic();
-  
+  const { users, setUsers, messages } = useChat();
+
+  // Fetch users from the backend
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const response = await AxiosInstance('/user');
+      const data: User[] = await response.data;
+      setUsers(data);
+    };
+    fetchUsers();
+  }, [setUsers]);
+
   return (
-    <div className="chatContainer">x
-      <h2>Chat</h2>
+    <Box sx={{ padding: 2 }}>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Chat
+      </Typography>
+      <Box sx={{ display: 'flex', gap: 2 }}>
+        {/* User list */}
+        <Box sx={{ width: '30%' }}>
+          <Typography variant="h6" component="h2" gutterBottom>
+            Users
+          </Typography>
+          <UserList users={users} />
+        </Box>
 
-      {/* User List to Select Recipient */}
-      <UserList users={users} recipientId={recipientId} setRecipientId={setRecipientId} />
-
-      {/* Message List */}
-      <MessageList messages={messages} />
-
-      {/* Input Field for Chat Messages */}
-      <ChatInput newMessage={newMessage} setNewMessage={setNewMessage} handleSendMessage={handleSendMessage} />
-    </div>
+        {/* Chat box */}
+        <Box sx={{ width: '70%', display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Typography variant="h6" component="h2">
+            Chat Box
+          </Typography>
+          {/* Message List */}
+          <Box sx={{ flexGrow: 1, overflowY: 'auto', maxHeight: '400px' }}>
+            <MessageList messages={messages} />
+          </Box>
+          {/* Send Message Input */}
+          <SendMessage />
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

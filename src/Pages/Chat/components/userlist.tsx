@@ -1,36 +1,40 @@
-import React from 'react';
+import { useChat } from '../context/ChatContext';
 import { User } from '@/Pages/Chat/Interfaces/types';
+import { List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import AxiosInstance from '@/Helpers/Axios';
-import { useQuery } from '@tanstack/react-query';
-import { UserProfileData } from '../../Employees/interfaces/Employe'
 
 interface UserListProps {
   users: User[];
-  recipientId: string;
-  setRecipientId: (id: string) => void;
 }
 
-const UserList: React.FC<UserListProps> = ({ recipientId, setRecipientId }) => {
-  const fetchUsers = async () => {
-    const response = await AxiosInstance.get('/user')
-    console.log('Fetched user profile:', response.data)
-    return response.data
-  }
+const UserList: React.FC<UserListProps> = ({ users }) => {
+  const { setRecipientId, setMessages, senderId } = useChat();
 
-  const { data: UserProfileData } = useQuery({
-    queryKey: ['userProfile'],
-    queryFn: fetchUsers,
-})
+  const handleSelectUser = async (userId: string) => {
+    console.log('Selected Recipient ID:', userId);  // Log recipientId
+    console.log('Current Sender ID:', senderId);  // Log senderId
+
+    setRecipientId(userId); // Set the selected recipient
+
+    try {
+      const response = await AxiosInstance.get(`/messages/${senderId}/${userId}`);
+      const messages = response.data;
+      setMessages(messages); // Set the fetched messages into the state
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
+  };
 
   return (
-    <select value={recipientId} onChange={(e) => setRecipientId(e.target.value)}>
-      <option value="">--Select a user--</option>
-      {UserProfileData?.map((user: UserProfileData) => (
-        <option key={user._id} value={user._id}>
-          {user.firstName} {user.lastName}
-        </option>
+    <List>
+      {users.map((user) => (
+        <ListItem key={user._id} disablePadding>
+          <ListItemButton onClick={() => handleSelectUser(user._id)}>
+            <ListItemText primary={`${user.firstName} ${user.lastName}`} />
+          </ListItemButton>
+        </ListItem>
       ))}
-    </select>
+    </List>
   );
 };
 

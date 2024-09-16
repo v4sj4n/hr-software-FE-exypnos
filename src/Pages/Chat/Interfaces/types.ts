@@ -1,10 +1,13 @@
 export interface User {
-    id: string;
-    fullName: string;
-    email: string;
-    phone: string;
-    role: string;
-  }
+  _id: string;
+  token?: string;
+  name: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  role: string;
+}
   
   export interface Message {
     senderId: string;
@@ -12,4 +15,3 @@ export interface User {
     message: string;
     timestamp: string;
   }
-  
