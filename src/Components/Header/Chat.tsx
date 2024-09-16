@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';  // Correctly import socket.io-client
-import style from './chat.module.css';
+import style from './header.module.css';
 
 // Use the environment variable from Vite
-const socket = io(import.meta.env.VITE_API_URL);  // This should work now
+const socket = io((import.meta as any).env.VITE_API_URL);  // This should work now
 
 const Chat: React.FC = () => {
   const [message, setMessage] = useState<string>('');  // Message input
