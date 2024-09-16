@@ -16,14 +16,13 @@ import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
 import { useAuth } from '@/Context/AuthProvider'
 import { useTheme } from '@mui/material/styles'
 import { alpha } from '@mui/material'
-
 export const SideBar = () => {
     const { isSidebarOpen: isOpen } = useContext(SidebarHeaderContext)
     const { currentUser } = useAuth()
 
     const hr = currentUser?.role === 'hr'
     const currentUserID = currentUser?._id
-
+    
     const navigate = useNavigate()
 
     const [dropdownOpen, setDropdownOpen] = useState({
@@ -87,63 +86,69 @@ export const SideBar = () => {
                             </div>
                         </Link>
                     </div>
-                    <div
-                        className={style.item}
-                        onMouseEnter={(e) =>
-                            (e.currentTarget.style.backgroundColor = alpha(
-                                theme.palette.background.default,
-                                0.5,
-                            ))
-                        }
-                        onMouseLeave={(e) =>
-                            (e.currentTarget.style.backgroundColor =
-                                'transparent')
-                        }
-                        onClick={() => toggleDropdown('recruiting')}
-                    >
-                        <div className={style.link}>
-                            <div className={style.iconTextContainer}>
-                                <GroupAddIcon
-                                    className={style.icon}
-                                    style={{
-                                        color: theme.palette.text.primary,
-                                        marginLeft: '2px',
-                                    }}
-                                />
+                    
+                    {hr && (
+                        <>
+                            <div
+                                className={style.item}
+                                onMouseEnter={(e) =>
+                                    (e.currentTarget.style.backgroundColor = alpha(
+                                        theme.palette.background.default,
+                                        0.5,
+                                    ))
+                                }
+                                onMouseLeave={(e) =>
+                                    (e.currentTarget.style.backgroundColor =
+                                        'transparent')
+                                }
+                                onClick={() => toggleDropdown('recruiting')}
+                            >
+                                <div className={style.link}>
+                                    <div className={style.iconTextContainer}>
+                                        <GroupAddIcon
+                                            className={style.icon}
+                                            style={{
+                                                color: theme.palette.text.primary,
+                                                marginLeft: '2px',
+                                            }}
+                                        />
 
-                                {isOpen && (
-                                    <span
-                                        className={style.text}
-                                        style={{ marginLeft: '-2px' }}
-                                    >
-                                        Recruiting
-                                    </span>
-                                )}
+                                        {isOpen && (
+                                            <span
+                                                className={style.text}
+                                                style={{ marginLeft: '-2px' }}
+                                            >
+                                                Recruiting
+                                            </span>
+                                        )}
+                                    </div>
+                                    {isOpen &&
+                                        (dropdownOpen.recruiting ? (
+                                            <ExpandLessIcon
+                                                className={style.expandIcon}
+                                            />
+                                        ) : (
+                                            <ExpandMoreIcon
+                                                className={style.expandIcon}
+                                            />
+                                        ))}
+                                </div>
                             </div>
-                            {isOpen &&
-                                (dropdownOpen.recruiting ? (
-                                    <ExpandLessIcon
-                                        className={style.expandIcon}
-                                    />
-                                ) : (
-                                    <ExpandMoreIcon
-                                        className={style.expandIcon}
-                                    />
-                                ))}
-                        </div>
-                    </div>
-                    <div
-                        className={`${style.dropdownMenu} ${
-                            dropdownOpen.recruiting ? style.open : style.close
-                        }`}
-                    >
-                        <Link to="/candidates" className={style.dropdownItem}>
-                            Candidates{' '}
-                        </Link>
-                        <Link to="/interview" className={style.dropdownItem}>
-                            Interviews{' '}
-                        </Link>
-                    </div>
+
+                            <div
+                                className={`${style.dropdownMenu} ${
+                                    dropdownOpen.recruiting ? style.open : style.close
+                                }`}
+                            >
+                                <Link to="/candidates" className={style.dropdownItem}>
+                                    Candidates
+                                </Link>
+                                <Link to="/interview" className={style.dropdownItem}>
+                                    Interviews
+                                </Link>
+                            </div>
+                        </>
+                    )}
                     <div
                         className={style.item}
                         onMouseEnter={(e) =>
@@ -205,6 +210,7 @@ export const SideBar = () => {
                         >
                             Employees
                         </Link>
+                        {hr && (
                         <Link
                             to="/payroll"
                             className={style.dropdownItem}
@@ -221,6 +227,7 @@ export const SideBar = () => {
                         >
                             Payroll{' '}
                         </Link>
+                        )}
                         <Link
                             to="/vacation"
                             className={style.dropdownItem}
