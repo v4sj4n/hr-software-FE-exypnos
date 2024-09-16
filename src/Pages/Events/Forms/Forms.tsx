@@ -1,7 +1,7 @@
 import React from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import Selecter from '@/Components/Input/components/Select/Selecter'
-import Dropzone from '@/Components/Dropzone/Dropzone'
+import Dropzone from '@/Dropzone/Dropzone'
 import { Switch } from '@mui/material'
 import DrawerComponent from '@/Components/Drawer/Drawer'
 import Input from '@/Components/Input/Index'
