@@ -23,7 +23,7 @@ import NotFound from './Pages/NotFound/NotFound.tsx'
 import UserPromotion from './Pages/Promotion/UserPromotion.tsx'
 import Promotion from './Pages/Promotion/Promotion.tsx'
 import ResetPassword from './Pages/ResetPassword/ResetPassword.tsx'
-import ChatComponent from './Components/chat/ChatComponent';
+import Chat from './Pages/Chat/Chat.tsx'
 
 
 export default function Router() {
@@ -125,8 +125,8 @@ export default function Router() {
                     element: <Inventory />,
                 },
                 {
-                    path: '/chat',  // Add the Chat route
-                    element: <ChatComponent />,
+                    path: '/chat',  
+                    element: <Chat />,
                 },
             ],
         },
