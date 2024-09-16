@@ -95,13 +95,10 @@ const NotificationDropdown: React.FC = () => {
 
     const markAllAsRead = async () => {
         try {
-            const updatedNotifications = notifications.map(n => ({ ...n, isRead: true }))
-            for (const notification of updatedNotifications) {
-                if (!notification.isRead) {
-                    await AxiosInstance.patch(`notification/${notification._id}`)
-                }
+            for(let i = 0; i < notifications.length; i++) {
+                await AxiosInstance.patch(`notification/${notifications[i]._id}`)
             }
-            setNotifications(updatedNotifications)
+            setNotifications(notifications.map(n => ({ ...n, isRead: true })))
             setLength(0)
         } catch (error) {
             console.error('Error marking all as read:', error)
