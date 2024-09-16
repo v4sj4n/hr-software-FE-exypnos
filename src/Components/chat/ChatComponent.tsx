@@ -1,76 +1,125 @@
 import { useState, useEffect } from 'react';
 import { io, Socket } from 'socket.io-client';
+import './Chat.css';
 
-const SOCKET_SERVER_URL = 'http://localhost:3000';  // Ensure this matches your backend URL
+const SOCKET_SERVER_URL = 'http://localhost:3000';  // Backend WebSocket server
+
+interface User {
+  id: string;
+  fullName: string;
+}
 
 const ChatComponent = () => {
-  const [socket, setSocket] = useState<Socket | null>(null); // Store the socket connection
-  const [messages, setMessages] = useState<{ sender: string, message: string }[]>([]); // Store chat messages
-  const [newMessage, setNewMessage] = useState(''); // Message being typed
-  const [username, setUsername] = useState('Anonymous'); // User's name, default to "Anonymous"
+  const [socket, setSocket] = useState<Socket | null>(null);
+  const [messages, setMessages] = useState<{ senderId: string, message: string }[]>([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [loggedInUser, setLoggedInUser] = useState<User | null>(null);  // Store logged-in user
+  const [recipientId, setRecipientId] = useState('');  // Store recipient ID
+  const [users, setUsers] = useState<User[]>([]);  // Store list of users
 
-  // Initialize the Socket.IO connection on component mount
+  // Automatically fetch logged-in user and users when the component loads
   useEffect(() => {
-    const newSocket = io(SOCKET_SERVER_URL); // Connect to the backend server
-    setSocket(newSocket);
+    const fetchLoggedInUserAndUsers = async () => {
+      try {
+        // Fetch the logged-in user automatically (e.g., using a token from local storage or cookies)
+        const response = await fetch('http://localhost:3000/auth/getuser', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}` // Use the token from localStorage (or cookies)
+          }
+        });
+        const userData = await response.json();
+        setLoggedInUser({ id: userData._id, fullName: `${userData.firstName} ${userData.lastName}` });
 
-    // Listen for 'message' events from the server
-    newSocket.on('message', (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
-    });
-
-    // Cleanup socket when component unmounts
-    return () => {
-      newSocket.disconnect();
+        // Fetch other users, excluding the logged-in user
+        const usersResponse = await fetch('http://localhost:3000/user', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}` // Include token if necessary
+          }
+        });
+        const usersData = await usersResponse.json();
+        setUsers(usersData.filter((user: any) => user._id !== userData._id));
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
     };
+
+    fetchLoggedInUserAndUsers();
   }, []);
 
-  // Handle sending a message to the server
+  // Initialize Socket.IO connection once the user is fetched
+  useEffect(() => {
+    if (loggedInUser) {
+      const newSocket = io(SOCKET_SERVER_URL);
+      setSocket(newSocket);
+
+      // Listen for private messages
+      newSocket.on('privateMessage', (message) => {
+        setMessages((prevMessages) => [...prevMessages, message]);
+      });
+
+      return () => {
+        newSocket.disconnect();
+      };
+    }
+  }, [loggedInUser]);
+
+  // Handle sending a private message
   const handleSendMessage = () => {
-    if (socket && newMessage.trim()) {
-      const messageData = { sender: username, message: newMessage };
-
-      // Emit 'message' event to the server
-      socket.emit('message', messageData);
-
-      // Clear the input field after sending the message
-      setNewMessage('');
+    if (socket && newMessage.trim() && recipientId) {
+      const messageData = { senderId: loggedInUser?.id, recipientId, message: newMessage };
+      socket.emit('privateMessage', messageData);
+      setNewMessage('');  // Clear input after sending
     }
   };
 
   return (
-    <div>
-      <h2>Live Chat</h2>
+    <div className="chat-container">
+      {loggedInUser ? (
+        <>
+          <h2>Private Chat</h2>
 
-      {/* Display current chat messages */}
-      <div className="chat-box" style={{ border: '1px solid #ccc', padding: '10px', height: '300px', overflowY: 'scroll' }}>
-        {messages.map((msg, index) => (
-          <div key={index}>
-            <strong>{msg.sender}: </strong>{msg.message}
+          <p>Logged in as: {loggedInUser.fullName}</p>
+
+          {/* Select recipient dropdown */}
+          <div className="recipient-select">
+            <label htmlFor="recipient">Select Recipient:</label>
+            <select
+              id="recipient"
+              value={recipientId}
+              onChange={(e) => setRecipientId(e.target.value)}
+            >
+              <option value="">--Select a user--</option>
+              {users.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.fullName}
+                </option>
+              ))}
+            </select>
           </div>
-        ))}
-      </div>
 
-      {/* Input to set username */}
-      <div>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Enter your name"
-          style={{ margin: '10px 0' }}
-        />
-      </div>
+          {/* Chat message history */}
+          <div className="chat-box">
+            {messages.map((msg, index) => (
+              <div key={index} className={`message ${msg.senderId === loggedInUser?.id ? 'sent' : 'received'}`}>
+                <strong>{msg.senderId === loggedInUser?.id ? 'Me' : 'Them'}:</strong> {msg.message}
+              </div>
+            ))}
+          </div>
 
-      {/* Input to type a new message */}
-      <input
-        type="text"
-        value={newMessage}
-        onChange={(e) => setNewMessage(e.target.value)}
-        placeholder="Type your message..."
-        style={{ width: '300px' }}
-      />
-      <button onClick={handleSendMessage}>Send</button>
+          {/* New message input */}
+          <div className="message-input">
+            <input
+              type="text"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              placeholder="Type your message..."
+            />
+            <button onClick={handleSendMessage}>Send</button>
+          </div>
+        </>
+      ) : (
+        <p>Loading user data...</p>
+      )}
     </div>
   );
 };
