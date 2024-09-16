@@ -32,14 +32,7 @@ function PayrollContent() {
 
     return (
         <div className={style.payroll}>
-            <div
-                style={{
-                    alignSelf: 'flex-end',
-                    position: 'absolute',
-                    top: 64,
-                    display: 'flex',
-                    alignItems: 'center',
-                }}
+            <div className={style.search}
             >
                 <Button
                     btnText=""
@@ -96,7 +89,7 @@ function PayrollContent() {
                         <Input
                             width={150}
                             name="minNetSalary"
-                                type="number"
+                            type="number"
                             label="Min Net Salary"
                             isFilter
                             onChange={handleMinSalaryChange}
