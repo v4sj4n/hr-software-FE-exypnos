@@ -8,7 +8,7 @@ export const useSocket = (): void => {
 
   useEffect(() => {
     if (loggedInUser) {
-      console.log('Attempting to connect socket for user:', loggedInUser.id);  // Log user info
+      console.log('Attempting to connect socket for user:', loggedInUser._id);  // Log user info
 
       const socket = initiateSocketConnection();
       console.log('Socket initiated:', socket);  // Log after initiating the connection
@@ -19,7 +19,7 @@ export const useSocket = (): void => {
       });
 
       return () => {
-        console.log('Disconnecting socket for user:', loggedInUser.id);  // Log before disconnecting
+        console.log('Disconnecting socket for user:', loggedInUser._id);  // Log before disconnecting
         disconnectSocket();
       };
     }

@@ -9,7 +9,7 @@ export const useChatLogic = () => {
 
   useEffect(() => {
     if (loggedInUser) {
-      const newSocket = io('http://localhost:3000', { query: { userId: loggedInUser.id } });
+      const newSocket = io('http://localhost:3000', { query: { userId: loggedInUser._id } });
       setSocket(newSocket);
 
       console.log('Socket connected:', newSocket);  // Log when socket is connected
@@ -29,12 +29,12 @@ export const useChatLogic = () => {
   const handleSendMessage = () => {
     if (socket && recipientId && newMessage.trim()) {
       console.log('Sending message:', { 
-        senderId: loggedInUser?.id, 
+        senderId: loggedInUser?._id, 
         recipientId, 
         message: newMessage 
       });  // Log the message being sent
       socket.emit('privateMessage', {
-        senderId: loggedInUser?.id,
+        senderId: loggedInUser?._id,
         recipientId,
         message: newMessage,
       });
