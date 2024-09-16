@@ -2,7 +2,7 @@ import { Avatar } from '@mui/material'
 import Input from '../../../../Components/Input/Index'
 import { ButtonTypes } from '../../../../Components/Button/ButtonTypes'
 import Button from '../../../../Components/Button/Button'
-import style from './ProfileForm.module.css'
+import style from './style/ProfileForm.module.css'
 import Image from '../../../../Components/uploads/uploadImage'
 import { useFileUpload } from '../../Context/Hook'
 import { useProfile } from './Context/ProfileContext'
@@ -10,10 +10,11 @@ import { FileUploadProvider } from '../../Context/FileUpoadProvider'
 import { ProfileProvider } from './Context/ProfileProvider'
 
 const ProfileFormContext = () => {
+
+    
     const { uploadImage, previewImage } = useFileUpload()
 
-    const { user, isCurrentUser, isAdmin, handleChange, handleUpdate } =
-        useProfile()
+    const { user, isCurrentUser, isAdmin, handleChange, handleUpdate } = useProfile()
 
     if (!user) {
         return <div>No user data available</div>
@@ -24,22 +25,24 @@ const ProfileFormContext = () => {
             <div className={style.title}>Personal Information</div>
 
             <div className={style.forms}>
-                <div className={style.profile}>
-                    <Avatar
-                        src={previewImage || user.imageUrl}
-                        style={{ width: '70px', height: '70px' }}
-                    />
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <div
-                            style={{ fontSize: '20px', color: '#000000' }}
-                        >{`${user.firstName} ${user.lastName}`}</div>
-                        <div style={{ color: '#000000' }}>
-                            {user.auth.email}
+                <div>
+                    <div className={style.profile}>
+                        <Avatar
+                            src={previewImage || user.imageUrl}
+                            style={{ width: '70px', height: '70px' }}
+                        />
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <div
+                                style={{ fontSize: '20px', color: '#000000' }}
+                            >{`${user.firstName} ${user.lastName}`}</div>
+                            <div style={{ color: '#000000' }}>
+                                {user.auth.email}
+                            </div>
                         </div>
                     </div>
-
                     {isCurrentUser && <Image onChange={uploadImage} />}
                 </div>
+
                 <div className={style.inputWidth}>
                     <Input
                         IsUsername

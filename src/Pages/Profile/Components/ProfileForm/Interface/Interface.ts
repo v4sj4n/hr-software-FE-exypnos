@@ -29,11 +29,17 @@ export interface EmployeePayroll {
     grossSalary: number | undefined
     month: number
     year: number
+    bonus: number | undefined
     userId: string
+    extraHours: number | undefined
+    bonusDescription: string 
 }
 
 export interface EmployePayroll {
     workingDays: number | undefined
     grossSalary: number | undefined
+    bonus: number | undefined
     userId: string
+    extraHours: number | undefined
+    bonusDescription: string 
 }

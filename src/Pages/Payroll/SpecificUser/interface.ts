@@ -4,7 +4,6 @@ import React from 'react'
 export interface PayrollContextType {
     rows: PayrollRowSpecifc[]
     columns: GridColDef[]
-    headerTextColors: { [key: string]: string }
     getRowId: (row: PayrollRowSpecifc) => number
     fullName: string | undefined
     isPending: boolean
@@ -39,22 +38,3 @@ export interface PayrollRowSpecifc {
     }
 }
 
-export interface UserPayrolls {
-    id: number
-    originalId: number
-    netSalary: number
-    workingDays: number
-    currency: string
-    bonus: number
-    bonusDescription: string
-    socialSecurity: number
-    healthInsurance: number
-    grossSalary: number
-    month: number
-    year: number
-    userId: {
-        firstName: string
-        lastName: string
-        _id: string
-    }
-}
