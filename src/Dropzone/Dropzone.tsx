@@ -3,9 +3,9 @@ import { useDropzone } from 'react-dropzone'
 import styles from './Dropzone.module.css'
 import CloseIcon from '@mui/icons-material/Close'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
-import { useEvents } from '@/Pages/Events/Context/EventsContext'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
+import { useEvents } from '@/Pages/Events/Context/EventsContext'
 
 interface DropzoneProps {
     className?: string

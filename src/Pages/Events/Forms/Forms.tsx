@@ -7,9 +7,9 @@ import DrawerComponent from '@/Components/Drawer/Drawer'
 import Input from '@/Components/Input/Index'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
-import { useEvents } from '../Context/EventsContext'
 import style from '../styles/Events.module.css'
 import MapComponent from '../Components/GoogleMap/MapPicker'
+import { useEvents } from '../Context/EventsContext'
 
 export default function Forms() {
     const {
@@ -40,25 +40,8 @@ export default function Forms() {
         endDate,
         handleCloseDrawer,
         drawerOpen,
+        handleMapChange
     } = useEvents()
-
-    const handleLocationChange = (address: string) => {
-        if (editingEvent) {
-            handleEditChange({
-                target: {
-                    name: 'location',
-                    value: address,
-                },
-            } as React.ChangeEvent<HTMLInputElement>)
-        } else {
-            handleChange({
-                target: {
-                    name: 'location',
-                    value: address,
-                },
-            } as React.ChangeEvent<HTMLInputElement>)
-        }
-    }
 
     return (
         <div>
@@ -113,10 +96,8 @@ export default function Forms() {
                     />
                 </div>
                 <MapComponent
-                    onLocationChange={handleLocationChange}
-                    savedLocation={
-                        editingEvent ? editingEvent.location : event.location
-                    }
+                    onLocationChange={handleMapChange}
+                    savedLocation={ editingEvent ? editingEvent.location : event.location }
                     showInput={true}
                 />
                 <Input

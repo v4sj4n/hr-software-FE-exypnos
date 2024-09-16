@@ -6,9 +6,9 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { useEvents } from '@/Pages/Events/Context/EventsContext'
 import ClickAwayListener from '@mui/material/ClickAwayListener'
 import { EventsData } from '@/Pages/Events/Interface/Events'
+import { useEvents } from '@/Pages/Events/Context/EventsContext'
 
 const ITEM_HEIGHT = 32
 

@@ -4,7 +4,7 @@ import { UserProfileData } from '@/Pages/Employees/interfaces/Employe'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { EmployeePayroll, EmployePayroll } from './Interface'
+import { EmployeePayroll, EmployePayroll } from '../Interface/Interface'
 
 export const useGetAndUpdateUserById = () => {
     const { id } = useParams<{ id: string }>()
@@ -66,7 +66,6 @@ export const useGetAndUpdateUserById = () => {
             firstName: user.firstName,
             lastName: user.lastName,
             phone: user.phone,
-
             pob: user.pob,
             dob: user.dob,
             gender: user.gender,
@@ -106,6 +105,9 @@ export const useCreatePayroll = () => {
         workingDays: undefined,
         grossSalary: undefined,
         userId: id || '',
+        bonus: undefined,
+        extraHours: undefined,
+        bonusDescription: ''
     })
     const [createToastOpen, setCreateToastOpen] = useState(false)
     const [createToastMessage, setCreateToastMessage] = useState('')
@@ -114,14 +116,23 @@ export const useCreatePayroll = () => {
     >('success')
 
     const handleChangePayroll = (
-        event: React.ChangeEvent<HTMLInputElement>,
-    ) => {
-        const { name, value } = event.target
-        setPayroll((prevPayroll) => ({
+        event: React.ChangeEvent<HTMLInputElement>
+      ) => {
+        const { name, value } = event.target;
+        // If the field is one that should store a number, convert the value to a number
+        if (["workingDays", "grossSalary", "bonus", "extraHours"].includes(name)) {
+          setPayroll((prevPayroll) => ({
             ...prevPayroll,
             [name]: value === '' ? undefined : Number(value),
-        }))
-    }
+          }));
+        } else {
+          // Otherwise, just store the value as a string (e.g., for bonusDescription)
+          setPayroll((prevPayroll) => ({
+            ...prevPayroll,
+            [name]: value,
+          }));
+        }
+    };
 
     const handleCreatePayroll = async (
         event: React.FormEvent<HTMLButtonElement>,
@@ -131,6 +142,9 @@ export const useCreatePayroll = () => {
             ...payroll,
             workingDays: payroll.workingDays,
             grossSalary: payroll.grossSalary,
+            bonus: payroll.bonus,
+            extraHours: payroll.extraHours,
+            bonusDescription: payroll.bonusDescription,
         }
 
         try {
@@ -210,6 +224,9 @@ export const useUpdatePayroll = () => {
         const fieldsToUpdate = {
             workingDays: EditingPayroll.workingDays,
             grossSalary: EditingPayroll.grossSalary,
+            bonus: EditingPayroll.bonus,
+            extraHours: EditingPayroll.extraHours,
+            bonusDescription: EditingPayroll.bonusDescription,
         }
         console.log(EditingPayroll)
         try {

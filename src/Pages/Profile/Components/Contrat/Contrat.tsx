@@ -1,9 +1,9 @@
 import Input from '../../../../Components/Input/Index'
 import { ButtonTypes } from '../../../../Components/Button/ButtonTypes'
 import Button from '../../../../Components/Button/Button'
-import style from '../ProfileForm/ProfileForm.module.css'
+import style from '../ProfileForm/style/ProfileForm.module.css'
 import { ProfileProvider } from '../ProfileForm/Context/ProfileProvider'
-import { useCreatePayroll, useUpdatePayroll } from '../ProfileForm/Context/Hook'
+import { useCreatePayroll, useUpdatePayroll } from '../ProfileForm/Hook/Index'
 import Toast from '@/Components/Toast/Toast'
 
 const ContratContent = () => {
@@ -74,6 +74,23 @@ const ContratContent = () => {
                             : handleChangePayroll
                     }
                 />
+                <Input
+                    IsUsername
+                    shrink={true}
+                    width={350}
+                    name="extraHours"
+                    label="Extra Hours"
+                    value={
+                        EditingPayroll
+                            ? EditingPayroll?.extraHours
+                            : payroll.extraHours
+                    }
+                    onChange={
+                        EditingPayroll
+                            ? handleUpdateChangePayroll
+                            : handleChangePayroll
+                    }
+                />
             </div>
             <div className={style.border}></div>
 
@@ -87,14 +104,33 @@ const ContratContent = () => {
                     gap: '20px',
                 }}
             >
-                <Input IsUsername label="Bonus" name="bonus" />
+                <Input IsUsername label="Bonus" name="bonus" shrink={true} value={
+                    EditingPayroll
+                        ? EditingPayroll?.bonus
+                        : payroll.bonus
+                }
+                    onChange={
+                        EditingPayroll
+                            ? handleUpdateChangePayroll
+                            : handleChangePayroll
+                    } />
                 <Input
                     IsUsername
                     label="Bonus Description"
                     name="bonusDescription"
-                    type="textarea"
+                    type="text"
                     multiline={true}
                     rows={3}
+                    value={
+                        EditingPayroll
+                            ? EditingPayroll?.bonusDescription
+                            : payroll.bonusDescription
+                    }
+                    onChange={
+                        EditingPayroll
+                            ? handleUpdateChangePayroll
+                            : handleChangePayroll
+                    }
                 />
             </div>
 

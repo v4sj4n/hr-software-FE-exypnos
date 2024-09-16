@@ -78,7 +78,7 @@ export const useApplicantById = () => {
 
         try {
             await AxiosInstance.patch(`/applicant/${id}`, {
-                // status: 'accepted',
+
                 firstInterviewDate: firstInterviewDate,
                 customMessage: customMessage,
                 customSubject: customSubject,
