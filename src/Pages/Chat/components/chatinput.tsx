@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useChat } from '../context/ChatContext';
 import { Box, TextField, Button } from '@mui/material';
-const API_URL = import.meta.env.VITE_API_URL
+import { useSocket } from '../context/SocketContext';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const SendMessage: React.FC = () => {
   const [message, setMessage] = useState('');
   const { senderId, recipientId, setMessages } = useChat();
+  const socket = useSocket();
 
   console.log('Current Sender ID:', senderId);  // Log senderId
   console.log('Current Recipient ID:', recipientId);  // Log recipientId
@@ -14,7 +16,7 @@ const SendMessage: React.FC = () => {
     return localStorage.getItem('access_token');
   }
 
-  const sendMessage = async (message: string, senderId: string, recipientId: string) => {
+  const sendMessageToAPI = async (message: string, senderId: string, recipientId: string) => {
     try {
       const token = getAuthToken();
       const response = await fetch(`${API_URL}/messages`, {
@@ -43,12 +45,23 @@ const SendMessage: React.FC = () => {
   };
 
   const handleSendMessage = async () => {
-    if (!senderId || !recipientId) {
-      console.error('Sender or recipient ID is missing:', { senderId, recipientId });
+    console.log('Sending message:', message);  // Log the message being sent
+    if (!senderId || !recipientId || !message.trim()) {
+      console.error('Sender or recipient ID is missing or message is empty.');
       return;
     }
 
-    await sendMessage(message, senderId, recipientId);
+    // Emit the message via WebSocket for real-time update
+    socket.emit('sendMessage', {
+      sender: senderId,
+      recipient: recipientId,
+      message: message,
+    });
+
+    // Save the message to the database via REST API
+    await sendMessageToAPI(message, senderId, recipientId);
+    console.log('Message sent:', message);  // Log the sent message
+
     setMessage(''); // Clear input after sending
   };
 

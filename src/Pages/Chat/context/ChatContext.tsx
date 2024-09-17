@@ -44,18 +44,31 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     if (socket) {
-      socket.on('privateMessage', (message: Message) => {
-        setMessages((prevMessages) => [...prevMessages, message]);
+      socket.on('receiveMessage', (data) => {
+        console.log('Message received');
+        setMessages((prevMessages) => {
+          const updatedMessages = [...prevMessages, data];
+          console.log('Updated messages:', updatedMessages); // Log the updated messages
+          return updatedMessages;
+        });
+      });
+
+      return () => {
+        socket.off('privateMessage');
+      };
+    }
+  }, [socket]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.emit('sendMessage', {
+        sender: senderId,
+        recipient: recipientId,
+        message: 'Test message',
       });
     }
-
-    // Cleanup on unmount
-    return () => {
-      if (socket) {
-        socket.off('privateMessage');
-      }
-    };
-  }, [socket]);
+  }, [socket]);  
+  
 
   return (
     <ChatContext.Provider

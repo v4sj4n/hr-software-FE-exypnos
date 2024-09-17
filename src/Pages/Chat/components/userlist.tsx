@@ -41,7 +41,9 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
       {users.length === 0 ? (
         <Typography variant="body1">No users available.</Typography>
       ) : (
-        users.map((user) => (
+        users
+        .filter((user) => user._id !== senderId)
+        .map((user) => (
           <ListItem key={user._id} disablePadding>
             <ListItemButton onClick={() => handleSelectUser(user._id)}>
               <ListItemText primary={`${user.firstName} ${user.lastName}`} />
