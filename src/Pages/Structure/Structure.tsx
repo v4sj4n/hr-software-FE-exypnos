@@ -9,8 +9,18 @@ import { Avatar } from '@mui/material'
 import HrImage from '/public/Images/Hr.jpeg'
 import { useQuery } from '@tanstack/react-query'
 import { CustomTreeNode, ProjectData } from './Interface/Index'
+import { ButtonTypes } from '@/Components/Button/ButtonTypes'
+import Button from '@/Components/Button/Button'
+import DrawerComponent from '@/Components/Drawer/Drawer'
+import Input from '@/Components/Input/Index'
+import Selecter from '@/Components/Input/components/Select/Selecter'
+import { useGetAllUsers } from '../Employees/Hook'
+import CloseIcon from '@mui/icons-material/Close'
+import Toast from '@/Components/Toast/Toast'
+import { useStructureContext } from './Context/StructureProvider'
+import { StructureProvider } from './Context/StruxtureContext'
 
-export default function ColoredDemo() {
+function StructureContent() {
     const { data, isLoading, error } = useQuery<ProjectData[], Error>({
         queryKey: ['projects'],
         queryFn: async () => {
@@ -49,7 +59,7 @@ export default function ColoredDemo() {
                     className: styles.bgPurple500,
                     data: {
                         name: `${project.projectManager.firstName} ${project.projectManager.lastName}`,
-                        title: 'Project Manager',
+                        title: project.name,
                         teamMembers: project.teamMembers,
                     },
                     children: [
@@ -84,10 +94,10 @@ export default function ColoredDemo() {
                             />
                         )}
                         <span className={styles.nodeName}>
-                            {node.data.name}
+                            {node.data.title}
                         </span>
                         <span style={{ fontSize: '12px' }}>
-                            {node.data.title}
+                            {node.data.name}
                         </span>
                     </div>
                 </div>
@@ -115,9 +125,60 @@ export default function ColoredDemo() {
 
     const transformedData = data ? transformProjectData(data) : []
 
+    const {  handleDecriptionChange,
+        description,
+        handleCloseDrawer,
+        handleCloseToast,
+        handleOpenDrawer,
+        openDrawer,
+        toastOpen,
+        toastMessage,
+        toastSeverity,
+        handleCreateProject,
+        handleTeamMembersChange,
+        handleProjectManagerChange,
+        handleNameChange,
+        handleStartDateChange,
+        handleStatusChange,
+        name,
+        startDate,
+        status, 
+        projectManager,
+        teamMembers,
+        statusOptions,
+    } = useStructureContext()
+    
+    const { data: users = [] } = useGetAllUsers()
+    const TeamMembers = users.map((user) => user._id)
+
     return (
         <div className={styles.container}>
-            <Card borderRadius="5px" padding="32px" border="1px solid #ebebeb">
+             <Toast
+                severity={toastSeverity}
+                open={toastOpen}
+                message={toastMessage}
+                onClose={handleCloseToast}
+            />
+            <div className={styles.search}>
+            <Button onClick={handleOpenDrawer} btnText='Add Project' type={ButtonTypes.PRIMARY}/>
+            </div>
+            <DrawerComponent open={openDrawer} onClose={handleCloseDrawer}>
+                <div className={styles.create}>
+                   Create New Project
+                   <CloseIcon
+                        onClick={handleCloseDrawer}
+                        style={{ cursor: 'pointer' }}
+                    />
+                </div>
+                 <Input IsUsername name='name' onChange={handleNameChange} value={name}  label='Project Name'/>
+                 <Input IsUsername name='startDate' label='Start date' shrink={true}  type="datetime-local" onChange={handleStartDateChange} value={startDate}/>
+                 <Input IsUsername name='description' label='Description' type='textarea' rows={3} multiline={true} onChange={handleDecriptionChange} value={description} />
+                 <Selecter name='status' label='Status' options={statusOptions} onChange={handleStatusChange} multiple={false} value={status}/>
+                 <Selecter name='projectManager' label='Project Manager' multiple={false} onChange={handleProjectManagerChange} value={projectManager} options={TeamMembers}/>
+                 <Selecter name='teamMembers' label='Team Members' onChange={handleTeamMembersChange} value={teamMembers} multiple options={TeamMembers}/>
+                 <Button type={ButtonTypes.PRIMARY} btnText='Create' onClick={handleCreateProject}  />
+            </DrawerComponent>
+            <Card borderRadius="5px" padding="32px" border="1px solid #ebebeb" height='400px' overflow='auto'>
                 {isLoading ? (
                     <div>Loading...</div>
                 ) : error ? (
@@ -134,3 +195,14 @@ export default function ColoredDemo() {
         </div>
     )
 }
+
+
+const Structure: React.FC = () => {
+    return (
+        <StructureProvider>
+            <StructureContent />
+        </StructureProvider>
+    )
+}
+
+export default Structure

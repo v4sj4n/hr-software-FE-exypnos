@@ -14,13 +14,11 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     const [showEventModal, setShowEventModal] = useState<boolean>(false)
     const [selectedEvent, setSelectedEvent] = useState<EventsData | null>(null)
     const [drawerOpen, setDrawerOpen] = useState(false)
-    const [drawerAction, setDrawerAction] = useState<'create' | 'edit'>(
-        'create',
-    )
-    const { data: users = [] } = useGetAllUsers()
+    const [drawerAction, setDrawerAction] = useState<'create' | 'edit'>( 'create' )
     const { currentUser } = useAuth()
     const isAdmin = currentUser?.role === 'hr'
-    const typesofEvent = ['sports', 'teambuilding', 'training', 'other']
+    const typesofEvent = ['sports', 'teambuilding', 'training', 'other'] 
+    const { data: users = [] } = useGetAllUsers()
     const allEmails = users.map((user) => user.auth?.email)
 
     const formatDate = (date: string): string => {
@@ -45,7 +43,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         if (eventId) {
             handleSeeEventDetails({ _id: eventId } as unknown as EventsData)
         }
-    }, [eventId])
+    }, [])
 
     const handleOpenDrawer = (
         action: 'create' | 'edit',
