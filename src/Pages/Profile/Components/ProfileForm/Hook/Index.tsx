@@ -1,10 +1,10 @@
-import { useAuth } from '@/Context/AuthProvider'
 import AxiosInstance from '@/Helpers/Axios'
 import { UserProfileData } from '@/Pages/Employees/interfaces/Employe'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { EmployeePayroll, EmployePayroll } from '../Interface/Interface'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 export const useGetAndUpdateUserById = () => {
     const { id } = useParams<{ id: string }>()

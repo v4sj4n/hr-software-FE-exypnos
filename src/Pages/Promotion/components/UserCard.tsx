@@ -1,9 +1,9 @@
 import AxiosInstance from '@/Helpers/Axios'
 import Card from '@/Components/Card/Card'
 import { useEffect, useState } from 'react'
-import { useAuth } from '@/Context/AuthProvider'
 import style from '../styles/promotion.module.css'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 export type UserPromotion = {
     _id: string

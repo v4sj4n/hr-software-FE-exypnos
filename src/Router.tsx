@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import ViewCandidats from './Pages/VIewCandidats/ViewCandidats.tsx'
-import PrivateRoute from './Context/ProtectedRoute.tsx'
+import PrivateRoute from './ProtectedRoute/ProtectedRoute.tsx'
 import Candidates from './Pages/Candidates/Candidates.tsx'
 import Dashboard from './Pages/Dashboard/Dashboard.tsx'
 import Employees from './Pages/Employees/Employees.tsx'

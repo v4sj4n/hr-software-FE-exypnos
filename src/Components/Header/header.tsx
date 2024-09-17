@@ -6,14 +6,15 @@ import {
 } from '@mui/icons-material'
 import codeviderLogo from '/Images/codevider.png'
 import style from './header.module.css'
-import { useAuth } from '../../Context/AuthProvider'
 import { Link, useNavigate } from 'react-router-dom'
-import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
+import { SidebarHeaderContext } from '@/ProtectedRoute/SidebarHeaderContext'
 import { EventsProvider } from '@/Pages/Events/Context/EventsContext'
 import NotificationDropdown from '@/Pages/Notification/Notification'
 import { ClickAwayListener } from '@mui/material'
 import ThemeSwitcher from '@/Theme/ThemeSwitcher'
 import { useTheme } from '@mui/material/styles'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+
 
 export const HeaderContent = () => {
     const { isSidebarOpen: isOpen, toggleSidebar } =

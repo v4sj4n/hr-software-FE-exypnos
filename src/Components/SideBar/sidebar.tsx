@@ -12,10 +12,11 @@ import {
 import { useContext, useState } from 'react'
 import style from './sidebar.module.css'
 import { Link, useNavigate } from 'react-router-dom'
-import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
-import { useAuth } from '@/Context/AuthProvider'
+import { SidebarHeaderContext } from '@/ProtectedRoute/SidebarHeaderContext'
 import { useTheme } from '@mui/material/styles'
 import { alpha } from '@mui/material'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+
 export const SideBar = () => {
     const { isSidebarOpen: isOpen } = useContext(SidebarHeaderContext)
     const { currentUser } = useAuth()
