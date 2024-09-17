@@ -23,6 +23,8 @@ import NotFound from './Pages/NotFound/NotFound.tsx'
 import UserPromotion from './Pages/Promotion/UserPromotion.tsx'
 import Promotion from './Pages/Promotion/Promotion.tsx'
 import ResetPassword from './Pages/ResetPassword/ResetPassword.tsx'
+import Chat from './Pages/Chat/Chat.tsx'
+
 
 export default function Router() {
     const router = createBrowserRouter([
@@ -108,6 +110,7 @@ export default function Router() {
                     path: '/events',
                     element: <Events />,
                 },
+                
                 {
                     path: '/interview',
                     element: <Interview />,
@@ -119,6 +122,10 @@ export default function Router() {
                 {
                     path: '/inventory',
                     element: <Inventory />,
+                },
+                {
+                    path: '/chat',  
+                    element: <Chat />,
                 },
             ],
         },
