@@ -1,25 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
-
 import AxiosInstance from '@/Helpers/Axios'
+import { applicantsData } from '../interface/interface'
 
-export interface applicantsData {
-    customMessage: string
-    customSubject: string
-    forEach(arg0: (applicant: applicantsData) => void): unknown
-    firstName: string
-    lastName: string
-    phoneNumber: string
-    email: string
-    positionApplied: string
-    status: string
-    _id: string
-    firstInterviewDate?: string
-    secondInterviewDate?: string
-    notes: string
-    message: string
-    currentPhase: string
-    isDeleted?: boolean
-}
 import { useQuery } from '@tanstack/react-query'
 
 export const useGetAllInterviews = () => {
