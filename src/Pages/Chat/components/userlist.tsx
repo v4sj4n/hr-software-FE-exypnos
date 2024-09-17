@@ -35,13 +35,16 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
   const activeUserIds = useMemo(() => {
     const uniqueUserIds = new Set<string>();
 
-    messages.forEach((msg) => {
-      if (msg.senderId !== senderId) {
-        uniqueUserIds.add(msg.senderId);
-      } else {
-        uniqueUserIds.add(msg.recipientId);
-      }
-    });
+    // Safeguard to ensure messages is always an array
+    if (Array.isArray(messages)) {
+      messages.forEach((msg) => {
+        if (msg.senderId !== senderId) {
+          uniqueUserIds.add(msg.senderId);
+        } else {
+          uniqueUserIds.add(msg.recipientId);
+        }
+      });
+    }
 
     console.log('Active User IDs:', Array.from(uniqueUserIds)); // Log active user IDs for debugging
 
@@ -70,8 +73,8 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
 
     try {
       const response = await AxiosInstance.get(`/messages/${senderId}/${userId}`);
-      const messages = response.data;
-      setMessages(messages);  // Update the message list with fetched messages
+      const fetchedMessages = response.data || [];
+      setMessages(fetchedMessages);  // Update the message list with fetched messages, or set an empty array
     } catch (error) {
       console.error('Error fetching messages:', error);
       setError('Failed to fetch messages. Please try again later.');

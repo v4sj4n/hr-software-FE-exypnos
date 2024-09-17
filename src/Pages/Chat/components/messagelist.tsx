@@ -12,12 +12,14 @@ const MessageList: React.FC = () => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Filter messages to show only those between sender and recipient
-  const filteredMessages = messages.filter(
-    (msg) =>
-      (msg.senderId === senderId && msg.recipientId === recipientId) ||
-      (msg.senderId === recipientId && msg.recipientId === senderId)
-  );
+  // Safeguard against non-array messages
+  const filteredMessages = Array.isArray(messages)
+    ? messages.filter(
+        (msg) =>
+          (msg.senderId === senderId && msg.recipientId === recipientId) ||
+          (msg.senderId === recipientId && msg.recipientId === senderId)
+      )
+    : [];
 
   if (!recipientId) {
     return <Typography variant="body2">Select a chat to view messages.</Typography>;
