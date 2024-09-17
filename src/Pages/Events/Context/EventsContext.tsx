@@ -20,7 +20,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     const { data: users = [] } = useGetAllUsers()
     const { currentUser } = useAuth()
     const isAdmin = currentUser?.role === 'hr'
-    const typesofEvent = ['sports', 'teambuilding', 'training', 'other']
+    const typesofEvent = ['sports', 'teambuilding', 'training', 'other','career']
     const allEmails = users.map((user) => user.auth?.email)
 
     const formatDate = (date: string): string => {

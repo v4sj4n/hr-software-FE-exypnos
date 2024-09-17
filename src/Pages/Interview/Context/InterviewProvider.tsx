@@ -1,12 +1,12 @@
 import React, {  useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { DropResult } from 'react-beautiful-dnd'
-import { useGetAllInterviews } from '.'
-import { formatDate } from './utils'
+import { useGetAllInterviews } from '../Hook'
+import { formatDate} from  './../Hook/utils'
 import AxiosInstance from '@/Helpers/Axios'
 import Toast from '@/Components/Toast/Toast'
 import { Interview } from '../interface/interface'
-import { InterviewContext } from './InterviewContext'
+import { InterviewContext } from '../Context/InterviewContext'
 
 export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { data: interviewsData, error, loading } = useGetAllInterviews()
