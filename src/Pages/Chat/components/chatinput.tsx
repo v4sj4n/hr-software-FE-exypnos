@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useChat } from '../context/ChatContext';
 import { Box, TextField, Button } from '@mui/material';
 import { useSocket } from '../context/SocketContext';
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL;  // Correctly typed now
 
 const SendMessage: React.FC = () => {
   const [message, setMessage] = useState('');
@@ -51,22 +51,26 @@ const SendMessage: React.FC = () => {
       return;
     }
 
+    const messageData = {
+      senderId,
+      recipientId,
+      message,
+      timestamp: new Date().toISOString(),  // Add timestamp locally
+    };
+
     // Emit the message via WebSocket for real-time update
-    socket.emit('sendMessage', {
-      sender: senderId,
-      recipient: recipientId,
-      message: message,
-    });
+    socket.emit('sendMessage', messageData);
+
+    // Immediately add the message to the local state for instant feedback
+    setMessages((prevMessages) => [...prevMessages, messageData]);
 
     // Save the message to the database via REST API
     await sendMessageToAPI(message, senderId, recipientId);
     console.log('Message sent:', message);  // Log the sent message
 
-       // Refetch the messages after sending the new message
-    // Clear input after sending without affecting chatbox visibility
-    setMessage(''); 
-};
-
+    // Clear input after sending
+    setMessage('');
+  };
 
   return (
     <Box sx={{ display: 'flex', gap: 2 }}>

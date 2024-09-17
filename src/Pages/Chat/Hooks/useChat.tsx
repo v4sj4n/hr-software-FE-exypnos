@@ -1,50 +1,51 @@
 import { useState, useEffect } from 'react';
-import { io, Socket } from 'socket.io-client';
+import { Socket } from 'socket.io-client';
 import { useChat } from '../context/ChatContext';
+import AxiosInstance from '@/Helpers/Axios'; // Ensure the Axios import is correct
 import { Message } from '../Interfaces/types';
-const API_URL = import.meta.env.VITE_API_URL
 
 export const useChatLogic = () => {
   const { loggedInUser, recipientId, newMessage, setNewMessage, setMessages } = useChat();
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const [socket] = useState<Socket | null>(null);  // Removed `setSocket`
 
   useEffect(() => {
-    if (loggedInUser) {
-      const newSocket = io(API_URL, { query: { userId: loggedInUser._id } });
-      setSocket(newSocket);
-
-      console.log('Socket connected:', newSocket);  // Log when socket is connected
-
-      newSocket.on('privateMessage', (message: Message) => {
-        console.log('Received a message:', message);  // Log incoming message
-        setMessages((prevMessages) => [...prevMessages, message]);
-      });
-
-      return () => {
-        console.log('Socket disconnected');
-        newSocket.disconnect();  // Log when socket is disconnected
+    if (loggedInUser && recipientId) {
+      const fetchMessages = async () => {
+        try {
+          const response = await AxiosInstance.get(`/messages/${loggedInUser._id}/${recipientId}`);
+          const fetchedMessages = response.data;
+          setMessages(fetchedMessages);
+        } catch (error) {
+          console.error('Error fetching messages:', error);
+        }
       };
+  
+      fetchMessages();
     }
-  }, [loggedInUser, setMessages]);
+  }, [loggedInUser, recipientId, setMessages]);
 
   const handleSendMessage = () => {
     if (socket && recipientId && newMessage.trim()) {
-      console.log('Sending message:', { 
-        senderId: loggedInUser?._id, 
+      // You are using the object `message`, not the `Message` interface
+
+      const messageData = {
+        senderId: loggedInUser?._id || '', // Ensure senderId is always a string
         recipientId, 
-        message: newMessage 
-      });  // Log the message being sent
-      socket.emit('privateMessage', {
-        senderId: loggedInUser?._id,
-        recipientId,
-        message: newMessage,
-      });
-      setNewMessage('');  // Clear the input after sending
+        message: newMessage, 
+        timestamp: new Date().toISOString(),  
+      };
+
+      console.log('Sending message:', messageData);  
+      socket.emit('privateMessage', messageData);
+
+      // Correct usage of `messageData`
+      setMessages((prevMessages: Message[]) => [...prevMessages, messageData]);
+
+      setNewMessage('');  
     } else {
-      console.log('Message not sent, missing data');  // Log if message is not sent due to missing data
+      console.log('Message not sent, missing data');  
     }
   };
 
   return { handleSendMessage };
 };
-
