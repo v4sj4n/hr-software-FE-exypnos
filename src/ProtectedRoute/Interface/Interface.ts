@@ -1,3 +1,5 @@
+import React from "react"
+
 export interface User {
     email: string
     _id: number
@@ -16,4 +18,8 @@ export interface AuthContextType {
     login: (access_token: string, role: string, user: User) => void
     logout: () => void
 }
-   
+
+
+export const AuthContext = React.createContext<AuthContextType | undefined>(
+    undefined,
+)

@@ -1,4 +1,3 @@
-import { useAuth } from '@/Context/AuthProvider.tsx'
 import Card1 from '../../Components/Card/Card.tsx'
 import style from '../Dashboard/style/dashboard.module.css'
 import Calendar from './components/calendar.tsx'
@@ -11,6 +10,7 @@ import { UserProfileData } from '../Employees/interfaces/Employe.ts'
 import { useQuery } from '@tanstack/react-query'
 import AxiosInstance from '@/Helpers/Axios.tsx'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext.tsx'
 
 const DashboardContent: React.FC = () => {
     const { employeeData } = useDashboardContext()

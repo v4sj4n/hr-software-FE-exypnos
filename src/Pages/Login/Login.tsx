@@ -1,6 +1,5 @@
 import { useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '@/Context/AuthProvider'
 import { LoginContext, LoginProvider } from './LoginContext'
 import { useFormLogin } from './Hook'
 import { LoginSchema } from '@/Schemas/Login/Login.schema'
@@ -14,6 +13,7 @@ import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import style from './styles/Login.module.css'
 import Toast from '@/Components/Toast/Toast'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 const LoginComponent = () => {
     const { isAuthenticated } = useAuth()

@@ -55,7 +55,6 @@ function ChangePassContent() {
                     value={newPassword}
                     width="350px"
                 />
-
                 <Input
                     label="Confirm Password"
                     name="confirmPassword"

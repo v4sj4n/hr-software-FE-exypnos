@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { useGetAllNotifications } from './Hook/index';
 import AxiosInstance from '@/Helpers/Axios';
 import { useTheme } from '@mui/material/styles';
-import { useAuth } from '@/Context/AuthProvider';
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
 
 interface Notification {
     _id: number;
