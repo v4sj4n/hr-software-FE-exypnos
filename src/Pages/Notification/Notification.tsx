@@ -46,7 +46,7 @@ const NotificationDropdown: React.FC = () => {
 
     const removeNotification = async (notification: Notification) => {
         try {
-            await AxiosInstance.patch(`notification/${notification._id}`)
+            await AxiosInstance.patch(`notification/${notification._id}/user/${currentUser?._id}`)
             const updatedNotifications = notifications.map((n) =>
                 n._id === notification._id ? { ...n, isRead: true } : n,
             )
@@ -77,6 +77,8 @@ const NotificationDropdown: React.FC = () => {
             navigate(`/vacation?vacationType=requests&page=0&limit=5`)
         } else if (notification.type === 'allCandidates') {
             navigate(`/candidates`)
+        }else if (notification.type === 'promotion') {
+            navigate(`/promotion/${currentUser?._id}`)
         }
     }
 
@@ -95,6 +97,8 @@ const NotificationDropdown: React.FC = () => {
                 return 'green'
             case 'allCandidates':
                 return 'purple'
+            case 'promotion':
+                return 'orange'
             default:
                 return '#6C757D'
         }
@@ -109,7 +113,7 @@ const NotificationDropdown: React.FC = () => {
             for (const notification of updatedNotifications) {
                 if (!notification.isRead) {
                     await AxiosInstance.patch(
-                        `notification/${notification._id}`,
+                        `notification/${notification._id}/user/${currentUser?._id}`,
                     )
                 }
             }
