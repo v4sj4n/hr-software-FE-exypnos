@@ -1,22 +1,23 @@
 import { useState } from 'react'
 import style from './Style/Career.module.css'
 import Button from '@/Components/Button/Button'
-
+import { EventsData } from './Interfaces/interface'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import {
     useGetAllEvents,
     useCreateEvent,
     useUpdateEvent,
     useDeleteEvent,
-    EventsData,
 } from './Hook'
 import { ModalComponent } from '@/Components/Modal/Modal'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import { useAuth } from '@/Context/AuthProvider'
+
 import Workers from '/public/Images/happy workers.webp'
 import worker3 from '/public/Images/happyWork3.jpeg'
 import worker2 from '/public/Images/happyWorkers2.jpg'
 import { Link } from 'react-router-dom'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+
 
 export const Careers = () => {
     const { events, setEvents, isLoading } = useGetAllEvents()
@@ -66,7 +67,7 @@ export const Careers = () => {
         setEditingEvent(event)
         setShowForm(true)
     }
-    const isAdmin = currentUser?.role === 'admin'
+    const isAdmin = currentUser?.role === 'hr'
 
     return (
         <div className={style.body}>
@@ -88,20 +89,6 @@ export const Careers = () => {
                         className={style.filterInput}
                     />
                 </div>
-
-                {/* {isAdmin ? (
-                    <div className={style.createButton}>
-                        <Button
-                            btnText="New Job"
-                            color="#007bff"
-                            backgroundColor="white"
-                            type={ButtonTypes.PRIMARY}
-                            onClick={toggleForm}
-                        />
-                    </div>
-                ) : (
-                    ''
-                )} */}
 
                 <div className={style.jobList}>
                     {isLoading ? (

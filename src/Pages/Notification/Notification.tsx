@@ -6,13 +6,13 @@ import {
     Badge,
     Box,
     ClickAwayListener,
-} from '@mui/material'
-import NotificationsIcon from '@mui/icons-material/Notifications'
-import { useNavigate } from 'react-router-dom'
-import { useGetAllNotifications } from './Hook/index'
-import AxiosInstance from '@/Helpers/Axios'
-import { useTheme } from '@mui/material/styles'
-import { useAuth } from '@/Context/AuthProvider'
+} from '@mui/material';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import { useNavigate } from 'react-router-dom';
+import { useGetAllNotifications } from './Hook/index';
+import AxiosInstance from '@/Helpers/Axios';
+import { useTheme } from '@mui/material/styles';
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
 
 interface Notification {
     _id: number
@@ -138,9 +138,9 @@ const NotificationDropdown: React.FC = () => {
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
             <Box sx={{ position: 'relative', display: 'inline-block' }}>
-                <IconButton color="inherit" onClick={handleToggleDropdown}>
-                    <Badge badgeContent={length} color="error">
-                        <NotificationsIcon />
+                <IconButton color="inherit" onClick={handleToggleDropdown} >
+                    <Badge badgeContent={length} color="error" >
+                        <NotificationsNoneIcon sx={{ fontSize: 35 ,color: theme.palette.text.primary,}} /> 
                     </Badge>
                 </IconButton>
                 {isOpen && (

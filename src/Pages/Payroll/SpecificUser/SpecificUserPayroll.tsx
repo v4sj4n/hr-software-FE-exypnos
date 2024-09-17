@@ -3,7 +3,6 @@ import { PayrollProviderSpecific } from './Context/SpecificUserPayrollProvider'
 import style from '../styles/Payroll.module.css'
 import { usePayrollContextSpecific } from './Context/SpecificUserPayrollContext'
 import Input from '@/Components/Input/Index'
-import { EventsProvider } from '@/Pages/Events/Context/EventsContext'
 import { RingLoader } from 'react-spinners'
 
 function SpecificUserPayrollContent() {
@@ -53,11 +52,9 @@ function SpecificUserPayrollContent() {
 
 const SpecificUserPayroll: React.FC = () => {
     return (
-        <EventsProvider>
             <PayrollProviderSpecific>
                 <SpecificUserPayrollContent />
             </PayrollProviderSpecific>
-        </EventsProvider>
     )
 }
 

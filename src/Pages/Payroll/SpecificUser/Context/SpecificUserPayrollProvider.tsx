@@ -6,9 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { getMonthName } from '../../utils/Utils'
 
-export const PayrollProviderSpecific: React.FC<{
-    children: React.ReactNode
-}> = ({ children }) => {
+export const PayrollProviderSpecific: React.FC<{children: React.ReactNode}> = ({ children }) => {
     const { id } = useParams()
     const [month, setMonth] = useState<number | undefined>(undefined)
     const [year, setYear] = useState<number | undefined>(undefined)
@@ -20,16 +18,10 @@ export const PayrollProviderSpecific: React.FC<{
         setPageSize(model.pageSize)
     }
 
-    const fetchPayroll = async (): Promise<{
-        data: PayrollRowSpecifc[]
-        totalPages: number
-    }> => {
-        const response = await AxiosInstance.get<{
+    const fetchPayroll = async () => {const response = await AxiosInstance.get<{
             data: PayrollRowSpecifc[]
-            totalPages: number
-        }>(
-            `/salary/user/${id}?month=${month}&year=${year}&limit=${pageSize}&page=${page}`,
-        )
+            totalPages: number}>
+            (`/salary/user/${id}?month=${month}&year=${year}&limit=${pageSize}&page=${page}`)
         return response.data
     }
 
@@ -72,8 +64,6 @@ export const PayrollProviderSpecific: React.FC<{
         { field: 'bonusDescription', headerName: 'bonusDescription', flex: 2 },
     ]
 
-    const headerTextColors = { firstName: '#0000FF' }
-
     const getRowId = (row: PayrollRowSpecifc) => row.id
 
     const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,7 +77,6 @@ export const PayrollProviderSpecific: React.FC<{
         handleDateChange,
         rows,
         columns,
-        headerTextColors,
         getRowId,
         isPending,
         page,

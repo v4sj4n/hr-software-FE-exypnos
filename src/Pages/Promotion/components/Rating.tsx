@@ -9,8 +9,8 @@ import EditIcon from '@mui/icons-material/Edit'
 import { useTheme } from '@mui/material/styles'
 import { ModalComponent } from '@/Components/Modal/Modal'
 import CloseIcon from '@mui/icons-material/Close'
-import { useAuth } from '@/Context/AuthProvider'
 import Toast from '@/Components/Toast/Toast'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 export type Rating = {
     _id: string

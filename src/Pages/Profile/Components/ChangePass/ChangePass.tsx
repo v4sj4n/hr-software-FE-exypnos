@@ -1,8 +1,10 @@
 import Input from '../../../../Components/Input/Index'
 import Button from '../../../../Components/Button/Button'
 import { ButtonTypes } from '../../../../Components/Button/ButtonTypes'
-import { usePassword } from './Context/Hook'
+import { usePassword } from './Context/PasswordContext'
 import { PasswordProvider } from './Context/PasswordProvider'
+import Toast from '@/Components/Toast/Toast'
+import style from "./style/ChangePass.module.css"
 
 function ChangePassContent() {
     const {
@@ -10,21 +12,25 @@ function ChangePassContent() {
         newPassword,
         confirmPassword,
         error,
-        success,
         handleChange,
         handleUpdatePassword,
+        toastMessage,
+        toastOpen,
+        toastSeverity,
+        handleToastClose,
+        handleShowEye,
+        showPassword
     } = usePassword()
 
     return (
         <>
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '15px',
-                }}
-            >
-                {success && <div style={{ color: 'green' }}>{success}</div>}
+            <div className={style.container}>
+                <Toast
+                    severity={toastSeverity}
+                    open={toastOpen}
+                    message={toastMessage}
+                    onClose={handleToastClose}
+                />
                 <div>
                     To change your password add your current password then your
                     new password.
@@ -33,7 +39,8 @@ function ChangePassContent() {
                     label="Current Password"
                     name="currentPassword"
                     isPassword
-                    type="password"
+                    type={showPassword}
+                    onClick={handleShowEye}
                     onChange={handleChange}
                     value={currentPassword}
                     width="350px"
@@ -42,17 +49,18 @@ function ChangePassContent() {
                     label="New Password"
                     name="newPassword"
                     isPassword
-                    type="password"
+                    type={showPassword}
+                    onClick={handleShowEye}
                     onChange={handleChange}
                     value={newPassword}
                     width="350px"
                 />
-
                 <Input
                     label="Confirm Password"
                     name="confirmPassword"
                     isPassword
-                    type="password"
+                    type={showPassword}
+                    onClick={handleShowEye}
                     onChange={handleChange}
                     value={confirmPassword}
                     width="350px"
@@ -66,12 +74,6 @@ function ChangePassContent() {
                     marginTop="9px"
                 />
             </div>
-            <Button
-                type={ButtonTypes.SECONDARY}
-                btnText="Forget Password"
-                width="350px"
-                marginTop="9px"
-            />
         </>
     )
 }
