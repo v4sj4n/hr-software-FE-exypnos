@@ -43,19 +43,33 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [currentUser]);
 
   useEffect(() => {
-    if (socket) {
+    if (socket && recipientId) {
+      console.log('Listening for messages with recipientId:', recipientId);
+  
       socket.on('privateMessage', (message: Message) => {
-        setMessages((prevMessages) => [...prevMessages, message]);
+        console.log('Received message:', message); // Log received message
+  
+        setMessages((prevMessages) => {
+          // Ensure only messages for the current conversation are added
+          if (message.senderId === recipientId || message.recipientId === recipientId) {
+            console.log('Message is for the current recipient, updating message list');
+            return [...prevMessages, message];
+          } else {
+            console.log('Message is for a different conversation');
+            return prevMessages;  // Ignore messages for different conversations
+          }
+        });
       });
+  
+      return () => {
+        if (socket) {
+          console.log('Cleaning up socket listener for recipientId:', recipientId);
+          socket.off('privateMessage');
+        }
+      };
     }
+  }, [socket, recipientId]);  // Ensure recipientId is included as a dependency
 
-    // Cleanup on unmount
-    return () => {
-      if (socket) {
-        socket.off('privateMessage');
-      }
-    };
-  }, [socket]);
 
   return (
     <ChatContext.Provider

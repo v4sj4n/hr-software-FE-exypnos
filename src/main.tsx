@@ -19,9 +19,7 @@ createRoot(document.getElementById('root')!).render(
         <QueryClientProvider client={queryClient}>
             <AuthProvider>
                 <ThemeProvider>
-                  
                             <Router />
-
                 </ThemeProvider>
             </AuthProvider>
         </QueryClientProvider>

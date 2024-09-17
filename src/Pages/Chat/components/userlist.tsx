@@ -1,24 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useChat } from '../context/ChatContext';
-import { User } from '@/Pages/Chat/Interfaces/types';
+import { Message, User } from '@/Pages/Chat/Interfaces/types';
 import { List, ListItem, ListItemButton, ListItemText, CircularProgress, Typography } from '@mui/material';
 import AxiosInstance from '@/Helpers/Axios';
 import { Box  } from '@mui/material'; // Add Box to the imports
-
-
 
 interface UserListProps {
   users: User[];
 }
 
 const UserList: React.FC<UserListProps> = ({ users }) => {
-  const { setRecipientId, setMessages, senderId } = useChat();
+  const { setRecipientId, setMessages, senderId, socket } = useChat();  // Get the socket once from context
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (socket) {
+      socket.on('privateMessage', (message: Message) => {
+        setMessages((prevMessages) => {
+          // Append new messages only for the current conversation
+          if (message.senderId === senderId || message.recipientId === senderId) {
+            return [...prevMessages, message];
+          }
+          return prevMessages;  // Ignore messages for other conversations
+        });
+      });
+
+      // Clean up the listener when component unmounts or socket changes
+      return () => {
+        socket.off('privateMessage');
+      };
+    }
+  }, [socket, senderId, setMessages]);
+
   const handleSelectUser = async (userId: string) => {
-    console.log('Selected Recipient ID:', userId);  // Log recipientId
-    console.log('Current Sender ID:', senderId);    // Log senderId
+    console.log('Selected Recipient ID:', userId);
+    console.log('Current Sender ID:', senderId);
 
     setRecipientId(userId);  // Set the selected recipient
     setLoading(true);        // Set loading to true when fetching starts

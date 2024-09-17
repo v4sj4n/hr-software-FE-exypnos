@@ -1,6 +1,7 @@
 import { useAuth } from "@/ProtectedRoute/Context/AuthContext";
 import { createContext, useEffect, useState, useContext } from "react";
 import { io, Socket } from "socket.io-client";
+
 const API_URL = import.meta.env.VITE_API_URL
 
 export const SocketContext = createContext<Socket | null>(null);
@@ -15,47 +16,49 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   useEffect(() => {
     const token = getAuthToken();
+
+    // Only establish socket connection if there is a valid user and token
     if (currentUser && token) {
       const socketConnection: Socket = io(API_URL, {
         auth: {
-            token,
+          token,
         },
-      });
-
-      socketConnection.on('connect_error', (error) => {
-        console.log('Socket error', error.message);
-        setSocket(socketConnection);
       });
 
       socketConnection.on('connect', () => {
         console.log('Socket connected');
-        setSocket(socketConnection);
+        setSocket(socketConnection); // Only set socket when connected
+      });
+
+      socketConnection.on('connect_error', (error) => {
+        console.error('Socket connection error:', error.message);
+        // Optional: Add logic to handle reconnect attempts, delays, etc.
       });
 
       socketConnection.on('disconnect', () => {
         console.log('Socket disconnected');
       });
 
+      // Clean up the connection on unmount or when user changes
       return () => {
         socketConnection.disconnect();
+        setSocket(null); // Ensure to clean up the socket
       };
+    } else {
+      setSocket(null); // Handle case where user logs out or token is missing
     }
   }, [currentUser]);
 
-  console.log('Socket:', socket); // Log the socket
-
-  // Check if socket is available before rendering
-  if (!socket) {
-    return null; // Or a loading state if you need one
-  }
+  console.log('Socket:', socket); // Log the socket for debugging
 
   return (
-    <SocketContext.Provider value={socket}>
+    <ChatContext.Provider value={{ /* context values */ }}>
       {children}
-    </SocketContext.Provider>
+    </ChatContext.Provider>
   );
 };
 
+// Hook to use the SocketContext
 export const useSocket = () => {
   const context = useContext(SocketContext);
   if (!context) {
