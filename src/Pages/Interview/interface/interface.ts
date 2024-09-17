@@ -1,6 +1,5 @@
 import { Dispatch } from 'react'
 import { DropResult } from 'react-beautiful-dnd'
-// import { applicantsData }  from '@/Pages/Candidates/Interfaces/Candidate'
 
 
 export interface Interview {
