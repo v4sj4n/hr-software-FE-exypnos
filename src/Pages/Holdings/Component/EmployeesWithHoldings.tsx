@@ -51,7 +51,6 @@ export const EmployeesWithHoldings = () => {
     const { currentUser } = useAuth()
 
     const hr = currentUser?.role === 'hr'
-    const currentUserID = currentUser?._id
 
     if (isError) return <div>Error: {error.message}</div>
     if (isLoading)

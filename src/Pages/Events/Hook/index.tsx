@@ -11,9 +11,7 @@ import { fetchEvents } from '../utils/utils'
 
 export const useGetAllEvents = () => {
     const [searchParams, setSearchParams] = useSearchParams()
-    const [searchEvent, setSearchEvent] = useState(
-        searchParams.get('search') || '',
-    )
+    const [searchEvent, setSearchEvent] = useState(searchParams.get('search') || '')
 
     const query = useInfiniteQuery({
         queryKey: ['events', searchEvent],
