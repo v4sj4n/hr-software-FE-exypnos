@@ -46,18 +46,22 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Handle socket connection and receiving messages
   useEffect(() => {
     if (socket) {
-      // Listening for new messages
       socket.on('receiveMessage', (data) => {
         console.log('Message received');
-        setMessages((prevMessages) => [...prevMessages, data]);
+        setMessages((prevMessages) => {
+          if (!prevMessages.some((msg) => msg.timestamp === data.timestamp)) {
+            return [...prevMessages, data];
+          }
+          return prevMessages;
+        });
       });
-
-      // Clean up socket event listener on component unmount
+  
       return () => {
         socket.off('receiveMessage');
       };
     }
   }, [socket, setMessages]);
+  
 
   return (
     <ChatContext.Provider

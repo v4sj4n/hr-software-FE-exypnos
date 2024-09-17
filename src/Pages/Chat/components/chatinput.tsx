@@ -55,20 +55,10 @@ const SendMessage: React.FC = () => {
       senderId,
       recipientId,
       message,
-      timestamp: new Date().toISOString(),  // Add timestamp locally
+      timestamp: new Date().toISOString(),  
     };
 
-    // Emit the message via WebSocket for real-time update
     socket.emit('sendMessage', messageData);
-
-    // Immediately add the message to the local state for instant feedback
-    setMessages((prevMessages) => [...prevMessages, messageData]);
-
-    // Save the message to the database via REST API
-    await sendMessageToAPI(message, senderId, recipientId);
-    console.log('Message sent:', message);  // Log the sent message
-
-    // Clear input after sending
     setMessage('');
   };
 
