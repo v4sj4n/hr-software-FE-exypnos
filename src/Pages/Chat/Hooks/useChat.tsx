@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useChat } from '../context/ChatContext';
 import { Message } from '../Interfaces/types';
+const API_URL = import.meta.env.VITE_API_URL
 
 export const useChatLogic = () => {
   const { loggedInUser, recipientId, newMessage, setNewMessage, setMessages } = useChat();
@@ -9,7 +10,7 @@ export const useChatLogic = () => {
 
   useEffect(() => {
     if (loggedInUser) {
-      const newSocket = io('http://localhost:3000', { query: { userId: loggedInUser._id } });
+      const newSocket = io(API_URL, { query: { userId: loggedInUser._id } });
       setSocket(newSocket);
 
       console.log('Socket connected:', newSocket);  // Log when socket is connected

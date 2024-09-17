@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useChat } from '../context/ChatContext';
 import { Box, TextField, Button } from '@mui/material';
+const API_URL = import.meta.env.VITE_API_URL
 
 const SendMessage: React.FC = () => {
   const [message, setMessage] = useState('');
@@ -16,7 +17,7 @@ const SendMessage: React.FC = () => {
   const sendMessage = async (message: string, senderId: string, recipientId: string) => {
     try {
       const token = getAuthToken();
-      const response = await fetch('http://localhost:3000/messages', {
+      const response = await fetch(`${API_URL}/messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

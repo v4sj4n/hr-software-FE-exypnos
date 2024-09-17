@@ -24,6 +24,8 @@ import UserPromotion from './Pages/Promotion/UserPromotion.tsx'
 import Promotion from './Pages/Promotion/Promotion.tsx'
 import ResetPassword from './Pages/ResetPassword/ResetPassword.tsx'
 import Chat from './Pages/Chat/Chat.tsx'
+import { SocketProvider } from './Pages/Chat/context/SocketContext.tsx'
+import { ChatProvider } from './Pages/Chat/context/ChatContext.tsx'
 
 
 export default function Router() {
@@ -53,7 +55,11 @@ export default function Router() {
             path: '/',
             element: (
                 <>
+                  <SocketProvider>
+                  <ChatProvider>
                     <PrivateRoute />
+                  </ChatProvider>
+                    </SocketProvider> 
                 </>
             ),
             children: [

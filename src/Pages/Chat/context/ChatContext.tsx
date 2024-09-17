@@ -2,7 +2,7 @@ import { createContext, useState, useContext, useEffect } from 'react';
 import { User, Message } from '@/Pages/Chat/Interfaces/types';  // Adjust the path as needed
 import { useSocket } from './SocketContext';  // Correct import
 import { Socket } from 'socket.io-client';  // Ensure this is imported
-import { useAuth } from '@/Context/AuthProvider';
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
 
 interface ChatContextType {
   users: User[];
