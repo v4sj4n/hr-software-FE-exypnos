@@ -2,18 +2,17 @@ import { useEmployeesWithHoldings } from '../Hook/index.ts'
 import { CircularProgress } from '@mui/material'
 import { UserWithHoldings } from '../TAsset'
 import { useInView } from 'react-intersection-observer'
-
 import style from '../style/employeesWithHoldings.module.scss'
 import { useContext, useEffect } from 'react'
 import SimpleCollapsableCard from '@/Components/Vacation_Asset/SimpleCollapsableCard.tsx'
 import { HoldingsContext } from '../HoldingsContext.tsx'
-
 import Button from '@/Components/Button/Button.tsx'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes.tsx'
 import { AssignAssetModal } from './Modals/AssignAssetModal.tsx'
 import { ReturnAssetModal } from './Modals/ReturnAssetModal.tsx'
 import Toast from '@/Components/Toast/Toast.tsx'
-import { useAuth } from '@/Context/AuthProvider.tsx'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext.tsx'
+
 
 export const EmployeesWithHoldings = () => {
     const {

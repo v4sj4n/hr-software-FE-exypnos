@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { EventsData, EventsContextProps } from '../Interface/Events'
 import { useCreateEvent, useUpdateEvent, useDeleteEvent } from '../Hook/index'
-import { useAuth } from '@/Context/AuthProvider'
 import { useGetAllUsers } from '@/Pages/Employees/Hook'
 import { useSearchParams } from 'react-router-dom'
 import AxiosInstance from '@/Helpers/Axios'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 const EventsContext = createContext<EventsContextProps | undefined>(undefined)
 

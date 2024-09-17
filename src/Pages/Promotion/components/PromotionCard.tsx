@@ -8,10 +8,10 @@ import Card from '@/Components/Card/Card'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { ModalComponent } from '@/Components/Modal/Modal'
-import { useAuth } from '@/Context/AuthProvider'
 import Input from '@/Components/Input/Index'
 import Selecter from '@/Components/Input/components/Select/Selecter'
 import Toast from '@/Components/Toast/Toast'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 export type Promotion = {
     _id: string
