@@ -14,6 +14,7 @@ export interface CardProps {
     width?: string
     border?: string
     backgroundColor?: string
+    overflow?: CSSProperties['overflow'] | undefined
     position?: CSSProperties['position'] | undefined
     alignSelf?: string
     onClick?: (event: React.MouseEvent<HTMLDivElement>) => void

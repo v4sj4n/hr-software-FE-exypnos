@@ -5,7 +5,7 @@ import { inputStyles } from '../../Styles'
 interface SelecterProps {
     value: string | string[]
     onChange: (value: string | string[]) => void
-    options: string[]
+    options: string[] | number[]
     multiple: boolean
     label: string
     name: string
@@ -42,7 +42,7 @@ const Selecter = ({
             multiple={multiple}
             onOpen={() => setIsOpen(true)}
             onClose={() => setIsOpen(false)}
-            options={options}
+            options={options.map(String)}
             value={multiple ? (value as string[]) : (value as string)}
             onChange={handleChange}
             renderInput={(params) => (

@@ -19,6 +19,11 @@ interface VacationContextType {
             updateError: string | null
         }>
     >
+    pageToggleChoices: {
+        value: string
+        label: string
+    }[]
+
     searchParams: URLSearchParams
     setSearchParams: Dispatch<SetStateAction<URLSearchParams>>
     handleOpenViewVacationModalOpen: (id: string) => void
@@ -44,6 +49,16 @@ const defaultContextValue: VacationContextType = {
         createError: null,
         updateError: null,
     },
+    pageToggleChoices: [
+        {
+            value: 'requests',
+            label: 'Requests',
+        },
+        {
+            value: 'userLeaves',
+            label: 'User Leaves',
+        },
+    ],
     setErrors: () => {},
     searchParams: new URLSearchParams(),
     setSearchParams: () => {},
@@ -70,6 +85,16 @@ export const VacationProvider: FC<{ children: ReactNode }> = ({ children }) => {
         createError: null,
         updateError: null,
     })
+    const pageToggleChoices = [
+        {
+            value: 'requests',
+            label: 'Requests',
+        },
+        {
+            value: 'userLeaves',
+            label: 'User Leaves',
+        },
+    ]
     const [searchParams, setSearchParams] = useSearchParams()
     const createVacationToggler = () => {
         if (searchParams.get('createVacation') === null) {
@@ -124,6 +149,7 @@ export const VacationProvider: FC<{ children: ReactNode }> = ({ children }) => {
             value={{
                 errors,
                 setErrors,
+                pageToggleChoices,
                 searchParams,
                 setSearchParams,
                 handleOpenViewVacationModalOpen,

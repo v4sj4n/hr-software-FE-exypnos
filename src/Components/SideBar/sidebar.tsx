@@ -141,10 +141,28 @@ export const SideBar = () => {
                                     dropdownOpen.recruiting ? style.open : style.close
                                 }`}
                             >
-                                <Link to="/candidates" className={style.dropdownItem}>
+                                <Link to="/candidates" className={style.dropdownItem} onMouseEnter={(e) =>
+                                (e.currentTarget.style.backgroundColor = alpha(
+                                    theme.palette.background.default,
+                                    0.5,
+                                ))
+                            }
+                            onMouseLeave={(e) =>
+                                (e.currentTarget.style.backgroundColor =
+                                    'transparent')
+                            }>
                                     Candidates
                                 </Link>
-                                <Link to="/interview" className={style.dropdownItem}>
+                                <Link to="/interview" className={style.dropdownItem} onMouseEnter={(e) =>
+                                (e.currentTarget.style.backgroundColor = alpha(
+                                    theme.palette.background.default,
+                                    0.5,
+                                ))
+                            }
+                            onMouseLeave={(e) =>
+                                (e.currentTarget.style.backgroundColor =
+                                    'transparent')
+                            }>
                                     Interviews
                                 </Link>
                             </div>
@@ -245,8 +263,11 @@ export const SideBar = () => {
                         >
                             Vacation{' '}
                         </Link>
-                        <div
-                            onClick={() => {
+                        <div 
+                            onClick={(e) => {(e.currentTarget.style.backgroundColor = alpha(
+                                theme.palette.background.default,
+                                0.5,
+                            ))
                                 hr
                                     ? navigate('promotion')
                                     : navigate(`/promotion/${currentUserID}`)

@@ -1,0 +1,25 @@
+.vacationsContainer {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.vacationContainer {
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    box-shadow: 0px 0px 17.5px -7.5px rgba(0, 0, 0, 0.5);
+
+
+    >div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+.datesContainer{
+    > p{
+        display: flex;
+        gap: .5rem;
+    }
+}

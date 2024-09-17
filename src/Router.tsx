@@ -106,7 +106,7 @@ export default function Router() {
                 },
                 {
                     path: '/structure',
-                    element: <Structure />,
+                    element: <Structure/>,
                 },
                 {
                     path: '/candidates',

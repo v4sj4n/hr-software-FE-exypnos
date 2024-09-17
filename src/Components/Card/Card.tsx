@@ -6,6 +6,7 @@ const Card: React.FC<CardProps> = ({
     padding,
     borderRadius,
     height,
+    overflow,
     gap,
     flex,
     className,
@@ -34,6 +35,7 @@ const Card: React.FC<CardProps> = ({
                 position: position || 'static',
                 alignContent: alignSelf || 'flex-start',
                 marginTop: marginTop || '0',
+                overflow: overflow || 'visible',
             }}
             onClick={onClick}
         >

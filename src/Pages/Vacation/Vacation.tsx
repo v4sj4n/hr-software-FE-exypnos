@@ -7,10 +7,16 @@ import { EmployeesWithVacations } from './components/EmployeesWithVacations'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { CreateVacationForm } from './components/form/CreateVacationForm'
+import SimpleEmployeeUI from './components/SimpleEmployee/SimpleEmployeeUI'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 function VacationComponent() {
-    const { searchParams, setSearchParams, createVacationToggler } =
-        useContext(VacationContext)
+    const {
+        searchParams,
+        setSearchParams,
+        pageToggleChoices,
+        createVacationToggler,
+    } = useContext(VacationContext)
     const handleChange = (
         event: MouseEvent<HTMLElement>,
         newAlignment: string,
@@ -19,21 +25,19 @@ function VacationComponent() {
         setSearchParams(new URLSearchParams({ vacationType: newAlignment }))
     }
 
+    const { userRole } = useAuth()
+
     useEffect(() => {
-        if (!searchParams.get('vacationType')) {
-            setSearchParams(new URLSearchParams({ vacationType: 'requests' }))
+        if (userRole === 'hr') {
+            if (!searchParams.get('vacationType')) {
+                setSearchParams(
+                    new URLSearchParams({ vacationType: 'requests' }),
+                )
+            }
         }
-    }, [searchParams, setSearchParams])
-    const pageToggleChoices = [
-        {
-            value: 'requests',
-            label: 'Requests',
-        },
-        {
-            value: 'userLeaves',
-            label: 'User Leaves',
-        },
-    ]
+    }, [searchParams, setSearchParams, userRole])
+
+    // Do hiqet dhe devit do i lihet vetem nje faqe qe te shikoj asetet qe ka marr dhe vacations
 
     return (
         <main className={style.main}>
@@ -46,41 +50,47 @@ function VacationComponent() {
                     gap: '1rem',
                 }}
             >
-                <ToggleButtonGroup
-                    color="primary"
-                    value={searchParams.get('vacationType')}
-                    exclusive
-                    onChange={handleChange}
-                    aria-label="Leave"
-                >
-                    {pageToggleChoices.map(({ value, label }) => (
-                        <ToggleButton
-                            sx={{
-                                padding: '0.5rem 1rem',
-                                fontSize: '0.8rem',
-                            }}
-                            key={value}
-                            value={value}
-                        >
-                            {label}
-                        </ToggleButton>
-                    ))}
-                </ToggleButtonGroup>
+                {userRole === 'hr' && (
+                    <ToggleButtonGroup
+                        color="primary"
+                        value={searchParams.get('vacationType')}
+                        exclusive
+                        onChange={handleChange}
+                        aria-label="Leave"
+                    >
+                        {pageToggleChoices.map(({ value, label }) => (
+                            <ToggleButton
+                                sx={{
+                                    padding: '0.5rem 1rem',
+                                    fontSize: '0.8rem',
+                                }}
+                                key={value}
+                                value={value}
+                            >
+                                {label}
+                            </ToggleButton>
+                        ))}
+                    </ToggleButtonGroup>
+                )}
                 <Button
                     type={ButtonTypes.PRIMARY}
                     btnText={'Add Vacation'}
                     onClick={createVacationToggler}
                 />
             </div>
+            {userRole === 'hr' ? (
+                <div>
+                    {searchParams.get('vacationType') === 'requests' && (
+                        <VacationTable />
+                    )}
+                    {searchParams.get('vacationType') === 'userLeaves' && (
+                        <EmployeesWithVacations />
+                    )}
+                </div>
+            ) : (
+                <SimpleEmployeeUI />
+            )}
             {searchParams.get('createVacation') && <CreateVacationForm />}
-            <div>
-                {searchParams.get('vacationType') === 'requests' && (
-                    <VacationTable />
-                )}
-                {searchParams.get('vacationType') === 'userLeaves' && (
-                    <EmployeesWithVacations />
-                )}
-            </div>
         </main>
     )
 }
