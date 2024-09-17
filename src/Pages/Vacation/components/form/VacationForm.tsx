@@ -1,7 +1,5 @@
 import { VacationSchema } from '@/Schemas/Vacations/Vacation.schema'
 import { UseQueryResult } from '@tanstack/react-query'
-// import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-// import { valibotResolver } from '@hookform/resolvers/valibot'
 import dayjs from 'dayjs'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import Button from '@/Components/Button/Button'
@@ -37,8 +35,6 @@ export const VacationForm: React.FC<MyComponentProps> = ({
         },
         validatorAdapter: valibotValidator(),
         onSubmit: async ({ value }) => {
-            console.log(value)
-
             value.endDate = dayjs(value.endDate).toISOString()
             value.startDate = dayjs(value.startDate).toISOString()
             updater.mutate({ vacation: value })
