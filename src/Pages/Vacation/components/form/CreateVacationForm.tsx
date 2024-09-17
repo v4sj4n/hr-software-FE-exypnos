@@ -25,7 +25,7 @@ export const CreateVacationForm = () => {
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
             open={true}
-            onClose={() => console.log('modal closed')}
+            onClose={createVacationToggler}
             closeAfterTransition
             slots={{ backdrop: Backdrop }}
             slotProps={{
