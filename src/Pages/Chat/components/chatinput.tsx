@@ -62,8 +62,11 @@ const SendMessage: React.FC = () => {
     await sendMessageToAPI(message, senderId, recipientId);
     console.log('Message sent:', message);  // Log the sent message
 
-    setMessage(''); // Clear input after sending
-  };
+       // Refetch the messages after sending the new message
+    // Clear input after sending without affecting chatbox visibility
+    setMessage(''); 
+};
+
 
   return (
     <Box sx={{ display: 'flex', gap: 2 }}>

@@ -34,41 +34,30 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   console.log('currentUser:', currentUser);
 
+  // Set senderId once the current user is available
   useEffect(() => {
     if (currentUser && currentUser._id) {
-      setSenderId(String(currentUser._id));  // Ensure _id is treated as a string
+      setSenderId(String(currentUser._id)); 
     } else {
       console.error('Current user or user ID is missing');
     }
   }, [currentUser]);
 
+  // Handle socket connection and receiving messages
   useEffect(() => {
     if (socket) {
+      // Listening for new messages
       socket.on('receiveMessage', (data) => {
         console.log('Message received');
-        setMessages((prevMessages) => {
-          const updatedMessages = [...prevMessages, data];
-          console.log('Updated messages:', updatedMessages); // Log the updated messages
-          return updatedMessages;
-        });
+        setMessages((prevMessages) => [...prevMessages, data]);
       });
 
+      // Clean up socket event listener on component unmount
       return () => {
-        socket.off('privateMessage');
+        socket.off('receiveMessage');
       };
     }
-  }, [socket]);
-
-  useEffect(() => {
-    if (socket) {
-      socket.emit('sendMessage', {
-        sender: senderId,
-        recipient: recipientId,
-        message: 'Test message',
-      });
-    }
-  }, [socket]);  
-  
+  }, [socket, setMessages]);
 
   return (
     <ChatContext.Provider
@@ -77,8 +66,8 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUsers,
         messages,
         setMessages,
-        senderId,  // Directly provide senderId
-        setSenderId,  // Provide setSenderId function
+        senderId,  
+        setSenderId,  
         recipientId,
         setRecipientId,
         newMessage,
