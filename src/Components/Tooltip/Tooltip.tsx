@@ -2,7 +2,6 @@ import React, { isValidElement, ReactElement } from 'react'
 import { Tooltip as MaterialTooltip, Zoom } from '@mui/material'
 import { Tooltip as JoyTooltip } from '@mui/joy'
 
-// Define a union type for placement
 type TooltipPlacement =
     | 'top'
     | 'bottom'
