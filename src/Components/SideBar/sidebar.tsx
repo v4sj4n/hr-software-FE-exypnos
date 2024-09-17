@@ -246,11 +246,7 @@ export const SideBar = () => {
                             Vacation{' '}
                         </Link>
                         <div
-                            onClick={() => {
-                                hr
-                                    ? navigate('promotion')
-                                    : navigate(`/promotion/${currentUserID}`)
-                            }}
+                            onClick={() => navigate('promotion')}
                             className={style.dropdownItem}
                         >
                             Promotion
