@@ -14,7 +14,6 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     const [selectedInterview, setSelectedInterview] = useState<Interview | null>(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isReschedule, setIsReschedule] = useState(false)
-    const navigate = useNavigate()
     const [currentPhase, setCurrentPhase] = useState<string>('first_interview')
     const [startDate, setStartDate] = useState<string>('')
     const [endDate, setEndDate] = useState<string>('')
@@ -25,6 +24,7 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     const [toastMessage, setToastMessage] = useState('')
     const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>('success')
     const phases = ['first_interview', 'second_interview', 'rejected', 'employed']
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (interviewsData && Array.isArray(interviewsData)) {

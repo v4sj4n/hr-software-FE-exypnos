@@ -1,17 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react'
-import { AuthContextType, User } from './Interface'
-
-export const AuthContext = React.createContext<AuthContextType | undefined>(
-    undefined,
-)
-
-export const useAuth = () => {
-    const context = useContext(AuthContext)
-    if (context === undefined) {
-        throw new Error('useAuth must be used within an AuthProvider')
-    }
-    return context
-}
+import React, {  useState, useEffect } from 'react'
+import {  AuthContext, User } from '../Interface/Interface'
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     children,

@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Button from '@/Components/Button/Button'
 import { Close, FilterList } from '@mui/icons-material'
+
 function PayrollContent() {
     const {
         rows,
@@ -29,7 +30,7 @@ function PayrollContent() {
     } = usePayrollContext()
 
     const [showFilters, setShowFilters] = useState(false)
-
+    
     return (
         <div className={style.payroll}>
             <div className={style.search}

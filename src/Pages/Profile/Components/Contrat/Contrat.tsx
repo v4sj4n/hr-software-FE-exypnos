@@ -1,9 +1,9 @@
 import Input from '../../../../Components/Input/Index'
 import { ButtonTypes } from '../../../../Components/Button/ButtonTypes'
 import Button from '../../../../Components/Button/Button'
-import style from '../ProfileForm/ProfileForm.module.css'
+import style from '../ProfileForm/style/ProfileForm.module.css'
 import { ProfileProvider } from '../ProfileForm/Context/ProfileProvider'
-import { useCreatePayroll, useUpdatePayroll } from '../ProfileForm/Context/Hook'
+import { useCreatePayroll, useUpdatePayroll } from '../ProfileForm/Hook/Index'
 import Toast from '@/Components/Toast/Toast'
 
 const ContratContent = () => {
@@ -45,7 +45,7 @@ const ContratContent = () => {
                     label="WorkingDays"
                     name="workingDays"
                     shrink={true}
-                    width={350}
+                    width={300}
                     value={
                         EditingPayroll
                             ? EditingPayroll?.workingDays
@@ -62,11 +62,28 @@ const ContratContent = () => {
                     shrink={true}
                     name="grossSalary"
                     label="Gross salary"
-                    width={350}
+                    width={300}
                     value={
                         EditingPayroll
                             ? EditingPayroll?.grossSalary
                             : payroll.grossSalary
+                    }
+                    onChange={
+                        EditingPayroll
+                            ? handleUpdateChangePayroll
+                            : handleChangePayroll
+                    }
+                />
+                <Input
+                    IsUsername
+                    shrink={true}
+                    width={300}
+                    name="extraHours"
+                    label="Extra Hours"
+                    value={
+                        EditingPayroll
+                            ? EditingPayroll?.extraHours
+                            : payroll.extraHours
                     }
                     onChange={
                         EditingPayroll
@@ -83,18 +100,37 @@ const ContratContent = () => {
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    width: '350px',
+                    width: '300px',
                     gap: '20px',
                 }}
             >
-                <Input IsUsername label="Bonus" name="bonus" />
+                <Input IsUsername label="Bonus" name="bonus" shrink={true} value={
+                    EditingPayroll
+                        ? EditingPayroll?.bonus
+                        : payroll.bonus
+                }
+                    onChange={
+                        EditingPayroll
+                            ? handleUpdateChangePayroll
+                            : handleChangePayroll
+                    } />
                 <Input
                     IsUsername
                     label="Bonus Description"
                     name="bonusDescription"
-                    type="textarea"
+                    type="text"
                     multiline={true}
                     rows={3}
+                    value={
+                        EditingPayroll
+                            ? EditingPayroll?.bonusDescription
+                            : payroll.bonusDescription
+                    }
+                    onChange={
+                        EditingPayroll
+                            ? handleUpdateChangePayroll
+                            : handleChangePayroll
+                    }
                 />
             </div>
 
@@ -109,7 +145,7 @@ const ContratContent = () => {
                             ? handleUpdatePayroll
                             : handleCreatePayroll
                     }
-                    width="350px"
+                    width="300px"
                 />
             </div>
         </div>

@@ -18,7 +18,6 @@ function CandidatesCoontext() {
 
     return (
         <>
-            {' '}
             {isPending ? (
                 <div
                     style={{
