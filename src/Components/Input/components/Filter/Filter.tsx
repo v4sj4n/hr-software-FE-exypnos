@@ -16,7 +16,7 @@ const Filter: React.FC<InputProps> = (props) => {
                 id="standard-basic"
                 label={label}
                 name={name}
-                type={type}
+                type={typeof type === 'string' ? type : undefined}  // Ensure only valid string or undefined is passed
                 variant="standard"
                 size="small"
                 sx={{
