@@ -28,11 +28,13 @@ export default function UserCard() {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                console.log('Fetching user data...')
                 const response = await AxiosInstance.get<UserPromotion[]>(
-                    `/rating/user?avarageRating=true`,
+                    `/project/pm/${currentUser?._id}`,
                 )
-                setValue(response.data)
-                console.log('Fetched user data:', response.data)
+                console.log('User data:', response.data)
+                response.data.length? setValue(response.data) : handleNavigate(currentUser!._id.toString())
+                
             } catch (error) {
                 console.error('Error fetching user data:', error)
             }

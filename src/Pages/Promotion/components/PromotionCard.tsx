@@ -276,31 +276,25 @@ export default function PromotionCard({ id }: { id: string }) {
                                     }}
                                 >
                                     <Selecter
-                                        name="position"
-                                        label="Position"
-                                        multiple={false}
-                                        value={formData.position}
-                                        options={PositionType}
-                                        onChange={(newValue) =>
-                                            setFormData({
+                                            name="position"
+                                            label="Position"
+                                            multiple={false}
+                                            value={formData.position}
+                                            options={PositionType}
+                                            onChange={(newValue) => setFormData({
                                                 ...formData,
                                                 position: newValue as string,
-                                            })
-                                        }
-                                    />
+                                            })} width={''}                                    />
                                     <Selecter
-                                        name="grade"
-                                        label="Grade"
-                                        multiple={false}
-                                        value={formData.grade}
-                                        options={GradeType}
-                                        onChange={(newValue) =>
-                                            setFormData({
+                                            name="grade"
+                                            label="Grade"
+                                            multiple={false}
+                                            value={formData.grade}
+                                            options={GradeType}
+                                            onChange={(newValue) => setFormData({
                                                 ...formData,
                                                 grade: newValue as string,
-                                            })
-                                        }
-                                    />
+                                            })} width={''}                                    />
                                     <Input
                                         IsUsername
                                         type="datetime-local"

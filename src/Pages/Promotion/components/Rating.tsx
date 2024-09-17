@@ -144,7 +144,7 @@ export default function Rating({ id }: { id: string }) {
                                         value={rating.clientFeedbackRating}
                                     />
                                 </div>
-                                {currentUser?.role === 'hr' && (
+                                {currentUser?.role === 'hr'  && (
                                     <div
                                         style={{
                                             display: 'flex',
