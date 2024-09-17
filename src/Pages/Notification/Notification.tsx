@@ -147,7 +147,6 @@ const NotificationDropdown: React.FC = () => {
                             flexDirection: 'column',
                         }}
                     >
-                        {/* Scrollable notification list */}
                         <Box
                             sx={{
                                 flex: 1,

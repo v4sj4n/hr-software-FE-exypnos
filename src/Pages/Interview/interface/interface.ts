@@ -86,3 +86,21 @@ export interface InterviewContextType {
     selectedInterview: Interview
     isReschedule: boolean
 }
+export interface applicantsData {
+    customMessage: string
+    customSubject: string
+    forEach(arg0: (applicant: applicantsData) => void): unknown
+    firstName: string
+    lastName: string
+    phoneNumber: string
+    email: string
+    positionApplied: string
+    status: string
+    _id: string
+    firstInterviewDate?: string
+    secondInterviewDate?: string
+    notes: string
+    message: string
+    currentPhase: string
+    isDeleted?: boolean
+}

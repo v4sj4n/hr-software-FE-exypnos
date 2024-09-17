@@ -52,16 +52,6 @@
 .icon:hover {
     color: #525252;
 }
-.badge {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background: rgb(247, 3, 3);
-    color: white;
-    border-radius: 50%;
-    padding: 1px 5px;
-    font-size: 10px;
-}
 .username {
     margin-left: 10px;
 }
@@ -78,16 +68,6 @@
     width: 150px;
 }
 
-.notification {
-    position: absolute;
-    top: 123%;
-    right: 0;
-    background-color: white;
-
-    border-radius: 6px;
-    z-index: 1000;
-    width: 420px;
-}
 .dropdownItem {
     padding: 8px 16px;
     cursor: pointer;
