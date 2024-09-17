@@ -17,7 +17,7 @@ import Workers from '/public/Images/happy workers.webp'
 import worker3 from '/public/Images/happyWork3.jpeg'
 import worker2 from '/public/Images/happyWorkers2.jpg'
 import { Link } from 'react-router-dom'
-import { useAuth } from '@/Context/AuthProvider'
+import  {useAuth}  from '@/ProtectedRoute/Context/AuthContext.tsx'
 
 export const Careers = () => {
     const { events, setEvents, isLoading } = useGetAllEvents()
