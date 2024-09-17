@@ -1,20 +1,64 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useChat } from '../context/ChatContext';
 import { User } from '@/Pages/Chat/Interfaces/types';
-import { List, ListItem, ListItemButton, ListItemText, CircularProgress, Typography } from '@mui/material';
+import { List, ListItem, ListItemButton, ListItemText, CircularProgress, Typography, Box, TextField } from '@mui/material';
 import AxiosInstance from '@/Helpers/Axios';
-import { Box  } from '@mui/material'; // Add Box to the imports
-
-
+import styles from '@/Pages/Chat/styles/chat.module.css';
 
 interface UserListProps {
   users: User[];
 }
 
 const UserList: React.FC<UserListProps> = ({ users }) => {
-  const { setRecipientId, setMessages, senderId } = useChat();
+  const { messages, setRecipientId, setMessages, senderId } = useChat();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>(''); // Search state
+
+  // Fetch initial messages to populate active chats
+  useEffect(() => {
+    const fetchInitialMessages = async () => {
+      try {
+        const response = await AxiosInstance.get(`/messages/${senderId}`);
+        setMessages(response.data);
+      } catch (error) {
+        console.error('Error fetching initial messages:', error);
+      }
+    };
+
+    if (senderId) {
+      fetchInitialMessages();
+    }
+  }, [senderId, setMessages]);
+
+  // Memoize to get unique userIds from messages (active chats)
+  const activeUserIds = useMemo(() => {
+    const uniqueUserIds = new Set<string>();
+
+    messages.forEach((msg) => {
+      if (msg.senderId !== senderId) {
+        uniqueUserIds.add(msg.senderId);
+      } else {
+        uniqueUserIds.add(msg.recipientId);
+      }
+    });
+
+    console.log('Active User IDs:', Array.from(uniqueUserIds)); // Log active user IDs for debugging
+
+    return Array.from(uniqueUserIds);
+  }, [messages, senderId]);
+
+  // If no messages, show all users instead of filtering by active chats
+  const activeUsers = messages.length === 0
+    ? users
+    : users.filter((user) => activeUserIds.includes(user._id));
+
+  // Filter active users based on the search query
+  const filteredActiveUsers = searchQuery
+    ? users.filter((user) =>
+        `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : activeUsers;
 
   const handleSelectUser = async (userId: string) => {
     console.log('Selected Recipient ID:', userId);  // Log recipientId
@@ -37,33 +81,45 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
   };
 
   return (
-    <List>
-      {users.length === 0 ? (
-        <Typography variant="body1">No users available.</Typography>
-      ) : (
-        users
-        .filter((user) => user._id !== senderId)
-        .map((user) => (
-          <ListItem key={user._id} disablePadding>
-            <ListItemButton onClick={() => handleSelectUser(user._id)}>
-              <ListItemText primary={`${user.firstName} ${user.lastName}`} />
-            </ListItemButton>
-          </ListItem>
-        ))
-      )}
+    <Box>
+      {/* Search input for searching through active chats */}
+      <TextField
+        fullWidth
+        label="Search active chats..."
+        variant="outlined"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className={styles.searchInput}
+      />
+
+      {/* Display active chats */}
+      <Typography variant="h6">Active Chats</Typography>
+      <List className={styles.userList}>
+        {filteredActiveUsers.length === 0 ? (
+          <Typography variant="body1">No active chats available.</Typography>
+        ) : (
+          filteredActiveUsers.map((user) => (
+            <ListItem key={user._id} disablePadding className={styles.userListItem}>
+              <ListItemButton onClick={() => handleSelectUser(user._id)}>
+                <ListItemText primary={`${user.firstName} ${user.lastName}`} />
+              </ListItemButton>
+            </ListItem>
+          ))
+        )}
+      </List>
 
       {loading && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
+        <Box className={styles.loadingContainer}>
           <CircularProgress />
         </Box>
       )}
 
       {error && (
-        <Typography color="error" variant="body2" sx={{ textAlign: 'center', marginTop: 2 }}>
+        <Typography color="error" variant="body2" className={styles.errorText}>
           {error}
         </Typography>
       )}
-    </List>
+    </Box>
   );
 };
 

@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useChat } from '../context/ChatContext';
 import { Box, TextField, Button } from '@mui/material';
 import { useSocket } from '../context/SocketContext';
-const API_URL = import.meta.env.VITE_API_URL;  // Correctly typed now
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const SendMessage: React.FC = () => {
   const [message, setMessage] = useState('');
@@ -16,6 +17,7 @@ const SendMessage: React.FC = () => {
     return localStorage.getItem('access_token');
   }
 
+  // Function to send the message to your API
   const sendMessageToAPI = async (message: string, senderId: string, recipientId: string) => {
     try {
       const token = getAuthToken();
@@ -55,10 +57,20 @@ const SendMessage: React.FC = () => {
       senderId,
       recipientId,
       message,
-      timestamp: new Date().toISOString(),  
+      timestamp: new Date().toISOString(),  // Add timestamp locally
     };
 
+    // Emit the message via WebSocket for real-time update
     socket.emit('sendMessage', messageData);
+
+    // Immediately add the message to the local state for instant feedback
+    setMessages((prevMessages) => [...prevMessages, messageData]);
+
+    // Save the message to the database via REST API
+    await sendMessageToAPI(message, senderId, recipientId);
+    console.log('Message sent:', message);  // Log the sent message
+
+    // Clear the input field after sending the message
     setMessage('');
   };
 

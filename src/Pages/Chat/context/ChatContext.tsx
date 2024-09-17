@@ -1,8 +1,8 @@
 import { createContext, useState, useContext, useEffect } from 'react';
-import { User, Message } from '@/Pages/Chat/Interfaces/types';  // Adjust the path as needed
-import { useSocket } from './SocketContext';  // Correct import
-import { Socket } from 'socket.io-client';  // Ensure this is imported
+import { User, Message } from '@/Pages/Chat/Interfaces/types';  
+import { useSocket } from './SocketContext';  
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
+import { Socket } from 'socket.io-client';
 
 interface ChatContextType {
   users: User[];
@@ -20,6 +20,8 @@ interface ChatContextType {
   socket: Socket | null;
 }
 
+
+
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -27,66 +29,64 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { currentUser } = useAuth(); 
   const [users, setUsers] = useState<User[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [recipientId, setRecipientId] = useState<string>('');
-  const [newMessage, setNewMessage] = useState<string>('');
+  const [recipientId, setRecipientId] = useState<string>('');  
+  const [newMessage, setNewMessage] = useState<string>('');  // <-- Add this state
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
   const [senderId, setSenderId] = useState<string>('');
 
-  console.log('currentUser:', currentUser);
-
-  // Set senderId once the current user is available
   useEffect(() => {
     if (currentUser && currentUser._id) {
       setSenderId(String(currentUser._id)); 
-    } else {
-      console.error('Current user or user ID is missing');
     }
   }, [currentUser]);
 
-  // Handle socket connection and receiving messages
+  // Listen for new messages and update user list
   useEffect(() => {
     if (socket) {
       socket.on('receiveMessage', (data) => {
-        console.log('Message received');
         setMessages((prevMessages) => {
           if (!prevMessages.some((msg) => msg.timestamp === data.timestamp)) {
             return [...prevMessages, data];
           }
           return prevMessages;
         });
+
+        // Update users list if the new message involves the current user
+        if (data.senderId !== senderId && !users.some((user) => user._id === data.senderId)) {
+          setUsers((prevUsers) => [...prevUsers, { _id: data.senderId, firstName: 'User', lastName: 'X', name: '', email: '', phone: '', role: '' }]);  // Mock user details, update as needed
+        }
       });
-  
+
       return () => {
         socket.off('receiveMessage');
       };
     }
-  }, [socket, setMessages]);
-  
+  }, [socket, senderId, users]);
 
-  return (
-    <ChatContext.Provider
-      value={{
-        users,
-        setUsers,
-        messages,
-        setMessages,
-        senderId,  
-        setSenderId,  
-        recipientId,
-        setRecipientId,
-        newMessage,
-        setNewMessage,
-        loggedInUser,
-        setLoggedInUser,
-        socket,
-      }}
-    >
-      {children}
-    </ChatContext.Provider>
-  );
+ // Remove any references to newMessage and setNewMessage
+ return (
+  <ChatContext.Provider
+    value={{
+      users,
+      setUsers,
+      messages,
+      setMessages,
+      senderId,  
+      setSenderId,  
+      recipientId,
+      setRecipientId,
+      newMessage,  // <-- Add this to the context
+      setNewMessage,  // <-- Add this to the context
+      loggedInUser,
+      setLoggedInUser,
+      socket,
+    }}
+  >
+    {children}
+  </ChatContext.Provider>
+);
 };
 
-// Hook to use the ChatContext
 export const useChat = () => {
   const context = useContext(ChatContext);
   if (!context) {
