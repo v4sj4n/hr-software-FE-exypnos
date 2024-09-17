@@ -1,6 +1,5 @@
 import { Dispatch } from 'react'
 import { DropResult } from 'react-beautiful-dnd'
-import { applicantsData }  from '@/Pages/Candidates/Interfaces/Candidate'
 
 
 export interface Interview {
@@ -73,6 +72,7 @@ export interface InterviewContextType {
     scheduleType: 'schedule' | 'reschedule'
     setScheduleType: Dispatch<React.SetStateAction<'schedule' | 'reschedule'>>
 }
+
  export interface RescheduleModalProps {
     open: boolean
     handleClose: () => void
@@ -85,4 +85,22 @@ export interface InterviewContextType {
     ) => void
     selectedInterview: Interview
     isReschedule: boolean
+}
+export interface applicantsData {
+    customMessage: string
+    customSubject: string
+    forEach(arg0: (applicant: applicantsData) => void): unknown
+    firstName: string
+    lastName: string
+    phoneNumber: string
+    email: string
+    positionApplied: string
+    status: string
+    _id: string
+    firstInterviewDate?: string
+    secondInterviewDate?: string
+    notes: string
+    message: string
+    currentPhase: string
+    isDeleted?: boolean
 }

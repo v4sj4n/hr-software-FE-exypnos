@@ -41,7 +41,7 @@ export const HeaderContent = () => {
     }
 
     return (
-        <nav className={style.header}>
+        <nav className={style.header} style={{height:'63px'}}>
             <div className={style.headerLeft}>
                 <div onClick={toggleSidebar} className={style.hamburgerIcon}>
                     <MenuIcon />
