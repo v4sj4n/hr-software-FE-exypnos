@@ -2,8 +2,8 @@ import style from '../style/infoSection.module.css'
 import { EventsData } from '../../Events/Interface/Events'
 import AxiosInstance from '@/Helpers/Axios'
 import { useQuery } from '@tanstack/react-query'
+import { EventsProvider } from '@/Pages/Events/Context/EventsProvider'
 import { useEvents } from '@/Pages/Events/Context/EventsContext'
-import { EventsProvider } from '@/Pages/Events/Context/EventsContext'
 
 const InfoSectionContent: React.FC = () => {
     const fetchEventsDashboard = async () => {

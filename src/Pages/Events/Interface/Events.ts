@@ -1,4 +1,4 @@
-import { UseMutateFunction } from '@tanstack/react-query'
+import React from 'react'
 
 export interface EventsData {
     _id: number | number
@@ -47,8 +47,8 @@ export interface EventsCreationData {
 }
 
 export interface EventsContextProps {
-    createEvent: UseMutateFunction<any, Error, void, unknown> 
-    updateEvent: UseMutateFunction<any, Error, void, unknown>
+    createEvent: () => void
+    updateEvent: () => void
     handleDelete: (id: string | number) => void
     handleEditChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     handleOptionChange: (index: number, value: string) => void
@@ -102,3 +102,6 @@ export interface EventsContextProps {
     toastMessageB: string
     closeToastB: () => void
 }
+
+
+export const EventsContext = React.createContext<EventsContextProps | undefined>(undefined)

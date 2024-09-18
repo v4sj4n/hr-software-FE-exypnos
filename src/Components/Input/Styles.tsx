@@ -56,19 +56,25 @@ export const chekboxStyles = {
 //#
 
 export const TableStyles = {
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    backgroundColor: '#FFFFFF',
     fontFamily: '"Outfit", sans-serif',
     borderRadius: '5px',
     overflow: 'hidden',
     '& .MuiDataGrid-root': {
         fontFamily: '"Outfit", sans-serif',
         borderRadius: '5px',
+        backgroundColor: '#FFFFFF',
     },
     '& .MuiDataGrid-columnHeaders': {
         fontFamily: '"Outfit", sans-serif',
         borderTopLeftRadius: '5px',
         borderTopRightRadius: '5px',
         colors: 'rgba(255, 255, 255, 0.7)',
+        backgroundColor: '#FFFFFF',
+    },
+    '.css-1pz2u6e-MuiDataGrid-root .MuiDataGrid-container--top [role=row], .css-1pz2u6e-MuiDataGrid-root .MuiDataGrid-container--bottom [role=row]' : {
+        backgroundColor: '#FFFFFF',
+        fontFamily: '"Outfit", sans-serif',
     },
     '& .MuiDataGrid-row': {
         backgroundColor: 'rgba(255, 255, 255, 0.7)',
@@ -84,12 +90,14 @@ export const TableStyles = {
         borderBottomLeftRadius: '5px',
         alignItems: 'center',
         borderBottomRightRadius: '5px',
+         colors:' rgba(0, 0, 0, 0.8)'
     },
     '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows, & .MuiTablePagination-select, & .MuiTablePagination-actions':
         {
-            backgroundColor: 'white',
+            backgroundColor: '#FFFFFF',
             alignItems: 'center',
             fontFamily: '"Outfit", sans-serif',
+            colors:' rgba(0, 0, 0, 0.8)'
         },
     '& .css-1jlz3st': {
         display: 'hiden',
