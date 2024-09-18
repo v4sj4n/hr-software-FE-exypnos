@@ -100,6 +100,7 @@ export default function Calendar() {
                 loading={isLoading}
                 onMonthChange={handleMonthChange}
                 renderLoading={() => <DayCalendarSkeleton />}
+                onChange={() => alert('Date changed')}  
                 slots={{
                     day: ServerDay,
                 }}

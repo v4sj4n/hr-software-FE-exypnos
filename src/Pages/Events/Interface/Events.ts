@@ -1,5 +1,4 @@
 import { UseMutateFunction } from '@tanstack/react-query'
-import { SetURLSearchParams } from 'react-router-dom'
 
 export interface EventsData {
     _id: number | number
@@ -66,8 +65,6 @@ export interface EventsContextProps {
     handleEditOptionChange: (index: number, value: string) => void
     toggleForm: () => void
     handleToggleForm: () => void
-    handleToastClose: () => void
-    handleUpdateToastClose: () => void
     showModal: boolean
     closeModal: () => void
     handleDeleteEventModal: (eventToDeleteId: string | number) => void
@@ -104,6 +101,4 @@ export interface EventsContextProps {
     openToastB: boolean
     toastMessageB: string
     closeToastB: () => void
-    setSearchParams: SetURLSearchParams
-
 }

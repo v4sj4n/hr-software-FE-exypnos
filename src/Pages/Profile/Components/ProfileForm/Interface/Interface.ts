@@ -13,10 +13,18 @@ export interface ProfileContextType {
     toastMessage: string
     toastSeverity: 'success' | 'error'
     handleToastClose: () => void
+    handleUpdateToastClose: () => void
     handleCreateToastClose: () => void
+    genderOptions: string[]
+    Places: string[]
     handleUpdatePayroll: (
         event: React.FormEvent<HTMLButtonElement>,
     ) => Promise<void>
+    handleGenderChange: (value: string | string[]) => void;
+    handlePlaceChange: (value: string | string[]) => void;
+    updateToastOpen: boolean
+    updateToastMessage: string
+    updateToastSeverity:'success' | 'error'
 }
 
 export const ProfileContext = createContext<ProfileContextType | undefined>(

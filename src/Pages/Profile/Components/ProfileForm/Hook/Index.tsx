@@ -2,20 +2,65 @@ import AxiosInstance from '@/Helpers/Axios'
 import { UserProfileData } from '@/Pages/Employees/interfaces/Employe'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { EmployeePayroll, EmployePayroll } from '../Interface/Interface'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+import { AxiosError } from 'axios'
 
 export const useGetAndUpdateUserById = () => {
     const { id } = useParams<{ id: string }>()
     const [user, setUser] = useState<UserProfileData | null>(null)
     const [error, setError] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const navigate = useNavigate()
+    const [updateToastOpen, setUpdateToastOpen] = useState(false)
+    const [updateToastMessage, setUpdateToastMessage] = useState('')
+    const [updateToastSeverity, setUpdateToastSeverity] = useState<
+        'success' | 'error'
+    >('success')
     const { userRole, currentUser } = useAuth()
 
     const isCurrentUser = currentUser?._id === id
     const isAdmin = userRole === 'hr'
+    const genderOptions = ['Male', 'Female']
+
+    const Places = [
+        "Tirana",
+        "Durrës",
+        "Vlorë",
+        "Shkodër",
+        "Fier",
+        "Elbasan",
+        "Korçë",
+        "Berat",
+        "Lushnjë",
+        "Pogradec",
+        "Lezhë",
+        "Gjirokastër",
+        "Kukës",
+        "Sarandë",
+        "Kavajë",
+        "Kamëz",
+        "Laç",
+        "Patos",
+        "Tepelenë",
+        "Përmet",
+        "Gramsh",
+        "Librazhd",
+        "Rrëshen",
+        "Bulqizë",
+        "Peshkopi",
+        "Çorovodë",
+        "Divjakë",
+        "Krujë",
+        "Himarë",
+        "Ersekë",
+        "Delvinë",
+        "Mallakastër",
+        "Ballsh",
+        "Bajram Curri",
+        "Selenicë"
+    ];
+    
 
     useEffect(() => {
         setIsLoading(true)
@@ -55,6 +100,28 @@ export const useGetAndUpdateUserById = () => {
         })
     }
 
+    const handleGenderChange = (value: string) => {
+        if (!isAdmin) return;
+        setUser((prevUser) => {
+            if (!prevUser) return null
+            return {
+                ...prevUser,
+                gender: value,
+            };
+        });
+    };
+
+    const handlePlaceChange = (value: string) => {
+        if (!isAdmin) return;
+        setUser((prevUser) => {
+            
+            return {
+                ...prevUser,
+                pob: value,
+            };
+        });
+    };
+
     const handleUpdate = async (event: React.FormEvent<HTMLButtonElement>) => {
         event.preventDefault()
         if (!user) {
@@ -69,6 +136,7 @@ export const useGetAndUpdateUserById = () => {
             pob: user.pob,
             dob: user.dob,
             gender: user.gender,
+            email: user.auth.email,
         }
 
         setIsLoading(true)
@@ -78,23 +146,39 @@ export const useGetAndUpdateUserById = () => {
                 userToUpdate,
             )
             console.log('User updated successfully:', response.data)
-            navigate('/dashboard')
-        } catch (error) {
-            console.error('Error updating user:', error)
-            setError('Failed to update user')
-        } finally {
-            setIsLoading(false)
+            setUpdateToastOpen(true)
+            setUpdateToastMessage('User updated successfully')
+            setUpdateToastSeverity('success')
+        } catch (error: unknown) {
+            if (error instanceof AxiosError) {
+                setUpdateToastOpen(true)
+            setUpdateToastMessage(error.response?.data.message)
+            setUpdateToastSeverity('error')
+            }
+           
         }
+    }
+
+    const handleUpdateToastClose = () => {
+        setUpdateToastOpen(false)
     }
 
     return {
         handleChange,
+        handleGenderChange,
+        genderOptions,
         handleUpdate,
         user,
         error,
         isLoading,
         isCurrentUser,
         isAdmin,
+        updateToastOpen,
+        updateToastMessage,
+        updateToastSeverity,
+        handleUpdateToastClose,
+        handlePlaceChange,
+        Places
     }
 }
 
@@ -151,11 +235,12 @@ export const useCreatePayroll = () => {
             setCreateToastOpen(true)
             setCreateToastMessage('Payroll created successfully')
             setCreateToastSeverity('success')
-        } catch (error) {
-            console.error('Error creating payroll:', error)
-            setCreateToastOpen(true)
-            setCreateToastMessage('Failed to create payroll')
-            setCreateToastSeverity('error')
+        } catch (error: unknown) {
+            if (error instanceof AxiosError) {
+                setCreateToastOpen(true)
+                setCreateToastMessage(error.response?.data.message)
+                setCreateToastSeverity('error')
+            }
         }
     }
 
@@ -233,14 +318,17 @@ export const useUpdatePayroll = () => {
                 fieldsToUpdate,
             )
             console.log('Payroll updated successfully:', response.data)
-            setToastMessage('Payroll updated successfully')
+            setToastMessage('profile updated successfully')
             setToastOpen(true)
             setToastSeverity('success')
-        } catch (error) {
-            console.error('Error updating payroll:', error)
-            setToastMessage('Error updating payroll')
-            setToastSeverity('error')
-            setToastOpen(true)
+        } catch (err: unknown) {
+            if(err instanceof AxiosError) {
+                setToastMessage(err.response?.data.message)
+                setToastSeverity('error')
+                setToastOpen(true)
+            }
+           
+          
         }
     }
 

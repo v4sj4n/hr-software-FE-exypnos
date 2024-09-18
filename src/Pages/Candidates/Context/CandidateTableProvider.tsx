@@ -20,25 +20,21 @@ export const CandidateProvider: React.FC<{ children: any }> = ({
         setPageSize(model.pageSize)
     }
 
-    const fetchCandidates = async (): Promise<{
-        data: CandidateRow[]
-        totalPages: number
-    }> => {
-        const response = await AxiosInstance.get(
-            `/applicant?page=${page}&limit=${pageSize}`,
-        )
-        return response.data
-    }
-
-    const { data: applicants, isPending } = useQuery({
+    const { data, isPending } = useQuery({
         queryKey: ['applicants', page, pageSize],
-        queryFn: () => fetchCandidates(),
+        queryFn: async () => {
+            const response = await AxiosInstance.get(
+                `/applicant?page=${page}&limit=${pageSize}`,
+            )
+            return response.data
+        },
     })
 
-    const navigate = useNavigate()
+    const applicants = data?.data ?? []
+    const totalPages = data?.totalPages ?? 0
 
-    const rows: CandidateRow[] =
-        applicants?.data.map((applicant, index) => ({
+    const navigate = useNavigate()
+    const rows: CandidateRow[] = applicants.map((applicant: any, index: number) => ({
             id: page * pageSize + index + 1,
             originalId: applicant._id,
             fullName: `${applicant.firstName} ${applicant.lastName}`,
@@ -108,7 +104,7 @@ export const CandidateProvider: React.FC<{ children: any }> = ({
         handlePaginationModelChange,
         page,
         pageSize,
-        totalPages: applicants?.totalPages ?? 0,
+        totalPages: totalPages,
         isPending,
     }
 

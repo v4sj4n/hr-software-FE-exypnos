@@ -3,11 +3,9 @@ import styles from './style/structure.module.css'
 import Card from '@/Components/Card/Card'
 import 'primereact/resources/themes/lara-light-indigo/theme.css'
 import 'primereact/resources/primereact.min.css'
-import AxiosInstance from '@/Helpers/Axios'
 import image from '/public/Images/ceo1.jpeg'
 import { Avatar } from '@mui/material'
 import HrImage from '/public/Images/Hr.jpeg'
-import { useQuery } from '@tanstack/react-query'
 import { CustomTreeNode, ProjectData } from './Interface/Index'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Button from '@/Components/Button/Button'
@@ -19,16 +17,9 @@ import CloseIcon from '@mui/icons-material/Close'
 import Toast from '@/Components/Toast/Toast'
 import { useStructureContext } from './Context/StructureProvider'
 import { StructureProvider } from './Context/StruxtureContext'
+import { useGetProject } from './Hook/Index'
 
 function StructureContent() {
-    const { data, isLoading, error } = useQuery<ProjectData[], Error>({
-        queryKey: ['projects'],
-        queryFn: async () => {
-            const response =
-                await AxiosInstance.get<ProjectData[]>('/project/structure')
-            return response.data
-        },
-    })
 
     const transformProjectData = (
         projects: ProjectData[],
@@ -123,6 +114,8 @@ function StructureContent() {
         return node.label
     }
 
+    const { data, isLoading, error } = useGetProject()
+
     const transformedData = data ? transformProjectData(data) : []
 
     const {  handleDecriptionChange,
@@ -145,12 +138,17 @@ function StructureContent() {
         status, 
         projectManager,
         teamMembers,
-        statusOptions,
     } = useStructureContext()
     
     const { data: users = [] } = useGetAllUsers()
-    const TeamMembers = users.map((user) => user._id)
+    const userOptions = users.map((user) => ({
+        label: `${user.firstName} ${user.lastName}`,
+        value: user._id.toString()
+    }))
 
+
+    const statusOptions = ['in_progress', 'completed', 'planed']
+    
     return (
         <div className={styles.container}>
              <Toast
@@ -171,11 +169,11 @@ function StructureContent() {
                     />
                 </div>
                  <Input IsUsername name='name' onChange={handleNameChange} value={name}  label='Project Name'/>
-                 <Input IsUsername name='startDate' label='Start date' shrink={true}  type="datetime-local" onChange={handleStartDateChange} value={startDate}/>
+                 <Input IsUsername name='startDate' label='Start date' shrink={true}  type="date" onChange={handleStartDateChange} value={startDate}/>
                  <Input IsUsername name='description' label='Description' type='textarea' rows={3} multiline={true} onChange={handleDecriptionChange} value={description} />
-                 <Selecter name='status' label='Status' options={statusOptions} onChange={handleStatusChange} multiple={false} value={status}/>
-                 <Selecter name='projectManager' label='Project Manager' multiple={false} onChange={handleProjectManagerChange} value={projectManager} options={TeamMembers}/>
-                 <Selecter name='teamMembers' label='Team Members' onChange={handleTeamMembersChange} value={teamMembers} multiple options={TeamMembers}/>
+                 <Selecter width='100%' name='status' label='Status' options={statusOptions} onChange={handleStatusChange} multiple={false} value={status}/>
+                 <Selecter width='100%' name='projectManager' label='Project Manager' multiple={false} onChange={handleProjectManagerChange} value={projectManager} options={userOptions}/>
+                 <Selecter width='100%' name='teamMembers' label='Team Members' onChange={handleTeamMembersChange} value={teamMembers} multiple options={userOptions}/>
                  <Button type={ButtonTypes.PRIMARY} btnText='Create' onClick={handleCreateProject}  />
             </DrawerComponent>
             <Card borderRadius="5px" padding="32px" border="1px solid #ebebeb" height='400px' overflow='auto'>

@@ -35,12 +35,13 @@ export interface UserProfileData {
     phone: string
     pob: string
     dob: string
-    gender: string
+    gender: string[]
     originalId: number
     role: string
     firstName: string
     imageUrl: string
     file: string
+    genderOptions: string[]
     _id: number
 }
 

@@ -30,7 +30,9 @@ function RecruitmentBase() {
         fileName,
         setFileName,
     } = useContext(RecruitmentContext)
+
     const { form } = useRecruitmentForm()
+    
     return (
         <main className={style.background}>
             <Card
