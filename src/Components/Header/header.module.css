@@ -43,6 +43,10 @@
 .headerRight {
     display: flex;
     align-items: center;
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+    width: 250px;
+    border-radius: 20px;
+    justify-content: space-between;
 }
 .icon {
     margin-left: 15px;
