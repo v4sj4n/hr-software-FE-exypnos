@@ -21,7 +21,7 @@ export const getSocket = (): Socket | null => {
 };
 
 // Disconnect the socket
-export const disconnectSocket = (): void => {
+export const disconnectSocket = (current: any): void => {
   if (socket) {
     socket.disconnect();
     console.log('Socket disconnected');

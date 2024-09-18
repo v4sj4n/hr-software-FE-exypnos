@@ -47,16 +47,20 @@ const SendMessage: React.FC = () => {
     }
   };
 
-  // Function to refetch messages after sending a message
-  const fetchMessages = async (senderId: string, recipientId: string) => {
+// Function to refetch the messages
+const fetchMessages = async () => {
     try {
       const response = await AxiosInstance.get(`/messages/${senderId}/${recipientId}`);
-      const fetchedMessages = response.data || [];
-      setMessages(fetchedMessages);  // Update the message list with the latest messages
+      const fetchedMessages = response.data || []; // Ensure it defaults to an empty array
+      setMessages(fetchedMessages);
     } catch (error) {
       console.error('Error fetching messages:', error);
+      setMessages([]); // Set an empty array on error
     }
   };
+  
+
+  
 
   const handleSendMessage = async () => {
     console.log('Sending message:', message);  // Log the message being sent
@@ -64,29 +68,32 @@ const SendMessage: React.FC = () => {
       console.error('Sender or recipient ID is missing or message is empty.');
       return;
     }
-
+  
     const messageData = {
       senderId,
       recipientId,
       message,
       timestamp: new Date().toISOString(),  // Add timestamp locally
     };
-
+  
     // Emit the message via WebSocket for real-time update
     socket.emit('sendMessage', messageData);
-
+  
     // Immediately add the message to the local state for instant feedback
-    setMessages((prevMessages) => [...prevMessages, messageData]);
-
+    setMessages((prevMessages) => Array.isArray(prevMessages) ? [...prevMessages, messageData] : [messageData]);
+  
     // Save the message to the database via REST API
     await sendMessageToAPI(message, senderId, recipientId);
-
-    // Refetch the latest messages for this conversation
-    await fetchMessages(senderId, recipientId); // Refetch messages after sending
-
+  
+    // Optionally refetch the messages after sending
+    await fetchMessages();
+  
+    console.log('Message sent:', message);  // Log the sent message
+  
     // Clear the input field after sending the message
     setMessage('');
   };
+  
 
   return (
     <Box sx={{ display: 'flex', gap: 2 }}>
