@@ -39,26 +39,24 @@
     width: 100%;
 }
 
-.userGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
-    color: rgb(44, 56, 68);
-    width: 100%;
-}
-@media (min-width: 1200px) {
-    .userGrid {
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    }
-}
-.userCard {
+.member{
+    border-radius: 10px;
+    background-color: transparent;
+    border: 1px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+    font-size: large;
     transition: all 0.3s ease;
     cursor: pointer;
-    width: 100%;
 }
 
-.userCard:hover {
+.member:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: rgba(255, 255, 255, 0.7);
 }
+
+

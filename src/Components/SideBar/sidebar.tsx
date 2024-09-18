@@ -23,7 +23,7 @@ export const SideBar = () => {
 
     const hr = currentUser?.role === 'hr'
     const currentUserID = currentUser?._id
-    
+
     const navigate = useNavigate()
 
     const [dropdownOpen, setDropdownOpen] = useState({
@@ -79,16 +79,17 @@ export const SideBar = () => {
                             </div>
                         </Link>
                     </div>
-                    
+
                     {hr && (
                         <>
                             <div
                                 className={style.item}
                                 onMouseEnter={(e) =>
-                                    (e.currentTarget.style.backgroundColor = alpha(
-                                        theme.palette.background.default,
-                                        0.5,
-                                    ))
+                                    (e.currentTarget.style.backgroundColor =
+                                        alpha(
+                                            theme.palette.background.default,
+                                            0.5,
+                                        ))
                                 }
                                 onMouseLeave={(e) =>
                                     (e.currentTarget.style.backgroundColor =
@@ -101,7 +102,8 @@ export const SideBar = () => {
                                         <GroupAddIcon
                                             className={style.icon}
                                             style={{
-                                                color: theme.palette.text.primary,
+                                                color: theme.palette.text
+                                                    .primary,
                                                 marginLeft: '2px',
                                             }}
                                         />
@@ -130,31 +132,45 @@ export const SideBar = () => {
 
                             <div
                                 className={`${style.dropdownMenu} ${
-                                    dropdownOpen.recruiting ? style.open : style.close
+                                    dropdownOpen.recruiting
+                                        ? style.open
+                                        : style.close
                                 }`}
                             >
-                                <Link to="/candidates" className={style.dropdownItem} onMouseEnter={(e) =>
-                                (e.currentTarget.style.backgroundColor = alpha(
-                                    theme.palette.background.default,
-                                    0.5,
-                                ))
-                            }
-                            onMouseLeave={(e) =>
-                                (e.currentTarget.style.backgroundColor =
-                                    'transparent')
-                            }>
+                                <Link
+                                    to="/candidates"
+                                    className={style.dropdownItem}
+                                    onMouseEnter={(e) =>
+                                        (e.currentTarget.style.backgroundColor =
+                                            alpha(
+                                                theme.palette.background
+                                                    .default,
+                                                0.5,
+                                            ))
+                                    }
+                                    onMouseLeave={(e) =>
+                                        (e.currentTarget.style.backgroundColor =
+                                            'transparent')
+                                    }
+                                >
                                     Candidates
                                 </Link>
-                                <Link to="/interview" className={style.dropdownItem} onMouseEnter={(e) =>
-                                (e.currentTarget.style.backgroundColor = alpha(
-                                    theme.palette.background.default,
-                                    0.5,
-                                ))
-                            }
-                            onMouseLeave={(e) =>
-                                (e.currentTarget.style.backgroundColor =
-                                    'transparent')
-                            }>
+                                <Link
+                                    to="/interview"
+                                    className={style.dropdownItem}
+                                    onMouseEnter={(e) =>
+                                        (e.currentTarget.style.backgroundColor =
+                                            alpha(
+                                                theme.palette.background
+                                                    .default,
+                                                0.5,
+                                            ))
+                                    }
+                                    onMouseLeave={(e) =>
+                                        (e.currentTarget.style.backgroundColor =
+                                            'transparent')
+                                    }
+                                >
                                     Interviews
                                 </Link>
                             </div>
@@ -222,22 +238,23 @@ export const SideBar = () => {
                             Employees
                         </Link>
                         {hr && (
-                        <Link
-                            to="/payroll"
-                            className={style.dropdownItem}
-                            onMouseEnter={(e) =>
-                                (e.currentTarget.style.backgroundColor = alpha(
-                                    theme.palette.background.default,
-                                    0.5,
-                                ))
-                            }
-                            onMouseLeave={(e) =>
-                                (e.currentTarget.style.backgroundColor =
-                                    'transparent')
-                            }
-                        >
-                            Payroll{' '}
-                        </Link>
+                            <Link
+                                to="/payroll"
+                                className={style.dropdownItem}
+                                onMouseEnter={(e) =>
+                                    (e.currentTarget.style.backgroundColor =
+                                        alpha(
+                                            theme.palette.background.default,
+                                            0.5,
+                                        ))
+                                }
+                                onMouseLeave={(e) =>
+                                    (e.currentTarget.style.backgroundColor =
+                                        'transparent')
+                                }
+                            >
+                                Payroll{' '}
+                            </Link>
                         )}
                         <Link
                             to="/vacation"
@@ -255,14 +272,13 @@ export const SideBar = () => {
                         >
                             Vacation{' '}
                         </Link>
-                        <div 
-                            onClick={(e) => {(e.currentTarget.style.backgroundColor = alpha(
-                                theme.palette.background.default,
-                                0.5,
-                            ))
-                                hr
-                                    ? navigate('promotion')
-                                    : navigate(`/promotion/${currentUserID}`)
+                        <div
+                            onClick={(e) => {
+                                e.currentTarget.style.backgroundColor = alpha(
+                                    theme.palette.background.default,
+                                    0.5,
+                                )
+                                navigate('promotion')
                             }}
                             className={style.dropdownItem}
                         >
