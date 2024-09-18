@@ -8,7 +8,7 @@ import MessageList from './components/messagelist';
 import SendMessage from './components/chatinput';
 
 const Chat: React.FC = () => {
-  const { users, setUsers, messages } = useChat();
+  const { users, setUsers } = useChat();  // Removed messages from the destructuring
 
   // Fetch users from the backend
   useEffect(() => {
@@ -41,7 +41,7 @@ const Chat: React.FC = () => {
           </Typography>
           {/* Message List */}
           <Box sx={{ flexGrow: 1, overflowY: 'auto', maxHeight: '400px' }}>
-            <MessageList messages={messages} />
+            <MessageList /> {/* Removed messages prop */}
           </Box>
           {/* Send Message Input */}
           <SendMessage />
