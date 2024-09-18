@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useChat } from '../context/ChatContext';
 import { Box, TextField, Button } from '@mui/material';
 import { useSocket } from '../context/SocketContext';
+import AxiosInstance from '@/Helpers/Axios'; // Assuming Axios is used for API requests
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -46,6 +47,17 @@ const SendMessage: React.FC = () => {
     }
   };
 
+  // Function to refetch messages after sending a message
+  const fetchMessages = async (senderId: string, recipientId: string) => {
+    try {
+      const response = await AxiosInstance.get(`/messages/${senderId}/${recipientId}`);
+      const fetchedMessages = response.data || [];
+      setMessages(fetchedMessages);  // Update the message list with the latest messages
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
+  };
+
   const handleSendMessage = async () => {
     console.log('Sending message:', message);  // Log the message being sent
     if (!senderId || !recipientId || !message.trim()) {
@@ -68,7 +80,9 @@ const SendMessage: React.FC = () => {
 
     // Save the message to the database via REST API
     await sendMessageToAPI(message, senderId, recipientId);
-    console.log('Message sent:', message);  // Log the sent message
+
+    // Refetch the latest messages for this conversation
+    await fetchMessages(senderId, recipientId); // Refetch messages after sending
 
     // Clear the input field after sending the message
     setMessage('');
