@@ -28,8 +28,14 @@ export default function DataTable<T extends GridValidRowModel>({
                 pageSizeOptions={pageSizeOptions}
                 autoHeight={true}
                 disableColumnFilter={true}
-                rowSelection={false}
+                disableColumnMenu={true}
+                disableColumnSelector={true}
                 disableDensitySelector={true}
+                rowSelection={false}
+                disableColumnSorting={true}
+                disableRowSelectionOnClick={true}
+                showColumnVerticalBorder={true}
+                disableAutosize={true}
                 sx={{
                     ...TableStyles,
                     '& .MuiDataGrid-columnHeader': {

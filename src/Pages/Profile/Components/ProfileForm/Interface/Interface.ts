@@ -20,7 +20,7 @@ export interface ProfileContextType {
     handleUpdatePayroll: (
         event: React.FormEvent<HTMLButtonElement>,
     ) => Promise<void>
-    handleGenderChange: (value: string | string[]) => void;
+    handleGenderChange: (value: string ) => void;
     handlePlaceChange: (value: string | string[]) => void;
     updateToastOpen: boolean
     updateToastMessage: string

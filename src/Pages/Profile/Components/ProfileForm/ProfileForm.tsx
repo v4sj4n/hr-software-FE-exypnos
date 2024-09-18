@@ -96,6 +96,7 @@ const ProfileFormContext = () => {
                         label="BirthDate"
                         width="350px"
                         type="date"
+                        shrink={true}
                         disabled={!isAdmin}
                         name="dob"
                         onChange={handleChange}

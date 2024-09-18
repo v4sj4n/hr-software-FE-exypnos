@@ -100,13 +100,13 @@ export const useGetAndUpdateUserById = () => {
         })
     }
 
-    const handleGenderChange = (value: string | string[]) => {
+    const handleGenderChange = (value: string ) => {
         if (!isAdmin) return;
         setUser((prevUser) => {
             if (!prevUser) return null;
             return {
                 ...prevUser,
-                gender: Array.isArray(value) ? value : [value],
+                gender: value,
             };
         });
     };
