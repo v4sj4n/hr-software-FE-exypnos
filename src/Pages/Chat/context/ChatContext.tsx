@@ -28,9 +28,9 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const socket = useSocket();
   const { currentUser } = useAuth(); 
   const [users, setUsers] = useState<User[]>([]);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]); 
   const [recipientId, setRecipientId] = useState<string>('');  
-  const [newMessage, setNewMessage] = useState<string>('');  // <-- Add this state
+  const [newMessage, setNewMessage] = useState<string>('');  
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
   const [senderId, setSenderId] = useState<string>('');
 
@@ -45,23 +45,20 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (socket) {
       socket.on('receiveMessage', (data) => {
         setMessages((prevMessages) => {
+          // Ensure no duplicate messages
           if (!prevMessages.some((msg) => msg.timestamp === data.timestamp)) {
             return [...prevMessages, data];
           }
           return prevMessages;
         });
-
-        // Update users list if the new message involves the current user
-        if (data.senderId !== senderId && !users.some((user) => user._id === data.senderId)) {
-          setUsers((prevUsers) => [...prevUsers, { _id: data.senderId, firstName: 'User', lastName: 'X', name: '', email: '', phone: '', role: '' }]);  // Mock user details, update as needed
-        }
       });
-
+  
       return () => {
         socket.off('receiveMessage');
       };
     }
-  }, [socket, senderId, users]);
+  }, [socket, setMessages]);
+  
 
  // Remove any references to newMessage and setNewMessage
  return (

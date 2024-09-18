@@ -13,9 +13,15 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
     const [year, setYear] = useState<number | undefined>(undefined)
     const [fullName, setFullName] = useState('')
     const [bonus, setBonus] = useState<number | undefined>(undefined)
-    const [minNetSalary, setMinNetSalary] = useState<number | undefined>(undefined)
-    const [maxNetSalary, setMaxNetSalary] = useState<number | undefined>(undefined)
-    const [workingDays, setWorkingDays] = useState<number | undefined>(undefined)
+    const [minNetSalary, setMinNetSalary] = useState<number | undefined>(
+        undefined,
+    )
+    const [maxNetSalary, setMaxNetSalary] = useState<number | undefined>(
+        undefined,
+    )
+    const [workingDays, setWorkingDays] = useState<number | undefined>(
+        undefined,
+    )
     const [page, setPage] = useState(0)
     const [pageSize, setPageSize] = useState(5)
 
@@ -26,19 +32,7 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const navigate = useNavigate()
 
-    const fetchPayroll = async() => {
-        const response = await AxiosInstance.get<{data: PayrollRow[], totalPages: number}>
-        (
-`/salary?month=${month}&year=${year}&bonus=${bonus}&maxNetSalary=${maxNetSalary}&minNetSalary=${minNetSalary}&workingDays=${workingDays}&fullName=${fullName}&limit=${pageSize}&page=${page}`,
-        )
-        return response.data
-    }
-
-    const {
-        data: payrollData,
-        isPending,
-        isError,
-    } = useQuery<{ data: PayrollRow[]; totalPages: number }, Error>({
+    const { data, isPending } = useQuery({
         queryKey: [
             'payroll',
             month,
@@ -51,11 +45,19 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
             maxNetSalary,
             bonus,
         ],
-        queryFn: () => fetchPayroll(),
+        queryFn: async () => {
+            const response = await AxiosInstance.get(
+                `/salary?month=${month}&year=${year}&bonus=${bonus}&maxNetSalary=${maxNetSalary}&minNetSalary=${minNetSalary}&workingDays=${workingDays}&fullName=${fullName}&limit=${pageSize}&page=${page}`,
+            )
+            return response.data
+        },
     })
 
+    const payrollData = data?.data ?? []
+    const totalPages = data?.totalPages ?? 0
+
     const rows: PayrollRow[] =
-        payrollData?.data.map((payrollItem, index) => ({
+        payrollData.map((payrollItem: any, index: number) => ({
             id: page * pageSize + index + 1,
             originalId: payrollItem.userId._id,
             netSalary: `${payrollItem.netSalary}${payrollItem.currency}`,
@@ -140,12 +142,11 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
         setMonth,
         setYear,
         isPending,
-        isError,
         setBonus,
         setWorkingDays,
         page,
         pageSize,
-        totalPages: payrollData?.totalPages ?? 0,
+        totalPages: totalPages,
         handlePaginationModelChange,
         handleDateChange,
         handleFullNameChange,

@@ -21,6 +21,14 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
         isAdmin,
         handleChange,
         handleUpdate,
+        genderOptions,
+        handleGenderChange,
+        updateToastMessage,
+        updateToastOpen,
+        updateToastSeverity,
+        handleUpdateToastClose,
+        handlePlaceChange,
+        Places
     } = useGetAndUpdateUserById()
 
     const {
@@ -65,6 +73,14 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
         createToastOpen,
         createToastSeverity,
         handleCreateToastClose,
+        genderOptions,
+        handleGenderChange,
+        updateToastOpen,
+        updateToastMessage,
+        updateToastSeverity,
+        handleUpdateToastClose,
+        handlePlaceChange,
+        Places
     }
 
     return (

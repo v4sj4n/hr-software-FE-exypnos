@@ -32,8 +32,11 @@ export default function DataTable<T extends GridValidRowModel>({
                 disableDensitySelector={true}
                 sx={{
                     ...TableStyles,
+                    '& .MuiDataGrid-columnHeader': {
+                        backgroundColor: '#ffffff', 
+                    },
                     '& .colored-row': {
-                        backgroundColor: '#5f43b2',
+                        backgroundColor: 'red',
                     },
                     '& .MuiDataGrid-row': {
                         cursor: 'pointer',

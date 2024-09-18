@@ -13,7 +13,8 @@ import { useEffect } from 'react'
 import { EventsData } from './Interface/Events'
 import EventsContentLoader from '@/Components/Content/ContentLoader'
 import CardContent from './Components/CardContent/CardContent'
-import { EventsProvider, useEvents } from './Context/EventsContext'
+import { EventsProvider } from './Context/EventsProvider'
+import { useEvents } from './Context/EventsContext'
 
 function EventsContentAndComponents() {
     const {

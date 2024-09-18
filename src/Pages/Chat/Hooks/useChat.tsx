@@ -88,7 +88,7 @@ export const useChatLogic = () => {
       socket.emit('privateMessage', messageData);
   
       // Optimistically update the message list with the new message
-      setMessages((prevMessages) => [...prevMessages, messageData]);
+      setMessages((prevMessages) => (Array.isArray(prevMessages) ? [...prevMessages, messageData] : [messageData]));
   
       // Clear input after sending the message
       setNewMessage('');

@@ -8,13 +8,15 @@ import { useFileUpload } from '../../Context/Hook'
 import { useProfile } from './Context/ProfileContext'
 import { FileUploadProvider } from '../../Context/FileUpoadProvider'
 import { ProfileProvider } from './Context/ProfileProvider'
+import Selecter from '@/Components/Input/components/Select/Selecter'
+import Toast from '@/Components/Toast/Toast'
 
 const ProfileFormContext = () => {
 
     
     const { uploadImage, previewImage } = useFileUpload()
 
-    const { user, isCurrentUser, isAdmin, handleChange, handleUpdate } = useProfile()
+    const { user, isCurrentUser, isAdmin, handleChange, handleUpdate,genderOptions, handleGenderChange, updateToastMessage, updateToastOpen, updateToastSeverity,handleUpdateToastClose, handlePlaceChange, Places } = useProfile()
 
     if (!user) {
         return <div>No user data available</div>
@@ -23,7 +25,12 @@ const ProfileFormContext = () => {
     return (
         <div className={style.container}>
             <div className={style.title}>Personal Information</div>
-
+            <Toast
+            open={updateToastOpen}
+            message={updateToastMessage}
+            severity={updateToastSeverity}
+            onClose={handleUpdateToastClose}
+            />
             <div className={style.forms}>
                 <div>
                     <div className={style.profile}>
@@ -88,6 +95,7 @@ const ProfileFormContext = () => {
                         IsUsername
                         label="BirthDate"
                         width="350px"
+                        type="date"
                         disabled={!isAdmin}
                         name="dob"
                         onChange={handleChange}
@@ -95,13 +103,13 @@ const ProfileFormContext = () => {
                     />
                 </div>
                 <div className={style.inputWidth}>
-                    <Input
-                        IsUsername
-                        disabled={!isAdmin}
+                    <Selecter
+                       options={Places}
+                       multiple={false} 
                         width="350px"
                         label="CountryOfBirth"
                         name="pob"
-                        onChange={handleChange}
+                        onChange={handlePlaceChange}
                         value={user.pob}
                     />
                 </div>
@@ -109,19 +117,18 @@ const ProfileFormContext = () => {
 
             <div className={style.forms}>
                 <div className={style.inputWidth}>
-                    <Input
-                        IsUsername
-                        label="Gender"
-                        width="350px"
-                        disabled={!isAdmin}
-                        name="gender"
-                        onChange={handleChange}
-                        value={user.gender}
-                    />
+                <Selecter width='100%' name='gender' label='Gender' options={genderOptions} onChange={handleGenderChange} multiple={false} value={user.gender}/>
                 </div>
                 <div className={style.inputWidth}>
                     <Input
+                     icon={
+                        <p className={style.numberPrefix}>
+                            +355
+                        </p>
+                    }
+                    iconPosition="start"
                         IsUsername
+                        type='number'
                         name="phone"
                         width="350px"
                         disabled={!isAdmin}

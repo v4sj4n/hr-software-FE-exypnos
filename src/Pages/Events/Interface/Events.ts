@@ -1,5 +1,4 @@
-import { UseMutateFunction } from '@tanstack/react-query'
-import { SetURLSearchParams } from 'react-router-dom'
+import React from 'react'
 
 export interface EventsData {
     _id: number | number
@@ -48,8 +47,8 @@ export interface EventsCreationData {
 }
 
 export interface EventsContextProps {
-    createEvent: UseMutateFunction<any, Error, void, unknown> 
-    updateEvent: UseMutateFunction<any, Error, void, unknown>
+    createEvent: () => void
+    updateEvent: () => void
     handleDelete: (id: string | number) => void
     handleEditChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     handleOptionChange: (index: number, value: string) => void
@@ -66,8 +65,6 @@ export interface EventsContextProps {
     handleEditOptionChange: (index: number, value: string) => void
     toggleForm: () => void
     handleToggleForm: () => void
-    handleToastClose: () => void
-    handleUpdateToastClose: () => void
     showModal: boolean
     closeModal: () => void
     handleDeleteEventModal: (eventToDeleteId: string | number) => void
@@ -104,6 +101,7 @@ export interface EventsContextProps {
     openToastB: boolean
     toastMessageB: string
     closeToastB: () => void
-    setSearchParams: SetURLSearchParams
-
 }
+
+
+export const EventsContext = React.createContext<EventsContextProps | undefined>(undefined)

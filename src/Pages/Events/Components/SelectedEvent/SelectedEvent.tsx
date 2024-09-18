@@ -4,11 +4,11 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import style from '../../styles/Events.module.css'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import Example from '@/Components/Carosel/Carosel'
-import { useEvents } from '../../Context/EventsContext'
 import MapComponent from '../GoogleMap/MapPicker'
 import { useSearchParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+import { useEvents } from '../../Context/EventsContext'
 
 const SelectedEventCard = () => {
     const { currentUser } = useAuth()

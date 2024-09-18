@@ -6,15 +6,14 @@
     gap: 20px;
 }
 
-.ring{
-display: flex;
-font-size: 30px;
-justify-content: center;
-margin-top: 50px;
+.ring {
+    display: flex;
+    font-size: 30px;
+    justify-content: center;
+    margin-top: 50px;
 }
 
-
-.search{
+.search {
     display: flex;
     gap: 25px;
     align-items: center;
@@ -23,8 +22,14 @@ margin-top: 50px;
     top: 75px;
 }
 
-.name{
+.name {
     font-size: 20px;
     font-weight: bold;
 }
 
+.filtersTitle {
+    font-weight: bold;
+    padding-left: 4px;
+    padding-top: 8px;
+    font-size: 1.1rem;
+}
