@@ -35,7 +35,7 @@ const DashboardContent: React.FC = () => {
                             {greeter()} <span
                                 onClick={handleNavigateToProfile}
                                 className={style.userNameClickable}
-                             style={{ cursor: 'pointer'}} 
+                             style={{ cursor: 'pointer' ,transform: 'scale(1.1)'  }}  
                             >
                                 {userName}
                             </span>

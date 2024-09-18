@@ -41,10 +41,9 @@ const ProfileFormContext = () => {
     {isCurrentUser && (
         <div style={{ 
             position: 'absolute', 
-            bottom: '2px', 
-            right: '2px', 
-            width: '50px', 
-            height: '50px', 
+            bottom: '1px', 
+            right: '10px', 
+        
             display: 'flex', 
             justifyContent: 'center', 
             alignItems: 'center', 
@@ -66,15 +65,6 @@ const ProfileFormContext = () => {
                 </div>
 
             <div className={style.forms}>
-              
-                {/* <Button
-                            onClick={handleUpdate}
-                            type={ButtonTypes.PRIMARY}
-                            btnText="Change Picture"
-                            width="150px"
-                            height= '45px'
-                          display='flex'
-                          justifyContent='center'                     /> */}
             </div>
 
             <div className={style.forms} >

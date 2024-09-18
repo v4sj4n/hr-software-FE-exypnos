@@ -61,7 +61,7 @@ export const HeaderContent = () => {
                 )}
             </div>
             <div className={style.headerRight}>
-                <ThemeSwitcher />
+           <div className={style.icon}>    <ThemeSwitcher /></div> 
 
                 <div className={style.icon}>
                     <NotificationDropdown />
@@ -76,6 +76,7 @@ export const HeaderContent = () => {
                                 width: '45px', 
                                 height: '45px',
                                 borderRadius: '50%',
+                                transform: 'scale(1.1)'
                             }}
                         />
                         {showDropdown && (
@@ -144,7 +145,7 @@ export const HeaderContent = () => {
                                     className={style.dropdownItem}
                                     style={{
                                         ...dropdownItemStyle,
-                                        padding: '15px', // 
+                                        padding: '15px', 
                                         cursor: 'pointer',
                                         fontSize: '16px',
                                         display: 'flex',

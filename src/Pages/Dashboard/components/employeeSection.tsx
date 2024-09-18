@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { UserProfileData } from './../../Employees/interfaces/Employe'
 import { useQuery } from '@tanstack/react-query'
 import AxiosInstance from '@/Helpers/Axios'
+import style from './../style/dashboard.module.css'
 
 const EmployeeSection: React.FC = () => {
     const navigate = useNavigate()
@@ -33,6 +34,7 @@ const EmployeeSection: React.FC = () => {
                                             textAlign: 'center',
                                         }}
                                     >
+                                        <div className={style.employeeImage}>
                                         <img
                                             src={employee.imageUrl}
                                             alt={`${employee.firstName} ${employee.lastName}`}
@@ -53,6 +55,7 @@ const EmployeeSection: React.FC = () => {
                                             {employee.firstName}{' '}
                                             {employee.lastName}
                                         </p>
+                                        </div>
                                     </div>
                                 ),
                             )}

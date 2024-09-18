@@ -25,13 +25,14 @@ function ChangePassContent() {
     return (
         <>
             <div className={style.container}>
+                <h1>Change Password </h1>
                 <Toast
                     severity={toastSeverity}
                     open={toastOpen}
                     message={toastMessage}
                     onClose={handleToastClose}
                 />
-                <div>
+                <div style={{display:'flex',alignItems:'center',padding:'20px'}}>
                     To change your password add your current password then your
                     new password.
                 </div>
