@@ -1,4 +1,4 @@
-import React, {  useState, useEffect } from 'react'
+import React, {  useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { DropResult } from 'react-beautiful-dnd'
 import { useGetAllInterviews } from '../Hook'
@@ -98,10 +98,6 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         setFilteredInterviews(filtered)
     }        
 
-    const handleTabChange = (_event: React.SyntheticEvent, newValue: string) => {
-        setCurrentTab(newValue)
-    }
-
     const handleApplyFilter = () => {
         setIsFiltered(true)
         setCurrentTab(currentPhase)
@@ -111,20 +107,26 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         setIsFiltered(false)
         setCurrentPhase('first_interview')
         setStartDate('')
-        setEndDate('')
+        setEndDate('') 
         setCurrentTab('first_interview')
     }
     
-    const handleOpenModal = (interview: Interview, isReschedule = false) => {
+
+    const handleOpenModal = useCallback((interview: Interview, isReschedule = false) => {
         setSelectedInterview(interview)
         setIsModalOpen(true)
         setIsReschedule(isReschedule)
-    }
-
-    const handleCloseModal = () => {
+    }, [])
+    
+    const handleCloseModal = useCallback(() => {
         setIsModalOpen(false)
         setSelectedInterview(null)
-    }
+    }, [])
+    
+    const handleTabChange = useCallback((_event: React.SyntheticEvent, newValue: string) => {
+        setCurrentTab(newValue)
+    }, [])
+    
 
     const handleCancel = async (interview: Interview) => {
         try {
