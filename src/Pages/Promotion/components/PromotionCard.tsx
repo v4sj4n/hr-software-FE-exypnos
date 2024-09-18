@@ -288,6 +288,7 @@ export default function PromotionCard({ id }: { id: string }) {
                                                 position: newValue as string,
                                             })
                                         }
+                                        width={''}
                                     />
                                     <Selecter
                                         name="grade"
@@ -302,6 +303,7 @@ export default function PromotionCard({ id }: { id: string }) {
                                                 grade: newValue as string,
                                             })
                                         }
+                                        width={''}
                                     />
                                     <Input
                                         IsUsername

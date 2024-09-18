@@ -6,6 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay'
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton'
+import { ModalComponent } from '@/Components/Modal/Modal'
 function getRandomNumber(min: number, max: number) {
     return Math.round(Math.random() * (max - min) + min)
 }
@@ -58,6 +59,8 @@ export default function Calendar() {
     const requestAbortController = React.useRef<AbortController | null>(null)
     const [isLoading, setIsLoading] = React.useState(false)
     const [highlightedDays, setHighlightedDays] = React.useState([1, 2, 15])
+    const [selectedDate, setSelectedDate] = React.useState(initialValue)
+    const [isOpen, setIsOpen] = React.useState(false)
 
     const fetchHighlightedDays = (date: Dayjs) => {
         const controller = new AbortController()
@@ -96,11 +99,14 @@ export default function Calendar() {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateCalendar
-                defaultValue={initialValue}
+                defaultValue={selectedDate}
                 loading={isLoading}
                 onMonthChange={handleMonthChange}
                 renderLoading={() => <DayCalendarSkeleton />}
-                onChange={() => alert('Date changed')}  
+                onChange={(value: Date) => {
+                    setSelectedDate(dayjs(value))
+                    setIsOpen(true)
+                }}
                 slots={{
                     day: ServerDay,
                 }}
@@ -112,6 +118,9 @@ export default function Calendar() {
                     >,
                 }}
             />
+            <ModalComponent open={isOpen} handleClose={() => setIsOpen(false)}>
+                <h3>Add a note for {selectedDate.format('MMMM D, YYYY')}</h3>
+            </ModalComponent>
         </LocalizationProvider>
     )
 }

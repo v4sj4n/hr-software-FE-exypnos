@@ -20,7 +20,6 @@ import About from './Pages/About/About.tsx'
 import UserVacations from './Pages/Vacation/UserVacations.tsx'
 import EmailConfirmation from './Pages/Recruitment/Component/EmailConfirmation.tsx'
 import NotFound from './Pages/NotFound/NotFound.tsx'
-import UserPromotion from './Pages/Promotion/UserPromotion.tsx'
 import Promotion from './Pages/Promotion/Promotion.tsx'
 import ResetPassword from './Pages/ResetPassword/ResetPassword.tsx'
 import Chat from './Pages/Chat/Chat.tsx'
@@ -67,10 +66,6 @@ export default function Router() {
                 {
                     path: '/promotion',
                     element: <Promotion />,
-                },
-                {
-                    path: '/promotion/:id',
-                    element: <UserPromotion />,
                 },
                 { path: '/dashboard', element: <Dashboard />, index: false },
                 {

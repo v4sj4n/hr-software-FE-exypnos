@@ -9,6 +9,10 @@ import { greeter } from '@/Helpers/Greeter.tsx'
 import { useNavigate } from 'react-router-dom'
 import EmployeeSection from './components/employeeSection.tsx'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext.tsx'
+import Button from '@/Components/Button/Button.tsx'
+import { ButtonTypes } from '@/Components/Button/ButtonTypes.tsx'
+import { ModalComponent } from '@/Components/Modal/Modal.tsx'
+import { useState } from 'react'
 
 const DashboardContent: React.FC = () => {
     const { employeeData } = useDashboardContext()
@@ -17,22 +21,23 @@ const DashboardContent: React.FC = () => {
     const { currentUser } = useAuth()
     const userName = currentUser ? currentUser.firstName : 'User'
     const isAdmin = currentUser?.role === 'hr'
-
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     const handleNavigateToProfile = () => {
         if (currentUser) {
-            navigate(`/profile/${currentUser._id}`); 
+            navigate(`/profile/${currentUser._id}`)
         }
-    };
+    }
     const navigate = useNavigate()
-    
+
     return (
         <div className={style.dashboardContainer}>
             <div className={style.mainContent}>
                 <div className={style.rightContent}>
                     <div className={style.welcome}>
                         <h2>
-                            {greeter()} <span
+                            {greeter()}{' '}
+                            <span
                                 onClick={handleNavigateToProfile}
                                 className={style.userNameClickable}
                              style={{ cursor: 'pointer' ,transform: 'scale(1.1)'  }}  
@@ -40,14 +45,12 @@ const DashboardContent: React.FC = () => {
                                 {userName}
                             </span>
                             !
-                          
                         </h2>
                         {isAdmin ? (
                             <p>Here's what's happening with your team today</p>
                         ) : (
                             ' Let’s achieve your goals today! '
                         )}
-                        
                     </div>
                     <div className={style.cardContainer}>
                         <div className={style.cardGreen}>
@@ -86,10 +89,28 @@ const DashboardContent: React.FC = () => {
                             flex="1"
                             backgroundColor="rgba(255, 255, 255, 0.7)"
                         >
-                            <h2 style={{ justifyContent: 'flex-start' }}>
-                                Calendar
-                            </h2>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <h2>Notes</h2>
+                                <Button
+                                    btnText="Show all notes"
+                                    type={ButtonTypes.SECONDARY}
+                                    border={'none'}
+                                    onClick={() => setIsModalOpen(true)}
+                                />
+                            </div>
                             <Calendar />
+
+                            <ModalComponent
+                                open={isModalOpen}
+                                handleClose={() => setIsModalOpen(false)}
+                            >
+                                <h3>All notes</h3>
+                            </ModalComponent>
                         </Card1>
                         <Card1
                             padding="20px"
@@ -118,7 +139,6 @@ const DashboardContent: React.FC = () => {
                         flex="1"
                     >
                         <EmployeeSection />
-                        
                     </Card1>
                 </div>
             </div>
