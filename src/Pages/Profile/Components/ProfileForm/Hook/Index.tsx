@@ -100,24 +100,24 @@ export const useGetAndUpdateUserById = () => {
         })
     }
 
-    const handleGenderChange = (value: string) => {
+    const handleGenderChange = (value: string | string[]) => {
         if (!isAdmin) return;
         setUser((prevUser) => {
-            if (!prevUser) return null
+            if (!prevUser) return null;
             return {
                 ...prevUser,
-                gender: value,
+                gender: Array.isArray(value) ? value : [value],
             };
         });
     };
 
-    const handlePlaceChange = (value: string) => {
+    const handlePlaceChange = (value: string | string[]) => {
         if (!isAdmin) return;
         setUser((prevUser) => {
-            
+            if (!prevUser) return null;
             return {
                 ...prevUser,
-                pob: value,
+                pob: Array.isArray(value) ? value[0] : value, 
             };
         });
     };
@@ -201,19 +201,14 @@ export const useCreatePayroll = () => {
 
     const handleChangePayroll = (
         event: React.ChangeEvent<HTMLInputElement>
-      ) => {
+    ) => {
         const { name, value } = event.target;
-        if (["workingDays", "grossSalary", "bonus", "extraHours"].includes(name)) {
-          setPayroll((prevPayroll) => ({
+        setPayroll((prevPayroll) => ({
             ...prevPayroll,
-            [name]: value === '' ? undefined : Number(value),
-          }));
-        } else {
-          setPayroll((prevPayroll) => ({
-            ...prevPayroll,
-            [name]: value,
-          }));
-        }
+            [name]: ["workingDays", "grossSalary", "bonus", "extraHours"].includes(name)
+                ? (value === '' ? undefined : Number(value))
+                : value,
+        }));
     };
 
     const handleCreatePayroll = async (
@@ -273,7 +268,7 @@ export const useUpdatePayroll = () => {
         'success',
     )
 
-    const { isLoading, error, status } = useQuery<EmployeePayroll[], Error>({
+    const { isLoading, error } = useQuery<EmployeePayroll[], Error>({
         queryKey: ['EditingPayroll', id, lastMonth, currentYear],
         queryFn: async () => {
             const url = `/salary/user/${id}?month=${lastMonth}&year=${currentYear}`
@@ -284,7 +279,7 @@ export const useUpdatePayroll = () => {
         },
     })
 
-    console.log(status)
+
     const handleUpdateChangePayroll = (
         event: React.ChangeEvent<HTMLInputElement>,
     ) => {
@@ -293,7 +288,9 @@ export const useUpdatePayroll = () => {
             if (!prevPayroll) return null
             return {
                 ...prevPayroll,
-                [name]: value === '' ? undefined : Number(value),
+                [name]: ["workingDays", "grossSalary", "bonus", "extraHours"].includes(name)
+                    ? (value === '' ? undefined : Number(value))
+                    : value,
             }
         })
     }

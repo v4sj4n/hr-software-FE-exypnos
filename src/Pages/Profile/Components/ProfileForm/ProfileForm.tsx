@@ -104,9 +104,7 @@ const ProfileFormContext = () => {
                 </div>
                 <div className={style.inputWidth}>
                     <Selecter
-                      
                        options={Places}
-                       
                        multiple={false} 
                         width="350px"
                         label="CountryOfBirth"
