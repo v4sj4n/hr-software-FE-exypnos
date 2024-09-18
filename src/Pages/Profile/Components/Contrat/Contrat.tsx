@@ -118,7 +118,7 @@ const ContratContent = () => {
                     IsUsername
                     label="Bonus Description"
                     name="bonusDescription"
-                    type="text"
+                    
                     multiline={true}
                     rows={3}
                     value={

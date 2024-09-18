@@ -13,7 +13,8 @@ export const StructureProvider: React.FC<{children: any}> = ({children}) => {
     const [status, setStatus] = useState('')
     const [projectManager, setProjectManager] = useState('')
     const [teamMembers, setTeamMembers] = useState<string[]>([]) 
-    const statusOptions = ['in_progress', 'completed', 'planed']
+    
+   
 
     const handleDecriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setDescription(e.target.value)
@@ -30,8 +31,6 @@ export const StructureProvider: React.FC<{children: any}> = ({children}) => {
     const handleCloseToast = () => {
         setToastOpen(false)
     }
-
-
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value)
@@ -109,7 +108,6 @@ export const StructureProvider: React.FC<{children: any}> = ({children}) => {
     startDate,
     status, 
     projectManager,
-    statusOptions,
     teamMembers,
    }
 

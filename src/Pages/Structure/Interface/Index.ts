@@ -1,5 +1,5 @@
 import { TreeNode } from 'primereact/treenode'
-import React, { ChangeEvent } from 'react'
+import React from 'react'
 
 export interface ProjectData {
     _id: string
@@ -28,29 +28,31 @@ export interface CustomTreeNode extends TreeNode {
 }
 
 
-export interface StructureContextTypes  {
-    handleOpenDrawer: () => void
-    handleCloseDrawer: () => void
-    handleCloseToast: () => void
-    openDrawer: boolean
-    handleDecriptionChange:  (e: React.ChangeEvent<HTMLInputElement>) => void
-    handleStatusChange:(e: React.ChangeEvent<HTMLInputElement>) => void
-    handleStartDateChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-    handleNameChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-    handleProjectManagerChange: (e: ChangeEvent<HTMLInputElement>) => void
-    handleTeamMembersChange: (teamMembers: string[]) => void
-    name: string
-    description: string
-    startDate: string
-    status: string
-    projectManager: string
-    teamMembers: string[]
-    toastOpen: boolean
-    toastMessage: string
-    toastSeverity: 'success' | 'error' 
-    statusOptions: string[]
-    handleCreateProject: (e: React.FormEvent<HTMLFormElement>) => void
-}
+export interface StructureContextTypes {
+    handleDecriptionChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    description: string;
+    handleCloseDrawer: () => void;
+    handleCloseToast: () => void;
+    handleOpenDrawer: () => void;
+    openDrawer: boolean;
+    toastOpen: boolean;
+    toastMessage: string;
+    toastSeverity: 'success' | 'error';
+    setToastOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setToastMessage: React.Dispatch<React.SetStateAction<string>>;
+    setToastSeverity: React.Dispatch<React.SetStateAction<'success' | 'error'>>;
+    handleCreateProject: () => Promise<any>;
+    handleTeamMembersChange: (value: string | string[]) => void;
+    handleProjectManagerChange: (value: string | string[]) => void;
+    handleNameChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleStartDateChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleStatusChange: (value: string | string[]) => void;
+    name: string;
+    startDate: string;
+    status: string;
+    projectManager: string;
+    teamMembers: string[];
+  }
 
 
 

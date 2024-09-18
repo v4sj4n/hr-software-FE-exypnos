@@ -18,23 +18,21 @@ export const PayrollProviderSpecific: React.FC<{children: React.ReactNode}> = ({
         setPageSize(model.pageSize)
     }
 
-    const fetchPayroll = async () => {const response = await AxiosInstance.get<{
-            data: PayrollRowSpecifc[]
-            totalPages: number}>
-            (`/salary/user/${id}?month=${month}&year=${year}&limit=${pageSize}&page=${page}`)
-        return response.data
-    }
-
-    const { data: payrollId, isPending } = useQuery<
-        { data: PayrollRowSpecifc[]; totalPages: number },
-        Error
-    >({
-        queryKey: ['payrollId', month, year, page, pageSize],
-        queryFn: () => fetchPayroll(),
+    const { data, isPending } = useQuery({
+        queryKey: ['payrollId',id, month, year, page, pageSize],
+        queryFn: async () => {
+            const res = await AxiosInstance.get(
+               `/salary/user/${id}?month=${month}&year=${year}&limit=${pageSize}&page=${page}` 
+            )
+            return res.data
+        },
     })
 
+    const payrollId = data?.data?? []
+    const totalPages = data?.totalPages?? 0
+
     const rows: PayrollRowSpecifc[] =
-        payrollId?.data.map((payrollData, index) => ({
+        payrollId.map((payrollData: any, index: number) => ({
             id: page * pageSize + index + 1,
             originalId: payrollData.userId._id,
             netSalary: `${payrollData.netSalary}${payrollData.currency}`,
@@ -81,10 +79,10 @@ export const PayrollProviderSpecific: React.FC<{children: React.ReactNode}> = ({
         isPending,
         page,
         pageSize,
-        totalPages: payrollId?.totalPages ?? 0,
+        totalPages: totalPages,
         handlePaginationModelChange,
-        fullName: payrollId?.data[0]
-            ? `${payrollId.data[0].userId.firstName} ${payrollId.data[0].userId.lastName}`
+        fullName: payrollId[0]
+            ? `${payrollId[0].userId.firstName} ${payrollId[0].userId.lastName}`
             : '',
     }
 

@@ -46,14 +46,6 @@ export const SideBar = () => {
 
     const theme = useTheme()
 
-    const getHoverStyle = (hovered: boolean) => ({
-        color: 'black',
-        transition: 'color 0.3s ease, background-color 0.3s ease',
-        backgroundColor: hovered
-            ? alpha(theme.palette.background.default, 0.5)
-            : 'black',
-    })
-
     return (
         <div className={style.sidebarContainer}>
             <nav className={` ${isOpen ? style.navOpen : style.navClosed}`}>
