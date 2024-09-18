@@ -31,39 +31,43 @@ const ProfileFormContext = () => {
             severity={updateToastSeverity}
             onClose={handleUpdateToastClose}
             />
-            <div className={style.forms}>
-                <div>
-                    <div className={style.profile}>
-                        <Avatar
-                            src={previewImage || user.imageUrl}
-                            style={{ width: '70px', height: '70px' }}
-                        />
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <div
-                                style={{ fontSize: '20px', color: '#000000' }}
-                            >{`${user.firstName} ${user.lastName}`}</div>
-                            <div style={{ color: '#000000' }}>
-                                {user.auth.email}
-                            </div>
-                        </div>
-                    </div>
-                    {isCurrentUser && <Image onChange={uploadImage} />}
+
+                    <div>
+                    <div className={style.profile} style={{ position: 'relative', display: 'inline-block' }}>
+    <Avatar
+        src={previewImage || user.imageUrl}
+        style={{ width: '150px', height: '150px', borderRadius: '50%' }}
+    />
+    {isCurrentUser && (
+        <div style={{ 
+            position: 'absolute', 
+            bottom: '1px', 
+            right: '10px', 
+        
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            cursor: 'pointer', 
+        }}>
+            <Image onChange={uploadImage} />
+        </div>
+    )}
+</div>
+<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '15px' }}>
+    <div style={{ fontSize: '30px', color: '#000000' }}>
+        {`${user.firstName} ${user.lastName}`}
+    </div>
+    <div style={{ color: '#000000' }}>
+        {user.auth.email}
+    </div>
+</div>
+
                 </div>
 
-                <div className={style.inputWidth}>
-                    <Input
-                        IsUsername
-                        label="FirstName"
-                        width="350px"
-                        disabled={!isAdmin}
-                        name="firstName"
-                        onChange={handleChange}
-                        value={user.firstName}
-                    />
-                </div>
+            <div className={style.forms}>
             </div>
 
-            <div className={style.forms}>
+            <div className={style.forms} >
                 <div className={style.inputWidth}>
                     <Input
                         IsUsername
@@ -114,6 +118,7 @@ const ProfileFormContext = () => {
                         value={user.pob}
                     />
                 </div>
+                
             </div>
 
             <div className={style.forms}>
@@ -137,6 +142,23 @@ const ProfileFormContext = () => {
                         onChange={handleChange}
                         value={user.phone}
                     />
+                </div>
+                
+                <div className={style.inputWidth}>
+                    <Input
+                        IsUsername
+                        label="FirstName"
+                        width="350px"
+                        disabled={!isAdmin}
+                        name="firstName"
+                        onChange={handleChange}
+                        value={user.firstName}
+                    />
+                    
+                </div>
+                <div className={style.inputWidth}>
+                < Input IsUsername name='Position' label='' width="350px"
+                />
                 </div>
             </div>
 

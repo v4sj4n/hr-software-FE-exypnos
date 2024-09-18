@@ -1,49 +1,84 @@
-import React from 'react'
-import { useThemeContext } from './ThemeContext'
-import { Box, styled } from '@mui/material'
+import React, { useState } from 'react';
+import { useThemeContext } from './ThemeContext';
+import { Box, Typography, Menu, MenuItem, IconButton, styled } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import PurpleIcon from '@mui/icons-material/ColorLens';  
 
-const Slider = styled('div')<{ isPurpleTheme: boolean }>(
-    ({ isPurpleTheme }) => ({
-        width: '50px',
-        height: '25px',
-        borderRadius: '15px',
-        backgroundColor: isPurpleTheme ? '#725ABB' : '#4868AD',
-        position: 'relative',
-        cursor: 'pointer',
-        transition: 'background-color 0.3s ease',
-        '&:before': {
-            content: '""',
-            position: 'absolute',
-            width: '18px',
-            height: '18px',
-            borderRadius: '50%',
-            backgroundColor: '#fff',
-            top: '50%',
-            left: isPurpleTheme ? '30px' : '5px',
-            transform: 'translateY(-50%)',
-            transition: 'left 0.3s ease',
-        },
-    }),
-)
+const DropdownButton = styled(IconButton)({
+    
+  backgroundColor: 'transparent',
+  color: '#333',
+  padding: '10px',
+  fontSize:'xx-large',
+  transition: 'background-color 0.3s ease, transform 0.3s ease',
+  '&:hover': {
+    transform: 'scale(1.05)',
+  },
+});
 
 const ThemeSwitcher: React.FC = () => {
-    const { toggleTheme, isPurpleTheme } = useThemeContext()
+  const { toggleTheme } = useThemeContext();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-    const handleThemeChange = () => {
-        console.log('Current Theme:', isPurpleTheme ? 'Purple' : 'Blue')
-        toggleTheme()
-    }
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-    return (
-        <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            flexDirection="column"
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleThemeChange = (theme: string) => {
+    toggleTheme(); 
+    handleClose();
+  };
+
+  return (
+    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
+      <DropdownButton onClick={handleClick}>
+        <ExpandMoreIcon />
+      </DropdownButton>
+
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        PaperProps={{
+          elevation: 12,
+          sx: {
+            backgroundColor: '#ffffff',  
+            borderRadius: '10px',
+            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',  
+          },
+        }}
+      >
+        <MenuItem
+          onClick={() => handleThemeChange('purple')}
+          sx={{
+            transition: 'background-color 0.3s ease',
+            '&:hover': {
+              backgroundColor: '#f3e9ff',
+            },
+          }}
         >
-            <Slider isPurpleTheme={isPurpleTheme} onClick={handleThemeChange} />
-        </Box>
-    )
-}
+          <PurpleIcon sx={{ color: '#725ABB', marginRight: 1 }} /> 
+          <Typography>Purple Theme</Typography>
+        </MenuItem>
+        <MenuItem
+          onClick={() => handleThemeChange('blue')}
+          sx={{
+            transition: 'background-color 0.3s ease',
+            '&:hover': {
+              backgroundColor: '#e3f2fd',
+            },
+          }}
+        >
+          <PurpleIcon sx={{ color: '#4868AD', marginRight: 1 }} />  
+          <Typography>Blue Theme</Typography>
+        </MenuItem>
+      </Menu>
+    </Box>
+  );
+};
 
-export default ThemeSwitcher
+export default ThemeSwitcher;

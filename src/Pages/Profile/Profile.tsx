@@ -61,19 +61,29 @@ export default function Profile() {
                 sx={{
                     borderRight: 1,
                     borderColor: 'divider',
+                    padding: '10px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
                     '& .MuiTabs-indicator': { right: 'auto', left: 0 },
                     '& .MuiTab-root': {
-                        alignItems: 'flex-start',
+                        alignContent: 'flex-start',
                         marginBottom: 5,
                         marginRight: 5,
                         mt: 1.5,
                         fontFamily: 'Outfit, sans-serif',
+                        height:'70px',
+                        fontWeight: '700',
+                        fontSize: '18px',
+                        borderRadius: '5px',
+                        boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.15)',
+
                     },
                 }}
             >
                 <Tab label="Profile" {...a11yProps(0)} />
                 <Tab label="payroll" {...a11yProps(1)} />
-                <Tab label="Change Password" {...a11yProps(2)} />
+                <Tab label="Change Password" {...a11yProps(2)}  />
             </Tabs>
             <TabPanel value={value} index={0}>
                 <ProfileForm />

@@ -132,10 +132,11 @@ const NotificationDropdown: React.FC = () => {
 
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
-            <Box sx={{ position: 'relative', display: 'inline-block' }}>
+            <Box sx={{ position: 'relative', display: 'inline-block' , backgroundColor: 'transparent'}}>
                 <IconButton color="inherit" onClick={handleToggleDropdown} >
                     <Badge badgeContent={length} color="error" >
-                        <NotificationsNoneIcon sx={{ fontSize: 35 ,color: theme.palette.text.primary,}} /> 
+                        <NotificationsNoneIcon sx={{ fontSize: 30 ,color: theme.palette.text.primary,   backgroundColor: 'transparent',  
+}} /> 
                     </Badge>
                 </IconButton>
                 {isOpen && (
@@ -153,6 +154,7 @@ const NotificationDropdown: React.FC = () => {
                             maxHeight: 400,
                             display: 'flex',
                             flexDirection: 'column',
+                             backgroundColor: 'transparent',
                         }}
                     >
                         <Box
@@ -171,7 +173,7 @@ const NotificationDropdown: React.FC = () => {
                                     sx={{
                                         mb: 1,
                                         borderBottom: `4px solid ${getColorByType(notification.type, notification.isRead)}`,
-                                        bgcolor: 'rgba(255, 255, 255, 0.7)',
+                                        // bgcolor: 'rgba(255, 255, 255, 0.7)',
                                         color: '#000',
                                     }}
                                     onClick={() =>

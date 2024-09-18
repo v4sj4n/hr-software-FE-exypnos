@@ -28,7 +28,7 @@ const ContratContent = () => {
     } = useCreatePayroll()
 
     return (
-        <div className={style.container}>
+        <div className={style.container} style={{width:'800px'}}>
             <Toast
                 severity={EditingPayroll ? toastSeverity : createToastSeverity}
                 open={EditingPayroll ? toastOpen : createToastOpen}
@@ -37,8 +37,8 @@ const ContratContent = () => {
                     EditingPayroll ? handleToastClose : handleCreateToastClose
                 }
             />
-            <div className={style.title}>Payroll Information</div>
-            <div className={style.forms}>
+            <div style={{alignItems:'center',display:'flex', fontSize: '35px',color: '#333',fontWeight:'700',padding:'20px'}}>Payroll Information</div>
+            <div className={style.forms} style={{display:'flex',flexDirection:'column'}}>
                 <Input
                     IsUsername
                     type="number"
@@ -94,7 +94,7 @@ const ContratContent = () => {
             </div>
             <div className={style.border}></div>
 
-            <div className={style.title}>Add Bonus</div>
+            <div style={{alignItems:'center',display:'flex', fontSize: '35px',color: '#333',fontWeight:'700',padding:'20px'}}>Add Bonus</div>
 
             <div
                 style={{
@@ -132,9 +132,7 @@ const ContratContent = () => {
                             : handleChangePayroll
                     }
                 />
-            </div>
-
-            <div className={style.inputWidth}>
+                <div className={style.inputWidth}>
                 <Button
                     type={ButtonTypes.PRIMARY}
                     btnText={
@@ -148,6 +146,9 @@ const ContratContent = () => {
                     width="300px"
                 />
             </div>
+            </div>
+
+            
         </div>
     )
 }
