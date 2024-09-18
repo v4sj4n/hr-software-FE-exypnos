@@ -138,12 +138,17 @@ function StructureContent() {
         status, 
         projectManager,
         teamMembers,
-        statusOptions,
     } = useStructureContext()
     
     const { data: users = [] } = useGetAllUsers()
-    const TeamMembers = users.map((user) => user._id)
+    const userOptions = users.map((user) => ({
+        label: `${user.firstName} ${user.lastName}`,
+        value: user._id.toString()
+    }))
 
+
+    const statusOptions = ['in_progress', 'completed', 'planed']
+    
     return (
         <div className={styles.container}>
              <Toast
@@ -164,11 +169,11 @@ function StructureContent() {
                     />
                 </div>
                  <Input IsUsername name='name' onChange={handleNameChange} value={name}  label='Project Name'/>
-                 <Input IsUsername name='startDate' label='Start date' shrink={true}  type="datetime-local" onChange={handleStartDateChange} value={startDate}/>
+                 <Input IsUsername name='startDate' label='Start date' shrink={true}  type="date" onChange={handleStartDateChange} value={startDate}/>
                  <Input IsUsername name='description' label='Description' type='textarea' rows={3} multiline={true} onChange={handleDecriptionChange} value={description} />
                  <Selecter width='100%' name='status' label='Status' options={statusOptions} onChange={handleStatusChange} multiple={false} value={status}/>
-                 <Selecter width='100%' name='projectManager' label='Project Manager' multiple={false} onChange={handleProjectManagerChange} value={projectManager} options={TeamMembers}/>
-                 <Selecter width='100%' name='teamMembers' label='Team Members' onChange={handleTeamMembersChange} value={teamMembers} multiple options={TeamMembers}/>
+                 <Selecter width='100%' name='projectManager' label='Project Manager' multiple={false} onChange={handleProjectManagerChange} value={projectManager} options={userOptions}/>
+                 <Selecter width='100%' name='teamMembers' label='Team Members' onChange={handleTeamMembersChange} value={teamMembers} multiple options={userOptions}/>
                  <Button type={ButtonTypes.PRIMARY} btnText='Create' onClick={handleCreateProject}  />
             </DrawerComponent>
             <Card borderRadius="5px" padding="32px" border="1px solid #ebebeb" height='400px' overflow='auto'>

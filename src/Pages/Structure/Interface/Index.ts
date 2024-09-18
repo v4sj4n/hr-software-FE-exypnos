@@ -51,7 +51,6 @@ export interface StructureContextTypes {
     startDate: string;
     status: string;
     projectManager: string;
-    statusOptions: string[];
     teamMembers: string[];
   }
 

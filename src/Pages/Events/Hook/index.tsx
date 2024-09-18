@@ -8,6 +8,7 @@ import {
     useQueryClient,
 } from '@tanstack/react-query'
 import { fetchEvents } from '../utils/utils'
+import axios from 'axios'
 
 export const useGetAllEvents = () => {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -147,9 +148,16 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
             setEventPhotos([])
             handleCloseDrawer()
         },
-        onError: (error: Error) => {
-            console.error('Error creating event', error)
-            setToastMessage('Error creating event')
+        onError: (error: unknown) => {
+            let errorMessage = 'An unexpected error occurred'
+            
+            if (axios.isAxiosError(error)) {
+                if (error.response) {
+                    errorMessage = error.response.data.message || `Error: ${error.response.status}`
+                } 
+            }
+
+            setToastMessage(errorMessage)
             setToastSeverity('error')
             setToastOpen(true)
         },
@@ -380,11 +388,18 @@ export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
             setEditDrawer(false)
             handleCloseDrawer()
         },
-        onError: (error) => {
-            console.error('Error updating event:', error)
-            setUpdateToastMessage('Error updating event')
-            setUpdateToastOpen(true)
+        onError: (error: unknown) => {
+            let errorMessage = 'An unexpected error occurred'
+            
+            if (axios.isAxiosError(error)) {
+                if (error.response) {
+                    errorMessage = error.response.data.message || `Error: ${error.response.status}`
+                } 
+            }
+
+            setUpdateToastMessage(errorMessage)
             setUpdateToastSeverity('error')
+            setUpdateToastOpen(true)
         },
     })
 
