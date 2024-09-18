@@ -7,7 +7,7 @@ const Filter: React.FC<InputProps> = (props) => {
     return (
         <Box
             component="form"
-            sx={{ '& > :not(style)': { m: 1, width: '10ch' } }}
+            sx={{ '& > :not(style)': { m: 1, } }}
             noValidate
             autoComplete="off"
         >
@@ -24,6 +24,14 @@ const Filter: React.FC<InputProps> = (props) => {
                         fontSize: '16px',
                         fontFamily: '"Outfit", sans-serif',
                         color: '#4C556B',
+                    },
+                    '& input[type=number]::-webkit-outer-spin-button': {
+                        WebkitAppearance: 'none',
+                        margin: 0,
+                    },
+                    '& input[type=number]::-webkit-inner-spin-button': {
+                        WebkitAppearance: 'none',
+                        margin: 0,
                     },
                     fontSize: '14px',
                 }}

@@ -13,9 +13,15 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
     const [year, setYear] = useState<number | undefined>(undefined)
     const [fullName, setFullName] = useState('')
     const [bonus, setBonus] = useState<number | undefined>(undefined)
-    const [minNetSalary, setMinNetSalary] = useState<number | undefined>(undefined)
-    const [maxNetSalary, setMaxNetSalary] = useState<number | undefined>(undefined)
-    const [workingDays, setWorkingDays] = useState<number | undefined>(undefined)
+    const [minNetSalary, setMinNetSalary] = useState<number | undefined>(
+        undefined,
+    )
+    const [maxNetSalary, setMaxNetSalary] = useState<number | undefined>(
+        undefined,
+    )
+    const [workingDays, setWorkingDays] = useState<number | undefined>(
+        undefined,
+    )
     const [page, setPage] = useState(0)
     const [pageSize, setPageSize] = useState(5)
 
@@ -25,7 +31,6 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     const navigate = useNavigate()
-
 
     const { data, isPending } = useQuery({
         queryKey: [
@@ -43,7 +48,7 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
         queryFn: async () => {
             const response = await AxiosInstance.get(
                 `/salary?month=${month}&year=${year}&bonus=${bonus}&maxNetSalary=${maxNetSalary}&minNetSalary=${minNetSalary}&workingDays=${workingDays}&fullName=${fullName}&limit=${pageSize}&page=${page}`,
-                        )
+            )
             return response.data
         },
     })

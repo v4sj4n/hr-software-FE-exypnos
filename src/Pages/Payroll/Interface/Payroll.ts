@@ -24,7 +24,9 @@ export interface PayrollContextType {
     handlePaginationModelChange: (paginationModel: GridPaginationModel) => void
     handleDateChange: (event: React.ChangeEvent<HTMLInputElement>) => void
     handleFullNameChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-    handleWorkingDaysChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    handleWorkingDaysChange: (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => void
     handleMinSalaryChange: (event: React.ChangeEvent<HTMLInputElement>) => void
     handleMaxSalaryChange: (event: React.ChangeEvent<HTMLInputElement>) => void
     handleBonusChange: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -53,4 +55,3 @@ export interface PayrollRow {
         lastName: string
     }
 }
-

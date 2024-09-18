@@ -4,15 +4,15 @@ import { useChat } from '../context/ChatContext';
 import styles from '@/Pages/Chat/styles/chat.module.css';
 
 const MessageList: React.FC = () => {
-  const { messages, senderId, recipientId } = useChat(); // Pull recipientId from context
+  const { messages, senderId, recipientId } = useChat();
   const messageEndRef = useRef<null | HTMLDivElement>(null);
 
-  // Scroll to bottom whenever messages change
+  // Scroll to bottom when messages change
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Safeguard against non-array messages
+  // Filter messages between the current user (sender) and the selected recipient
   const filteredMessages = Array.isArray(messages)
     ? messages.filter(
         (msg) =>
