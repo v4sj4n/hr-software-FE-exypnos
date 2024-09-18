@@ -60,7 +60,7 @@ export const RecruitmentSchema = object({
     phoneNumber: pipe(
         string('Phone Number is required'),
         regex(/^6[6-9]\d{7}$/, 'Invalid phone number format, the number should start with 66-69 and be 7 digits long'),
-        startsWith('66', 'The number should start with a 6   '),
+        startsWith('6', 'The number should start with a 6   '),
     ),
 
     positionApplied: pipe(

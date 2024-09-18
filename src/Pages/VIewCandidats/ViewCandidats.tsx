@@ -156,7 +156,7 @@ export default function ViewCandidats() {
                     <div className={style.section}>
                         <div className={style.label}>Technologies Used</div>
                         <div className={style.value}>
-                            {applicant?.technologiesUsed}
+                        {applicant?.technologiesUsed?.toString()}
                         </div>
                     </div>
                     <div className={style.border}></div>{' '}
@@ -175,13 +175,15 @@ export default function ViewCandidats() {
                         </div>
                     </div>
                     <div className={style.border}></div>
-                </div>
+                </div >
 
-                <div
+                <div className={style.section}
+
                     style={{
                         display: 'flex',
                         gap: '10px',
                         flexDirection: 'column',
+
                     }}
                 >
                     <div className={style.label}>Create Interview:</div>
@@ -189,6 +191,7 @@ export default function ViewCandidats() {
                         type={ButtonTypes.PRIMARY}
                         btnText="Create Interview"
                         width="100%"
+                        // marginTop='150px'
                         onClick={() => handleOpenModal('active')}
                     />
                 </div>

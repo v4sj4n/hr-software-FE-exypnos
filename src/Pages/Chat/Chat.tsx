@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { User } from '@/Pages/Chat/Interfaces/types';
-import { useChat } from './context/ChatContext';
+import { ChatProvider, useChat } from './context/ChatContext';
 import AxiosInstance from '@/Helpers/Axios';
 import { Box, Typography } from '@mui/material';
 import UserList from './components/userlist';
 import MessageList from './components/messagelist';
 import SendMessage from './components/chatinput';
+import { SocketProvider } from './context/SocketContext';
 
 const Chat: React.FC = () => {
   const { users, setUsers } = useChat();  // Removed messages from the destructuring
@@ -51,4 +52,14 @@ const Chat: React.FC = () => {
   );
 };
 
-export default Chat;
+const ChatWithProviders: React.FC = () => {
+  return (
+    <SocketProvider>
+      <ChatProvider>
+        <Chat />
+      </ChatProvider>
+    </SocketProvider>
+  );
+};
+
+export default ChatWithProviders;

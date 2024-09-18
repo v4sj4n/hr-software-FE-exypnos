@@ -36,6 +36,7 @@ const NotificationDropdown: React.FC = () => {
     const [length, setLength] = useState(0);
 
     useEffect(() => {
+        if(notifications.length === 0) return;
         setLength(notifications.filter((n) => !n.isRead).length);
     }, [notifications]);
 
