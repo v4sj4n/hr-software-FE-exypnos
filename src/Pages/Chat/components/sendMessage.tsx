@@ -8,11 +8,8 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const SendMessage: React.FC = () => {
   const [message, setMessage] = useState('');
-  const { senderId, recipientId, setMessages } = useChat();
+  const { senderId, recipientId, setMessages, fetchActiveChats } = useChat();  // <-- Use fetchActiveChats
   const socket = useSocket();
-
-  console.log('Current Sender ID:', senderId);  // Log senderId
-  console.log('Current Recipient ID:', recipientId);  // Log recipientId
 
   function getAuthToken(): string | null {
     return localStorage.getItem('access_token');
@@ -47,8 +44,8 @@ const SendMessage: React.FC = () => {
     }
   };
 
-// Function to refetch the messages
-const fetchMessages = async () => {
+  // Function to refetch the messages
+  const fetchMessages = async () => {
     try {
       const response = await AxiosInstance.get(`/messages/${senderId}/${recipientId}`);
       const fetchedMessages = response.data || []; // Ensure it defaults to an empty array
@@ -58,12 +55,8 @@ const fetchMessages = async () => {
       setMessages([]); // Set an empty array on error
     }
   };
-  
-
-  
 
   const handleSendMessage = async () => {
-    console.log('Sending message:', message);  // Log the message being sent
     if (!senderId || !recipientId || !message.trim()) {
       console.error('Sender or recipient ID is missing or message is empty.');
       return;
@@ -73,9 +66,9 @@ const fetchMessages = async () => {
       senderId,
       recipientId,
       message,
-      timestamp: new Date().toISOString(),  // Add timestamp locally
+      timestamp: new Date().toISOString(),
     };
-  
+
     // Emit the message via WebSocket for real-time update
     socket.emit('sendMessage', messageData);
   
@@ -85,15 +78,15 @@ const fetchMessages = async () => {
     // Save the message to the database via REST API
     await sendMessageToAPI(message, senderId, recipientId);
   
-    // Optionally refetch the messages after sending
+    // Refetch the messages after sending
     await fetchMessages();
   
-    console.log('Message sent:', message);  // Log the sent message
+    // Refetch active users after sending a message
+    await fetchActiveChats();  // <-- Use fetchActiveChats instead of fetchActiveUsers
   
     // Clear the input field after sending the message
     setMessage('');
   };
-  
 
   return (
     <Box sx={{ display: 'flex', gap: 2 }}>

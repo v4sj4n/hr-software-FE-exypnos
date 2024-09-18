@@ -1,34 +1,71 @@
+/* Chat Container */
 .chatContainer {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-  }
-  
-  .chatInput {
-    display: flex;
-    align-items: center;
-  }
-  
-  .chatInput input {
-    flex: 1;
-    padding: 10px;
-    margin-right: 10px;
-  }
-  
-  .chatMessages {
-    height: 400px;
-    overflow-y: auto;
-    margin-bottom: 20px;
-  }
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f0f2f5; /* Slightly lighter background for contrast */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
 
-  
+/* Chat Input Styles */
+.chatInput {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+  background-color: #fff;
+}
+
+.chatInput input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+  font-size: 1rem;
+  background-color: #f8f8f8;
+}
+
+.chatInput input:focus {
+  border-color: #2196f3;
+  background-color: #fff;
+}
+
+.chatInput button {
+  padding: 12px 20px;
+  border-radius: 20px;
+  background-color: #2196f3;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.chatInput button:hover {
+  background-color: #1976d2;
+}
+
+/* Chat Messages Styles */
+.chatMessages {
+  height: 400px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
 /* Message List Styles */
 .messageListContainer {
   padding: 2rem;
   max-height: 400px;
   overflow-y: auto;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  border: 1px solid #ddd;
 }
 
 .messageContainer {
@@ -46,22 +83,28 @@
 
 .messageBox {
   max-width: 60%;
-  padding: 10px;
-  border-radius: 10px;
+  padding: 12px;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .senderMessage {
   background-color: #2196f3;
   color: #fff;
+  border-radius: 12px 12px 0 12px;
 }
 
 .recipientMessage {
   background-color: #e0e0e0;
   color: #000;
+  border-radius: 12px 12px 12px 0;
 }
 
 .messageTimestamp {
   font-size: 0.75rem;
+  color: #888;
+  text-align: right;
+  margin-top: 5px;
 }
 
 /* User List Styles */
@@ -73,8 +116,15 @@
 .userListItem {
   padding: 1rem;
   border-bottom: 1px solid #ddd;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
 }
 
+.userListItem:hover {
+  background-color: #f1f1f1;
+}
+
+/* Loading and Error Styles */
 .loadingContainer {
   display: flex;
   justify-content: center;
@@ -85,33 +135,36 @@
   text-align: center;
   margin-top: 1rem;
   color: red;
+  font-weight: bold;
 }
 
-
-/* Additional styles for UserList */
-
+/* Search Input Styles */
 .searchInput {
   margin-bottom: 1rem;
+  background-color: #f8f8f8;
 }
 
-.userList {
-  padding: 0;
-  margin: 0;
+.searchInput input {
+  border-radius: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
 }
 
-.userListItem {
-  padding: 1rem;
-  border-bottom: 1px solid #ddd;
+.searchInput input:focus {
+  border-color: #2196f3;
 }
 
-.loadingContainer {
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
+/* Improved Scrollbar Styling */
+.messageListContainer::-webkit-scrollbar {
+  width: 8px;
 }
 
-.errorText {
-  text-align: center;
-  margin-top: 1rem;
-  color: red;
+.messageListContainer::-webkit-scrollbar-thumb {
+  background-color: #2196f3;
+  border-radius: 10px;
+}
+
+.messageListContainer::-webkit-scrollbar-track {
+  background-color: #f0f2f5;
 }

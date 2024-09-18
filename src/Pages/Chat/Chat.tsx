@@ -5,7 +5,7 @@ import AxiosInstance from '@/Helpers/Axios';
 import { Box, Typography } from '@mui/material';
 import UserList from './components/userlist';
 import MessageList from './components/messagelist';
-import SendMessage from './components/chatinput';
+import SendMessage from './components/sendMessage';
 
 const Chat: React.FC = () => {
   const { users, setUsers } = useChat();  // Removed messages from the destructuring
