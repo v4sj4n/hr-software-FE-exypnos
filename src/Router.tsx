@@ -1,12 +1,11 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import ViewCandidats from './Pages/VIewCandidats/ViewCandidats.tsx'
-import PrivateRoute from './Context/ProtectedRoute.tsx'
+import PrivateRoute from './ProtectedRoute/ProtectedRoute.tsx'
 import Candidates from './Pages/Candidates/Candidates.tsx'
 import Dashboard from './Pages/Dashboard/Dashboard.tsx'
 import Employees from './Pages/Employees/Employees.tsx'
 import Events from './Pages/Events/Events.tsx'
 import Interview from './Pages/Interview/Interview.tsx'
-import ResetPass from './Pages/Login/Component/ResetPass'
 import Login from './Pages/Login/Login'
 import Payroll from './Pages/Payroll/Payroll.tsx'
 import Profile from './Pages/Profile/Profile'
@@ -21,8 +20,11 @@ import About from './Pages/About/About.tsx'
 import UserVacations from './Pages/Vacation/UserVacations.tsx'
 import EmailConfirmation from './Pages/Recruitment/Component/EmailConfirmation.tsx'
 import NotFound from './Pages/NotFound/NotFound.tsx'
-import UserPromotion from './Pages/Promotion/UserPromotion.tsx'
 import Promotion from './Pages/Promotion/Promotion.tsx'
+import ResetPassword from './Pages/ResetPassword/ResetPassword.tsx'
+import Chat from './Pages/Chat/Chat.tsx'
+
+
 
 export default function Router() {
     const router = createBrowserRouter([
@@ -40,8 +42,8 @@ export default function Router() {
             element: <EmailConfirmation />,
         },
         {
-            path: '/forgot-password',
-            element: <ResetPass />,
+            path: '/reset-password',
+            element: <ResetPassword />,
         },
         {
             path: 'career',
@@ -49,10 +51,11 @@ export default function Router() {
         },
         {
             path: '/',
-
             element: (
                 <>
+                  
                     <PrivateRoute />
+                  
                 </>
             ),
             children: [
@@ -63,10 +66,6 @@ export default function Router() {
                 {
                     path: '/promotion',
                     element: <Promotion />,
-                },
-                {
-                    path: '/promotion/:id',
-                    element: <UserPromotion />,
                 },
                 { path: '/dashboard', element: <Dashboard />, index: false },
                 {
@@ -99,7 +98,7 @@ export default function Router() {
                 },
                 {
                     path: '/structure',
-                    element: <Structure />,
+                    element: <Structure/>,
                 },
                 {
                     path: '/candidates',
@@ -109,6 +108,7 @@ export default function Router() {
                     path: '/events',
                     element: <Events />,
                 },
+                
                 {
                     path: '/interview',
                     element: <Interview />,
@@ -120,6 +120,10 @@ export default function Router() {
                 {
                     path: '/inventory',
                     element: <Inventory />,
+                },
+                {
+                    path: '/chat',  
+                    element: <Chat />,
                 },
             ],
         },

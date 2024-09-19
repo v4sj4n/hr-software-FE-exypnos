@@ -32,24 +32,7 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const navigate = useNavigate()
 
-    const fetchPayroll = async (): Promise<{
-        data: PayrollRow[]
-        totalPages: number
-    }> => {
-        const response = await AxiosInstance.get<{
-            data: PayrollRow[]
-            totalPages: number
-        }>(
-            `/salary?month=${month}&year=${year}&bonus=${bonus}&maxNetSalary=${maxNetSalary}&minNetSalary=${minNetSalary}&workingDays=${workingDays}&fullName=${fullName}&limit=${pageSize}&page=${page}`,
-        )
-        return response.data
-    }
-
-    const {
-        data: payrollData,
-        isPending,
-        isError,
-    } = useQuery<{ data: PayrollRow[]; totalPages: number }, Error>({
+    const { data, isPending } = useQuery({
         queryKey: [
             'payroll',
             month,
@@ -62,11 +45,19 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
             maxNetSalary,
             bonus,
         ],
-        queryFn: () => fetchPayroll(),
+        queryFn: async () => {
+            const response = await AxiosInstance.get(
+                `/salary?month=${month}&year=${year}&bonus=${bonus}&maxNetSalary=${maxNetSalary}&minNetSalary=${minNetSalary}&workingDays=${workingDays}&fullName=${fullName}&limit=${pageSize}&page=${page}`,
+            )
+            return response.data
+        },
     })
 
+    const payrollData = data?.data ?? []
+    const totalPages = data?.totalPages ?? 0
+
     const rows: PayrollRow[] =
-        payrollData?.data.map((payrollItem, index) => ({
+        payrollData.map((payrollItem: any, index: number) => ({
             id: page * pageSize + index + 1,
             originalId: payrollItem.userId._id,
             netSalary: `${payrollItem.netSalary}${payrollItem.currency}`,
@@ -99,16 +90,50 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
         { field: 'tax', headerName: 'Tax', flex: 2 },
     ]
 
-    const headerTextColors = { firstName: '#0000FF' }
-
     const getRowId = (row: PayrollRow) => row.id
 
-    const handleRowClick = (params: GridRowParams) => { navigate(`/payroll/user/${params.row.originalId}`) }
+    const handleRowClick = (params: GridRowParams) => {
+        navigate(`/payroll/user/${params.row.originalId}`)
+    }
+
+    const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const date = event.target.value
+        const [yearString, monthString] = date.split('-')
+        setYear(parseInt(yearString))
+        setMonth(parseInt(monthString))
+    }
+
+    const handleFullNameChange = (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        setFullName(event.target.value)
+    }
+
+    const handleWorkingDaysChange = (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        setWorkingDays(parseInt(event.target.value))
+    }
+
+    const handleMinSalaryChange = (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        setMinNetSalary(parseFloat(event.target.value))
+    }
+
+    const handleMaxSalaryChange = (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        setMaxNetSalary(parseFloat(event.target.value))
+    }
+
+    const handleBonusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setBonus(parseFloat(event.target.value))
+    }
 
     const contextValue = {
         rows,
         columns,
-        headerTextColors,
         getRowId,
         handleRowClick,
         setFullName,
@@ -117,13 +142,18 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
         setMonth,
         setYear,
         isPending,
-        isError,
         setBonus,
         setWorkingDays,
         page,
         pageSize,
-        totalPages: payrollData?.totalPages ?? 0,
+        totalPages: totalPages,
         handlePaginationModelChange,
+        handleDateChange,
+        handleFullNameChange,
+        handleWorkingDaysChange,
+        handleMinSalaryChange,
+        handleMaxSalaryChange,
+        handleBonusChange,
     }
 
     return (

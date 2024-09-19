@@ -1,57 +1,60 @@
-import { useContext, useState } from 'react'
-import {    Logout as LogoutIcon,
+import { useContext, useState } from 'react';
+import {
+    Logout as LogoutIcon,
     PermIdentity as PermIdentityIcon,
     Menu as MenuIcon,
-} from '@mui/icons-material'
-import codeviderLogo from '/Images/codevider.png'
-import style from './header.module.css'
-import { useAuth } from '../../Context/AuthProvider'
-import { Link, useNavigate } from 'react-router-dom'
-import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
-import { EventsProvider } from '@/Pages/Events/Context/EventsContext'
-import NotificationDropdown from '@/Pages/Notification/Notification'
-import { ClickAwayListener } from '@mui/material'
-import ThemeSwitcher from '@/Theme/ThemeSwitcher'
-import { useTheme } from '@mui/material/styles' 
+} from '@mui/icons-material';
+import codeviderLogo from '/Images/codevider.png';
+import style from './header.module.css';
+import { Link, useNavigate } from 'react-router-dom';
+import { SidebarHeaderContext } from '@/ProtectedRoute/SidebarHeaderContext';
+import { EventsProvider } from '@/Pages/Events/Context/EventsProvider';
+import NotificationDropdown from '@/Pages/Notification/Notification';
+import { ClickAwayListener } from '@mui/material';
+import ThemeSwitcher from '@/Theme/ThemeSwitcher';
+import { useTheme } from '@mui/material/styles';
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
+import MarkChatUnreadOutlinedIcon from '@mui/icons-material/MarkChatUnreadOutlined';
 
 export const HeaderContent = () => {
-    const { isSidebarOpen: isOpen, toggleSidebar } =
-        useContext(SidebarHeaderContext)
-    const [showDropdown, setShowDropdown] = useState(false)
+    const { isSidebarOpen: isOpen, toggleSidebar } = useContext(SidebarHeaderContext);
+    const [showDropdown, setShowDropdown] = useState(false);
 
-    const navigate = useNavigate()
-
-    const { logout, currentUser } = useAuth()
+    const navigate = useNavigate();
+    const { logout, currentUser } = useAuth();
 
     const handleLogout = () => {
-        logout()
-        navigate('/')
-    }
+        logout();
+        navigate('/');
+    };
 
     const handleProfileClick = () => {
-        navigate(`/profile/${currentUser?._id}`)
-    }
+        navigate(`/profile/${currentUser?._id}`);
+    };
 
-    const theme = useTheme()
+    const theme = useTheme();
     const dropdownItemStyle = {
         color: theme.palette.text.primary,
         backgroundColor: theme.palette.background.paper,
-    }
+    };
 
     return (
-        <nav className={style.header}>
+        <nav className={style.header} style={{ height: '63px' }}>
             <div className={style.headerLeft}>
                 <div onClick={toggleSidebar} className={style.hamburgerIcon}>
                     <MenuIcon />
                 </div>
+                <div className={style.logoImage}>
                 <img
                     alt="logo"
                     src={codeviderLogo}
                     style={{
                         width: '35px',
                         height: 'auto',
+                        
                     }}
                 />
+                </div>
                 {isOpen && (
                     <h3 className={style.title}>
                         <Link to={'/dashboard'}>
@@ -62,63 +65,120 @@ export const HeaderContent = () => {
                 )}
             </div>
             <div className={style.headerRight}>
-                <ThemeSwitcher />
+            <div className={style.icon} style={dropdownItemStyle}>    <ThemeSwitcher /></div> 
+
+                <div className={style.icon} style={dropdownItemStyle}>
+                    <MarkChatUnreadOutlinedIcon />
+                </div>
 
                 <div className={style.icon}>
                     <NotificationDropdown />
                 </div>
 
                 <ClickAwayListener onClickAway={() => setShowDropdown(false)}>
-                    <div
-                        className={style.icon}
-                        onClick={() => setShowDropdown(true)}
-                    >
+                    <div className={style.icon} onClick={() => setShowDropdown(!showDropdown)}>
                         <img
                             src={currentUser?.imageUrl}
                             style={{
                                 cursor: 'pointer',
-                                width: '40px',
-                                height: '40px',
+                                width: '45px', 
+                                height: '45px',
                                 borderRadius: '50%',
+                                transform: 'scale(1.1)'
                             }}
                         />
-                        <div className={style.username}></div>
-
                         {showDropdown && (
-                            <div className={style.dropdown}>
+                            <div
+                                className={style.dropdown}
+                                style={{
+                                    width: '250px', 
+                                    boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)', 
+                                    padding: '25px', 
+                                    borderRadius: '8px', 
+                                    backgroundColor: theme.palette.background.paper,
+                                }}
+                            >
+                               
+                                <div
+                                    className={style.userInfo}
+                                    style={{
+                                        padding: '20px', 
+                                        borderBottom: '1px solid #eee',
+                                        textAlign: 'center', 
+                                    }}
+                                >
+                                    <img
+                                        src={currentUser?.imageUrl}
+                                        alt="Profile"
+                                        style={{
+                                            width: '70px', 
+                                            height: '70px',
+                                            borderRadius: '50%',
+                                            marginBottom: '10px',
+                                        }}
+                                    />
+                                    <div className={style.userDetails}>
+                                        <strong style={{ fontSize: '18px' }}>
+                                            {currentUser?.firstName}
+                                        </strong>
+                                        <p
+                                            style={{
+                                                margin: 0,
+                                                fontSize: '14px',
+                                                color: theme.palette.text.secondary,
+                                            }}
+                                        >
+                                            {currentUser?.email}
+                                        </p>
+                                    </div>
+                                </div>
+
                                 <div
                                     className={style.dropdownItem}
-                                    style={dropdownItemStyle}
+                                    style={{
+                                        ...dropdownItemStyle,
+                                        padding: '15px', 
+                                        cursor: 'pointer',
+                                        fontSize: '16px', 
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}
                                     onClick={handleProfileClick}
                                 >
-                                    Profile <PermIdentityIcon />
+                                    <PermIdentityIcon style={{ marginRight: '10px' }} />
+                                    Profile
                                 </div>
 
                                 <div
                                     className={style.dropdownItem}
-                                    style={dropdownItemStyle}
+                                    style={{
+                                        ...dropdownItemStyle,
+                                        padding: '15px', 
+                                        cursor: 'pointer',
+                                        fontSize: '16px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}
                                     onClick={handleLogout}
                                 >
-                                    Logout <LogoutIcon />
+                                    <LogoutIcon style={{ marginRight: '10px' }} />
+                                    Logout
                                 </div>
-                                <div
-                                    className={style.dropdownItem}
-                                    style={dropdownItemStyle}
-                                ></div>
                             </div>
                         )}
                     </div>
                 </ClickAwayListener>
             </div>
         </nav>
-    )
-}
+    );
+};
 
 const Header: React.FC = () => {
     return (
         <EventsProvider>
             <HeaderContent />
         </EventsProvider>
-    )
-}
-export default Header
+    );
+};
+
+export default Header;

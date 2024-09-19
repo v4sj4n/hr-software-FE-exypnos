@@ -2,8 +2,13 @@ import { useEffect, useState } from 'react'
 import AxiosInstance from '@/Helpers/Axios'
 import { EventsCreationData, EventsData } from '../Interface/Events'
 import { useSearchParams } from 'react-router-dom'
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import {
+    useInfiniteQuery,
+    useMutation,
+    useQueryClient,
+} from '@tanstack/react-query'
 import { fetchEvents } from '../utils/utils'
+import axios from 'axios'
 
 export const useGetAllEvents = () => {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -12,7 +17,7 @@ export const useGetAllEvents = () => {
     const query = useInfiniteQuery({
         queryKey: ['events', searchEvent],
         queryFn: ({ pageParam = 0 }) =>
-        fetchEvents(searchEvent || '', pageParam),
+            fetchEvents(searchEvent || '', pageParam),
         initialPageParam: 0,
         getNextPageParam: (lastPage, allPages) => {
             if (lastPage.length < 6) {
@@ -22,7 +27,7 @@ export const useGetAllEvents = () => {
         },
     })
 
-    const search = ((value: string) => {
+    const search = (value: string) => {
         setSearchParams((prev: URLSearchParams) => {
             const newParams = new URLSearchParams(prev)
             if (value) {
@@ -32,7 +37,7 @@ export const useGetAllEvents = () => {
             }
             return newParams
         })
-    })
+    }
 
     const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchEvent(e.target.value)
@@ -42,7 +47,6 @@ export const useGetAllEvents = () => {
     useEffect(() => {
         setSearchEvent(searchParams.get('search') || '')
     }, [searchParams])
-    
 
     return {
         ...query,
@@ -55,7 +59,9 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
     const queryClient = useQueryClient()
     const [toastOpen, setToastOpen] = useState(false)
     const [toastMessage, setToastMessage] = useState('')
-    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>('success')
+    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
+        'success',
+    )
     const [eventPhotos, setEventPhotos] = useState<File[]>([])
     const [createdEvents, setCreatedEvents] = useState<EventsData[]>([])
 
@@ -142,9 +148,16 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
             setEventPhotos([])
             handleCloseDrawer()
         },
-        onError: (error: Error) => {
-            console.error('Error creating event', error)
-            setToastMessage('Error creating event')
+        onError: (error: unknown) => {
+            let errorMessage = 'An unexpected error occurred'
+            
+            if (axios.isAxiosError(error)) {
+                if (error.response) {
+                    errorMessage = error.response.data.message || `Error: ${error.response.status}`
+                } 
+            }
+
+            setToastMessage(errorMessage)
             setToastSeverity('error')
             setToastOpen(true)
         },
@@ -375,11 +388,18 @@ export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
             setEditDrawer(false)
             handleCloseDrawer()
         },
-        onError: (error) => {
-            console.error('Error updating event:', error)
-            setUpdateToastMessage('Error updating event')
-            setUpdateToastOpen(true)
+        onError: (error: unknown) => {
+            let errorMessage = 'An unexpected error occurred'
+            
+            if (axios.isAxiosError(error)) {
+                if (error.response) {
+                    errorMessage = error.response.data.message || `Error: ${error.response.status}`
+                } 
+            }
+
+            setUpdateToastMessage(errorMessage)
             setUpdateToastSeverity('error')
+            setUpdateToastOpen(true)
         },
     })
 

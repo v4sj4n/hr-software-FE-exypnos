@@ -13,11 +13,7 @@ import { ValidationError } from '@tanstack/react-form'
 import Selecter from '@/Components/Input/components/Select/Selecter'
 import style from './style/Recruitment.module.css'
 import { valibotValidator } from '@tanstack/valibot-form-adapter'
-import {
-    experience,
-    foundMethod,
-    technologies,
-} from './Component/RecruitmentData'
+import { experience, foundMethod, technologies } from './Component/RecruitmentData'
 import {
     RecruitmentContext,
     RecruitmentProvider,
@@ -34,7 +30,9 @@ function RecruitmentBase() {
         fileName,
         setFileName,
     } = useContext(RecruitmentContext)
+
     const { form } = useRecruitmentForm()
+    
     return (
         <main className={style.background}>
             <Card
@@ -203,10 +201,7 @@ function RecruitmentBase() {
                     <form.Field
                         name="applicationMethod"
                         validatorAdapter={valibotValidator()}
-                        validators={{
-                            onChange:
-                                RecruitmentSchema.entries.applicationMethod,
-                        }}
+                        validators={{ onChange: RecruitmentSchema.entries.applicationMethod }}
                         children={({
                             state: {
                                 value,
@@ -216,16 +211,13 @@ function RecruitmentBase() {
                         }) => (
                             <div>
                                 <Selecter
-                                     width='100%'
-
+                                    width="100%"
                                     label="Applying Method"
                                     name="applicationMethod"
                                     multiple={false}
                                     options={foundMethod}
                                     value={value}
-                                    onChange={(newValue) =>
-                                        handleChange(newValue as string)
-                                    }
+                                    onChange={(newValue) => handleChange(newValue as string)}
                                 />
                                 {<ErrorRenderer errors={errors} />}
                             </div>
@@ -251,9 +243,7 @@ function RecruitmentBase() {
                                     name="positionApplied"
                                     IsUsername
                                     value={value}
-                                    onChange={(e) =>
-                                        handleChange(e.target.value)
-                                    }
+                                    onChange={(e) => handleChange(e.target.value)}
                                 />
                                 {<ErrorRenderer errors={errors} />}
                             </div>
@@ -303,7 +293,7 @@ function RecruitmentBase() {
                         }) => (
                             <div className={style.spanTwoDiv}>
                                 <Selecter
-                                width='100%'
+                                    width="100%"
                                     multiple={false}
                                     label="Experience"
                                     name="experience"
@@ -333,8 +323,7 @@ function RecruitmentBase() {
                         }) => (
                             <div className={style.spanTwoDiv}>
                                 <Selecter
-                                 width='100%'
-
+                                    width="100%"
                                     options={technologies}
                                     multiple
                                     label="Technologies"
@@ -415,7 +404,6 @@ function RecruitmentBase() {
                     />
                     <MyButton
                         type={ButtonTypes.TERTIARY}
-                        // width='70px'
                         btnText={
                             form.state.isSubmitting ? 'Submitting...' : 'Submit'
                         }

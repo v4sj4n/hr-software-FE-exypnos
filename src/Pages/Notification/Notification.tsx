@@ -6,13 +6,13 @@ import {
     Badge,
     Box,
     ClickAwayListener,
-} from '@mui/material'
-import NotificationsIcon from '@mui/icons-material/Notifications'
-import { useNavigate } from 'react-router-dom'
-import { useGetAllNotifications } from './Hook/index'
-import AxiosInstance from '@/Helpers/Axios'
-import { useTheme } from '@mui/material/styles'
-import { useAuth } from '@/Context/AuthProvider'
+} from '@mui/material';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import { useNavigate } from 'react-router-dom';
+import { useGetAllNotifications } from './Hook/index';
+import AxiosInstance from '@/Helpers/Axios';
+import { useTheme } from '@mui/material/styles';
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
 
 interface Notification {
     _id: number
@@ -29,10 +29,7 @@ const NotificationDropdown: React.FC = () => {
     const theme = useTheme()
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
-    const { notifications, setNotifications } = useGetAllNotifications() ?? {
-        notifications: [],
-        setNotifications: () => {},
-    }
+    const { notifications, setNotifications } = useGetAllNotifications()
     const [length, setLength] = useState(0)
 
     useEffect(() => {
@@ -49,12 +46,12 @@ const NotificationDropdown: React.FC = () => {
 
     const removeNotification = async (notification: Notification) => {
         try {
-            await AxiosInstance.patch(`notification/${notification._id}`)
-            const updatedNotifications = notifications.map(n => 
-                n._id === notification._id ? { ...n, isRead: true } : n
+            await AxiosInstance.patch(`notification/${notification._id}/user/${currentUser?._id}`)
+            const updatedNotifications = notifications.map((n) =>
+                n._id === notification._id ? { ...n, isRead: true } : n,
             )
             setNotifications(updatedNotifications)
-            setLength(prev => prev - 1)
+            setLength((prev) => prev - 1)
         } catch (error) {
             console.error(
                 `Error removing notification ${notification._id}:`,
@@ -80,6 +77,8 @@ const NotificationDropdown: React.FC = () => {
             navigate(`/vacation?vacationType=requests&page=0&limit=5`)
         } else if (notification.type === 'allCandidates') {
             navigate(`/candidates`)
+        }else if (notification.type === 'promotion') {
+            navigate(`/promotion/${currentUser?._id}`)
         }
     }
 
@@ -96,8 +95,10 @@ const NotificationDropdown: React.FC = () => {
                 return 'purple'
             case 'allVacation':
                 return 'green'
-            case 'allApplication':
+            case 'allCandidates':
                 return 'purple'
+            case 'promotion':
+                return 'orange'
             default:
                 return '#6C757D'
         }
@@ -105,12 +106,12 @@ const NotificationDropdown: React.FC = () => {
 
     const markAllAsRead = async () => {
         try {
-            const updatedNotifications = notifications.map(n => ({ ...n, isRead: true }))
-            for (const notification of updatedNotifications) {
-                if (!notification.isRead) {
-                    await AxiosInstance.patch(`notification/${notification._id}`)
+            for(const notification of notifications){
+                if(!notification.isRead){
+                    await AxiosInstance.patch(`notification/${notification._id}/user/${currentUser?._id}`)
                 }
             }
+         const updatedNotifications = notifications.map((n) => ({ ...n, isRead: true }))
             setNotifications(updatedNotifications)
             setLength(0)
         } catch (error) {
@@ -131,10 +132,11 @@ const NotificationDropdown: React.FC = () => {
 
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
-            <Box sx={{ position: 'relative', display: 'inline-block' }}>
-                <IconButton color="inherit" onClick={handleToggleDropdown}>
-                    <Badge badgeContent={length} color="error">
-                        <NotificationsIcon />
+            <Box sx={{ position: 'relative', display: 'inline-block'}}>
+                <IconButton color="inherit" onClick={handleToggleDropdown} >
+                    <Badge badgeContent={length} color="error" >
+                        <NotificationsNoneIcon sx={{ fontSize: 30 ,color: theme.palette.text.primary,   backgroundColor: 'transparent',  
+}} /> 
                     </Badge>
                 </IconButton>
                 {isOpen && (
@@ -145,79 +147,90 @@ const NotificationDropdown: React.FC = () => {
                             mt: 2,
                             p: 1,
                             width: 450,
-                            bgcolor: theme.palette.background.default,
+                            // bgcolor: theme.palette.background.default,
                             boxShadow: 1,
                             borderRadius: 1,
-                            overflow: 'auto',
+                            overflow: 'hidden',
                             maxHeight: 400,
-                            cursor: 'pointer',
-                            scrollbarWidth: 'none',
-                            '&::-webkit-scrollbar': {
-                                display: 'none',
-                            },
-                            msOverflowStyle: 'none',
+                            display: 'flex',
+                            flexDirection: 'column',
+                             backgroundColor: 'white',
                         }}
                     >
-                        {notifications.map((notification) => (
-                            <Card
-                                key={notification._id}
-                                sx={{
-                                    mb: 1,
-                                    borderBottom: `4px solid ${getColorByType(
-                                        notification.type,
-                                        notification.isRead,
-                                    )}`,
-                                    bgcolor: 'rgba(255, 255, 255, 0.7)',
-                                    color: '#000',
-                                }}
-                                onClick={() => {
-                                    handleNotificationClick(notification)
-                                }}
-                            >
-                                <Box
+                        <Box
+                            sx={{
+                                flex: 1,
+                                overflowY: 'auto',
+                                scrollbarWidth: 'none',
+                                '&::-webkit-scrollbar': {
+                                    display: 'none',
+                                },
+                            }}
+                        >
+                            {notifications.map((notification) => (
+                                <Card
+                                    key={notification._id}
                                     sx={{
-                                        padding: '8px 16px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'space-between',
+                                        mb: 1,
+                                        borderBottom: `4px solid ${getColorByType(notification.type, notification.isRead)}`,
+                                        bgcolor: 'white',
+                                        color: '#000',
                                     }}
+                                    onClick={() =>
+                                        handleNotificationClick(notification)
+                                    }
                                 >
-                                    <Box>
-                                        <Typography
-                                            variant="subtitle2"
-                                            sx={{ fontWeight: 'bold' }}
-                                        >
-                                            {notification.title}
-                                        </Typography>
-                                        <Typography
-                                            variant="body2"
-                                            maxWidth="300px"
-                                        >
-                                            {notification.content}
-                                        </Typography>
-                                    </Box>
-                                    <Typography
-                                        variant="subtitle2"
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            removeNotification(notification)
-                                        }}
+                                    <Box
                                         sx={{
-                                            cursor: 'pointer',
-                                            color: notification.isRead
-                                                ? 'text.secondary'
-                                                : 'primary.main',
+                                            padding: '8px 16px',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
                                         }}
                                     >
-                                        {notification.isRead
-                                            ? 'Read'
-                                            : 'Mark as read'}
-                                    </Typography>
-                                </Box>
-                            </Card>
-                        ))}
-                        <div
-                            style={{
+                                        <Box>
+                                            <Typography
+                                                variant="subtitle2"
+                                                sx={{ fontWeight: 'bold' }}
+                                            >
+                                                {notification.title}
+                                            </Typography>
+                                            <Typography
+                                                variant="body2"
+                                                maxWidth="300px"
+                                            >
+                                                {notification.content}
+                                            </Typography>
+                                        </Box>
+                                        <Typography
+                                            variant="subtitle2"
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                removeNotification(notification)
+                                            }}
+                                            sx={{
+                                                cursor: 'pointer',
+                                                color: notification.isRead
+                                                    ? 'text.secondary'
+                                                    : 'primary.main',
+                                            }}
+                                        >
+                                            {notification.isRead
+                                                ? 'Read'
+                                                : 'Mark as read'}
+                                        </Typography>
+                                    </Box>
+                                </Card>
+                            ))}
+                        </Box>
+
+                        <Box
+                            sx={{
+                                position: 'sticky',
+                                bottom: 0,
+                                bgcolor: 'white',
+                                py: 1,
+                                borderTop: `1px solid ${theme.palette.divider}`,
                                 display: 'flex',
                                 justifyContent: 'space-between',
                             }}
@@ -238,7 +251,7 @@ const NotificationDropdown: React.FC = () => {
                             >
                                 Show all
                             </a>
-                        </div>
+                        </Box>
                     </Box>
                 )}
             </Box>

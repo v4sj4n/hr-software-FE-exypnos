@@ -16,19 +16,20 @@ function CandidatesCoontext() {
         isPending,
     } = useCandidateContext()
 
-
     return (
-        <> {
-            isPending ? (<div
-                style={{
-                    display: 'flex',
-                    fontSize: '30px',
-                    justifyContent: 'center',
-                    marginTop: '200px',
-                }}
-            >
-                <RingLoader />
-            </div>) :
+        <>
+            {isPending ? (
+                <div
+                    style={{
+                        display: 'flex',
+                        fontSize: '30px',
+                        justifyContent: 'center',
+                        marginTop: '200px',
+                    }}
+                >
+                    <RingLoader />
+                </div>
+            ) : (
                 <DataTable
                     getRowId={getRowId}
                     columns={columns}
@@ -39,7 +40,7 @@ function CandidatesCoontext() {
                     pageSize={pageSize}
                     onPaginationModelChange={handlePaginationModelChange}
                 />
-        }
+            )}
         </>
     )
 }

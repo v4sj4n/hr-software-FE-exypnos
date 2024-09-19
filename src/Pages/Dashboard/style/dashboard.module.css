@@ -30,6 +30,8 @@
     flex-direction: column;
     gap: 0.333rem;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.075);
+    transition:transform 0.3s ease,color 0.3s ease ;
+
     & h2 {
         font-size: 1.5rem;
         font-weight: 600;
@@ -39,6 +41,21 @@
         margin: 0;
     }
 }
+
+.welcome:hover{
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2); 
+    transform: translateY(-5px); 
+}
+.userNameClickable {
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease; 
+}
+
+.userNameClickable:hover {
+    transform: scale(1.1); 
+    color: #4b56e0;
+}
+
 
 .cardContainer {
     display: flex;
@@ -57,6 +74,7 @@
     box-shadow: 0 3px 9px rgba(0, 0, 0, 0.1);
     color: #5f43b2;
     text-align: center;
+    transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .cardGreen {
@@ -75,6 +93,13 @@
     background-image: linear-gradient(180deg, #ece4f1, #a8c4f2);
 }
 
+.cardGreen:hover,
+.cardBlue:hover,
+.cardYellow:hover,
+.cardPurple:hover{
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2); 
+    transform: translateY(-5px);}
+
 .infoSection {
     word-break: break-word;
     overflow: hidden;
@@ -92,6 +117,12 @@
 .pieChartDiv {
     min-width: 250px;
 }
+.calendar:hover,
+.infoSection:hover,
+.pieChartDiv:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2); 
+
+}
 
 .employeeProfile {
     background: rgba(255, 255, 255, 0.7);
@@ -107,4 +138,18 @@ h3 {
     color: #1c449ad7;
     margin-bottom: 0;
     margin-top: 0;
+}
+
+.employeeImage {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.employeeImage:hover {
+    transform: scale(1.1); 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
 }

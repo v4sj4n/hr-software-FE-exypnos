@@ -5,7 +5,6 @@ import { axisClasses } from '@mui/x-charts/ChartsAxis'
 import { DatasetType } from '@mui/x-charts/internals'
 import { useEffect, useState } from 'react'
 
-
 import {
     ChartsAxisContentProps,
     ChartsTooltip,
@@ -42,10 +41,10 @@ export default function ChartBar({ id }: { id: string }) {
                 transform: 'translateX(-10px)',
             },
             '.css-1qdzy9k-MuiBarElement-root': {
-                fill: theme.palette.primary.main, 
+                fill: theme.palette.primary.main,
             },
             '.MuiChartsLegend-mark': {
-                fill: theme.palette.primary.main, 
+                fill: theme.palette.primary.main,
             },
         },
     }
@@ -99,8 +98,13 @@ export default function ChartBar({ id }: { id: string }) {
                                     >
                                         <p>Month: {data?.month ?? ''}</p>
                                         <p>Year: {data?.year ?? ''}</p>
-                                        <p>Net Salary: {data?.netSalary ?? ''}</p>
-                                        <p>Gross Salary: {data?.grossSalary ?? ''}</p>
+                                        <p>
+                                            Net Salary: {data?.netSalary ?? ''}
+                                        </p>
+                                        <p>
+                                            Gross Salary:{' '}
+                                            {data?.grossSalary ?? ''}
+                                        </p>
                                         <p>Bonus: {data?.bonus ?? ''}</p>
                                         <p>
                                             Health Insurance:{' '}

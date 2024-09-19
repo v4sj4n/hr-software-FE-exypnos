@@ -1,0 +1,117 @@
+.chatContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .chatInput {
+    display: flex;
+    align-items: center;
+  }
+  
+  .chatInput input {
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px;
+  }
+  
+  .chatMessages {
+    height: 400px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+  }
+
+  
+
+/* Message List Styles */
+.messageListContainer {
+  padding: 2rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.messageContainer {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.senderContainer {
+  justify-content: flex-end;
+}
+
+.recipientContainer {
+  justify-content: flex-start;
+}
+
+.messageBox {
+  max-width: 60%;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.senderMessage {
+  background-color: #2196f3;
+  color: #fff;
+}
+
+.recipientMessage {
+  background-color: #e0e0e0;
+  color: #000;
+}
+
+.messageTimestamp {
+  font-size: 0.75rem;
+}
+
+/* User List Styles */
+.userList {
+  padding: 0;
+  margin: 0;
+}
+
+.userListItem {
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.errorText {
+  text-align: center;
+  margin-top: 1rem;
+  color: red;
+}
+
+
+/* Additional styles for UserList */
+
+.searchInput {
+  margin-bottom: 1rem;
+}
+
+.userList {
+  padding: 0;
+  margin: 0;
+}
+
+.userListItem {
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.errorText {
+  text-align: center;
+  margin-top: 1rem;
+  color: red;
+}

@@ -1,0 +1,37 @@
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(135deg, #f3f4f6, #ffffff);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    max-width: 900px;
+    margin: 60px 100px;
+    transition: all 0.3s ease;
+    gap:30px;
+    
+  }
+.container h1{
+    font-size: 34px;
+    font-weight: 700;
+    color: #333;
+}
+
+
+
+
+.error {
+    color: #d32f2f;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        max-width: 100%;
+    }
+}
+
