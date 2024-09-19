@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
 import { useThemeContext } from './ThemeContext';
-import { Box, Typography, Menu, MenuItem, IconButton, styled } from '@mui/material';
+import { Box, Typography, Menu, MenuItem, IconButton, styled, keyframes } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PurpleIcon from '@mui/icons-material/ColorLens';  
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
 const DropdownButton = styled(IconButton)({
-    
   backgroundColor: 'transparent',
-  color: '#333',
-  padding: '10px',
-  fontSize:'xx-large',
-  transition: 'background-color 0.3s ease, transform 0.3s ease',
-  '&:hover': {
-    transform: 'scale(1.05)',
-  },
+  
+
 });
 
 const ThemeSwitcher: React.FC = () => {
@@ -46,10 +51,26 @@ const ThemeSwitcher: React.FC = () => {
         PaperProps={{
           elevation: 12,
           sx: {
-            backgroundColor: '#ffffff',  
+            position: 'absolute',
+            right: 0, 
+            marginTop: '20px',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e0e0e0',
             borderRadius: '10px',
-            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',  
+            padding: '10px 0',
+            width: '200px',
+            boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)',
+            zIndex: 1000,
+            animation: `${fadeIn} 0.3s ease`, 
           },
+        }}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
         }}
       >
         <MenuItem

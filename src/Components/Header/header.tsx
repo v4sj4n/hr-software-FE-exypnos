@@ -14,6 +14,7 @@ import { ClickAwayListener } from '@mui/material';
 import ThemeSwitcher from '@/Theme/ThemeSwitcher';
 import { useTheme } from '@mui/material/styles';
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
+import MarkChatUnreadOutlinedIcon from '@mui/icons-material/MarkChatUnreadOutlined';
 
 export const HeaderContent = () => {
     const { isSidebarOpen: isOpen, toggleSidebar } = useContext(SidebarHeaderContext);
@@ -43,14 +44,17 @@ export const HeaderContent = () => {
                 <div onClick={toggleSidebar} className={style.hamburgerIcon}>
                     <MenuIcon />
                 </div>
+                <div className={style.logoImage}>
                 <img
                     alt="logo"
                     src={codeviderLogo}
                     style={{
                         width: '35px',
                         height: 'auto',
+                        
                     }}
                 />
+                </div>
                 {isOpen && (
                     <h3 className={style.title}>
                         <Link to={'/dashboard'}>
@@ -61,7 +65,11 @@ export const HeaderContent = () => {
                 )}
             </div>
             <div className={style.headerRight}>
-           <div className={style.icon}>    <ThemeSwitcher /></div> 
+            <div className={style.icon} style={dropdownItemStyle}>    <ThemeSwitcher /></div> 
+
+                <div className={style.icon} style={dropdownItemStyle}>
+                    <MarkChatUnreadOutlinedIcon />
+                </div>
 
                 <div className={style.icon}>
                     <NotificationDropdown />

@@ -24,7 +24,7 @@ const ProfileFormContext = () => {
 
     return (
         <div className={style.container}>
-            <div className={style.title}>Personal Information</div>
+            {/* <div className={style.title}>Personal Information</div> */}
             <Toast
             open={updateToastOpen}
             message={updateToastMessage}
@@ -112,7 +112,7 @@ const ProfileFormContext = () => {
                        options={Places}
                        multiple={false} 
                         width="350px"
-                        label="CountryOfBirth"
+                        label="Places of Birth"
                         name="pob"
                         onChange={handlePlaceChange}
                         value={user.pob}
