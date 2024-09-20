@@ -34,8 +34,7 @@ export const useHandleNoteCreation = () => {
 
 export const useGetNotes = (userId: string) => {
     return useQuery({
-        queryKey: ['notes'],
+        queryKey: ['notes', userId],
         queryFn: () => handleFetchNotes(userId),
     })
 }
-

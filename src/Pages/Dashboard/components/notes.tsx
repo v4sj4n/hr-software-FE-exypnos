@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
 import Badge from '@mui/material/Badge'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -15,6 +15,10 @@ import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 import style from '../style/dashboard.module.css'
 import { useHandleNoteCreation, useGetNotes } from '../Hook'
 import { Checkbox } from '@mui/material'
+import { useForm } from '@tanstack/react-form'
+import { valibotValidator } from '@tanstack/valibot-form-adapter'
+import { minLength, nonEmpty, pipe, string } from 'valibot'
+import { ErrorText } from '@/Components/Error/ErrorTextForm'
 
 export type Note = {
     _id: string
@@ -54,24 +58,39 @@ export const Notes = () => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs())
     const [isNoteModalOpen, setIsNoteModalOpen] = useState(false)
-    const [newNote, setNewNote] = useState<Omit<Note, '_id'>>({
-        title: '',
-        description: '',
-        willBeReminded: false,
-        date: '',
+
+    const form = useForm({
+        defaultValues: {
+            title: '',
+            description: '',
+            willBeReminded: false,
+            date: '',
+        },
+        validatorAdapter: valibotValidator(),
+        onSubmit: async ({ value, formApi }) => {
+            console.log('Submitting form:', value)
+            if (currentUser && currentUser._id) {
+                mutate({
+                    ...value,
+                    userId: currentUser._id as unknown as string,
+                })
+                formApi.reset()
+                handleNoteModalClose()
+            } else {
+                console.error('User is not authenticated')
+            }
+        },
     })
 
     const {
         data: notesData,
         isLoading,
         error,
-    } = useGetNotes(currentUser!._id as unknown as string)
+    } = useGetNotes(currentUser?._id as unknown as string || '')
+
 
     const notes: Note[] = Array.isArray(notesData) ? notesData : []
-
-    const handleModalOpen = () => {
-        setIsModalOpen(true)
-    }
+    console.log(...notes)
 
     const handleNoteModalOpen = () => {
         setIsNoteModalOpen(true)
@@ -79,39 +98,13 @@ export const Notes = () => {
 
     const handleNoteModalClose = () => {
         setIsNoteModalOpen(false)
-        setNewNote({
-            title: '',
-            description: '',
-            willBeReminded: false,
-            date: '',
-        })
     }
 
-    const handleInputChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    ) => {
-        const { name, value, type } = e.target
-        setNewNote((prev) => ({
-            ...prev,
-            [name]:
-                type === 'checkbox'
-                    ? (e.target as HTMLInputElement).checked
-                    : value,
-        }))
-    }
+    const highlightedDays = notes.map((note) => dayjs(note.date).format('YYYY-MM-DD'))
 
-    const handleAddNote = async () => {
-        if (newNote.title && newNote.description) {
-            mutate({
-                ...newNote,
-                date: selectedDate.format('YYYY-MM-DD'),
-                userId: currentUser!._id as unknown as string,
-            })
-            handleNoteModalClose()
-        }
+    if (!currentUser) {
+        return <div>Please log in to view your notes.</div>
     }
-
-    const highlightedDays = notes.map((note) => note.date)
 
     if (error) {
         return <div>Error loading notes: {error.message}</div>
@@ -132,22 +125,14 @@ export const Notes = () => {
                 }}
             >
                 <h2>Notes</h2>
-                <Button
-                    btnText="Show all notes"
-                    type={ButtonTypes.SECONDARY}
-                    border={'none'}
-                    onClick={handleModalOpen}
-                />
             </div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateCalendar
                     value={selectedDate}
                     loading={isLoading}
                     onChange={(newDate) => {
-                        if (newDate) {
-                            setSelectedDate(newDate)
-                            handleNoteModalOpen()
-                        }
+                        form.setFieldValue('date', dayjs(newDate).toISOString())
+                        handleNoteModalOpen()
                     }}
                     renderLoading={() => <DayCalendarSkeleton />}
                     slots={{
@@ -155,7 +140,7 @@ export const Notes = () => {
                     }}
                     slotProps={{
                         day: {
-                            highlightedDays,
+                            highlightedDays: [...new Set(highlightedDays)],
                         } as any,
                     }}
                 />
@@ -203,44 +188,101 @@ export const Notes = () => {
                     </h3>
                     <div>
                         <div>Title</div>
-                        <Input
-                            IsUsername
-                            type="input"
+                        <form.Field
                             name="title"
-                            label="Title"
-                            shrink={true}
-                            value={newNote.title}
-                            onChange={handleInputChange}
+                            validators={{
+                                onChange: pipe(
+                                    string('Title is required'),
+                                    nonEmpty(
+                                        'Please dont leave the title empty',
+                                    ),
+                                    minLength(
+                                        3,
+                                        'Title should be at least 3 characters long',
+                                    ),
+                                ),
+                            }}
+                            children={(field) => (
+                                <>
+                                <Input
+                                    IsUsername
+                                    type="input"
+                                    name="title"
+                                    label="Title"
+                                    shrink={true}
+                                    value={field.state.value}
+                                    onChange={(e) =>
+                                        field.handleChange(e.target.value)
+                                    }
+                                />
+                                {field.state.meta.errors ? (
+                                <ErrorText>
+                                    {field.state.meta.errors.join(', ')}
+                                </ErrorText>
+                            ) : null}
+                                </>
+                            )}
                         />
                     </div>
                     <div>
                         <div>Description</div>
-                        <Input
-                            rows={4}
-                            multiline={true}
-                            IsUsername
-                            type="input"
+                        <form.Field
                             name="description"
-                            label="Description"
-                            shrink={true}
-                            value={newNote.description}
-                            onChange={handleInputChange}
+                            validators={{
+                                onChange: pipe(
+                                    string('Description is required'),
+                                    nonEmpty(
+                                        'Please dont leave the description empty',
+                                    ),
+                                    minLength(
+                                        10,
+                                        'Description should be at least 10 characters long',
+                                    ),
+                                ),
+                            }}
+                            children={(field) => (
+                                <>
+                                <Input
+                                    rows={4}
+                                    multiline={true}
+                                    IsUsername
+                                    type="input"
+                                    name="description"
+                                    label="Description"
+                                    shrink={true}
+                                    value={field.state.value}
+                                    onChange={(e) =>
+                                        field.handleChange(e.target.value)
+                                    }
+                                />
+                                {field.state.meta.errors ? (
+                                    <ErrorText>
+                                        {field.state.meta.errors.join(', ')}
+                                    </ErrorText>
+                                ) : null}
+                                    </>
+                            )}
                         />
                     </div>
                     <div>
                         <div>Will be reminded</div>
-                        <Checkbox
-                            checked={false}
-                            onChange={() => {
-                                console.log('checked')
-                            }}
-                            inputProps={{ 'aria-label': 'controlled' }}
+                        <form.Field
+                            name="willBeReminded"
+                            children={(field) => (
+                                <Checkbox
+                                    checked={field.state.value}
+                                    onChange={(e) =>
+                                        field.handleChange(e.target.checked)
+                                    }
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                />
+                            )}
                         />
                     </div>
                     <Button
                         btnText="Add Note"
                         type={ButtonTypes.PRIMARY}
-                        onClick={handleAddNote}
+                        onClick={form.handleSubmit}
                     />
                 </div>
             </ModalComponent>
