@@ -115,7 +115,7 @@
 .dropdownItem {
     padding: 10px 20px;
     cursor: pointer;
-    color: #2457a3;
+    /* color: #2457a3; */
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -126,7 +126,7 @@
 
 .dropdownItem:hover {
     background-color: #f4f4f4;
-    color: #4b56e0;
+    /* color: #4b56e0; */
 }
 
 .hamburgerIcon {

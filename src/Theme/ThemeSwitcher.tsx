@@ -54,7 +54,6 @@ const ThemeSwitcher: React.FC = () => {
             position: 'absolute',
             right: 0, 
             marginTop: '20px',
-            backgroundColor: '#ffffff',
             border: '1px solid #e0e0e0',
             borderRadius: '10px',
             padding: '10px 0',

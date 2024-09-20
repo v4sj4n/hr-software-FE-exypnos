@@ -10,13 +10,14 @@ import { FileUploadProvider } from '../../Context/FileUpoadProvider'
 import { ProfileProvider } from './Context/ProfileProvider'
 import Selecter from '@/Components/Input/components/Select/Selecter'
 import Toast from '@/Components/Toast/Toast'
+// import {handleCancel} from './../ProfileForm/Hook/Index'
 
 const ProfileFormContext = () => {
 
     
     const { uploadImage, previewImage } = useFileUpload()
 
-    const { user, isCurrentUser, isAdmin, handleChange, handleUpdate,genderOptions, handleGenderChange, updateToastMessage, updateToastOpen, updateToastSeverity,handleUpdateToastClose, handlePlaceChange, Places } = useProfile()
+    const { user, isCurrentUser, isAdmin, handleChange, handleUpdate,genderOptions, handleGenderChange, updateToastMessage, updateToastOpen, updateToastSeverity,handleUpdateToastClose, handlePlaceChange, Places,handleCancel } = useProfile()
 
     if (!user) {
         return <div>No user data available</div>
@@ -182,15 +183,31 @@ const ProfileFormContext = () => {
                     disabled={!isAdmin}
                 />
             </div>
-            <div className={style.border}></div>
-            {isAdmin ? (
-                <div className={style.inputWidth}>
+            <div className={style.border}> </div>
+            {isAdmin ? ( 
+                <div className={style.inputWidth} style={{display:'flex',justifyContent:'center',gap:'20px'}}>
                     <Button
                         onClick={handleUpdate}
                         type={ButtonTypes.PRIMARY}
                         btnText="Save Changes"
                         width="350px"
                     />
+									     <span>
+          <Button
+              btnText="Remove account"
+			  type={ButtonTypes.SECONDARY}
+			  width="160px"
+			  height='38px'
+			  color="#ffffff"
+			  borderColor='#C70039'
+			  backgroundColor="#C70039"
+			  display="flex"
+			  justifyContent="center"
+			  alignItems="center"
+			  onClick={handleCancel}
+         />
+        </span>
+	
                 </div>
             ) : (
                 isCurrentUser && (
@@ -201,9 +218,12 @@ const ProfileFormContext = () => {
                             btnText="Change Picture"
                             width="350px"
                         />
+						
                     </div>
                 )
             )}
+			
+        
         </div>
     )
 }

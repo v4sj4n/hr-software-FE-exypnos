@@ -25,6 +25,7 @@ export interface ProfileContextType {
     updateToastOpen: boolean
     updateToastMessage: string
     updateToastSeverity:'success' | 'error'
+    handleCancel : () => void
 }
 
 export const ProfileContext = createContext<ProfileContextType | undefined>(
