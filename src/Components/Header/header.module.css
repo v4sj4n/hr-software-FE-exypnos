@@ -25,14 +25,15 @@
     gap: 1rem; 
 }
 
-.logo img {
+.logoImage {
     width: 40px; 
     height: auto;
     transition: transform 0.3s ease;
 }
 
-.logo img:hover {
+.logoImage:hover {
     transform: scale(1.1); 
+    transition: transform 0.3s ease;
 }
 
 .title {
@@ -62,7 +63,6 @@
 .headerRight {
     display: flex;
     align-items: center;
-    gap: 1.5rem; 
 }
 
 .icon {
@@ -78,8 +78,6 @@
 
 .icon:hover {
     color: #4b56e0;
-    transform: translateY(-3px); 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
 }
 
 .username {

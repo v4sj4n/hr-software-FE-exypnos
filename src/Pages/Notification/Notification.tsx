@@ -88,7 +88,8 @@ const NotificationDropdown: React.FC = () => {
         }
         switch (type) {
             case 'events':
-                return 'blue'
+                return ' #4b56e0'
+
             case 'vacation':
                 return 'green'
             case 'candidates':
@@ -132,7 +133,7 @@ const NotificationDropdown: React.FC = () => {
 
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
-            <Box sx={{ position: 'relative', display: 'inline-block' , backgroundColor: 'transparent'}}>
+            <Box sx={{ position: 'relative', display: 'inline-block'}}>
                 <IconButton color="inherit" onClick={handleToggleDropdown} >
                     <Badge badgeContent={length} color="error" >
                         <NotificationsNoneIcon sx={{ fontSize: 30 ,color: theme.palette.text.primary,   backgroundColor: 'transparent',  
@@ -147,14 +148,14 @@ const NotificationDropdown: React.FC = () => {
                             mt: 2,
                             p: 1,
                             width: 450,
-                            bgcolor: theme.palette.background.default,
+                            // bgcolor: theme.palette.background.default,
                             boxShadow: 1,
                             borderRadius: 1,
                             overflow: 'hidden',
                             maxHeight: 400,
                             display: 'flex',
                             flexDirection: 'column',
-                             backgroundColor: 'transparent',
+                             backgroundColor: 'white',
                         }}
                     >
                         <Box
@@ -173,7 +174,7 @@ const NotificationDropdown: React.FC = () => {
                                     sx={{
                                         mb: 1,
                                         borderBottom: `4px solid ${getColorByType(notification.type, notification.isRead)}`,
-                                        // bgcolor: 'rgba(255, 255, 255, 0.7)',
+                                        bgcolor: 'white',
                                         color: '#000',
                                     }}
                                     onClick={() =>
@@ -228,7 +229,7 @@ const NotificationDropdown: React.FC = () => {
                             sx={{
                                 position: 'sticky',
                                 bottom: 0,
-                                bgcolor: theme.palette.background.default,
+                                bgcolor: 'white',
                                 py: 1,
                                 borderTop: `1px solid ${theme.palette.divider}`,
                                 display: 'flex',

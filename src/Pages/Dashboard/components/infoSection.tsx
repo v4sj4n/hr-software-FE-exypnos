@@ -4,7 +4,7 @@ import AxiosInstance from '@/Helpers/Axios'
 import { useQuery } from '@tanstack/react-query'
 import { EventsProvider } from '@/Pages/Events/Context/EventsProvider'
 import { useEvents } from '@/Pages/Events/Context/EventsContext'
-
+import { useNavigate } from 'react-router-dom'
 const InfoSectionContent: React.FC = () => {
     const fetchEventsDashboard = async () => {
         const response = await AxiosInstance.get(`/event`)
@@ -20,7 +20,7 @@ const InfoSectionContent: React.FC = () => {
 
     console.log('events', events)
     const {formatDate} = useEvents()
-
+const navigate = useNavigate()
     return (
         <div className={style.infoSection}>
             <h2>Upcoming Events</h2>
@@ -41,7 +41,8 @@ const InfoSectionContent: React.FC = () => {
                                     width: '100%',
                                 }}
                             >
-                                <h3>{event.title}</h3>
+                              <h3 onClick={() =>  navigate(`/events?event=${event._id}`)} style={{cursor:'pointer'}}>{event.title}
+    </h3>
                                 <span>
                                    {formatDate(event.startDate)}
                                 </span>

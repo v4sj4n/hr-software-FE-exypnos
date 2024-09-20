@@ -67,7 +67,8 @@ export default function Profile() {
                     flexDirection: 'column',
                     '& .MuiTabs-indicator': { right: 'auto', left: 0 },
                     '& .MuiTab-root': {
-                        alignContent: 'flex-start',
+                        alignContent: 'center',
+                        justifyContent: 'center',
                         marginBottom: 5,
                         marginRight: 5,
                         mt: 1.5,
