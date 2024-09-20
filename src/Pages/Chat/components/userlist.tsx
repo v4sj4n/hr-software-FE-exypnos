@@ -3,6 +3,7 @@ import { useChat } from '../context/ChatContext';
 import { User } from '@/Pages/Chat/Interfaces/types';
 import { List, ListItem, ListItemButton, ListItemText, CircularProgress, Typography, Box, TextField } from '@mui/material';
 import AxiosInstance from '@/Helpers/Axios';
+import { io, Socket } from 'socket.io-client';
 import styles from '@/Pages/Chat/styles/chat.module.css';
 
 interface UserListProps {
@@ -10,76 +11,130 @@ interface UserListProps {
 }
 
 const UserList: React.FC<UserListProps> = ({ users }) => {
-  const { messages, setRecipientId, setMessages, senderId } = useChat();
+  const { setRecipientId, setMessages, senderId } = useChat();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState<string>(''); // Search state
+  const [searchActiveChatsQuery, setSearchActiveChatsQuery] = useState<string>(''); // Search state for active chats
+  const [searchUsersQuery, setSearchUsersQuery] = useState<string>(''); // Search state for all users
+  const [activeUserIds, setActiveUserIds] = useState<string[]>([]); // Active user IDs
+  const [socket, setSocket] = useState<Socket | null>(null); // WebSocket instance
 
-  // Fetch initial messages to populate active chats
+  // Initialize the WebSocket connection when the component mounts
   useEffect(() => {
-    const fetchInitialMessages = async () => {
+    const newSocket = io('http://localhost:4000'); // Adjust the URL as per your backend setup
+    setSocket(newSocket);
+
+    // Clean up the socket when the component unmounts
+    return () => {
+      newSocket.close();
+    };
+  }, []);
+
+  // Listen for new messages and update active chats
+  useEffect(() => {
+    if (socket) {
+      socket.on('newMessage', (message: { senderId: string; recipientId: string }) => {
+        // Update active chats when a new message is sent or received
+        setActiveUserIds((prevActiveUserIds) => {
+          const newActiveUserIds = new Set(prevActiveUserIds);
+
+          // Update active chat based on message sender/recipient
+          if (message.senderId !== senderId) {
+            newActiveUserIds.add(message.senderId);
+          } else {
+            newActiveUserIds.add(message.recipientId);
+          }
+
+          return Array.from(newActiveUserIds);
+        });
+      });
+    }
+  }, [socket, senderId]);
+
+  // Fetch initial active chats when the component mounts
+  useEffect(() => {
+    const fetchActiveChats = async () => {
       try {
-        const response = await AxiosInstance.get(`/messages/${senderId}`);
-        setMessages(response.data);
+        setLoading(true);
+
+        // Fetch all messages sent or received by the current user
+        const response = await AxiosInstance.get(`/messages/sender/${senderId}`);
+        const messages = response.data;
+
+        // Extract unique user IDs (both senders and recipients)
+        const uniqueUserIds = new Set<string>();
+        messages.forEach((msg: { senderId: string; recipientId: string }) => {
+          if (msg.senderId !== senderId) {
+            uniqueUserIds.add(msg.senderId); // If the current user is the recipient, add the sender ID
+          } else {
+            uniqueUserIds.add(msg.recipientId); // If the current user is the sender, add the recipient ID
+          }
+        });
+
+        setActiveUserIds(Array.from(uniqueUserIds)); // Convert Set to Array and store unique user IDs
       } catch (error) {
-        console.error('Error fetching initial messages:', error);
+        console.error('Error fetching active chats:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     if (senderId) {
-      fetchInitialMessages();
+      fetchActiveChats();
     }
-  }, [senderId, setMessages]);
+  }, [senderId]);
 
-  // Memoize to get unique userIds from messages (active chats)
-  const activeUserIds = useMemo(() => {
-    const uniqueUserIds = new Set<string>();
+  // Filter active users based on the active chats and search query
+  const filteredActiveUsers = useMemo(() => {
+    // Filter users based on active user IDs (those involved in conversations)
+    const activeUsers = users.filter((user) => activeUserIds.includes(user._id));
 
-    // Safeguard to ensure messages is always an array
-    if (Array.isArray(messages)) {
-      messages.forEach((msg) => {
-        if (msg.senderId !== senderId) {
-          uniqueUserIds.add(msg.senderId);
-        } else {
-          uniqueUserIds.add(msg.recipientId);
-        }
-      });
+    // If there is a search query for active chats, filter the active users further by first name and last name
+    if (searchActiveChatsQuery.trim()) {
+      return activeUsers.filter((user) =>
+        `${user.firstName.toLowerCase()} ${user.lastName.toLowerCase()}`.includes(searchActiveChatsQuery.toLowerCase())
+      );
     }
 
-    console.log('Active User IDs:', Array.from(uniqueUserIds)); // Log active user IDs for debugging
+    // If no search query, return the active users as is
+    return activeUsers;
+  }, [searchActiveChatsQuery, users, activeUserIds]);
 
-    return Array.from(uniqueUserIds);
-  }, [messages, senderId]);
+  // Filter users based on the search query for all users (separate from active chats)
+  const filteredAllUsers = useMemo(() => {
+    if (searchUsersQuery.trim()) {
+      return users.filter((user) =>
+        `${user.firstName.toLowerCase()} ${user.lastName.toLowerCase()}`.includes(searchUsersQuery.toLowerCase())
+      );
+    }
 
-  // If no messages, show all users instead of filtering by active chats
-  const activeUsers = messages.length === 0
-    ? users
-    : users.filter((user) => activeUserIds.includes(user._id));
+    return [];
+  }, [searchUsersQuery, users]);
 
-  // Filter active users based on the search query
-  const filteredActiveUsers = searchQuery
-    ? users.filter((user) =>
-        `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : activeUsers;
-
+  // Handle selecting a user and fetching messages between sender and recipient
   const handleSelectUser = async (userId: string) => {
-    console.log('Selected Recipient ID:', userId);  // Log recipientId
-    console.log('Current Sender ID:', senderId);    // Log senderId
+    console.log('Selected Recipient ID:', userId);
 
-    setRecipientId(userId);  // Set the selected recipient
-    setLoading(true);        // Set loading to true when fetching starts
-    setError(null);          // Reset any previous errors
+    setRecipientId(userId);  // Set the selected recipient ID
+    setLoading(true);
+    setError(null);
 
     try {
+      // Fetch messages between senderId and recipientId
       const response = await AxiosInstance.get(`/messages/${senderId}/${userId}`);
-      const fetchedMessages = response.data || [];
-      setMessages(fetchedMessages);  // Update the message list with fetched messages, or set an empty array
+      setMessages(response.data);
+
+      // Immediately add the recipient to the active chats when a message is sent
+      setActiveUserIds((prevActiveUserIds) => {
+        const newActiveUserIds = new Set(prevActiveUserIds);
+        newActiveUserIds.add(userId); // Add the recipient to active chats
+        return Array.from(newActiveUserIds);
+      });
     } catch (error) {
       console.error('Error fetching messages:', error);
       setError('Failed to fetch messages. Please try again later.');
     } finally {
-      setLoading(false);  // Stop loading when the fetch is complete
+      setLoading(false);
     }
   };
 
@@ -90,8 +145,8 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
         fullWidth
         label="Search active chats..."
         variant="outlined"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
+        value={searchActiveChatsQuery}
+        onChange={(e) => setSearchActiveChatsQuery(e.target.value)}
         className={styles.searchInput}
       />
 
@@ -110,6 +165,37 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
           ))
         )}
       </List>
+
+      {/* Search input for searching through all users */}
+      <TextField
+        fullWidth
+        label="Search all users..."
+        variant="outlined"
+        value={searchUsersQuery}
+        onChange={(e) => setSearchUsersQuery(e.target.value)}
+        className={styles.searchInput}
+        sx={{ marginTop: '16px' }}
+      />
+
+      {/* Display searched users */}
+      {searchUsersQuery && (
+        <>
+          <Typography variant="h6">Search Results</Typography>
+          <List className={styles.userList}>
+            {filteredAllUsers.length === 0 ? (
+              <Typography variant="body1">No users found.</Typography>
+            ) : (
+              filteredAllUsers.map((user) => (
+                <ListItem key={user._id} disablePadding className={styles.userListItem}>
+                  <ListItemButton onClick={() => handleSelectUser(user._id)}>
+                    <ListItemText primary={`${user.firstName} ${user.lastName}`} />
+                  </ListItemButton>
+                </ListItem>
+              ))
+            )}
+          </List>
+        </>
+      )}
 
       {loading && (
         <Box className={styles.loadingContainer}>
