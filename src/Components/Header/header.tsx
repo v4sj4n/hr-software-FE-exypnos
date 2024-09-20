@@ -95,7 +95,7 @@ export const HeaderContent = () => {
                                     boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)', 
                                     padding: '25px', 
                                     borderRadius: '8px', 
-                                    backgroundColor: theme.palette.background.paper,
+
                                 }}
                             >
                                
@@ -142,6 +142,7 @@ export const HeaderContent = () => {
                                         fontSize: '16px', 
                                         display: 'flex',
                                         alignItems: 'center',
+                                        left: '15px',
                                     }}
                                     onClick={handleProfileClick}
                                 >

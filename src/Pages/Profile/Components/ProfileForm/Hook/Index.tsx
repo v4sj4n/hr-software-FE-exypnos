@@ -22,6 +22,8 @@ export const useGetAndUpdateUserById = () => {
     const isCurrentUser = currentUser?._id === id
     const isAdmin = userRole === 'hr'
     const genderOptions = ['Male', 'Female']
+    const [isCancel,setIsCancel]= useState(false)
+
 
     const Places = [
         "Tirana",
@@ -99,17 +101,39 @@ export const useGetAndUpdateUserById = () => {
             }
         })
     }
+    const handleCancel = async () => {
+        if (!isAdmin) {
+            setError('Only admins can delete users')
+            return
+        }
+        setIsLoading(true)
+        try {
+            await AxiosInstance.delete(`/user/${id}`)
+            setIsCancel(true) 
+            setUpdateToastOpen(true)
+            setUpdateToastMessage('User has been successfully deleted.')
+            setUpdateToastSeverity('success')
+        } catch (error) {
+            console.error('Error deleting user:', error)
+            setError('Failed to delete user')
+            setUpdateToastOpen(true)
+            setUpdateToastMessage('Error occurred while deleting user.')
+            setUpdateToastSeverity('error')
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
-    const handleGenderChange = (value: string ) => {
-        if (!isAdmin) return;
-        setUser((prevUser) => {
-            if (!prevUser) return null;
-            return {
-                ...prevUser,
-                gender: value,
-            };
-        });
-    };
+        const handleGenderChange = (value: string) => {
+            if (!isAdmin) return;
+            setUser((prevUser) => {
+                if (!prevUser) return null;
+                return {
+                    ...prevUser,
+                    gender: [value], 
+                };
+            });
+        };
 
     const handlePlaceChange = (value: string | string[]) => {
         if (!isAdmin) return;
@@ -128,6 +152,8 @@ export const useGetAndUpdateUserById = () => {
             setError('Only admins can update user information')
             return
         }
+
+        
 
         const userToUpdate = {
             firstName: user.firstName,
@@ -178,7 +204,11 @@ export const useGetAndUpdateUserById = () => {
         updateToastSeverity,
         handleUpdateToastClose,
         handlePlaceChange,
-        Places
+        Places,
+        handleCancel,
+        isCancel,
+        setIsCancel,
+        
     }
 }
 
@@ -343,5 +373,6 @@ export const useUpdatePayroll = () => {
         toastOpen,
         toastMessage,
         toastSeverity,
+        
     }
 }

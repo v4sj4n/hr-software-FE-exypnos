@@ -28,7 +28,8 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
         updateToastSeverity,
         handleUpdateToastClose,
         handlePlaceChange,
-        Places
+        Places,
+        handleCancel
     } = useGetAndUpdateUserById()
 
     const {
@@ -80,7 +81,8 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
         updateToastSeverity,
         handleUpdateToastClose,
         handlePlaceChange,
-        Places
+        Places,
+        handleCancel,
     }
 
     return (
