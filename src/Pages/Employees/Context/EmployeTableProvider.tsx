@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
-import { GridPaginationModel, GridRenderCellParams, GridRowParams } from '@mui/x-data-grid'
+import {GridPaginationModel,GridRenderCellParams,GridRowParams,} from '@mui/x-data-grid'
 import { Link, useNavigate } from 'react-router-dom'
 import { EmployeeContext, EmployeeRow, UserProfileData } from '../interfaces/Employe'
 import AxiosInstance from '@/Helpers/Axios'
 import { useQuery } from '@tanstack/react-query'
 
-export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({
-    children,
-}) => {
+export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({children }) => {
     const [page, setPage] = useState(0)
     const [pageSize, setPageSize] = useState(5)
 
@@ -17,11 +15,17 @@ export const EmployeeProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     const fetchEmployes = async () => {
-        const response = await AxiosInstance.get<{data: UserProfileData[], totalPages: number}>(`/user?page=${page}&limit=${pageSize}`)
+        const response = await AxiosInstance.get<{
+            data: UserProfileData[]
+            totalPages: number
+        }>(`/user?page=${page}&limit=${pageSize}`)
         return response.data
     }
 
-    const { data: users, isPending } = useQuery<{ data: UserProfileData[]; totalPages: number },Error>({
+    const { data: users, isPending } = useQuery<
+        { data: UserProfileData[]; totalPages: number },
+        Error
+    >({
         queryKey: ['users', page, pageSize],
         queryFn: () => fetchEmployes(),
     })

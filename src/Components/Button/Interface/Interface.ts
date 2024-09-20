@@ -1,8 +1,6 @@
 import React, { CSSProperties } from 'react'
 import { ButtonTypes } from '../ButtonTypes'
 
-
-
 type ButtonType = (typeof ButtonTypes)[keyof typeof ButtonTypes]
 
 export interface ButtonStyles extends CSSProperties {

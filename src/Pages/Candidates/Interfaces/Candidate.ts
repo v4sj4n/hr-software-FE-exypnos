@@ -53,3 +53,6 @@ export interface CandidateContextType {
 export const CandidateContext = React.createContext<
     CandidateContextType | undefined
 >(undefined)
+
+
+

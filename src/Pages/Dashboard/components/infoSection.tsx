@@ -1,9 +1,11 @@
 import style from '../style/infoSection.module.css'
 import { EventsData } from '../../Events/Interface/Events'
-import dayjs from 'dayjs'
 import AxiosInstance from '@/Helpers/Axios'
 import { useQuery } from '@tanstack/react-query'
-const InfoSection: React.FC = () => {
+import { EventsProvider } from '@/Pages/Events/Context/EventsProvider'
+import { useEvents } from '@/Pages/Events/Context/EventsContext'
+import { useNavigate } from 'react-router-dom'
+const InfoSectionContent: React.FC = () => {
     const fetchEventsDashboard = async () => {
         const response = await AxiosInstance.get(`/event`)
 
@@ -17,7 +19,8 @@ const InfoSection: React.FC = () => {
     })
 
     console.log('events', events)
-
+    const {formatDate} = useEvents()
+const navigate = useNavigate()
     return (
         <div className={style.infoSection}>
             <h2>Upcoming Events</h2>
@@ -38,11 +41,10 @@ const InfoSection: React.FC = () => {
                                     width: '100%',
                                 }}
                             >
-                                <h3>{event.title}</h3>
+                              <h3 onClick={() =>  navigate(`/events?event=${event._id}`)} style={{cursor:'pointer'}}>{event.title}
+    </h3>
                                 <span>
-                                    {dayjs(event.startDate).format(
-                                        'ddd DD MMM YYYY',
-                                    )}
+                                   {formatDate(event.startDate)}
                                 </span>
                             </div>
                             <p>{event.description}</p>
@@ -51,6 +53,14 @@ const InfoSection: React.FC = () => {
                 ))}
             </ul>
         </div>
+    )
+}
+
+const InfoSection: React.FC = () => {
+    return(
+        <EventsProvider>
+        <InfoSectionContent/>
+    </EventsProvider>
     )
 }
 

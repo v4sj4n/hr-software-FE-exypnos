@@ -1,4 +1,4 @@
-import { DataGrid,  GridValidRowModel } from '@mui/x-data-grid'
+import { DataGrid, GridValidRowModel } from '@mui/x-data-grid'
 import { TableStyles } from '../Input/Styles'
 import { DataTableProps } from './Interface'
 export default function DataTable<T extends GridValidRowModel>({
@@ -13,7 +13,6 @@ export default function DataTable<T extends GridValidRowModel>({
     handleRowClick,
     onPaginationModelChange,
 }: DataTableProps<T>) {
-
     return (
         <div style={{ height, width: '100%' }}>
             <DataGrid
@@ -29,12 +28,21 @@ export default function DataTable<T extends GridValidRowModel>({
                 pageSizeOptions={pageSizeOptions}
                 autoHeight={true}
                 disableColumnFilter={true}
-                rowSelection={false}
+                disableColumnMenu={true}
+                disableColumnSelector={true}
                 disableDensitySelector={true}
+                rowSelection={false}
+                disableColumnSorting={true}
+                disableRowSelectionOnClick={true}
+                showColumnVerticalBorder={true}
+                disableAutosize={true}
                 sx={{
                     ...TableStyles,
+                    '& .MuiDataGrid-columnHeader': {
+                        backgroundColor: '#ffffff', 
+                    },
                     '& .colored-row': {
-                        backgroundColor: '#5f43b2',
+                        backgroundColor: 'red',
                     },
                     '& .MuiDataGrid-row': {
                         cursor: 'pointer',

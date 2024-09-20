@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react'
-import { ProfileContext } from './Interface'
+import { ProfileContext } from '../Interface/Interface'
 import {
     useCreatePayroll,
     useGetAndUpdateUserById,
     useUpdatePayroll,
-} from './Hook'
+} from '../Hook/Index'
 
 interface ProfileProviderProps {
     children: ReactNode
@@ -21,25 +21,34 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
         isAdmin,
         handleChange,
         handleUpdate,
+        genderOptions,
+        handleGenderChange,
+        updateToastMessage,
+        updateToastOpen,
+        updateToastSeverity,
+        handleUpdateToastClose,
+        handlePlaceChange,
+        Places,
+        handleCancel
     } = useGetAndUpdateUserById()
 
     const {
+        handleChangePayroll,
         payroll,
         handleCreatePayroll,
-        handleChangePayroll,
         createToastMessage,
-        createToastOpen,
         createToastSeverity,
+        createToastOpen,
         handleCreateToastClose,
     } = useCreatePayroll()
 
     const {
         EditingPayroll,
         handleUpdateChangePayroll,
-        toastOpen,
-        toastMessage,
-        handleToastClose,
         handleUpdatePayroll,
+        toastMessage,
+        toastOpen,
+        handleToastClose,
         toastSeverity,
     } = useUpdatePayroll()
 
@@ -65,6 +74,15 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
         createToastOpen,
         createToastSeverity,
         handleCreateToastClose,
+        genderOptions,
+        handleGenderChange,
+        updateToastOpen,
+        updateToastMessage,
+        updateToastSeverity,
+        handleUpdateToastClose,
+        handlePlaceChange,
+        Places,
+        handleCancel,
     }
 
     return (

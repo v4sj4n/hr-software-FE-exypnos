@@ -29,6 +29,7 @@ export const InventoryTable = () => {
 
     if (isError) return <div>Error: {error.message}</div>
     if (isPending) return <CircularProgress />
+    if (!data || !data.data) return <div>No data available</div>
 
     const rows = data.data.map((asset: Asset) => ({
         id: asset._id,
@@ -106,12 +107,10 @@ export const InventoryTable = () => {
                 />
             ),
         },
-
         {
             field: 'serialNumber',
             headerName: 'Serial Number',
             flex: 1,
-
             renderCell: (param: GridRenderCellParams) => {
                 return (
                     <button
@@ -144,8 +143,8 @@ export const InventoryTable = () => {
         <>
             <DataTable
                 onPaginationModelChange={handlePaginationModelChange}
-                page={Number(searchParams.get('page')!)}
-                pageSize={Number(searchParams.get('limit')!)}
+                page={Number(searchParams.get('page') || '0')}
+                pageSize={Number(searchParams.get('limit') || '5')}
                 totalPages={data.totalPages}
                 rows={rows}
                 columns={columns}

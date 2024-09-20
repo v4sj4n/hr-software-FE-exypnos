@@ -12,16 +12,14 @@ import {
 import { useContext, useState } from 'react'
 import style from './sidebar.module.css'
 import { Link, useNavigate } from 'react-router-dom'
-import { SidebarHeaderContext } from '@/Context/SidebarHeaderContext'
-import { useAuth } from '@/Context/AuthProvider'
-import {useTheme} from '@mui/material/styles'
-import { alpha } from '@mui/material';
-
+import { SidebarHeaderContext } from '@/ProtectedRoute/SidebarHeaderContext'
+import { useTheme } from '@mui/material/styles'
+import { alpha } from '@mui/material'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 export const SideBar = () => {
     const { isSidebarOpen: isOpen } = useContext(SidebarHeaderContext)
     const { currentUser } = useAuth()
-
 
     const hr = currentUser?.role === 'hr'
     const currentUserID = currentUser?._id
@@ -37,38 +35,43 @@ export const SideBar = () => {
 
     const toggleDropdown = (dropdown: keyof typeof dropdownOpen) => {
         setDropdownOpen((prevState) => {
-            const newState = { ...prevState };
+            const newState = { ...prevState }
             Object.keys(newState).forEach((key) => {
-                newState[key as keyof typeof dropdownOpen] = false;
-            });
-            newState[dropdown] = !prevState[dropdown];
-            return newState;
-        });
-    };
+                newState[key as keyof typeof dropdownOpen] = false
+            })
+            newState[dropdown] = !prevState[dropdown]
+            return newState
+        })
+    }
 
-    const theme = useTheme();
-
-    const getHoverStyle = (hovered: boolean) => ({
-        color: 'black',
-        transition: 'color 0.3s ease, background-color 0.3s ease',
-        backgroundColor: hovered ?  alpha(theme.palette.background.default, 0.5) : 'black',
-    });
-
-    
-
+    const theme = useTheme()
 
     return (
         <div className={style.sidebarContainer}>
             <nav className={` ${isOpen ? style.navOpen : style.navClosed}`}>
                 <div className={style.navbar}>
-                    <div className={style.item}
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = alpha(theme.palette.background.default, 0.5)}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
-                        
-                        <Link to="/dashboard" className={style.link} >
+                    <div
+                        className={style.item}
+                        onMouseEnter={(e) =>
+                            (e.currentTarget.style.backgroundColor = alpha(
+                                theme.palette.background.default,
+                                0.5,
+                            ))
+                        }
+                        onMouseLeave={(e) =>
+                            (e.currentTarget.style.backgroundColor =
+                                'transparent')
+                        }
+                    >
+                        <Link to="/dashboard" className={style.link}>
                             <div className={style.iconTextContainer}>
-                            <DashboardIcon className={style.icon} style={{ color: theme.palette.text.primary }} />
-                            {isOpen && (
+                                <DashboardIcon
+                                    className={style.icon}
+                                    style={{
+                                        color: theme.palette.text.primary,
+                                    }}
+                                />
+                                {isOpen && (
                                     <span className={style.text}>
                                         Dashboard
                                     </span>
@@ -76,61 +79,127 @@ export const SideBar = () => {
                             </div>
                         </Link>
                     </div>
-                    <div
-                        className={style.item}  
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor =alpha(theme.palette.background.default, 0.5)}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                        onClick={() => toggleDropdown('recruiting')}
-                    >
-                        <div className={style.link} > 
-                            <div className={style.iconTextContainer} >
-                            <GroupAddIcon className={style.icon} style={{ color: theme.palette.text.primary, marginLeft: '2px' }} />
 
-                                
-                                {isOpen && (
-                                    <span 
-                                        className={style.text}
-                                        style={{marginLeft: '-2px' }}
-                                    >
-                                        Recruiting
-                                    </span>
-                                )}
+                    {hr && (
+                        <>
+                            <div
+                                className={style.item}
+                                onMouseEnter={(e) =>
+                                    (e.currentTarget.style.backgroundColor =
+                                        alpha(
+                                            theme.palette.background.default,
+                                            0.5,
+                                        ))
+                                }
+                                onMouseLeave={(e) =>
+                                    (e.currentTarget.style.backgroundColor =
+                                        'transparent')
+                                }
+                                onClick={() => toggleDropdown('recruiting')}
+                            >
+                                <div className={style.link}>
+                                    <div className={style.iconTextContainer}>
+                                        <GroupAddIcon
+                                            className={style.icon}
+                                            style={{
+                                                color: theme.palette.text
+                                                    .primary,
+                                                marginLeft: '2px',
+                                            }}
+                                        />
+
+                                        {isOpen && (
+                                            <span
+                                                className={style.text}
+                                                style={{ marginLeft: '-2px' }}
+                                            >
+                                                Recruiting
+                                            </span>
+                                        )}
+                                    </div>
+                                    {isOpen &&
+                                        (dropdownOpen.recruiting ? (
+                                            <ExpandLessIcon
+                                                className={style.expandIcon}
+                                            />
+                                        ) : (
+                                            <ExpandMoreIcon
+                                                className={style.expandIcon}
+                                            />
+                                        ))}
+                                </div>
                             </div>
-                            {isOpen &&
-                                (dropdownOpen.recruiting ? (
-                                    <ExpandLessIcon
-                                        className={style.expandIcon}
-                                    />
-                                ) : (
-                                    <ExpandMoreIcon
-                                        className={style.expandIcon}
-                                    />
-                                ))}
-                        </div>
-                    </div>
+
+                            <div
+                                className={`${style.dropdownMenu} ${
+                                    dropdownOpen.recruiting
+                                        ? style.open
+                                        : style.close
+                                }`}
+                            >
+                                <Link
+                                    to="/candidates"
+                                    className={style.dropdownItem}
+                                    onMouseEnter={(e) =>
+                                        (e.currentTarget.style.backgroundColor =
+                                            alpha(
+                                                theme.palette.background
+                                                    .default,
+                                                0.5,
+                                            ))
+                                    }
+                                    onMouseLeave={(e) =>
+                                        (e.currentTarget.style.backgroundColor =
+                                            'transparent')
+                                    }
+                                >
+                                    Candidates
+                                </Link>
+                                <Link
+                                    to="/interview"
+                                    className={style.dropdownItem}
+                                    onMouseEnter={(e) =>
+                                        (e.currentTarget.style.backgroundColor =
+                                            alpha(
+                                                theme.palette.background
+                                                    .default,
+                                                0.5,
+                                            ))
+                                    }
+                                    onMouseLeave={(e) =>
+                                        (e.currentTarget.style.backgroundColor =
+                                            'transparent')
+                                    }
+                                >
+                                    Interviews
+                                </Link>
+                            </div>
+                        </>
+                    )}
                     <div
-                        className={`${style.dropdownMenu} ${
-                            dropdownOpen.recruiting ? style.open : style.close
-                        }`}
-                    >
-                        <Link to="/candidates" className={style.dropdownItem} >
-                        
-                            Candidates{' '}
-                        </Link>
-                        <Link to="/interview" className={style.dropdownItem} >
-                            Interviews{' '}
-                        </Link>
-                    </div>
-                    <div
-                        className={style.item }
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = alpha(theme.palette.background.default, 0.5)}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                        className={style.item}
+                        onMouseEnter={(e) =>
+                            (e.currentTarget.style.backgroundColor = alpha(
+                                theme.palette.background.default,
+                                0.5,
+                            ))
+                        }
+                        onMouseLeave={(e) =>
+                            (e.currentTarget.style.backgroundColor =
+                                'transparent')
+                        }
                         onClick={() => toggleDropdown('employee')}
                     >
                         <div className={style.link}>
                             <div className={style.iconTextContainer}>
-                                <GroupIcon className={style.icon} style={{ color: theme.palette.text.primary, marginLeft: '2px' }} />
-                                
+                                <GroupIcon
+                                    className={style.icon}
+                                    style={{
+                                        color: theme.palette.text.primary,
+                                        marginLeft: '2px',
+                                    }}
+                                />
+
                                 {isOpen && (
                                     <span className={style.text}>Employee</span>
                                 )}
@@ -152,21 +221,64 @@ export const SideBar = () => {
                             dropdownOpen.employee ? style.open : style.close
                         }`}
                     >
-                        <Link to="/employees" className={style.dropdownItem}onMouseEnter={(e) => e.currentTarget.style.backgroundColor = alpha(theme.palette.background.default, 0.5)}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}> 
+                        <Link
+                            to="/employees"
+                            className={style.dropdownItem}
+                            onMouseEnter={(e) =>
+                                (e.currentTarget.style.backgroundColor = alpha(
+                                    theme.palette.background.default,
+                                    0.5,
+                                ))
+                            }
+                            onMouseLeave={(e) =>
+                                (e.currentTarget.style.backgroundColor =
+                                    'transparent')
+                            }
+                        >
                             Employees
                         </Link>
-                        <Link to="/payroll" className={style.dropdownItem}onMouseEnter={(e) => e.currentTarget.style.backgroundColor = alpha(theme.palette.background.default, 0.5)}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
-                            Payroll{' '}
-                        </Link>
-                        <Link to="/vacation" className={style.dropdownItem}onMouseEnter={(e) => e.currentTarget.style.backgroundColor = alpha(theme.palette.background.default, 0.5)}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                        {hr && (
+                            <Link
+                                to="/payroll"
+                                className={style.dropdownItem}
+                                onMouseEnter={(e) =>
+                                    (e.currentTarget.style.backgroundColor =
+                                        alpha(
+                                            theme.palette.background.default,
+                                            0.5,
+                                        ))
+                                }
+                                onMouseLeave={(e) =>
+                                    (e.currentTarget.style.backgroundColor =
+                                        'transparent')
+                                }
+                            >
+                                Payroll{' '}
+                            </Link>
+                        )}
+                        <Link
+                            to="/vacation"
+                            className={style.dropdownItem}
+                            onMouseEnter={(e) =>
+                                (e.currentTarget.style.backgroundColor = alpha(
+                                    theme.palette.background.default,
+                                    0.5,
+                                ))
+                            }
+                            onMouseLeave={(e) =>
+                                (e.currentTarget.style.backgroundColor =
+                                    'transparent')
+                            }
+                        >
                             Vacation{' '}
                         </Link>
                         <div
-                            onClick={() => {
-                                hr ? navigate('promotion') : navigate(`/promotion/${currentUserID}` );
+                            onClick={(e) => {
+                                e.currentTarget.style.backgroundColor = alpha(
+                                    theme.palette.background.default,
+                                    0.5,
+                                )
+                                navigate('promotion')
                             }}
                             className={style.dropdownItem}
                         >
@@ -174,16 +286,31 @@ export const SideBar = () => {
                         </div>
                     </div>
                     <div
-                        className={style.item} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = alpha(theme.palette.background.default, 0.5)}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                        className={style.item}
+                        onMouseEnter={(e) =>
+                            (e.currentTarget.style.backgroundColor = alpha(
+                                theme.palette.background.default,
+                                0.5,
+                            ))
+                        }
+                        onMouseLeave={(e) =>
+                            (e.currentTarget.style.backgroundColor =
+                                'transparent')
+                        }
                         onClick={() => toggleDropdown('assets')}
                     >
-                        <div className={style.link} >
-                            <div className={style.iconTextContainer} >
-                                <DevicesIcon className={style.icon} style={{ color: theme.palette.text.primary, marginLeft: '2px' }} />
-                                
+                        <div className={style.link}>
+                            <div className={style.iconTextContainer}>
+                                <DevicesIcon
+                                    className={style.icon}
+                                    style={{
+                                        color: theme.palette.text.primary,
+                                        marginLeft: '2px',
+                                    }}
+                                />
+
                                 {isOpen && (
-                                    <span className={style.text} >Assets</span>
+                                    <span className={style.text}>Assets</span>
                                 )}
                             </div>
                             {isOpen &&
@@ -203,25 +330,64 @@ export const SideBar = () => {
                             dropdownOpen.assets ? style.open : style.close
                         }`}
                     >
-                        <Link to="/holdings" className={style.dropdownItem}onMouseEnter={(e) => e.currentTarget.style.backgroundColor = alpha(theme.palette.background.default, 0.5)}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'} >
+                        <Link
+                            to="/holdings"
+                            className={style.dropdownItem}
+                            onMouseEnter={(e) =>
+                                (e.currentTarget.style.backgroundColor = alpha(
+                                    theme.palette.background.default,
+                                    0.5,
+                                ))
+                            }
+                            onMouseLeave={(e) =>
+                                (e.currentTarget.style.backgroundColor =
+                                    'transparent')
+                            }
+                        >
                             Holdings
                         </Link>
-                        <Link to="/inventory" className={style.dropdownItem}onMouseEnter={(e) => e.currentTarget.style.backgroundColor = alpha(theme.palette.background.default, 0.5)}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'} >
+                        <Link
+                            to="/inventory"
+                            className={style.dropdownItem}
+                            onMouseEnter={(e) =>
+                                (e.currentTarget.style.backgroundColor = alpha(
+                                    theme.palette.background.default,
+                                    0.5,
+                                ))
+                            }
+                            onMouseLeave={(e) =>
+                                (e.currentTarget.style.backgroundColor =
+                                    'transparent')
+                            }
+                        >
                             Inventory
                         </Link>
                     </div>
 
                     <div
-                        className={style.item} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = alpha(theme.palette.background.default, 0.5)}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                        className={style.item}
+                        onMouseEnter={(e) =>
+                            (e.currentTarget.style.backgroundColor = alpha(
+                                theme.palette.background.default,
+                                0.5,
+                            ))
+                        }
+                        onMouseLeave={(e) =>
+                            (e.currentTarget.style.backgroundColor =
+                                'transparent')
+                        }
                         onClick={() => toggleDropdown('events')}
                     >
                         <div className={style.link}>
                             <div className={style.iconTextContainer}>
-                                <EventIcon className={style.icon}style={{ color: theme.palette.text.primary, marginLeft: '2px' }} />
-                                
+                                <EventIcon
+                                    className={style.icon}
+                                    style={{
+                                        color: theme.palette.text.primary,
+                                        marginLeft: '2px',
+                                    }}
+                                />
+
                                 {isOpen && (
                                     <span className={style.text}>
                                         Activities
@@ -245,21 +411,62 @@ export const SideBar = () => {
                             dropdownOpen.events ? style.open : style.close
                         }`}
                     >
-                        <Link to="/events" className={style.dropdownItem} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = alpha(theme.palette.background.default, 0.5)}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                        <Link
+                            to="/events"
+                            className={style.dropdownItem}
+                            onMouseEnter={(e) =>
+                                (e.currentTarget.style.backgroundColor = alpha(
+                                    theme.palette.background.default,
+                                    0.5,
+                                ))
+                            }
+                            onMouseLeave={(e) =>
+                                (e.currentTarget.style.backgroundColor =
+                                    'transparent')
+                            }
+                        >
                             Events
                         </Link>
-                        <Link to="/career" className={style.dropdownItem} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = alpha(theme.palette.background.default, 0.5)}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}> 
+                        <Link
+                            to="/career"
+                            className={style.dropdownItem}
+                            onMouseEnter={(e) =>
+                                (e.currentTarget.style.backgroundColor = alpha(
+                                    theme.palette.background.default,
+                                    0.5,
+                                ))
+                            }
+                            onMouseLeave={(e) =>
+                                (e.currentTarget.style.backgroundColor =
+                                    'transparent')
+                            }
+                        >
                             Career{' '}
                         </Link>
                     </div>
-                    <div className={style.item} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = alpha(theme.palette.background.default, 0.5)}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                    <div
+                        className={style.item}
+                        onMouseEnter={(e) =>
+                            (e.currentTarget.style.backgroundColor = alpha(
+                                theme.palette.background.default,
+                                0.5,
+                            ))
+                        }
+                        onMouseLeave={(e) =>
+                            (e.currentTarget.style.backgroundColor =
+                                'transparent')
+                        }
+                    >
                         <Link to="/structure" className={style.link}>
                             <div className={style.iconTextContainer}>
-                                <BusinessIcon className={style.icon}style={{ color: theme.palette.text.primary, marginLeft: '2px' }} />
-                                
+                                <BusinessIcon
+                                    className={style.icon}
+                                    style={{
+                                        color: theme.palette.text.primary,
+                                        marginLeft: '2px',
+                                    }}
+                                />
+
                                 {isOpen && (
                                     <span className={style.text}>
                                         Structure
@@ -268,12 +475,29 @@ export const SideBar = () => {
                             </div>
                         </Link>
                     </div>
-                    <div className={style.item} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = alpha(theme.palette.background.default, 0.5)}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
-                        <Link to="/historic" className={style.link} >
+                    <div
+                        className={style.item}
+                        onMouseEnter={(e) =>
+                            (e.currentTarget.style.backgroundColor = alpha(
+                                theme.palette.background.default,
+                                0.5,
+                            ))
+                        }
+                        onMouseLeave={(e) =>
+                            (e.currentTarget.style.backgroundColor =
+                                'transparent')
+                        }
+                    >
+                        <Link to="/historic" className={style.link}>
                             <div className={style.iconTextContainer}>
-                                <InfoIcon className={style.icon}  style={{ color: theme.palette.text.primary, marginLeft: '2px' }} />
-                                
+                                <InfoIcon
+                                    className={style.icon}
+                                    style={{
+                                        color: theme.palette.text.primary,
+                                        marginLeft: '2px',
+                                    }}
+                                />
+
                                 {isOpen && (
                                     <span className={style.text}>About</span>
                                 )}

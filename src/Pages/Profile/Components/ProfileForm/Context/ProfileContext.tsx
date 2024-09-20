@@ -1,4 +1,4 @@
-import { ProfileContext } from './Interface'
+import { ProfileContext } from '../Interface/Interface'
 import { useContext } from 'react'
 
 export const useProfile = () => {

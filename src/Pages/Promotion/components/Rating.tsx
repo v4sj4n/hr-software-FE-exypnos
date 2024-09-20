@@ -9,8 +9,8 @@ import EditIcon from '@mui/icons-material/Edit'
 import { useTheme } from '@mui/material/styles'
 import { ModalComponent } from '@/Components/Modal/Modal'
 import CloseIcon from '@mui/icons-material/Close'
-import { useAuth } from '@/Context/AuthProvider'
 import Toast from '@/Components/Toast/Toast'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 export type Rating = {
     _id: string
@@ -32,7 +32,10 @@ export default function Rating({ id }: { id: string }) {
     const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
         'success',
     )
-
+console.log('Rating', currentUser?._id, id,(currentUser?.role === 'hr' ||
+    (currentUser?.role === 'pm' &&
+        (currentUser?._id as unknown as string) !==
+            id)))
     const handleOpen = (rating: Rating) => {
         setUpdateRating(rating)
         setOpen(true)
@@ -86,7 +89,16 @@ export default function Rating({ id }: { id: string }) {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await AxiosInstance.get(`/rating/user?id=${id}`)
+            let response
+            if (currentUser?.role === 'pm' && String(currentUser?._id) !== id) {
+                response = await AxiosInstance.get(`/rating/user/${id}`, {
+                    params: {
+                        pmId: currentUser?._id,
+                    },
+                })
+            } else {
+                response = await AxiosInstance.get(`/rating/user/${id}`)
+            }
             setRatings(response.data)
         }
 
@@ -100,10 +112,10 @@ export default function Rating({ id }: { id: string }) {
     return (
         <>
             <Toast
-                severity={toastSeverity }
+                severity={toastSeverity}
                 open={toastOpen}
-                message={ toastMessage }
-                onClose={ handleCloseToast}
+                message={toastMessage}
+                onClose={handleCloseToast}
             />
 
             <Card backgroundColor="rgba(255, 255, 255, 0.7)">
@@ -144,29 +156,34 @@ export default function Rating({ id }: { id: string }) {
                                         value={rating.clientFeedbackRating}
                                     />
                                 </div>
-                                {currentUser?.role === 'hr' && (
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            justifyContent: 'flex-end',
-                                            width: '100%',
-                                        }}
-                                    >
-                                        <Button
-                                            type={ButtonTypes.SECONDARY}
-                                            btnText=""
-                                            width="40px"
-                                            height="30px"
-                                            display="flex"
-                                            justifyContent="center"
-                                            alignItems="center"
-                                            color="#2457A3"
-                                            borderColor="#2457A3"
-                                            icon={<EditIcon />}
-                                            onClick={() => handleOpen(rating)}
-                                        />
-                                    </div>
-                                )}
+                                {(currentUser?.role === 'hr' ||
+                                    (currentUser?.role === 'pm' &&
+                                        (currentUser?._id as unknown as string) !==
+                                            id)) && (
+                                            <div
+                                                style={{
+                                                    display: 'flex',
+                                                    justifyContent: 'flex-end',
+                                                    width: '100%',
+                                                }}
+                                            >
+                                                <Button
+                                                    type={ButtonTypes.SECONDARY}
+                                                    btnText=""
+                                                    width="40px"
+                                                    height="30px"
+                                                    display="flex"
+                                                    justifyContent="center"
+                                                    alignItems="center"
+                                                    color="#2457A3"
+                                                    borderColor="#2457A3"
+                                                    icon={<EditIcon />}
+                                                    onClick={() =>
+                                                        handleOpen(rating)
+                                                    }
+                                                />
+                                            </div>
+                                        )}
                             </Card>
                         ))}
                 </div>

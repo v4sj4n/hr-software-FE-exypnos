@@ -4,38 +4,8 @@ import Input from '@/Components/Input/Index'
 import { Box, Checkbox, FormControlLabel, useTheme } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { ModalComponent } from '../../../Components/Modal/Modal'
-
-interface Interview {
-    firstName: string
-    lastName: string
-    phoneNumber: string
-    email: string
-    positionApplied: string
-    status: string
-    _id: string
-    firstInterviewDate?: string
-    secondInterviewDate?: string
-    notes: string
-    customMessage: string
-    customSubject: string
-    currentPhase: string
-    isDeleted?: boolean
-    fullName: string
-}
-
-interface RescheduleModalProps {
-    open: boolean
-    handleClose: () => void
-    handleSchedule: (
-        interviewDate: string,
-        notes: string,
-        customMessage: string,
-        customSubject: string,
-        useCustomEmail: boolean,
-    ) => void
-    selectedInterview: Interview
-    isReschedule: boolean
-}
+import {RescheduleModalProps} from  './../interface/interface'
+ 
 
 const RescheduleModal: React.FC<RescheduleModalProps> = ({
     open,
@@ -49,7 +19,7 @@ const RescheduleModal: React.FC<RescheduleModalProps> = ({
     const [customMessage, setCustomMessage] = useState('')
     const [customSubject, setCustomSubject] = useState('')
     const [useCustomEmail, setUseCustomEmail] = useState(false)
-
+ 
     const theme = useTheme()
     const themeStyle = {
         color: theme.palette.text.primary,

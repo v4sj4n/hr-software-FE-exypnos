@@ -1,5 +1,5 @@
-import { useAuth } from '@/Context/AuthProvider'
 import AxiosInstance from '@/Helpers/Axios'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 import { useEffect, useState } from 'react'
 interface Notification {
     _id: number
