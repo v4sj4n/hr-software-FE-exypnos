@@ -88,7 +88,8 @@ const NotificationDropdown: React.FC = () => {
         }
         switch (type) {
             case 'events':
-                return 'blue'
+                return ' #4b56e0'
+
             case 'vacation':
                 return 'green'
             case 'candidates':

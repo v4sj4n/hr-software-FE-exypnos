@@ -126,7 +126,7 @@ const DashboardContent: React.FC = () => {
                             flex="2"
                             backgroundColor="rgba(255, 255, 255, 0.7)"
                         >
-                            <h2>Employee Status</h2>
+                            <h2>Employ Status</h2>
                             <PieChartComponent />
                         </Card1>
                     </div>

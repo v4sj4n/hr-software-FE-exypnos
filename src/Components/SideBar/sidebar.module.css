@@ -37,18 +37,17 @@
     border-radius: 8px; 
 }
 
-.item:hover {
+ .item:hover {
     background-color: rgba(255, 255, 255, 0.1); 
-    transform: translateX(10px); }
-.item:hover .icon {
-    color: #2457a3;
-}
-.item:hover .link {
-    color: black;
-    transform: translateY(-1px);
-    opacity: 1;
-    transform: translateX(10px);
-}
+    transform: translateX(1px); }
+    .item:hover .link {
+        color: black;
+        transform: translateY(-1px);
+        opacity: 1;
+    }
+
+
+
 .link {
     color: rgba(0, 0, 0, 0.8);
     display: flex;
@@ -108,6 +107,8 @@
     margin-right: 10px;
     color: rgba(0, 0, 0, 0.8);
     font-size: larger;
+    transition: transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; /* Smooth zoom effect */
+
 }
 .navClosed {
     width: 65px;
@@ -146,5 +147,4 @@
 
 
 .icon:hover {
-    transform: scale(1.2);
-}
+    transform: scale(1.2);}
