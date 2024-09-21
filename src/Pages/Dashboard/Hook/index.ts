@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { handleFetchNotes, handleNoteCreation } from './queries'
+import { handleFetchNotes, handleNoteCreation, handleNoteDeletion } from './queries'
 
-export const useHandleNoteCreation = () => {
+export const useNoteCreation = () => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: ({
@@ -36,5 +36,25 @@ export const useGetNotes = (userId: string) => {
     return useQuery({
         queryKey: ['notes', userId],
         queryFn: () => handleFetchNotes(userId),
+    })
+}
+
+
+export const useNoteDeletion = () => {
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: ({
+            noteId
+        }: {
+            noteId: string
+        }) =>
+            handleNoteDeletion(
+                noteId
+            ),
+        onSettled: () => {
+            queryClient.invalidateQueries({
+                queryKey: ['notes'],
+            })
+        },
     })
 }

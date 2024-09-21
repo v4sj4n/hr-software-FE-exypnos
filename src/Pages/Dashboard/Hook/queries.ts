@@ -18,3 +18,6 @@ export const handleNoteCreation = async (
 export const handleFetchNotes = async (userId: string) => {
     return (await AxiosInstance.get(`/note/user/${userId}/all`)).data
 }
+export const handleNoteDeletion = async (noteId: string) => {
+    return (await AxiosInstance.delete(`/note/${noteId}`))
+}

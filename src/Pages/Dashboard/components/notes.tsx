@@ -12,14 +12,14 @@ import Card1 from '@/Components/Card/Card'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
-import style from '../style/dashboard.module.css'
-import { useHandleNoteCreation, useGetNotes } from '../Hook'
+import { useNoteCreation, useGetNotes } from '../Hook'
 import { Checkbox, Collapse } from '@mui/material'
 import { useForm } from '@tanstack/react-form'
 import { valibotValidator } from '@tanstack/valibot-form-adapter'
-import { minLength, nonEmpty, pipe, string } from 'valibot'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material'
+import { NoteCreateSchema } from '@/Schemas/Notes/NoteCreate.schema'
+import { Note } from './note'
 
 export type Note = {
     _id: string
@@ -54,10 +54,8 @@ function ServerDay(
 }
 
 export const Notes = () => {
-    const { mutate } = useHandleNoteCreation()
+    const { mutate } = useNoteCreation()
     const { currentUser } = useAuth()
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs())
     const [isNoteModalOpen, setIsNoteModalOpen] = useState(false)
     const [expandCreateNote, setExpandCreateNote] = useState(false)
 
@@ -93,12 +91,22 @@ export const Notes = () => {
     const notes: Note[] = Array.isArray(notesData) ? notesData : []
     console.log(...notes)
 
+    const handleCollapseToggle = () => {
+        if (expandCreateNote) {
+            const date = form.state.values.date
+            form.reset()
+            form.setFieldValue('date', date)
+        }
+        setExpandCreateNote((prev) => !prev)
+    }
+
     const handleNoteModalOpen = () => {
         setIsNoteModalOpen(true)
     }
 
     const handleNoteModalClose = () => {
         setIsNoteModalOpen(false)
+        handleCollapseToggle()
     }
 
     const highlightedDays = notes.map((note) =>
@@ -130,7 +138,7 @@ export const Notes = () => {
             </div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateCalendar
-                    value={selectedDate}
+                    value={dayjs()}
                     loading={isLoading}
                     onChange={(newDate) => {
                         form.setFieldValue('date', dayjs(newDate).toISOString())
@@ -149,50 +157,43 @@ export const Notes = () => {
             </LocalizationProvider>
 
             <ModalComponent
-                open={isModalOpen}
-                handleClose={() => setIsModalOpen(false)}
+                open={isNoteModalOpen}
+                handleClose={handleNoteModalClose}
             >
                 <div
                     style={{
                         display: 'flex',
-                        flexDirection: 'column',
-                        gap: '20px',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
                     }}
                 >
-                    <h3>All notes</h3>
-                    {notes.length > 0 ? (
-                        notes.map((note) => (
-                            <div key={note._id} className={style.note}>
-                                <h4>Title: {note.title}</h4>
-                                <p>Description: {note.description}</p>
-                                <p>Date: {note.date}</p>
-                            </div>
-                        ))
-                    ) : (
-                        <p>No notes available.</p>
-                    )}
+                    <h2>Notes</h2>
+                    <p>{dayjs(form.state.values.date).format('Do MMMM YY')}</p>
                 </div>
-            </ModalComponent>
-
-            <ModalComponent
-                open={isNoteModalOpen}
-                handleClose={handleNoteModalClose}
-            >
-                {notes
-                    .filter(
-                        (note) =>
-                            dayjs(note.date).format('YYYY-MM-DD') ===
-                            dayjs(form.state.values.date).format('YYYY-MM-DD'),
-                    )
-                    .map((note) => {
-                        return (
+                {notes.filter(
+                    (note) =>
+                        dayjs(note.date).format('YYYY-MM-DD') ===
+                        dayjs(form.state.values.date).format('YYYY-MM-DD'),
+                ).length > 0 ? (
+                    notes
+                        .filter(
+                            (note) =>
+                                dayjs(note.date).format('YYYY-MM-DD') ===
+                                dayjs(form.state.values.date).format(
+                                    'YYYY-MM-DD',
+                                ),
+                        )
+                        .map((note) => (
                             <Note
                                 title={note.title}
-                                date={note.date}
                                 description={note.description}
+                                noteId={note._id}
+                                key={note._id}
                             />
-                        )
-                    })}
+                        ))
+                ) : (
+                    <p>No notes created for this date</p>
+                )}
 
                 <Collapse in={expandCreateNote} timeout="auto" unmountOnExit>
                     <div
@@ -214,16 +215,7 @@ export const Notes = () => {
                             <form.Field
                                 name="title"
                                 validators={{
-                                    onChange: pipe(
-                                        string('Title is required'),
-                                        nonEmpty(
-                                            'Please dont leave the title empty',
-                                        ),
-                                        minLength(
-                                            3,
-                                            'Title should be at least 3 characters long',
-                                        ),
-                                    ),
+                                    onChange: NoteCreateSchema.entries.title,
                                 }}
                                 children={(field) => (
                                     <>
@@ -256,16 +248,8 @@ export const Notes = () => {
                             <form.Field
                                 name="description"
                                 validators={{
-                                    onChange: pipe(
-                                        string('Description is required'),
-                                        nonEmpty(
-                                            'Please dont leave the description empty',
-                                        ),
-                                        minLength(
-                                            10,
-                                            'Description should be at least 10 characters long',
-                                        ),
-                                    ),
+                                    onChange:
+                                        NoteCreateSchema.entries.description,
                                 }}
                                 children={(field) => (
                                     <>
@@ -320,16 +304,15 @@ export const Notes = () => {
                     </div>
                 </Collapse>
                 <Button
-                    type={ButtonTypes.PRIMARY}
-                    onClick={() => {
-                        setExpandCreateNote((prev) => !prev)
-                    }}
+                    type={ButtonTypes.SECONDARY}
+                    border="none"
+                    onClick={handleCollapseToggle}
                     btnText={
                         expandCreateNote
                             ? 'Collapse Create Note'
-                            : 'Expand Create Note'
+                            : 'Create Note'
                     }
-                    marginTop={'1rem'}
+                    marginTop="1rem"
                     marginLeft="auto"
                     marginRight="auto"
                     display="flex"
@@ -344,29 +327,3 @@ export const Notes = () => {
 }
 
 export default Notes
-
-const Note = ({
-    title,
-    description,
-    date,
-}: {
-    title: string
-    date: string
-    description: string
-}) => {
-    return (
-        <div
-            style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-            }}
-        >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-                <h3 style={{ margin: 0 }}>{title}</h3>
-                <p style={{ margin: 0 }}>{description}</p>
-            </div>
-            <p>{dayjs(date).format('dddd, MMMM Do YYYY')}</p>
-        </div>
-    )
-}
