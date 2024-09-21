@@ -128,8 +128,7 @@ h3 {
 
 
 
-
- @keyframes gradient-flow {
+@keyframes gradient-flow {
     0% {
         background-position: 0% 50%;
     }
@@ -165,22 +164,20 @@ h3 {
     gap: 0.333rem;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease, transform 0.3s ease;
-    animation: gradient-flow 5s ease infinite, continuous-pulse 4s ease-in-out infinite; 
 }
 
-.welcome h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
+.welcome.animate {
+    /* This class will be added only for the first 30 seconds after login */
+    animation: gradient-flow 5s ease infinite, continuous-pulse 4s ease-in-out infinite;
+}
+
+.welcome:hover {
+    /* Hover effect */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.4s ease;
+    animation: gradient-flow 5s ease infinite, continuous-pulse 4s ease-in-out infinite; /* Trigger animation on hover */
 }
 
 .welcome * {
     margin: 0;
 }
-
-.welcome:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-    transition: box-shadow 0.4s ease;
-}
-
-
-

@@ -9,9 +9,9 @@ import {
     DevicesOutlined as DevicesIcon,
     GroupAddOutlined as GroupAddIcon,
 } from '@mui/icons-material'
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import style from './sidebar.module.css'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { SidebarHeaderContext } from '@/ProtectedRoute/SidebarHeaderContext'
 import { useTheme } from '@mui/material/styles'
 import { alpha } from '@mui/material'
@@ -20,11 +20,11 @@ import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 export const SideBar = () => {
     const { isSidebarOpen: isOpen } = useContext(SidebarHeaderContext)
     const { currentUser } = useAuth()
-
     const hr = currentUser?.role === 'hr'
     const currentUserID = currentUser?._id
-
     const navigate = useNavigate()
+    const location = useLocation()
+    const [activeItem, setActiveItem] = useState('')
 
     const [dropdownOpen, setDropdownOpen] = useState({
         recruiting: false,
@@ -32,6 +32,10 @@ export const SideBar = () => {
         events: false,
         assets: false,
     })
+
+    useEffect(() => {
+        setActiveItem(location.pathname)
+    }, [location])
 
     const toggleDropdown = (dropdown: keyof typeof dropdownOpen) => {
         setDropdownOpen((prevState) => {
@@ -44,14 +48,20 @@ export const SideBar = () => {
         })
     }
 
+    const handleItemClick = (path: string) => {
+        setActiveItem(path)
+        navigate(path)
+    }
+
     const theme = useTheme()
 
     return (
         <div className={style.sidebarContainer}>
-            <nav className={` ${isOpen ? style.navOpen : style.navClosed}`}>
+            <nav className={`${isOpen ? style.navOpen : style.navClosed}`}>
                 <div className={style.navbar}>
                     <div
-                        className={style.item}
+                        className={`${style.item} ${activeItem === '/dashboard' ? style.active : ''}`}
+                        onClick={() => handleItemClick('/dashboard')}
                         onMouseEnter={(e) =>
                             (e.currentTarget.style.backgroundColor = alpha(
                                 theme.palette.background.default,
@@ -63,7 +73,7 @@ export const SideBar = () => {
                                 'transparent')
                         }
                     >
-                        <Link to="/dashboard" className={style.link}>
+                        <div className={style.link}>
                             <div className={style.iconTextContainer}>
                                 <DashboardIcon
                                     className={style.icon}
@@ -77,13 +87,14 @@ export const SideBar = () => {
                                     </span>
                                 )}
                             </div>
-                        </Link>
+                        </div>
                     </div>
 
                     {hr && (
                         <>
                             <div
-                                className={style.item}
+                                className={`${style.item} ${activeItem.startsWith('/recruiting') ? style.active : ''}`}
+                                onClick={() => toggleDropdown('recruiting')}
                                 onMouseEnter={(e) =>
                                     (e.currentTarget.style.backgroundColor =
                                         alpha(
@@ -95,7 +106,6 @@ export const SideBar = () => {
                                     (e.currentTarget.style.backgroundColor =
                                         'transparent')
                                 }
-                                onClick={() => toggleDropdown('recruiting')}
                             >
                                 <div className={style.link}>
                                     <div className={style.iconTextContainer}>
@@ -137,9 +147,9 @@ export const SideBar = () => {
                                         : style.close
                                 }`}
                             >
-                                <Link
-                                    to="/candidates"
-                                    className={style.dropdownItem}
+                                <div
+                                    className={`${style.dropdownItem} ${activeItem === '/candidates' ? style.active : ''}`}
+                                    onClick={() => handleItemClick('/candidates')}
                                     onMouseEnter={(e) =>
                                         (e.currentTarget.style.backgroundColor =
                                             alpha(
@@ -154,10 +164,10 @@ export const SideBar = () => {
                                     }
                                 >
                                     Candidates
-                                </Link>
-                                <Link
-                                    to="/interview"
-                                    className={style.dropdownItem}
+                                </div>
+                                <div
+                                    className={`${style.dropdownItem} ${activeItem === '/interview' ? style.active : ''}`}
+                                    onClick={() => handleItemClick('/interview')}
                                     onMouseEnter={(e) =>
                                         (e.currentTarget.style.backgroundColor =
                                             alpha(
@@ -172,12 +182,14 @@ export const SideBar = () => {
                                     }
                                 >
                                     Interviews
-                                </Link>
+                                </div>
                             </div>
                         </>
                     )}
+
                     <div
-                        className={style.item}
+                        className={`${style.item} ${activeItem.startsWith('/employee') ? style.active : ''}`}
+                        onClick={() => toggleDropdown('employee')}
                         onMouseEnter={(e) =>
                             (e.currentTarget.style.backgroundColor = alpha(
                                 theme.palette.background.default,
@@ -188,7 +200,6 @@ export const SideBar = () => {
                             (e.currentTarget.style.backgroundColor =
                                 'transparent')
                         }
-                        onClick={() => toggleDropdown('employee')}
                     >
                         <div className={style.link}>
                             <div className={style.iconTextContainer}>
@@ -216,14 +227,15 @@ export const SideBar = () => {
                                 ))}
                         </div>
                     </div>
+
                     <div
                         className={`${style.dropdownMenu} ${
                             dropdownOpen.employee ? style.open : style.close
                         }`}
                     >
-                        <Link
-                            to="/employees"
-                            className={style.dropdownItem}
+                        <div
+                            className={`${style.dropdownItem} ${activeItem === '/employees' ? style.active : ''}`}
+                            onClick={() => handleItemClick('/employees')}
                             onMouseEnter={(e) =>
                                 (e.currentTarget.style.backgroundColor = alpha(
                                     theme.palette.background.default,
@@ -236,29 +248,28 @@ export const SideBar = () => {
                             }
                         >
                             Employees
-                        </Link>
+                        </div>
                         {hr && (
-                            <Link
-                                to="/payroll"
-                                className={style.dropdownItem}
+                            <div
+                                className={`${style.dropdownItem} ${activeItem === '/payroll' ? style.active : ''}`}
+                                onClick={() => handleItemClick('/payroll')}
                                 onMouseEnter={(e) =>
-                                    (e.currentTarget.style.backgroundColor =
-                                        alpha(
-                                            theme.palette.background.default,
-                                            0.5,
-                                        ))
+                                    (e.currentTarget.style.backgroundColor = alpha(
+                                        theme.palette.background.default,
+                                        0.5,
+                                    ))
                                 }
                                 onMouseLeave={(e) =>
                                     (e.currentTarget.style.backgroundColor =
                                         'transparent')
                                 }
                             >
-                                Payroll{' '}
-                            </Link>
+                                Payroll
+                            </div>
                         )}
-                        <Link
-                            to="/vacation"
-                            className={style.dropdownItem}
+                        <div
+                            className={`${style.dropdownItem} ${activeItem === '/vacation' ? style.active : ''}`}
+                            onClick={() => handleItemClick('/vacation')}
                             onMouseEnter={(e) =>
                                 (e.currentTarget.style.backgroundColor = alpha(
                                     theme.palette.background.default,
@@ -270,23 +281,29 @@ export const SideBar = () => {
                                     'transparent')
                             }
                         >
-                            Vacation{' '}
-                        </Link>
+                            Vacation
+                        </div>
                         <div
-                            onClick={(e) => {
-                                e.currentTarget.style.backgroundColor = alpha(
+                            className={`${style.dropdownItem} ${activeItem === '/promotion' ? style.active : ''}`}
+                            onClick={() => handleItemClick('/promotion')}
+                            onMouseEnter={(e) =>
+                                (e.currentTarget.style.backgroundColor = alpha(
                                     theme.palette.background.default,
                                     0.5,
-                                )
-                                navigate('promotion')
-                            }}
-                            className={style.dropdownItem}
+                                ))
+                            }
+                            onMouseLeave={(e) =>
+                                (e.currentTarget.style.backgroundColor =
+                                    'transparent')
+                            }
                         >
                             Promotion
                         </div>
                     </div>
+
                     <div
-                        className={style.item}
+                        className={`${style.item} ${activeItem.startsWith('/assets') ? style.active : ''}`}
+                        onClick={() => toggleDropdown('assets')}
                         onMouseEnter={(e) =>
                             (e.currentTarget.style.backgroundColor = alpha(
                                 theme.palette.background.default,
@@ -297,7 +314,6 @@ export const SideBar = () => {
                             (e.currentTarget.style.backgroundColor =
                                 'transparent')
                         }
-                        onClick={() => toggleDropdown('assets')}
                     >
                         <div className={style.link}>
                             <div className={style.iconTextContainer}>
@@ -325,14 +341,15 @@ export const SideBar = () => {
                                 ))}
                         </div>
                     </div>
+
                     <div
                         className={`${style.dropdownMenu} ${
                             dropdownOpen.assets ? style.open : style.close
                         }`}
                     >
-                        <Link
-                            to="/holdings"
-                            className={style.dropdownItem}
+                        <div
+                            className={`${style.dropdownItem} ${activeItem === '/holdings' ? style.active : ''}`}
+                            onClick={() => handleItemClick('/holdings')}
                             onMouseEnter={(e) =>
                                 (e.currentTarget.style.backgroundColor = alpha(
                                     theme.palette.background.default,
@@ -345,10 +362,10 @@ export const SideBar = () => {
                             }
                         >
                             Holdings
-                        </Link>
-                        <Link
-                            to="/inventory"
-                            className={style.dropdownItem}
+                        </div>
+                        <div
+                            className={`${style.dropdownItem} ${activeItem === '/inventory' ? style.active : ''}`}
+                            onClick={() => handleItemClick('/inventory')}
                             onMouseEnter={(e) =>
                                 (e.currentTarget.style.backgroundColor = alpha(
                                     theme.palette.background.default,
@@ -361,11 +378,12 @@ export const SideBar = () => {
                             }
                         >
                             Inventory
-                        </Link>
+                        </div>
                     </div>
 
                     <div
-                        className={style.item}
+                        className={`${style.item} ${activeItem.startsWith('/activities') ? style.active : ''}`}
+                        onClick={() => toggleDropdown('events')}
                         onMouseEnter={(e) =>
                             (e.currentTarget.style.backgroundColor = alpha(
                                 theme.palette.background.default,
@@ -376,7 +394,6 @@ export const SideBar = () => {
                             (e.currentTarget.style.backgroundColor =
                                 'transparent')
                         }
-                        onClick={() => toggleDropdown('events')}
                     >
                         <div className={style.link}>
                             <div className={style.iconTextContainer}>
@@ -406,14 +423,15 @@ export const SideBar = () => {
                                 ))}
                         </div>
                     </div>
+
                     <div
                         className={`${style.dropdownMenu} ${
                             dropdownOpen.events ? style.open : style.close
                         }`}
                     >
-                        <Link
-                            to="/events"
-                            className={style.dropdownItem}
+                        <div
+                            className={`${style.dropdownItem} ${activeItem === '/events' ? style.active : ''}`}
+                            onClick={() => handleItemClick('/events')}
                             onMouseEnter={(e) =>
                                 (e.currentTarget.style.backgroundColor = alpha(
                                     theme.palette.background.default,
@@ -426,10 +444,10 @@ export const SideBar = () => {
                             }
                         >
                             Events
-                        </Link>
-                        <Link
-                            to="/career"
-                            className={style.dropdownItem}
+                        </div>
+                        <div
+                            className={`${style.dropdownItem} ${activeItem === '/career' ? style.active : ''}`}
+                            onClick={() => handleItemClick('/career')}
                             onMouseEnter={(e) =>
                                 (e.currentTarget.style.backgroundColor = alpha(
                                     theme.palette.background.default,
@@ -441,11 +459,13 @@ export const SideBar = () => {
                                     'transparent')
                             }
                         >
-                            Career{' '}
-                        </Link>
+                            Career
+                        </div>
                     </div>
+
                     <div
-                        className={style.item}
+                        className={`${style.item} ${activeItem === '/structure' ? style.active : ''}`}
+                        onClick={() => handleItemClick('/structure')}
                         onMouseEnter={(e) =>
                             (e.currentTarget.style.backgroundColor = alpha(
                                 theme.palette.background.default,
@@ -457,7 +477,7 @@ export const SideBar = () => {
                                 'transparent')
                         }
                     >
-                        <Link to="/structure" className={style.link}>
+                        <div className={style.link}>
                             <div className={style.iconTextContainer}>
                                 <BusinessIcon
                                     className={style.icon}
@@ -473,10 +493,12 @@ export const SideBar = () => {
                                     </span>
                                 )}
                             </div>
-                        </Link>
+                        </div>
                     </div>
+
                     <div
-                        className={style.item}
+                        className={`${style.item} ${activeItem === '/historic' ? style.active : ''}`}
+                        onClick={() => handleItemClick('/historic')}
                         onMouseEnter={(e) =>
                             (e.currentTarget.style.backgroundColor = alpha(
                                 theme.palette.background.default,
@@ -488,7 +510,7 @@ export const SideBar = () => {
                                 'transparent')
                         }
                     >
-                        <Link to="/historic" className={style.link}>
+                        <div className={style.link}>
                             <div className={style.iconTextContainer}>
                                 <InfoIcon
                                     className={style.icon}
@@ -502,11 +524,12 @@ export const SideBar = () => {
                                     <span className={style.text}>About</span>
                                 )}
                             </div>
-                        </Link>
+                        </div>
                     </div>
-                    <div></div>
                 </div>
             </nav>
         </div>
     )
 }
+
+

@@ -3,7 +3,7 @@ import style from '../Dashboard/style/dashboard.module.css'
 import Calendar from './components/calendar.tsx'
 import Card from './components/card.tsx'
 import InfoSection from './components/infoSection.tsx'
-import PieChartComponent from './components/piechart.tsx'
+// import PieChartComponent from './components/piechart.tsx'
 import { DashboardProvider, useDashboardContext } from './context/hook.tsx'
 import { greeter } from '@/Helpers/Greeter.tsx'
 import { useNavigate } from 'react-router-dom'
@@ -12,7 +12,8 @@ import { useAuth } from '@/ProtectedRoute/Context/AuthContext.tsx'
 import Button from '@/Components/Button/Button.tsx'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes.tsx'
 import { ModalComponent } from '@/Components/Modal/Modal.tsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import Weather from './components/Weather.tsx'
 
 const DashboardContent: React.FC = () => {
     const { employeeData } = useDashboardContext()
@@ -30,12 +31,23 @@ const DashboardContent: React.FC = () => {
     }
     const navigate = useNavigate()
 
+    const [animateOnLogin, setAnimateOnLogin] = useState(true); 
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setAnimateOnLogin(false); 
+        }, 10000); 
+
+        return () => clearTimeout(timeout); 
+    }, []);
     return (
         <div className={style.dashboardContainer}>
             <div className={style.mainContent}>
                 <div className={style.rightContent}>
-                    <div className={style.welcome}>
-                        <h2>
+                <div
+            className={`${style.welcome} ${animateOnLogin ? style.animate : ''}`}
+        >
+                        <h1>
                             {greeter()}{' '}
                             <span
                                 onClick={handleNavigateToProfile}
@@ -45,7 +57,7 @@ const DashboardContent: React.FC = () => {
                                 {userName}
                             </span>
                             !
-                        </h2>
+                        </h1>
                         {isAdmin ? (
                             <p>Here's what's happening with your team today</p>
                         ) : (
@@ -85,7 +97,7 @@ const DashboardContent: React.FC = () => {
                     <div className={style.middleRow}>
                         <Card1
                             padding="20px"
-                            borderRadius="15px"
+                            borderRadius="10px"
                             flex="1"
                             backgroundColor="rgba(255, 255, 255, 0.7)"
                         >
@@ -114,28 +126,26 @@ const DashboardContent: React.FC = () => {
                         </Card1>
                         <Card1
                             padding="20px"
-                            borderRadius="15px"
+                            borderRadius="10px"
                             flex="2"
                             backgroundColor="rgba(255, 255, 255, 0.7)"
                         >
                             <InfoSection />
                         </Card1>
                         <Card1
-                            padding="20px"
-                            borderRadius="15px"
+                            borderRadius="10px"
                             flex="2"
                             backgroundColor="rgba(255, 255, 255, 0.7)"
                         >
-                            <h2>Employ Status</h2>
-                            <PieChartComponent />
-                        </Card1>
+                            <Weather/>
+                            </Card1>
                     </div>
                     <Card1
                         backgroundColor="rgba(255, 255, 255, 0.7)"
                         padding="20px"
                         border="15px"
                         marginTop="20px"
-                        borderRadius="15px"
+                        borderRadius="10px"
                         flex="1"
                     >
                         <EmployeeSection />

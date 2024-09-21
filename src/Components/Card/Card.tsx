@@ -26,7 +26,7 @@ const Card: React.FC<CardProps> = ({
                 ...style,
                 width: width || '100%',
                 flex: flex || '0',
-                padding: padding || '1rem',
+                padding: padding || '0rem',
                 borderRadius: borderRadius || '4px',
                 gap: gap || '0',
                 height: height || 'auto',
