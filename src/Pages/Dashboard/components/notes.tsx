@@ -14,11 +14,12 @@ import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 import style from '../style/dashboard.module.css'
 import { useHandleNoteCreation, useGetNotes } from '../Hook'
-import { Checkbox } from '@mui/material'
+import { Checkbox, Collapse } from '@mui/material'
 import { useForm } from '@tanstack/react-form'
 import { valibotValidator } from '@tanstack/valibot-form-adapter'
 import { minLength, nonEmpty, pipe, string } from 'valibot'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
+import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material'
 
 export type Note = {
     _id: string
@@ -58,6 +59,7 @@ export const Notes = () => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs())
     const [isNoteModalOpen, setIsNoteModalOpen] = useState(false)
+    const [expandCreateNote, setExpandCreateNote] = useState(false)
 
     const form = useForm({
         defaultValues: {
@@ -86,8 +88,7 @@ export const Notes = () => {
         data: notesData,
         isLoading,
         error,
-    } = useGetNotes(currentUser?._id as unknown as string || '')
-
+    } = useGetNotes((currentUser?._id as unknown as string) || '')
 
     const notes: Note[] = Array.isArray(notesData) ? notesData : []
     console.log(...notes)
@@ -100,7 +101,9 @@ export const Notes = () => {
         setIsNoteModalOpen(false)
     }
 
-    const highlightedDays = notes.map((note) => dayjs(note.date).format('YYYY-MM-DD'))
+    const highlightedDays = notes.map((note) =>
+        dayjs(note.date).format('YYYY-MM-DD'),
+    )
 
     if (!currentUser) {
         return <div>Please log in to view your notes.</div>
@@ -109,7 +112,6 @@ export const Notes = () => {
     if (error) {
         return <div>Error loading notes: {error.message}</div>
     }
-
 
     return (
         <Card1
@@ -140,7 +142,7 @@ export const Notes = () => {
                     }}
                     slotProps={{
                         day: {
-                            highlightedDays: [...new Set(highlightedDays)],
+                            highlightedDays,
                         } as any,
                     }}
                 />
@@ -176,118 +178,195 @@ export const Notes = () => {
                 open={isNoteModalOpen}
                 handleClose={handleNoteModalClose}
             >
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '20px',
-                    }}
-                >
-                    <h3>
-                        Add a note for {selectedDate.format('MMMM D, YYYY')}
-                    </h3>
-                    <div>
-                        <div>Title</div>
-                        <form.Field
-                            name="title"
-                            validators={{
-                                onChange: pipe(
-                                    string('Title is required'),
-                                    nonEmpty(
-                                        'Please dont leave the title empty',
-                                    ),
-                                    minLength(
-                                        3,
-                                        'Title should be at least 3 characters long',
-                                    ),
-                                ),
-                            }}
-                            children={(field) => (
-                                <>
-                                <Input
-                                    IsUsername
-                                    type="input"
-                                    name="title"
-                                    label="Title"
-                                    shrink={true}
-                                    value={field.state.value}
-                                    onChange={(e) =>
-                                        field.handleChange(e.target.value)
-                                    }
-                                />
-                                {field.state.meta.errors ? (
-                                <ErrorText>
-                                    {field.state.meta.errors.join(', ')}
-                                </ErrorText>
-                            ) : null}
-                                </>
+                {notes
+                    .filter(
+                        (note) =>
+                            dayjs(note.date).format('YYYY-MM-DD') ===
+                            dayjs(form.state.values.date).format('YYYY-MM-DD'),
+                    )
+                    .map((note) => {
+                        return (
+                            <Note
+                                title={note.title}
+                                date={note.date}
+                                description={note.description}
+                            />
+                        )
+                    })}
+
+                <Collapse in={expandCreateNote} timeout="auto" unmountOnExit>
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '20px',
+                            marginTop: '20px',
+                        }}
+                    >
+                        <h3>
+                            Add a note for{' '}
+                            {dayjs(form.state.values.date).format(
+                                'dddd, MMMM Do YYYY',
                             )}
-                        />
-                    </div>
-                    <div>
-                        <div>Description</div>
-                        <form.Field
-                            name="description"
-                            validators={{
-                                onChange: pipe(
-                                    string('Description is required'),
-                                    nonEmpty(
-                                        'Please dont leave the description empty',
+                        </h3>
+                        <div>
+                            <div>Title</div>
+                            <form.Field
+                                name="title"
+                                validators={{
+                                    onChange: pipe(
+                                        string('Title is required'),
+                                        nonEmpty(
+                                            'Please dont leave the title empty',
+                                        ),
+                                        minLength(
+                                            3,
+                                            'Title should be at least 3 characters long',
+                                        ),
                                     ),
-                                    minLength(
-                                        10,
-                                        'Description should be at least 10 characters long',
-                                    ),
-                                ),
-                            }}
-                            children={(field) => (
-                                <>
-                                <Input
-                                    rows={4}
-                                    multiline={true}
-                                    IsUsername
-                                    type="input"
-                                    name="description"
-                                    label="Description"
-                                    shrink={true}
-                                    value={field.state.value}
-                                    onChange={(e) =>
-                                        field.handleChange(e.target.value)
-                                    }
-                                />
-                                {field.state.meta.errors ? (
-                                    <ErrorText>
-                                        {field.state.meta.errors.join(', ')}
-                                    </ErrorText>
-                                ) : null}
+                                }}
+                                children={(field) => (
+                                    <>
+                                        <Input
+                                            IsUsername
+                                            type="input"
+                                            name="title"
+                                            label="Title"
+                                            shrink={true}
+                                            value={field.state.value}
+                                            onChange={(e) =>
+                                                field.handleChange(
+                                                    e.target.value,
+                                                )
+                                            }
+                                        />
+                                        {field.state.meta.errors ? (
+                                            <ErrorText>
+                                                {field.state.meta.errors.join(
+                                                    ', ',
+                                                )}
+                                            </ErrorText>
+                                        ) : null}
                                     </>
-                            )}
+                                )}
+                            />
+                        </div>
+                        <div>
+                            <div>Description</div>
+                            <form.Field
+                                name="description"
+                                validators={{
+                                    onChange: pipe(
+                                        string('Description is required'),
+                                        nonEmpty(
+                                            'Please dont leave the description empty',
+                                        ),
+                                        minLength(
+                                            10,
+                                            'Description should be at least 10 characters long',
+                                        ),
+                                    ),
+                                }}
+                                children={(field) => (
+                                    <>
+                                        <Input
+                                            rows={4}
+                                            multiline={true}
+                                            IsUsername
+                                            type="input"
+                                            name="description"
+                                            label="Description"
+                                            shrink={true}
+                                            value={field.state.value}
+                                            onChange={(e) =>
+                                                field.handleChange(
+                                                    e.target.value,
+                                                )
+                                            }
+                                        />
+                                        {field.state.meta.errors ? (
+                                            <ErrorText>
+                                                {field.state.meta.errors.join(
+                                                    ', ',
+                                                )}
+                                            </ErrorText>
+                                        ) : null}
+                                    </>
+                                )}
+                            />
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <div>Will be reminded</div>
+                            <form.Field
+                                name="willBeReminded"
+                                children={(field) => (
+                                    <Checkbox
+                                        checked={field.state.value}
+                                        onChange={(e) =>
+                                            field.handleChange(e.target.checked)
+                                        }
+                                        inputProps={{
+                                            'aria-label': 'controlled',
+                                        }}
+                                    />
+                                )}
+                            />
+                        </div>
+                        <Button
+                            btnText="Add Note"
+                            type={ButtonTypes.PRIMARY}
+                            onClick={form.handleSubmit}
                         />
                     </div>
-                    <div>
-                        <div>Will be reminded</div>
-                        <form.Field
-                            name="willBeReminded"
-                            children={(field) => (
-                                <Checkbox
-                                    checked={field.state.value}
-                                    onChange={(e) =>
-                                        field.handleChange(e.target.checked)
-                                    }
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                />
-                            )}
-                        />
-                    </div>
-                    <Button
-                        btnText="Add Note"
-                        type={ButtonTypes.PRIMARY}
-                        onClick={form.handleSubmit}
-                    />
-                </div>
+                </Collapse>
+                <Button
+                    type={ButtonTypes.PRIMARY}
+                    onClick={() => {
+                        setExpandCreateNote((prev) => !prev)
+                    }}
+                    btnText={
+                        expandCreateNote
+                            ? 'Collapse Create Note'
+                            : 'Expand Create Note'
+                    }
+                    marginTop={'1rem'}
+                    marginLeft="auto"
+                    marginRight="auto"
+                    display="flex"
+                    alignItems="center"
+                    icon={
+                        expandCreateNote ? <ArrowDropUp /> : <ArrowDropDown />
+                    }
+                />
             </ModalComponent>
         </Card1>
     )
 }
 
 export default Notes
+
+const Note = ({
+    title,
+    description,
+    date,
+}: {
+    title: string
+    date: string
+    description: string
+}) => {
+    return (
+        <div
+            style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+            }}
+        >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+                <h3 style={{ margin: 0 }}>{title}</h3>
+                <p style={{ margin: 0 }}>{description}</p>
+            </div>
+            <p>{dayjs(date).format('dddd, MMMM Do YYYY')}</p>
+        </div>
+    )
+}

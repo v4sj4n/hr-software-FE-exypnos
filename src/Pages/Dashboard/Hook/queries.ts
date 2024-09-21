@@ -16,5 +16,5 @@ export const handleNoteCreation = async (
     })
 }
 export const handleFetchNotes = async (userId: string) => {
-    return (await AxiosInstance.get(`/note/user/${userId}`)).data
+    return (await AxiosInstance.get(`/note/user/${userId}/all`)).data
 }
