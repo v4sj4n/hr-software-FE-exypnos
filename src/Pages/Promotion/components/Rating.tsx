@@ -121,9 +121,9 @@ console.log('Rating', currentUser?._id, id,(currentUser?.role === 'hr' ||
             <Card backgroundColor="rgba(255, 255, 255, 0.7)">
                 <h3
                     style={{
-                        padding: 0,
                         margin: ' 0 0 10px  0 ',
                         color: '#2457a3',
+                        padding: '10px',
                     }}
                 >
                     Rating
@@ -136,6 +136,7 @@ console.log('Rating', currentUser?._id, id,(currentUser?.role === 'hr' ||
                                 backgroundColor={
                                     theme.palette.background.default
                                 }
+                                padding="10px"
                             >
                                 <h4>{rating.projectId.name}</h4>
                                 <div className={style.grid}>

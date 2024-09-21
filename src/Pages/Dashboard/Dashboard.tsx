@@ -1,6 +1,5 @@
 import Card1 from '../../Components/Card/Card.tsx'
 import style from '../Dashboard/style/dashboard.module.css'
-import Calendar from './components/calendar.tsx'
 import Card from './components/card.tsx'
 import InfoSection from './components/infoSection.tsx'
 // import PieChartComponent from './components/piechart.tsx'
@@ -9,11 +8,9 @@ import { greeter } from '@/Helpers/Greeter.tsx'
 import { useNavigate } from 'react-router-dom'
 import EmployeeSection from './components/employeeSection.tsx'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext.tsx'
-import Button from '@/Components/Button/Button.tsx'
-import { ButtonTypes } from '@/Components/Button/ButtonTypes.tsx'
-import { ModalComponent } from '@/Components/Modal/Modal.tsx'
 import { useEffect, useState } from 'react'
 import Weather from './components/Weather.tsx'
+import { Notes } from './components/notes.tsx'
 
 const DashboardContent: React.FC = () => {
     const { employeeData } = useDashboardContext()
@@ -22,7 +19,6 @@ const DashboardContent: React.FC = () => {
     const { currentUser } = useAuth()
     const userName = currentUser ? currentUser.firstName : 'User'
     const isAdmin = currentUser?.role === 'hr'
-    const [isModalOpen, setIsModalOpen] = useState(false)
 
     const handleNavigateToProfile = () => {
         if (currentUser) {
@@ -95,35 +91,7 @@ const DashboardContent: React.FC = () => {
                         </div>
                     </div>
                     <div className={style.middleRow}>
-                        <Card1
-                            padding="20px"
-                            borderRadius="10px"
-                            flex="1"
-                            backgroundColor="rgba(255, 255, 255, 0.7)"
-                        >
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                }}
-                            >
-                                <h2>Notes</h2>
-                                <Button
-                                    btnText="Show all notes"
-                                    type={ButtonTypes.SECONDARY}
-                                    border={'none'}
-                                    onClick={() => setIsModalOpen(true)}
-                                />
-                            </div>
-                            <Calendar />
-
-                            <ModalComponent
-                                open={isModalOpen}
-                                handleClose={() => setIsModalOpen(false)}
-                            >
-                                <h3>All notes</h3>
-                            </ModalComponent>
-                        </Card1>
+                      <Notes />
                         <Card1
                             padding="20px"
                             borderRadius="10px"
