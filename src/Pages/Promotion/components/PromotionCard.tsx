@@ -164,12 +164,14 @@ export default function PromotionCard({ id }: { id: string }) {
                 gap="16px"
                 flex="1"
                 backgroundColor="rgba(255, 255, 255, 0.7)"
+                padding="10px"
             >
                 <h3>Promotion</h3>
                 {promotions.map((item) => (
                     <Card
                         key={item._id}
                         backgroundColor={theme.palette.background.default}
+                        padding="10px"
                     >
                         <div>
                             <h3>Position: {item.position}</h3>
@@ -288,7 +290,6 @@ export default function PromotionCard({ id }: { id: string }) {
                                                 position: newValue as string,
                                             })
                                         }
-                                        width={''}
                                     />
                                     <Selecter
                                         name="grade"
@@ -303,7 +304,6 @@ export default function PromotionCard({ id }: { id: string }) {
                                                 grade: newValue as string,
                                             })
                                         }
-                                        width={''}
                                     />
                                     <Input
                                         IsUsername
