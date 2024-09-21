@@ -181,3 +181,13 @@ h3 {
 .welcome * {
     margin: 0;
 }
+.note{
+    border-radius: 10px;
+    background-color: transparent;
+    border: 1px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+}
