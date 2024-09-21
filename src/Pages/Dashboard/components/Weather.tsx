@@ -9,37 +9,37 @@ import image5 from './../../../../public/Images/s5.jpg';
 
 const getBackgroundImage = (description: string) => {
     switch (description.toLowerCase()) {
-      case "clear sky":
-        return image1; 
-      case "few clouds":
-      case "scattered clouds":
-      case "broken clouds":
-        return image2; 
-      case "rain":
-      case "shower rain":
-        return image3; 
-      case "thunderstorm":
-        return image4; 
-      case "snow":
-        return image5; 
-      default:
-        return image2; 
+        case "clear sky":
+            return image1;
+        case "few clouds":
+        case "scattered clouds":
+        case "broken clouds":
+            return image2;
+        case "rain":
+        case "shower rain":
+            return image3;
+        case "thunderstorm":
+            return image4;
+        case "snow":
+            return image5;
+        default:
+            return image2;
     }
 };
 
 interface WeatherData {
-  name: string;
-  main: {
-    temp: number;
-    humidity: number;
-  };
-  weather: {
-    description: string;
-    icon: string; 
-  }[];
-  wind: {
-    speed: number;
-  };
+    name: string;
+    main: {
+        temp: number;
+        humidity: number;
+    };
+    weather: {
+        description: string;
+        icon: string;
+    }[];
+    wind: {
+        speed: number;
+    };
 }
 
 const Weather = () => {
@@ -64,28 +64,36 @@ const Weather = () => {
 
     return (
         <div className={style.container}>
-        <div
-            className={style.weatherApp}
-            style={{
-                backgroundImage: weatherData
-                    ? `url(${getBackgroundImage(weatherData.weather[0].description)})`
-                    : "none",
-                backgroundSize: 'contain ', 
-                backgroundRepeat: 'no-repeat',
-                display: 'flex',
-                flexDirection: 'column',
-            }}
-        >
             {weatherData && (
-                <>
+                <div
+                    className={style.weatherApp}
+                    style={{
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: '20px',
+                        padding: '10px',
+                    }}
+                >
                     <div className={style.weatherHeader}>
                         <h2>{weatherData.name}</h2>
                         <p>{new Date().toLocaleDateString()}</p>
                     </div>
 
-                    <div className={style.weatherIcon}>
-                       
-                    </div>
+                    <div
+                        style={{
+                            width: '150px', 
+                            height: '150px', 
+                            backgroundImage: weatherData
+                                ? `url(${getBackgroundImage(weatherData.weather[0].description)})`
+                                : 'none',
+                            backgroundSize: 'contain', 
+                            backgroundRepeat: 'no-repeat',
+                            backgroundPosition: 'center',
+                        }}
+                    ></div>
 
                     <div className={style.mainWeather}>
                         <div className={style.weatherDetails}>
@@ -94,9 +102,8 @@ const Weather = () => {
                             <p>Humidity: {weatherData.main.humidity} %</p>
                         </div>
                     </div>
-                </>
+                </div>
             )}
-        </div>
         </div>
     );
 };
