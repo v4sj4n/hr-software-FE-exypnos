@@ -17,10 +17,12 @@ export interface ProfileContextType {
     handleCreateToastClose: () => void
     genderOptions: string[]
     Places: string[]
+    position: string[]
     handleUpdatePayroll: (
         event: React.FormEvent<HTMLButtonElement>,
     ) => Promise<void>
-    handleGenderChange: (value: string ) => void;
+    handleGenderChange: (value: string | string[]) => void;
+    handlePositionChange: (value: string | string[]) => void;
     handlePlaceChange: (value: string | string[]) => void;
     updateToastOpen: boolean
     updateToastMessage: string

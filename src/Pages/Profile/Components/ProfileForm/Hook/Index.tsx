@@ -22,7 +22,7 @@ export const useGetAndUpdateUserById = () => {
     const isCurrentUser = currentUser?._id === id
     const isAdmin = userRole === 'hr'
     const genderOptions = ['Male', 'Female']
-    const [isCancel,setIsCancel]= useState(false)
+    const [isCancel, setIsCancel] = useState(false)
 
 
     const Places = [
@@ -62,7 +62,17 @@ export const useGetAndUpdateUserById = () => {
         "Bajram Curri",
         "Selenicë"
     ];
-    
+
+    const position = [
+        'designer',
+        'backend_developer',
+        'frontend_developer',
+        'fullstack_developer',
+        'tester',
+        'devops'
+    ];
+
+
 
     useEffect(() => {
         setIsLoading(true)
@@ -109,7 +119,7 @@ export const useGetAndUpdateUserById = () => {
         setIsLoading(true)
         try {
             await AxiosInstance.delete(`/user/${id}`)
-            setIsCancel(true) 
+            setIsCancel(true)
             setUpdateToastOpen(true)
             setUpdateToastMessage('User has been successfully deleted.')
             setUpdateToastSeverity('success')
@@ -124,16 +134,28 @@ export const useGetAndUpdateUserById = () => {
         }
     }
 
-        const handleGenderChange = (value: string) => {
-            if (!isAdmin) return;
-            setUser((prevUser) => {
-                if (!prevUser) return null;
-                return {
-                    ...prevUser,
-                    gender: [value], 
-                };
-            });
-        };
+    const handleGenderChange = (value: string | string[]) => {
+        if (!isAdmin) return;
+        setUser((prevUser) => {
+            if (!prevUser) return null;
+            return {
+                ...prevUser,
+                gender: Array.isArray(value) ? value[0] : value,
+            };
+        });
+    };
+
+
+    const handlePositionChange = (value: string | string[]) => {
+        if (!isAdmin) return;
+        setUser((prevUser) => {
+            if (!prevUser) return null;
+            return {
+                ...prevUser,
+                position: Array.isArray(value) ? value[0] : value,
+            };
+        });
+    };
 
     const handlePlaceChange = (value: string | string[]) => {
         if (!isAdmin) return;
@@ -141,7 +163,7 @@ export const useGetAndUpdateUserById = () => {
             if (!prevUser) return null;
             return {
                 ...prevUser,
-                pob: Array.isArray(value) ? value[0] : value, 
+                pob: Array.isArray(value) ? value[0] : value,
             };
         });
     };
@@ -153,13 +175,12 @@ export const useGetAndUpdateUserById = () => {
             return
         }
 
-        
-
         const userToUpdate = {
             firstName: user.firstName,
             lastName: user.lastName,
             phone: user.phone,
             pob: user.pob,
+            position: user.position,
             dob: user.dob,
             gender: user.gender,
             email: user.auth.email,
@@ -178,10 +199,10 @@ export const useGetAndUpdateUserById = () => {
         } catch (error: unknown) {
             if (error instanceof AxiosError) {
                 setUpdateToastOpen(true)
-            setUpdateToastMessage(error.response?.data.message)
-            setUpdateToastSeverity('error')
+                setUpdateToastMessage(error.response?.data.message)
+                setUpdateToastSeverity('error')
             }
-           
+
         }
     }
 
@@ -208,7 +229,8 @@ export const useGetAndUpdateUserById = () => {
         handleCancel,
         isCancel,
         setIsCancel,
-        
+        position,
+        handlePositionChange
     }
 }
 
@@ -349,13 +371,13 @@ export const useUpdatePayroll = () => {
             setToastOpen(true)
             setToastSeverity('success')
         } catch (err: unknown) {
-            if(err instanceof AxiosError) {
+            if (err instanceof AxiosError) {
                 setToastMessage(err.response?.data.message)
                 setToastSeverity('error')
                 setToastOpen(true)
             }
-           
-          
+
+
         }
     }
 
@@ -373,6 +395,6 @@ export const useUpdatePayroll = () => {
         toastOpen,
         toastMessage,
         toastSeverity,
-        
+
     }
 }

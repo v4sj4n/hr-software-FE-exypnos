@@ -17,7 +17,7 @@ const ProfileFormContext = () => {
     
     const { uploadImage, previewImage } = useFileUpload()
 
-    const { user, isCurrentUser, isAdmin, handleChange, handleUpdate,genderOptions, handleGenderChange, updateToastMessage, updateToastOpen, updateToastSeverity,handleUpdateToastClose, handlePlaceChange, Places,handleCancel } = useProfile()
+    const { user, isCurrentUser, isAdmin, handleChange, handleUpdate,genderOptions, handleGenderChange, updateToastMessage, updateToastOpen, updateToastSeverity,handleUpdateToastClose, handlePlaceChange, Places,handleCancel,handlePositionChange, position } = useProfile()
 
     if (!user) {
         return <div>No user data available</div>
@@ -158,7 +158,7 @@ const ProfileFormContext = () => {
                     
                 </div>
                 <div className={style.inputWidth}>
-                < Input IsUsername name='Position' label='' width="350px"
+                < Selecter multiple={false} onChange={handlePositionChange} options={position}  name='position' label='Position' width="350px" value={user.position}
                 />
                 </div>
             </div>
@@ -192,19 +192,19 @@ const ProfileFormContext = () => {
                         btnText="Save Changes"
                         width="350px"
                     />
-									     <span>
+					<span>
           <Button
               btnText="Remove account"
-			  type={ButtonTypes.SECONDARY}
-			  width="160px"
-			  height='38px'
-			  color="#ffffff"
-			  borderColor='#C70039'
-			  backgroundColor="#C70039"
-			  display="flex"
-			  justifyContent="center"
-			  alignItems="center"
-			  onClick={handleCancel}
+			type={ButtonTypes.SECONDARY}
+               width="160px"
+			height='38px'
+			color="#ffffff"
+			borderColor='#C70039'
+			backgroundColor="#C70039"
+			display="flex"
+			justifyContent="center"
+			alignItems="center"
+			onClick={handleCancel}
          />
         </span>
 	
