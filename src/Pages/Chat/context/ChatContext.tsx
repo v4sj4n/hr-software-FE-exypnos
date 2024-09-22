@@ -20,8 +20,6 @@ interface ChatContextType {
   socket: Socket | null;
 }
 
-
-
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -40,7 +38,6 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [currentUser]);
 
-  // Listen for new messages and update user list
   useEffect(() => {
     if (socket) {
       socket.on('receiveMessage', (data) => {
@@ -60,7 +57,6 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [socket, setMessages]);
   
 
- // Remove any references to newMessage and setNewMessage
  return (
   <ChatContext.Provider
     value={{
@@ -72,8 +68,8 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setSenderId,  
       recipientId,
       setRecipientId,
-      newMessage,  // <-- Add this to the context
-      setNewMessage,  // <-- Add this to the context
+      newMessage,
+      setNewMessage,
       loggedInUser,
       setLoggedInUser,
       socket,

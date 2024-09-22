@@ -1,39 +1,72 @@
-.chatContainer {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-  }
-  
-  .chatInput {
-    display: flex;
-    align-items: center;
-  }
-  
-  .chatInput input {
-    flex: 1;
-    padding: 10px;
-    margin-right: 10px;
-  }
-  
-  .chatMessages {
-    height: 400px;
-    overflow-y: auto;
-    margin-bottom: 20px;
-  }
+.chatSidebar {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+  height: 100vh;
+  color: #333;
+}
 
-  
+.addChatButton{
+  background-color: #2979ff;
+  color: #ffffff;
+  cursor: pointer;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-/* Message List Styles */
+.addChatButton:hover{
+  background-color: #3f51b5;
+  border-radius: 0.5rem;
+}
+
+.selectedChat {
+  background-color: #2196f3;
+  border-radius: 0.5rem;
+}
+
 .messageListContainer {
-  padding: 2rem;
-  max-height: 400px;
+  padding: 1rem;
+  max-height: 80vh;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 100%;
+  border-radius: 0.5rem;
+  position: relative;
+  background-color: #fff;
+}
+
+.messageListContainer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://firebasestorage.googleapis.com/v0/b/exypnos-63ca1.appspot.com/o/images%2Flogo-dark.webp?alt=media');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.05;
+  z-index: 1;
+}
+
+.messageListContainer * {
+  position: relative;
+  z-index: 2;
 }
 
 .messageContainer {
   display: flex;
-  margin-bottom: 1rem;
+  align-items: flex-start;
+  padding: 0.5rem;
 }
 
 .senderContainer {
@@ -46,72 +79,37 @@
 
 .messageBox {
   max-width: 60%;
-  padding: 10px;
-  border-radius: 10px;
+  padding: 0.75rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .senderMessage {
   background-color: #2196f3;
-  color: #fff;
+  color: #ffffff;
+  border-top-right-radius: 0;
 }
 
 .recipientMessage {
-  background-color: #e0e0e0;
-  color: #000;
+  background-color: #f0f8ff;
+  color: #424242;
+  border-top-left-radius: 0;
 }
 
 .messageTimestamp {
   font-size: 0.75rem;
+  margin-top: 0.25rem;
+  align-self: flex-end;
+  display: block;
 }
 
-/* User List Styles */
-.userList {
-  padding: 0;
-  margin: 0;
+.senderMessage .messageTimestamp {
+  color: #bbdefb;
 }
 
-.userListItem {
-  padding: 1rem;
-  border-bottom: 1px solid #ddd;
+.recipientMessage .messageTimestamp {
+  color: #9e9e9e; 
 }
 
-.loadingContainer {
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
-}
-
-.errorText {
-  text-align: center;
-  margin-top: 1rem;
-  color: red;
-}
-
-
-/* Additional styles for UserList */
-
-.searchInput {
-  margin-bottom: 1rem;
-}
-
-.userList {
-  padding: 0;
-  margin: 0;
-}
-
-.userListItem {
-  padding: 1rem;
-  border-bottom: 1px solid #ddd;
-}
-
-.loadingContainer {
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
-}
-
-.errorText {
-  text-align: center;
-  margin-top: 1rem;
-  color: red;
-}

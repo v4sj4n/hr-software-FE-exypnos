@@ -10,10 +10,16 @@ import {
     Typography,
     Box,
     TextField,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Button,
 } from '@mui/material'
 import AxiosInstance from '@/Helpers/Axios'
 import { io, Socket } from 'socket.io-client'
 import styles from '@/Pages/Chat/styles/chat.module.css'
+import AddIcon from '@mui/icons-material/Add'
 
 interface UserListProps {
     users: User[]
@@ -24,12 +30,13 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<string | null>(null)
     const [searchActiveChatsQuery, setSearchActiveChatsQuery] =
-        useState<string>('') // Search state for active chats
-    const [searchUsersQuery, setSearchUsersQuery] = useState<string>('') // Search state for all users
-    const [activeUserIds, setActiveUserIds] = useState<string[]>([]) // Active user IDs
-    const [socket, setSocket] = useState<Socket | null>(null) // WebSocket instance
+        useState<string>('')
+    const [searchUsersQuery, setSearchUsersQuery] = useState<string>('')
+    const [activeUserIds, setActiveUserIds] = useState<string[]>([])
+    const [socket, setSocket] = useState<Socket | null>(null)
+    const [selectedChatId, setSelectedChatId] = useState<string | null>(null)
+    const [open, setOpen] = useState(false)
 
-    // Initialize the WebSocket connection when the component mounts
     useEffect(() => {
         const newSocket = io('http://localhost:3000') // Adjust the URL as per your backend setup
         setSocket(newSocket)
@@ -40,7 +47,6 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
         }
     }, [])
 
-    // Listen for new messages and update active chats
     useEffect(() => {
         if (socket) {
             socket.on('newMessage', (message) => {
@@ -53,7 +59,7 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
                             'Sender found:',
                             sender.firstName,
                             sender.lastName,
-                        ) // Log sender's name
+                        )
                     } else {
                         console.log('Sender not found in users array')
                     }
@@ -74,9 +80,8 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
                 socket.off('newMessage')
             }
         }
-    }, [socket, senderId, users]) // Add `users` to dependencies
+    }, [socket, senderId, users])
 
-    // Fetch initial active chats when the component mounts
     useEffect(() => {
         const fetchActiveChats = async () => {
             try {
@@ -86,27 +91,24 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
                 )
                 const messages = response.data
 
-                // Extract unique user IDs (both senders and recipients)
                 const uniqueUserIds = new Set<string>()
                 messages.forEach(
                     (msg: { senderId: string; recipientId: string }) => {
                         if (msg.senderId !== senderId) {
-                            uniqueUserIds.add(msg.senderId) // Add sender if the current user is the recipient
+                            uniqueUserIds.add(msg.senderId)
                         } else {
-                            uniqueUserIds.add(msg.recipientId) // Add recipient if the current user is the sender
+                            uniqueUserIds.add(msg.recipientId)
                         }
                     },
                 )
 
                 const activeUserIdsArray = Array.from(uniqueUserIds)
-                setActiveUserIds(activeUserIdsArray) // Store active user IDs
+                setActiveUserIds(activeUserIdsArray)
 
-                // Fetch messages for each active chat
                 for (const userId of activeUserIdsArray) {
                     const chatMessagesResponse = await AxiosInstance.get(
                         `/messages/${senderId}/${userId}`,
                     )
-                    // Append messages for each user
                     setMessages((prevMessages) => ({
                         ...prevMessages,
                         [userId]: chatMessagesResponse.data,
@@ -128,7 +130,6 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
         }
     }, [senderId])
 
-    // Filter active users based on the active chats and search query
     const filteredActiveUsers = useMemo(() => {
         const activeUsers = users.filter((user) =>
             activeUserIds.includes(user._id),
@@ -146,7 +147,6 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
         return activeUsers
     }, [searchActiveChatsQuery, users, activeUserIds])
 
-    // Filter users based on the search query for all users
     const filteredAllUsers = useMemo(() => {
         if (searchUsersQuery.trim()) {
             return users.filter((user) =>
@@ -159,10 +159,10 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
         return []
     }, [searchUsersQuery, users])
 
-    // Handle selecting a user and fetching messages between sender and recipient
     const handleSelectUser = async (userId: string) => {
         console.log('Selected Recipient ID:', userId)
-        setRecipientId(userId) // Set the selected recipient ID
+        setRecipientId(userId)
+        setSelectedChatId(userId) // Set the selected chat ID
         setLoading(true)
         setError(null)
 
@@ -172,10 +172,9 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
             )
             setMessages(response.data)
 
-            // Immediately add the recipient to the active chats when a message is sent
             setActiveUserIds((prevActiveUserIds) => {
                 const newActiveUserIds = new Set(prevActiveUserIds)
-                newActiveUserIds.add(userId) // Add the recipient to active chats
+                newActiveUserIds.add(userId)
                 return Array.from(newActiveUserIds)
             })
         } catch (error) {
@@ -187,19 +186,27 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
     }
 
     return (
-        <Box>
-            {/* Search input for searching through active chats */}
-            <TextField
-                fullWidth
-                label="Search active chats..."
-                variant="outlined"
-                value={searchActiveChatsQuery}
-                onChange={(e) => setSearchActiveChatsQuery(e.target.value)}
-                className={styles.searchInput}
-            />
+        <Box className={styles.chatSidebar}>
+            <Box display="flex" alignItems="center" gap={2}>
+                <TextField
+                    fullWidth
+                    label="Search active chats..."
+                    variant="outlined"
+                    value={searchActiveChatsQuery}
+                    onChange={(e) => setSearchActiveChatsQuery(e.target.value)}
+                    className={styles.searchInput}
+                />
+                <button
+                    className={styles.addChatButton}
+                    onClick={() => setOpen(true)}
+                >
+                    <AddIcon className={styles.addIcon} />
+                </button>
+            </Box>
 
-            {/* Display active chats */}
-            <Typography variant="h6">Active Chats</Typography>
+            <Typography variant="h6" marginTop={2}>
+                Active Chats
+            </Typography>
             <List className={styles.userList}>
                 {filteredActiveUsers.length === 0 ? (
                     <Typography variant="body1">
@@ -210,7 +217,11 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
                         <ListItem
                             key={user._id}
                             disablePadding
-                            className={styles.userListItem}
+                            className={`${styles.userListItem} ${
+                                selectedChatId === user._id
+                                    ? styles.selectedChat
+                                    : ''
+                            }`}
                         >
                             <ListItemButton
                                 onClick={() => handleSelectUser(user._id)}
@@ -224,21 +235,26 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
                 )}
             </List>
 
-            {/* Search input for searching through all users */}
-            <TextField
-                fullWidth
-                label="Search all users..."
-                variant="outlined"
-                value={searchUsersQuery}
-                onChange={(e) => setSearchUsersQuery(e.target.value)}
-                className={styles.searchInput}
-                sx={{ marginTop: '16px' }}
-            />
-
-            {/* Display searched users */}
-            {searchUsersQuery && (
-                <>
-                    <Typography variant="h6">Search Results</Typography>
+            <Dialog open={open} onClose={() => setOpen(false)} maxWidth="md">
+                <DialogTitle>Search All Users</DialogTitle>
+                <DialogContent
+                    sx={{
+                        color: 'black',
+                        minHeight: '400px',
+                        maxHeight: '600px',
+                        maxWidth: '600px',
+                        minWidth: '600px',
+                    }}
+                >
+                    <TextField
+                        fullWidth
+                        label="Search all users..."
+                        variant="outlined"
+                        value={searchUsersQuery}
+                        onChange={(e) => setSearchUsersQuery(e.target.value)}
+                        className={styles.searchInput}
+                        sx={{ marginTop: '16px' }}
+                    />
                     <List className={styles.userList}>
                         {filteredAllUsers.length === 0 ? (
                             <Typography variant="body1">
@@ -252,9 +268,10 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
                                     className={styles.userListItem}
                                 >
                                     <ListItemButton
-                                        onClick={() =>
+                                        onClick={() => {
                                             handleSelectUser(user._id)
-                                        }
+                                            setOpen(false)
+                                        }}
                                     >
                                         <ListItemText
                                             primary={`${user.firstName} ${user.lastName}`}
@@ -264,8 +281,11 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
                             ))
                         )}
                     </List>
-                </>
-            )}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpen(false)}>Close</Button>
+                </DialogActions>
+            </Dialog>
 
             {loading && (
                 <Box className={styles.loadingContainer}>
