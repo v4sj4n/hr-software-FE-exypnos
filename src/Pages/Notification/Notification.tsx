@@ -6,13 +6,13 @@ import {
     Badge,
     Box,
     ClickAwayListener,
-} from '@mui/material';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import { useNavigate } from 'react-router-dom';
-import { useGetAllNotifications } from './Hook/index';
-import AxiosInstance from '@/Helpers/Axios';
-import { useTheme } from '@mui/material/styles';
-import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
+} from '@mui/material'
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
+import { useNavigate } from 'react-router-dom'
+import { useGetAllNotifications } from './Hook/index'
+import AxiosInstance from '@/Helpers/Axios'
+import { useTheme } from '@mui/material/styles'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 interface Notification {
     _id: number
@@ -46,7 +46,9 @@ const NotificationDropdown: React.FC = () => {
 
     const removeNotification = async (notification: Notification) => {
         try {
-            await AxiosInstance.patch(`notification/${notification._id}/user/${currentUser?._id}`)
+            await AxiosInstance.patch(
+                `notification/${notification._id}/user/${currentUser?._id}`,
+            )
             const updatedNotifications = notifications.map((n) =>
                 n._id === notification._id ? { ...n, isRead: true } : n,
             )
@@ -77,8 +79,10 @@ const NotificationDropdown: React.FC = () => {
             navigate(`/vacation?vacationType=requests&page=0&limit=5`)
         } else if (notification.type === 'allCandidates') {
             navigate(`/candidates`)
-        }else if (notification.type === 'promotion') {
+        } else if (notification.type === 'promotion') {
             navigate(`/promotion/${currentUser?._id}`)
+        } else if (notification.type === 'notes') {
+            navigate(`/dashboard`)
         }
     }
 
@@ -100,6 +104,8 @@ const NotificationDropdown: React.FC = () => {
                 return 'purple'
             case 'promotion':
                 return 'orange'
+            case 'notes':
+                return 'brown'
             default:
                 return '#6C757D'
         }
@@ -107,12 +113,17 @@ const NotificationDropdown: React.FC = () => {
 
     const markAllAsRead = async () => {
         try {
-            for(const notification of notifications){
-                if(!notification.isRead){
-                    await AxiosInstance.patch(`notification/${notification._id}/user/${currentUser?._id}`)
+            for (const notification of notifications) {
+                if (!notification.isRead) {
+                    await AxiosInstance.patch(
+                        `notification/${notification._id}/user/${currentUser?._id}`,
+                    )
                 }
             }
-         const updatedNotifications = notifications.map((n) => ({ ...n, isRead: true }))
+            const updatedNotifications = notifications.map((n) => ({
+                ...n,
+                isRead: true,
+            }))
             setNotifications(updatedNotifications)
             setLength(0)
         } catch (error) {
@@ -133,11 +144,16 @@ const NotificationDropdown: React.FC = () => {
 
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
-            <Box sx={{ position: 'relative', display: 'inline-block'}}>
-                <IconButton color="inherit" onClick={handleToggleDropdown} >
-                    <Badge badgeContent={length} color="error" >
-                        <NotificationsNoneIcon sx={{ fontSize: 30 ,color: theme.palette.text.primary,   backgroundColor: 'transparent',  
-}} /> 
+            <Box sx={{ position: 'relative', display: 'inline-block' }}>
+                <IconButton color="inherit" onClick={handleToggleDropdown}>
+                    <Badge badgeContent={length} color="error">
+                        <NotificationsNoneIcon
+                            sx={{
+                                fontSize: 30,
+                                color: theme.palette.text.primary,
+                                backgroundColor: 'transparent',
+                            }}
+                        />
                     </Badge>
                 </IconButton>
                 {isOpen && (
@@ -155,7 +171,7 @@ const NotificationDropdown: React.FC = () => {
                             maxHeight: 400,
                             display: 'flex',
                             flexDirection: 'column',
-                             backgroundColor: 'white',
+                            backgroundColor: 'white',
                         }}
                     >
                         <Box

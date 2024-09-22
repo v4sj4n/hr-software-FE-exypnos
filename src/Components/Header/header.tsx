@@ -27,6 +27,9 @@ export const HeaderContent = () => {
         logout();
         navigate('/');
     };
+    const handleNavigateToChat = () => {
+        navigate('/chat')
+    }
 
     const handleProfileClick = () => {
         navigate(`/profile/${currentUser?._id}`);
@@ -67,9 +70,9 @@ export const HeaderContent = () => {
             <div className={style.headerRight}>
             <div className={style.icon} style={dropdownItemStyle}>    <ThemeSwitcher /></div> 
 
-                <div className={style.icon} style={dropdownItemStyle}>
-                    <MarkChatUnreadOutlinedIcon />
-                </div>
+            <div className={style.icon} style={dropdownItemStyle} onClick={handleNavigateToChat}>
+            <MarkChatUnreadOutlinedIcon />
+        </div>
 
                 <div className={style.icon}>
                     <NotificationDropdown />
