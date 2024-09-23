@@ -139,6 +139,7 @@ const ProfileFormContext = () => {
                     <Selecter
                         options={Places}
                         multiple={false}
+                       disabled={!isAdmin}
                         width="350px"
                         label="Places of Birth"
                         name="pob"
@@ -150,7 +151,7 @@ const ProfileFormContext = () => {
 
             <div className={style.forms}>
                 <div className={style.inputWidth}>
-                    <Selecter
+                    <Selecter disabled={!isAdmin}
                         width="100%"
                         name="gender"
                         label="Gender"
@@ -187,7 +188,7 @@ const ProfileFormContext = () => {
                     />
                 </div>
                 <div className={style.inputWidth}>
-                    <Selecter
+                    <Selecter   disabled={!isAdmin}
                         multiple={false}
                         onChange={handlePositionChange}
                         options={position}
