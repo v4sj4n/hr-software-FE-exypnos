@@ -13,11 +13,26 @@ import Toast from '@/Components/Toast/Toast'
 // import {handleCancel} from './../ProfileForm/Hook/Index'
 
 const ProfileFormContext = () => {
-
-    
     const { uploadImage, previewImage } = useFileUpload()
 
-    const { user, isCurrentUser, isAdmin, handleChange, handleUpdate,genderOptions, handleGenderChange, updateToastMessage, updateToastOpen, updateToastSeverity,handleUpdateToastClose, handlePlaceChange, Places,handleCancel,handlePositionChange, position } = useProfile()
+    const {
+        user,
+        isCurrentUser,
+        isAdmin,
+        handleChange,
+        handleUpdate,
+        genderOptions,
+        handleGenderChange,
+        updateToastMessage,
+        updateToastOpen,
+        updateToastSeverity,
+        handleUpdateToastClose,
+        handlePlaceChange,
+        Places,
+        handleCancel,
+        handlePositionChange,
+        position,
+    } = useProfile()
 
     if (!user) {
         return <div>No user data available</div>
@@ -27,48 +42,60 @@ const ProfileFormContext = () => {
         <div className={style.container}>
             {/* <div className={style.title}>Personal Information</div> */}
             <Toast
-            open={updateToastOpen}
-            message={updateToastMessage}
-            severity={updateToastSeverity}
-            onClose={handleUpdateToastClose}
+                open={updateToastOpen}
+                message={updateToastMessage}
+                severity={updateToastSeverity}
+                onClose={handleUpdateToastClose}
             />
 
-                    <div>
-                    <div className={style.profile} style={{ position: 'relative', display: 'inline-block' }}>
-    <Avatar
-        src={previewImage || user.imageUrl}
-        style={{ width: '150px', height: '150px', borderRadius: '50%' }}
-    />
-    {isCurrentUser && (
-        <div style={{ 
-            position: 'absolute', 
-            bottom: '1px', 
-            right: '10px', 
-        
-            display: 'flex', 
-            justifyContent: 'center', 
-            alignItems: 'center', 
-            cursor: 'pointer', 
-        }}>
-            <Image onChange={uploadImage} />
-        </div>
-    )}
-</div>
-<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '15px' }}>
-    <div style={{ fontSize: '30px', color: '#000000' }}>
-        {`${user.firstName} ${user.lastName}`}
-    </div>
-    <div style={{ color: '#000000' }}>
-        {user.auth.email}
-    </div>
-</div>
+            <div>
+                <div
+                    className={style.profile}
+                    style={{ position: 'relative', display: 'inline-block' }}
+                >
+                    <Avatar
+                        src={previewImage || user.imageUrl}
+                        style={{
+                            width: '150px',
+                            height: '150px',
+                            borderRadius: '50%',
+                        }}
+                    />
+                    {isCurrentUser && (
+                        <div
+                            style={{
+                                position: 'absolute',
+                                bottom: '1px',
+                                right: '10px',
 
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                cursor: 'pointer',
+                            }}
+                        >
+                            <Image onChange={uploadImage} />
+                        </div>
+                    )}
                 </div>
-
-            <div className={style.forms}>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        marginTop: '15px',
+                    }}
+                >
+                    <div style={{ fontSize: '30px', color: '#000000' }}>
+                        {`${user.firstName} ${user.lastName}`}
+                    </div>
+                    <div style={{ color: '#000000' }}>{user.auth.email}</div>
+                </div>
             </div>
 
-            <div className={style.forms} >
+            <div className={style.forms}></div>
+
+            <div className={style.forms}>
                 <div className={style.inputWidth}>
                     <Input
                         IsUsername
@@ -110,8 +137,8 @@ const ProfileFormContext = () => {
                 </div>
                 <div className={style.inputWidth}>
                     <Selecter
-                       options={Places}
-                       multiple={false} 
+                        options={Places}
+                        multiple={false}
                        disabled={!isAdmin}
                         width="350px"
                         label="Places of Birth"
@@ -120,23 +147,26 @@ const ProfileFormContext = () => {
                         value={user.pob}
                     />
                 </div>
-                
             </div>
 
             <div className={style.forms}>
                 <div className={style.inputWidth}>
-                <Selecter disabled={!isAdmin} width='100%' name='gender' label='Gender' options={genderOptions} onChange={handleGenderChange} multiple={false} value={user.gender}/>
+                    <Selecter disabled={!isAdmin}
+                        width="100%"
+                        name="gender"
+                        label="Gender"
+                        options={genderOptions}
+                        onChange={handleGenderChange}
+                        multiple={false}
+                        value={user.gender}
+                    />
                 </div>
                 <div className={style.inputWidth}>
                     <Input
-                     icon={
-                        <p className={style.numberPrefix}>
-                            +355
-                        </p>
-                    }
-                    iconPosition="start"
+                        icon={<p className={style.numberPrefix}>+355</p>}
+                        iconPosition="start"
                         IsUsername
-                        type='number'
+                        type="number"
                         name="phone"
                         width="350px"
                         disabled={!isAdmin}
@@ -145,7 +175,7 @@ const ProfileFormContext = () => {
                         value={user.phone}
                     />
                 </div>
-                
+
                 <div className={style.inputWidth}>
                     <Input
                         IsUsername
@@ -156,11 +186,17 @@ const ProfileFormContext = () => {
                         onChange={handleChange}
                         value={user.firstName}
                     />
-                    
                 </div>
                 <div className={style.inputWidth}>
-                < Selecter   disabled={!isAdmin} multiple={false} onChange={handlePositionChange} options={position}  name='position' label='Position' width="350px" value={user.position}
-                />
+                    <Selecter   disabled={!isAdmin}
+                        multiple={false}
+                        onChange={handlePositionChange}
+                        options={position}
+                        name="position"
+                        label="Position"
+                        width="350px"
+                        value={user.position}
+                    />
                 </div>
             </div>
 
@@ -185,30 +221,36 @@ const ProfileFormContext = () => {
                 />
             </div>
             <div className={style.border}> </div>
-            {isAdmin ? ( 
-                <div className={style.inputWidth} style={{display:'flex',justifyContent:'center',gap:'20px'}}>
+            {isAdmin ? (
+                <div
+                    className={style.inputWidth}
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        gap: '20px',
+                    }}
+                >
                     <Button
                         onClick={handleUpdate}
                         type={ButtonTypes.PRIMARY}
                         btnText="Save Changes"
                         width="350px"
                     />
-					<span>
-          <Button
-              btnText="Remove account"
-			type={ButtonTypes.SECONDARY}
-               width="160px"
-			height='38px'
-			color="#ffffff"
-			borderColor='#C70039'
-			backgroundColor="#C70039"
-			display="flex"
-			justifyContent="center"
-			alignItems="center"
-			onClick={handleCancel}
-         />
-        </span>
-	
+                    <span>
+                        <Button
+                            btnText="Remove account"
+                            type={ButtonTypes.SECONDARY}
+                            width="160px"
+                            height="38px"
+                            color="#ffffff"
+                            borderColor="#C70039"
+                            backgroundColor="#C70039"
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            onClick={handleCancel}
+                        />
+                    </span>
                 </div>
             ) : (
                 isCurrentUser && (
@@ -219,12 +261,9 @@ const ProfileFormContext = () => {
                             btnText="Change Picture"
                             width="350px"
                         />
-						
                     </div>
                 )
             )}
-			
-        
         </div>
     )
 }

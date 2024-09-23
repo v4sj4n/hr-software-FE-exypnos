@@ -19,8 +19,8 @@ const InfoSectionContent: React.FC = () => {
     })
 
     console.log('events', events)
-    const {formatDate} = useEvents()
-const navigate = useNavigate()
+    const { formatDate } = useEvents()
+    const navigate = useNavigate()
     return (
         <div className={style.infoSection}>
             <h2>Upcoming Events</h2>
@@ -41,11 +41,15 @@ const navigate = useNavigate()
                                     width: '100%',
                                 }}
                             >
-                              <h3 onClick={() =>  navigate(`/events?event=${event._id}`)} style={{cursor:'pointer'}}>{event.title}
-    </h3>
-                                <span>
-                                   {formatDate(event.startDate)}
-                                </span>
+                                <h3
+                                    onClick={() =>
+                                        navigate(`/events?event=${event._id}`)
+                                    }
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    {event.title}
+                                </h3>
+                                <span>{formatDate(event.startDate)}</span>
                             </div>
                             <p>{event.description}</p>
                         </div>
@@ -57,10 +61,10 @@ const navigate = useNavigate()
 }
 
 const InfoSection: React.FC = () => {
-    return(
+    return (
         <EventsProvider>
-        <InfoSectionContent/>
-    </EventsProvider>
+            <InfoSectionContent />
+        </EventsProvider>
     )
 }
 

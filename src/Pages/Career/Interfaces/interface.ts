@@ -21,11 +21,9 @@ export enum EventType {
     OTHER = 'other',
 }
 
-
-
 export interface EventsContextProps {
     createEvent: () => void
-    updateEvent:  () => void
+    updateEvent: () => void
 
     handleEditChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     handleOptionChange: (index: number, value: string) => void
@@ -74,5 +72,5 @@ export interface EventsContextProps {
     hideToast?: () => void
     createdEvents: EventsData[]
     formatDate: (date: string) => string
-    handleDelete: () => void,
+    handleDelete: () => void
 }

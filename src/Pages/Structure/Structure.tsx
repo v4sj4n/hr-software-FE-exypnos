@@ -19,7 +19,6 @@ import { useCreateProject, useDeleteProject,  useGetProject } from './Hook/Index
 import { ModalComponent } from '@/Components/Modal/Modal'
 
 function Structure() {    
-
     const {projects, setProjects} = useGetProject()
     const transformProjectData = (projects: ProjectData[],  handleOpenModal: (projectId: string) => void): CustomTreeNode[] => {
         const rootNode: CustomTreeNode = {
@@ -156,10 +155,11 @@ function Structure() {
     const { data: users = [] } = useGetAllUsers()
     const userOptions = users.map((user) => ({
         label: `${user.firstName} ${user.lastName}`,
-        value: user._id.toString()
+        value: user._id.toString(),
     }))
 
     const statusOptions = ['in_progress', 'completed', 'planed']
+
 
     return (
         <div className={styles.container}>
@@ -174,6 +174,8 @@ function Structure() {
             </div>
             <DrawerComponent open={openDrawer} onClose={handleCloseDrawer}>
                 <div className={styles.create}>
+                    Create New Project
+                    <CloseIcon
                     Create New Project
                     <CloseIcon
                         onClick={handleCloseDrawer}

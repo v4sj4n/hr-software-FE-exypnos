@@ -1,5 +1,4 @@
 import { useEmployeesWithHoldings } from '../Hook/index.ts'
-import { CircularProgress } from '@mui/material'
 import { UserWithHoldings } from '../TAsset'
 import { useInView } from 'react-intersection-observer'
 import style from '../style/employeesWithHoldings.module.scss'
@@ -12,7 +11,7 @@ import { AssignAssetModal } from './Modals/AssignAssetModal.tsx'
 import { ReturnAssetModal } from './Modals/ReturnAssetModal.tsx'
 import Toast from '@/Components/Toast/Toast.tsx'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext.tsx'
-
+import { Loader } from '@/Components/Loader/Loader.tsx'
 
 export const EmployeesWithHoldings = () => {
     const {
@@ -53,13 +52,7 @@ export const EmployeesWithHoldings = () => {
     const hr = currentUser?.role === 'hr'
 
     if (isError) return <div>Error: {error.message}</div>
-    if (isLoading)
-        return (
-            <div className={style.loading}>
-                <CircularProgress />
-            </div>
-        )
-
+    if (isLoading) return <Loader />
     return (
         <div className={style.employeesContainer}>
             {data?.pages.map((page) =>
@@ -97,11 +90,12 @@ export const EmployeesWithHoldings = () => {
                                         )}
                                     </div>
                                     {hr && (
-                                    <Button
-                                        btnText={'Assign asset'}
-                                        type={ButtonTypes.PRIMARY}
-                                        onClick={setClickedOnAssignItem}
-                                    /> )}
+                                        <Button
+                                            btnText={'Assign asset'}
+                                            type={ButtonTypes.PRIMARY}
+                                            onClick={setClickedOnAssignItem}
+                                        />
+                                    )}
                                     {searchParams.get('assignItem') && (
                                         <AssignAssetModal />
                                     )}

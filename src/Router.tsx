@@ -24,8 +24,6 @@ import Promotion from './Pages/Promotion/Promotion.tsx'
 import ResetPassword from './Pages/ResetPassword/ResetPassword.tsx'
 import Chat from './Pages/Chat/Chat.tsx'
 
-
-
 export default function Router() {
     const router = createBrowserRouter([
         {
@@ -53,9 +51,7 @@ export default function Router() {
             path: '/',
             element: (
                 <>
-                  
                     <PrivateRoute />
-                  
                 </>
             ),
             children: [
@@ -98,7 +94,7 @@ export default function Router() {
                 },
                 {
                     path: '/structure',
-                    element: <Structure/>,
+                    element: <Structure />,
                 },
                 {
                     path: '/candidates',
@@ -108,7 +104,7 @@ export default function Router() {
                     path: '/events',
                     element: <Events />,
                 },
-                
+
                 {
                     path: '/interview',
                     element: <Interview />,
@@ -122,7 +118,7 @@ export default function Router() {
                     element: <Inventory />,
                 },
                 {
-                    path: '/chat',  
+                    path: '/chat',
                     element: <Chat />,
                 },
             ],

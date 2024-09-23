@@ -1,17 +1,20 @@
-import React, {  useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { DropResult } from 'react-beautiful-dnd'
 import { useGetAllInterviews } from '../Hook'
-import { formatDate} from  './../Hook/utils'
+import { formatDate } from './../Hook/utils'
 import AxiosInstance from '@/Helpers/Axios'
 import Toast from '@/Components/Toast/Toast'
 import { Interview } from '../interface/interface'
 import { InterviewContext } from '../Context/InterviewContext'
 
-export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({
+    children,
+}) => {
     const { data: interviewsData, error, loading } = useGetAllInterviews()
     const [interviews, setInterviews] = useState<Interview[]>([])
-    const [selectedInterview, setSelectedInterview] = useState<Interview | null>(null)
+    const [selectedInterview, setSelectedInterview] =
+        useState<Interview | null>(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isReschedule, setIsReschedule] = useState(false)
     const [currentPhase, setCurrentPhase] = useState<string>('first_interview')
@@ -19,45 +22,60 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     const [endDate, setEndDate] = useState<string>('')
     const [currentTab, setCurrentTab] = useState<string>('first_interview')
     const [isFiltered, setIsFiltered] = useState(false)
-    const [filteredInterviews, setFilteredInterviews] = useState<Interview[]>([])
+    const [filteredInterviews, setFilteredInterviews] = useState<Interview[]>(
+        [],
+    )
     const [toastOpen, setToastOpen] = useState(false)
     const [toastMessage, setToastMessage] = useState('')
-    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>('success')
-    const phases = ['first_interview', 'second_interview', 'rejected', 'employed']
+    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
+        'success',
+    )
+    const phases = [
+        'first_interview',
+        'second_interview',
+        'rejected',
+        'employed',
+    ]
     const navigate = useNavigate()
 
     useEffect(() => {
         if (interviewsData && Array.isArray(interviewsData)) {
-            const mappedInterviews: Interview[] = interviewsData.map((applicant) => {
-                let currentPhase = 'applicant'
-                if (applicant.secondInterviewDate) {
-                    currentPhase = 'second_interview'
-                    if (applicant.status === 'rejected') {
-                        currentPhase = 'rejected'
+            const mappedInterviews: Interview[] = interviewsData.map(
+                (applicant) => {
+                    let currentPhase = 'applicant'
+                    if (applicant.secondInterviewDate) {
+                        currentPhase = 'second_interview'
+                        if (applicant.status === 'rejected') {
+                            currentPhase = 'rejected'
+                        }
+                    } else if (applicant.firstInterviewDate) {
+                        currentPhase = 'first_interview'
+                    } else if (applicant.status === 'employed') {
+                        currentPhase = 'employed'
                     }
-                } else if (applicant.firstInterviewDate) {
-                    currentPhase = 'first_interview'
-                } else if (applicant.status === 'employed') {
-                    currentPhase = 'employed'
-                }
 
-                return {
-                    ...applicant,
-                    fullName: `${applicant.firstName} ${applicant.lastName}`,
-                    auth: { email: applicant.email },
-                    secondInterviewDate: applicant.secondInterviewDate
-                        ? new Date(applicant.secondInterviewDate).toISOString()
-                        : undefined,
-                    firstInterviewDate: applicant.firstInterviewDate
-                        ? new Date(applicant.firstInterviewDate).toISOString()
-                        : undefined,
-                    notes: applicant.notes || '',
-                    currentPhase: currentPhase,
-                    _id: applicant._id,
-                    customMessage: applicant.customMessage || '',
-                    customSubject: applicant.customSubject || '',
-                }
-            })
+                    return {
+                        ...applicant,
+                        fullName: `${applicant.firstName} ${applicant.lastName}`,
+                        auth: { email: applicant.email },
+                        secondInterviewDate: applicant.secondInterviewDate
+                            ? new Date(
+                                  applicant.secondInterviewDate,
+                              ).toISOString()
+                            : undefined,
+                        firstInterviewDate: applicant.firstInterviewDate
+                            ? new Date(
+                                  applicant.firstInterviewDate,
+                              ).toISOString()
+                            : undefined,
+                        notes: applicant.notes || '',
+                        currentPhase: currentPhase,
+                        _id: applicant._id,
+                        customMessage: applicant.customMessage || '',
+                        customSubject: applicant.customSubject || '',
+                    }
+                },
+            )
 
             setInterviews(mappedInterviews)
             setFilteredInterviews(mappedInterviews)
@@ -70,10 +88,20 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
     const filterInterviews = () => {
         let filtered = interviews.filter((interview) => {
-            if (currentTab === 'first_interview' && interview.currentPhase === 'first_interview') return true
-            if (currentTab === 'second_interview' && interview.currentPhase === 'second_interview') return true
-            if (currentTab === 'rejected' && interview.status === 'rejected') return true
-            if (currentTab === 'employed' && interview.status === 'employed') return true
+            if (
+                currentTab === 'first_interview' &&
+                interview.currentPhase === 'first_interview'
+            )
+                return true
+            if (
+                currentTab === 'second_interview' &&
+                interview.currentPhase === 'second_interview'
+            )
+                return true
+            if (currentTab === 'rejected' && interview.status === 'rejected')
+                return true
+            if (currentTab === 'employed' && interview.status === 'employed')
+                return true
             return false
         })
 
@@ -81,12 +109,13 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             const start = new Date(startDate)
             const end = new Date(endDate)
             end.setHours(23, 59, 59, 999)
-        
+
             filtered = filtered.filter((interview) => {
-                const interviewDateRaw = interview.currentPhase === 'second_interview'
-                    ? interview.secondInterviewDate
-                    : interview.firstInterviewDate
-                
+                const interviewDateRaw =
+                    interview.currentPhase === 'second_interview'
+                        ? interview.secondInterviewDate
+                        : interview.firstInterviewDate
+
                 if (interviewDateRaw) {
                     const interviewDate = new Date(interviewDateRaw)
                     return interviewDate >= start && interviewDate <= end
@@ -94,9 +123,9 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                 return false
             })
         }
-        
+
         setFilteredInterviews(filtered)
-    }        
+    }
 
     const handleApplyFilter = () => {
         setIsFiltered(true)
@@ -107,47 +136,60 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         setIsFiltered(false)
         setCurrentPhase('first_interview')
         setStartDate('')
-        setEndDate('') 
+        setEndDate('')
         setCurrentTab('first_interview')
     }
-    
 
-    const handleOpenModal = useCallback((interview: Interview, isReschedule = false) => {
-        setSelectedInterview(interview)
-        setIsModalOpen(true)
-        setIsReschedule(isReschedule)
-    }, [])
-    
+    const handleOpenModal = useCallback(
+        (interview: Interview, isReschedule = false) => {
+            setSelectedInterview(interview)
+            setIsModalOpen(true)
+            setIsReschedule(isReschedule)
+        },
+        [],
+    )
+
     const handleCloseModal = useCallback(() => {
         setIsModalOpen(false)
         setSelectedInterview(null)
     }, [])
-    
-    const handleTabChange = useCallback((_event: React.SyntheticEvent, newValue: string) => {
-        setCurrentTab(newValue)
-    }, [])
-    
+
+    const handleTabChange = useCallback(
+        (_event: React.SyntheticEvent, newValue: string) => {
+            setCurrentTab(newValue)
+        },
+        [],
+    )
 
     const handleCancel = async (interview: Interview) => {
         try {
-            const response = await AxiosInstance.patch(`/applicant/${interview._id}`, {
-                status: 'rejected', 
-                currentPhase: 'rejected',
-            })
-    
+            const response = await AxiosInstance.patch(
+                `/applicant/${interview._id}`,
+                {
+                    status: 'rejected',
+                    currentPhase: 'rejected',
+                },
+            )
+
             if (response.status === 200) {
                 setInterviews((prevInterviews) =>
                     prevInterviews.map((i) =>
                         i._id === interview._id
-                            ? { ...i, status: 'rejected', currentPhase: 'rejected' }
-                            : i
-                    )
+                            ? {
+                                  ...i,
+                                  status: 'rejected',
+                                  currentPhase: 'rejected',
+                              }
+                            : i,
+                    ),
                 )
                 setFilteredInterviews((prevInterviews) =>
-                    prevInterviews.filter((i) => i._id !== interview._id)
+                    prevInterviews.filter((i) => i._id !== interview._id),
                 )
-    
-                setToastMessage('This candidate will now be found in the rejected tab')
+
+                setToastMessage(
+                    'This candidate will now be found in the rejected tab',
+                )
                 setToastSeverity('success')
                 setToastOpen(true)
             }
@@ -196,7 +238,9 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                     interview._id === selectedInterview._id
                         ? {
                               ...interview,
-                              [dateField]: new Date(interviewDate).toISOString(),
+                              [dateField]: new Date(
+                                  interviewDate,
+                              ).toISOString(),
                               notes,
                               customMessage,
                               customSubject,
@@ -204,8 +248,12 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                           }
                         : interview
 
-                setInterviews((prevInterviews) => prevInterviews.map(updateInterview))
-                setFilteredInterviews((prevInterviews) => prevInterviews.map(updateInterview))
+                setInterviews((prevInterviews) =>
+                    prevInterviews.map(updateInterview),
+                )
+                setFilteredInterviews((prevInterviews) =>
+                    prevInterviews.map(updateInterview),
+                )
                 handleCloseModal()
             }
         } catch (error) {
@@ -222,8 +270,7 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                 newPhase = 'second_interview'
                 status = 'active'
                 handleOpenModal(interview, false)
-            } 
-            else if (interview.currentPhase === 'second_interview') {
+            } else if (interview.currentPhase === 'second_interview') {
                 status = 'employed'
                 newPhase = 'employed'
             }
@@ -242,11 +289,17 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                         ? { ...i, status: status, currentPhase: newPhase }
                         : i
 
-                setInterviews((prevInterviews) => prevInterviews.map(updateInterview))
-                setFilteredInterviews((prevInterviews) => prevInterviews.map(updateInterview))
+                setInterviews((prevInterviews) =>
+                    prevInterviews.map(updateInterview),
+                )
+                setFilteredInterviews((prevInterviews) =>
+                    prevInterviews.map(updateInterview),
+                )
 
                 if (status === 'employed') {
-                    setToastMessage('This candidate will now be found as an employee')
+                    setToastMessage(
+                        'This candidate will now be found as an employee',
+                    )
                     setToastSeverity('success')
                     setToastOpen(true)
                 }
@@ -264,7 +317,10 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
         const { source, destination } = result
 
-        if (source.droppableId === 'employed' && destination.droppableId !== 'employed') {
+        if (
+            source.droppableId === 'employed' &&
+            destination.droppableId !== 'employed'
+        ) {
             return
         }
 
@@ -279,7 +335,10 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                 `/applicant/${draggedInterview._id}`,
                 {
                     currentPhase: destination.droppableId,
-                    status: destination.droppableId === 'employed' ? 'employed' : 'active',
+                    status:
+                        destination.droppableId === 'employed'
+                            ? 'employed'
+                            : 'active',
                 },
             )
 
@@ -289,12 +348,19 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                         ? {
                               ...interview,
                               currentPhase: destination.droppableId,
-                              status: destination.droppableId === 'employed' ? 'employed' : 'active',
+                              status:
+                                  destination.droppableId === 'employed'
+                                      ? 'employed'
+                                      : 'active',
                           }
                         : interview
 
-                setInterviews((prevInterviews) => prevInterviews.map(updateInterview))
-                setFilteredInterviews((prevInterviews) => prevInterviews.map(updateInterview))
+                setInterviews((prevInterviews) =>
+                    prevInterviews.map(updateInterview),
+                )
+                setFilteredInterviews((prevInterviews) =>
+                    prevInterviews.map(updateInterview),
+                )
             }
         } catch (error) {
             console.error('Failed to update interview phase:', error)
@@ -305,54 +371,55 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         navigate(`/view/${CandidateViewId}`)
     }
 
-            return (
-                <InterviewContext.Provider
-                    value={{
-                        loading,
-                        error,
-                        interviews: filteredInterviews,
-                        selectedInterview,
-                        isModalOpen,
-                        isReschedule,
-                        setIsReschedule,
-                        allPhasesPassed: false, 
-                        handleOpenModal,
-                        handleCloseModal,
-                        handleSchedule,
-                        handleCancel,
-                        onDragEnd,
-                        handleNavigateToProfile,
-                        handleAccept,
-                        formatDate,
-                        phases,
-                        handleTabChange,
-                        handleApplyFilter,
-                        handleClearFilter,
-                        currentTab,
-                        currentPhase,
-                        startDate,
-                        endDate,
-                        setCurrentPhase,
-                        setStartDate,
-                        setEndDate,
-                        filteredInterviews,
-                        isFiltered,
-                        getInterviewsByPhase: (phase: string) => filteredInterviews.filter(interview => interview.currentPhase === phase),
-                        fetchFilteredInterviews: async () => [], 
-                        setFilteredInterviews,
-                        scheduleType: 'schedule',
-                        setScheduleType: () => {}, 
-                    }}
-                >
-                    {children}
-                    <Toast
-                        open={toastOpen}
-                        message={toastMessage}
-                        severity={toastSeverity}
-                        onClose={() => setToastOpen(false)}
-                    />
-                </InterviewContext.Provider>
-            )
+    return (
+        <InterviewContext.Provider
+            value={{
+                loading,
+                error,
+                interviews: filteredInterviews,
+                selectedInterview,
+                isModalOpen,
+                isReschedule,
+                setIsReschedule,
+                allPhasesPassed: false,
+                handleOpenModal,
+                handleCloseModal,
+                handleSchedule,
+                handleCancel,
+                onDragEnd,
+                handleNavigateToProfile,
+                handleAccept,
+                formatDate,
+                phases,
+                handleTabChange,
+                handleApplyFilter,
+                handleClearFilter,
+                currentTab,
+                currentPhase,
+                startDate,
+                endDate,
+                setCurrentPhase,
+                setStartDate,
+                setEndDate,
+                filteredInterviews,
+                isFiltered,
+                getInterviewsByPhase: (phase: string) =>
+                    filteredInterviews.filter(
+                        (interview) => interview.currentPhase === phase,
+                    ),
+                fetchFilteredInterviews: async () => [],
+                setFilteredInterviews,
+                scheduleType: 'schedule',
+                setScheduleType: () => {},
+            }}
+        >
+            {children}
+            <Toast
+                open={toastOpen}
+                message={toastMessage}
+                severity={toastSeverity}
+                onClose={() => setToastOpen(false)}
+            />
+        </InterviewContext.Provider>
+    )
 }
-
-

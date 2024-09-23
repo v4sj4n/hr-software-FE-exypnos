@@ -21,9 +21,9 @@
     background-color: transparent;
 }
 .active {
-    background-color: rgba(0, 123, 255, 0.1); 
-    border-left: 6px solid #007bff; 
-    font-weight: bold; 
+    background-color: rgba(0, 123, 255, 0.1);
+    border-left: 6px solid #007bff;
+    font-weight: bold;
 }
 
 .navbar {
@@ -38,31 +38,36 @@
     justify-content: space-between;
     padding: 10px 20px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease; 
-    border-radius: 8px; 
-
+    transition:
+        background-color 0.3s ease,
+        transform 0.3s ease;
+    border-radius: 8px;
 }
 .item.active {
-    background-color: rgba(255, 255, 255, 0.1); /* or any color that fits your theme */
+    background-color: rgba(
+        255,
+        255,
+        255,
+        0.1
+    ); /* or any color that fits your theme */
     font-weight: bold;
 }
 
- .item:hover {
-    background-color: rgba(255, 255, 255, 0.1); 
-    transform: translateX(1px); }
+.item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(1px);
+}
 
-    
-    .item:hover .link {
-        color: black;
-        transform: translateY(-1px);
-        opacity: 1;
+.item:hover .link {
+    color: black;
+    transform: translateY(-1px);
+    opacity: 1;
+}
 
-    }
-
-    .dropdownItem.active {
-        background-color: rgba(255, 255, 255, 0.1); 
-        font-weight: bold;
-    }
+.dropdownItem.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    font-weight: bold;
+}
 
 .link {
     color: rgba(0, 0, 0, 0.8);
@@ -123,8 +128,10 @@
     margin-right: 10px;
     color: rgba(0, 0, 0, 0.8);
     font-size: larger;
-    transition: transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; /* Smooth zoom effect */
-
+    transition:
+        transform 0.3s ease,
+        color 0.3s ease,
+        box-shadow 0.3s ease; /* Smooth zoom effect */
 }
 .navClosed {
     width: 65px;
@@ -133,9 +140,9 @@
     display: none;
 }
 .navOpen {
-     display: flex; 
-    animation: fadeIn 0.3s ease; 
-    width:200px;
+    display: flex;
+    animation: fadeIn 0.3s ease;
+    width: 200px;
 }
 
 @keyframes fadeIn {
@@ -160,7 +167,6 @@
     gap: 4px;
 }
 
-
-
 .icon:hover {
-    transform: scale(1.2);}
+    transform: scale(1.2);
+}

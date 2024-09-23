@@ -148,7 +148,9 @@ export const SideBar = () => {
                             >
                                 <div
                                     className={`${style.dropdownItem} ${activeItem === '/candidates' ? style.active : ''}`}
-                                    onClick={() => handleItemClick('/candidates')}
+                                    onClick={() =>
+                                        handleItemClick('/candidates')
+                                    }
                                     onMouseEnter={(e) =>
                                         (e.currentTarget.style.backgroundColor =
                                             alpha(
@@ -166,7 +168,9 @@ export const SideBar = () => {
                                 </div>
                                 <div
                                     className={`${style.dropdownItem} ${activeItem === '/interview' ? style.active : ''}`}
-                                    onClick={() => handleItemClick('/interview')}
+                                    onClick={() =>
+                                        handleItemClick('/interview')
+                                    }
                                     onMouseEnter={(e) =>
                                         (e.currentTarget.style.backgroundColor =
                                             alpha(
@@ -253,10 +257,11 @@ export const SideBar = () => {
                                 className={`${style.dropdownItem} ${activeItem === '/payroll' ? style.active : ''}`}
                                 onClick={() => handleItemClick('/payroll')}
                                 onMouseEnter={(e) =>
-                                    (e.currentTarget.style.backgroundColor = alpha(
-                                        theme.palette.background.default,
-                                        0.5,
-                                    ))
+                                    (e.currentTarget.style.backgroundColor =
+                                        alpha(
+                                            theme.palette.background.default,
+                                            0.5,
+                                        ))
                                 }
                                 onMouseLeave={(e) =>
                                     (e.currentTarget.style.backgroundColor =
@@ -299,48 +304,50 @@ export const SideBar = () => {
                             Promotion
                         </div>
                     </div>
+                    {hr && (
+                        <div
+                            className={`${style.item} ${activeItem.startsWith('/assets') ? style.active : ''}`}
+                            onClick={() => toggleDropdown('assets')}
+                            onMouseEnter={(e) =>
+                                (e.currentTarget.style.backgroundColor = alpha(
+                                    theme.palette.background.default,
+                                    0.5,
+                                ))
+                            }
+                            onMouseLeave={(e) =>
+                                (e.currentTarget.style.backgroundColor =
+                                    'transparent')
+                            }
+                        >
+                            <div className={style.link}>
+                                <div className={style.iconTextContainer}>
+                                    <DevicesIcon
+                                        className={style.icon}
+                                        style={{
+                                            color: theme.palette.text.primary,
+                                            marginLeft: '2px',
+                                        }}
+                                    />
 
-                    <div
-                        className={`${style.item} ${activeItem.startsWith('/assets') ? style.active : ''}`}
-                        onClick={() => toggleDropdown('assets')}
-                        onMouseEnter={(e) =>
-                            (e.currentTarget.style.backgroundColor = alpha(
-                                theme.palette.background.default,
-                                0.5,
-                            ))
-                        }
-                        onMouseLeave={(e) =>
-                            (e.currentTarget.style.backgroundColor =
-                                'transparent')
-                        }
-                    >
-                        <div className={style.link}>
-                            <div className={style.iconTextContainer}>
-                                <DevicesIcon
-                                    className={style.icon}
-                                    style={{
-                                        color: theme.palette.text.primary,
-                                        marginLeft: '2px',
-                                    }}
-                                />
-
-                                {isOpen && (
-                                    <span className={style.text}>Assets</span>
-                                )}
+                                    {isOpen && (
+                                        <span className={style.text}>
+                                            Assets
+                                        </span>
+                                    )}
+                                </div>
+                                {isOpen &&
+                                    (dropdownOpen.assets ? (
+                                        <ExpandLessIcon
+                                            className={style.expandIcon}
+                                        />
+                                    ) : (
+                                        <ExpandMoreIcon
+                                            className={style.expandIcon}
+                                        />
+                                    ))}
                             </div>
-                            {isOpen &&
-                                (dropdownOpen.assets ? (
-                                    <ExpandLessIcon
-                                        className={style.expandIcon}
-                                    />
-                                ) : (
-                                    <ExpandMoreIcon
-                                        className={style.expandIcon}
-                                    />
-                                ))}
                         </div>
-                    </div>
-
+                    )}
                     <div
                         className={`${style.dropdownMenu} ${
                             dropdownOpen.assets ? style.open : style.close
@@ -530,5 +537,3 @@ export const SideBar = () => {
         </div>
     )
 }
-
-

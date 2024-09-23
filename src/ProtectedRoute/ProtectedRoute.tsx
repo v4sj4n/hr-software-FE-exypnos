@@ -9,11 +9,11 @@ const PrivateRoute = () => {
     const isAuthenticated = !!localStorage.getItem('access_token')
 
     const theme = useTheme()
-  
-  if (!isAuthenticated) {
+
+    if (!isAuthenticated) {
         return <Navigate to="/" />
     }
-  
+
     return (
         <>
             <SidebarHeaderProvider>

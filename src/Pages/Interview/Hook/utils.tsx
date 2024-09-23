@@ -4,7 +4,7 @@ export const formatDate = (dateString: string | number | Date | undefined) => {
     if (!dateString) {
         return 'No Date Provided'
     }
-    
+
     const date = new Date(dateString)
     if (isNaN(date.getTime())) {
         return 'Invalid Date'
@@ -25,4 +25,3 @@ export const getInterviewsByPhase = (
             : interview.currentPhase === phase,
     )
 }
-

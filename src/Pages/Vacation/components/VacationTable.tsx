@@ -1,4 +1,3 @@
-import { CircularProgress } from '@mui/material'
 import { useGetVacations } from '../Hook'
 import DataTable from '@/Components/Table/Table'
 import { GridPaginationModel, GridRenderCellParams } from '@mui/x-data-grid'
@@ -10,6 +9,7 @@ import { SelectedVacationModal } from './form/SelectedVacationModal'
 import { StatusBadge } from '@/Components/StatusBadge/StatusBadge'
 import Toast from '@/Components/Toast/Toast'
 import { Vacation } from '../types'
+import { Loader } from '@/Components/Loader/Loader'
 
 export const VacationTable = () => {
     const {
@@ -33,10 +33,14 @@ export const VacationTable = () => {
     }, [searchParams, setSearchParams])
 
     if (error) return <p>Error: {error.message}</p>
-    if (isPending) return <CircularProgress />
+    if (isPending) return <Loader />
 
-    const rows = data?.data.map((vacation: Vacation) => ({
-        id: vacation._id,
+    const rows = data?.data.map((vacation: Vacation, index: number) => ({
+        id:
+            Number(searchParams.get('page')) *
+                Number(searchParams.get('limit')) +
+            index +
+            1,
         fullName: `${vacation.userId?.firstName} ${vacation.userId?.lastName}`,
         type: vacation.type,
         status: vacation.status,

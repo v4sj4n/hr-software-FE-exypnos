@@ -4,6 +4,7 @@
     min-height: 100vh;
     background-color: transparent;
     width: 100%;
+    overflow: 'auto';
 }
 
 .mainContent {
@@ -20,13 +21,14 @@
 
 .userNameClickable {
     cursor: pointer;
-    transition: transform 0.3s ease, color 0.3s ease; 
+    transition:
+        transform 0.3s ease,
+        color 0.3s ease;
 }
 
 .userNameClickable:hover {
-    transform: scale(1.1); 
+    transform: scale(1.1);
 }
-
 
 .cardContainer {
     display: flex;
@@ -45,7 +47,9 @@
     box-shadow: 0 3px 9px rgba(0, 0, 0, 0.1);
     color: #5f43b2;
     text-align: center;
-    transition: transform 0.3s ease, color 0.3s ease;
+    transition:
+        transform 0.3s ease,
+        color 0.3s ease;
 }
 
 .cardGreen {
@@ -64,13 +68,13 @@
     background-image: linear-gradient(180deg, #ece4f1, #a8c4f2);
 }
 
-
 .cardGreen:hover,
 .cardBlue:hover,
 .cardYellow:hover,
-.cardPurple:hover{
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2); 
-    transform: translateY(-5px);}
+.cardPurple:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+}
 
 .infoSection {
     word-break: break-word;
@@ -92,17 +96,17 @@
 .calendar:hover,
 .infoSection:hover,
 .pieChartDiv:hover {
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2); 
-
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
 
 .employeeProfile {
     background: rgba(255, 255, 255, 0.7);
     border-radius: 15px;
     padding: 20px;
+    padding-bottom: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     flex-grow: 1;
-    min-height: 300px;
+    min-height: 400px;
 }
 
 h2,
@@ -118,15 +122,15 @@ h3 {
     border-radius: 50%;
     object-fit: cover;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
 .employeeImage:hover {
-    transform: scale(1.1); 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
-
-
 
 @keyframes gradient-flow {
     0% {
@@ -160,28 +164,32 @@ h3 {
     padding: 2.5rem 2rem;
     margin-bottom: 20px;
     display: flex;
-    flex-direction: column;
     gap: 0.333rem;
+
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    transition:
+        box-shadow 0.3s ease,
+        transform 0.3s ease;
 }
 
 .welcome.animate {
-    /* This class will be added only for the first 30 seconds after login */
-    animation: gradient-flow 5s ease infinite, continuous-pulse 4s ease-in-out infinite;
+    animation:
+        gradient-flow 5s ease infinite,
+        continuous-pulse 4s ease-in-out infinite;
 }
 
 .welcome:hover {
-    /* Hover effect */
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
     transition: box-shadow 0.4s ease;
-    animation: gradient-flow 5s ease infinite, continuous-pulse 4s ease-in-out infinite; /* Trigger animation on hover */
+    animation:
+        gradient-flow 5s ease infinite,
+        continuous-pulse 4s ease-in-out infinite; /* Trigger animation on hover */
 }
 
 .welcome * {
     margin: 0;
 }
-.note{
+.note {
     border-radius: 10px;
     background-color: transparent;
     border: 1px solid #000;

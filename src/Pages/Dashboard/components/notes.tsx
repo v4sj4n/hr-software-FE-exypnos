@@ -105,8 +105,13 @@ export const Notes = () => {
     }
 
     const handleNoteModalClose = () => {
+        if (expandCreateNote) {
+            const date = form.state.values.date
+            form.reset()
+            form.setFieldValue('date', date)
+            setExpandCreateNote(false)
+        }
         setIsNoteModalOpen(false)
-        handleCollapseToggle()
     }
 
     const highlightedDays = notes.map((note) =>

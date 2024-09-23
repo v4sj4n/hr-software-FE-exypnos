@@ -2,14 +2,18 @@ import React, { useState } from 'react'
 import { PasswordContext, PasswordContextType } from '../Interface/Interface'
 import AxiosInstance from '../../../../../Helpers/Axios'
 
-export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
+export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({
+    children,
+}) => {
     const [currentPassword, setCurrentPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [error, setError] = useState('')
     const [toastOpen, setToastOpen] = useState(false)
     const [toastMessage, setToastMessage] = useState('')
-    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>('success')
+    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
+        'success',
+    )
     const [showPassword, setShowPassword] = useState(false)
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +46,9 @@ export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({child
         return true
     }
 
-    const handleUpdatePassword = async (event: React.FormEvent<HTMLButtonElement>) => {
+    const handleUpdatePassword = async (
+        event: React.FormEvent<HTMLButtonElement>,
+    ) => {
         event.preventDefault()
 
         if (!validatePasswords()) {
@@ -55,7 +61,7 @@ export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({child
                 newPassword,
             })
 
-            if (response.status === 201) { 
+            if (response.status === 201) {
                 setToastOpen(true)
                 setToastMessage('Paswword chnaged successfully')
                 setToastSeverity('success')
@@ -69,7 +75,6 @@ export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({child
             setToastOpen(true)
         }
     }
-
 
     const handleToastClose = () => {
         setToastOpen(false)
@@ -91,7 +96,7 @@ export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({child
         handleUpdatePassword,
         handleToastClose,
         handleShowEye,
-        showPassword
+        showPassword,
     }
 
     return (

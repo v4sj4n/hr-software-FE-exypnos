@@ -120,8 +120,8 @@
     width: 100%;
     overflow-y: auto;
     max-height: 600px;
-    -ms-overflow-style: none; 
-    scrollbar-width: none; 
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .Wrap::-webkit-scrollbar {

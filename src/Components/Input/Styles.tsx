@@ -1,4 +1,3 @@
-
 import { styled } from '@mui/material/styles'
 
 export const inputStyles = {
@@ -72,10 +71,11 @@ export const TableStyles = {
         colors: 'rgba(255, 255, 255, 0.7)',
         backgroundColor: '#FFFFFF',
     },
-    '.css-1pz2u6e-MuiDataGrid-root .MuiDataGrid-container--top [role=row], .css-1pz2u6e-MuiDataGrid-root .MuiDataGrid-container--bottom [role=row]' : {
-        backgroundColor: '#FFFFFF',
-        fontFamily: '"Outfit", sans-serif',
-    },
+    '.css-1pz2u6e-MuiDataGrid-root .MuiDataGrid-container--top [role=row], .css-1pz2u6e-MuiDataGrid-root .MuiDataGrid-container--bottom [role=row]':
+        {
+            backgroundColor: '#FFFFFF',
+            fontFamily: '"Outfit", sans-serif',
+        },
     '& .MuiDataGrid-row': {
         backgroundColor: 'rgba(255, 255, 255, 0.7)',
         fontFamily: '"Outfit", sans-serif',
@@ -90,14 +90,14 @@ export const TableStyles = {
         borderBottomLeftRadius: '5px',
         alignItems: 'center',
         borderBottomRightRadius: '5px',
-         colors:' rgba(0, 0, 0, 0.8)'
+        colors: ' rgba(0, 0, 0, 0.8)',
     },
     '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows, & .MuiTablePagination-select, & .MuiTablePagination-actions':
         {
             backgroundColor: '#FFFFFF',
             alignItems: 'center',
             fontFamily: '"Outfit", sans-serif',
-            colors:' rgba(0, 0, 0, 0.8)'
+            colors: ' rgba(0, 0, 0, 0.8)',
         },
     '& .css-1jlz3st': {
         display: 'hiden',

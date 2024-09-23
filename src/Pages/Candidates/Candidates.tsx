@@ -1,7 +1,7 @@
 import DataTable from '@/Components/Table/Table'
 import { useCandidateContext } from './Context/CandidateTableContext'
 import { CandidateProvider } from './Context/CandidateTableProvider'
-import { RingLoader } from 'react-spinners'
+import { Loader } from '@/Components/Loader/Loader'
 
 function CandidatesCoontext() {
     const {
@@ -19,16 +19,7 @@ function CandidatesCoontext() {
     return (
         <>
             {isPending ? (
-                <div
-                    style={{
-                        display: 'flex',
-                        fontSize: '30px',
-                        justifyContent: 'center',
-                        marginTop: '200px',
-                    }}
-                >
-                    <RingLoader />
-                </div>
+                <Loader />
             ) : (
                 <DataTable
                     getRowId={getRowId}

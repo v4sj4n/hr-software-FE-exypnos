@@ -1,4 +1,4 @@
-import React, {  useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { EventsData } from '../Interface/Events'
 import { useCreateEvent, useUpdateEvent, useDeleteEvent } from '../Hook/index'
 import { useGetAllUsers } from '@/Pages/Employees/Hook'
@@ -34,7 +34,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         } catch (err) {
             console.log(err)
         }
-    }, []) 
+    }, [])
 
     const [searchParams] = useSearchParams()
 
@@ -67,7 +67,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     const {
         handleChange,
         event,
-        createEvent: createEventMutation, 
+        createEvent: createEventMutation,
         pollQuestion,
         pollOptions,
         participants,
@@ -117,10 +117,10 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const severityB = toastOpen ? toastSeverity : updateToastSeverity
     const openToastB = toastOpen || updateToastOpen
-    const toastMessageB = toastOpen? toastMessage : updateToastMessage
-    const closeToastB = toastOpen? handleToastClose : handleUpdateToastClose
+    const toastMessageB = toastOpen ? toastMessage : updateToastMessage
+    const closeToastB = toastOpen ? handleToastClose : handleUpdateToastClose
 
-     const handleMapChange = (address: string) => {
+    const handleMapChange = (address: string) => {
         if (editingEvent) {
             handleEditChange({
                 target: {
@@ -137,7 +137,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
             } as React.ChangeEvent<HTMLInputElement>)
         }
     }
-
 
     const createEvent = () => {
         createEventMutation()

@@ -34,7 +34,8 @@ export const CandidateProvider: React.FC<{ children: any }> = ({
     const totalPages = data?.totalPages ?? 0
 
     const navigate = useNavigate()
-    const rows: CandidateRow[] = applicants.map((applicant: any, index: number) => ({
+    const rows: CandidateRow[] =
+        applicants.map((applicant: any, index: number) => ({
             id: page * pageSize + index + 1,
             originalId: applicant._id,
             fullName: `${applicant.firstName} ${applicant.lastName}`,

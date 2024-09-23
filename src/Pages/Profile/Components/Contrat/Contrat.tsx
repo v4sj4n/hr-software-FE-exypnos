@@ -32,7 +32,7 @@ const ContratContent = () => {
     const isHr = currentUser?.role === 'hr'
 
     return (
-        <div className={style.container} style={{width:'800px'}}>
+        <div className={style.container} style={{ width: '800px' }}>
             <Toast
                 severity={EditingPayroll ? toastSeverity : createToastSeverity}
                 open={EditingPayroll ? toastOpen : createToastOpen}
@@ -41,8 +41,22 @@ const ContratContent = () => {
                     EditingPayroll ? handleToastClose : handleCreateToastClose
                 }
             />
-            <div style={{alignItems:'center',display:'flex', fontSize: '35px',color: '#333',fontWeight:'700',padding:'20px'}}>Payroll Information</div>
-            <div className={style.forms} style={{display:'flex',flexDirection:'column'}}>
+            <div
+                style={{
+                    alignItems: 'center',
+                    display: 'flex',
+                    fontSize: '35px',
+                    color: '#333',
+                    fontWeight: '700',
+                    padding: '20px',
+                }}
+            >
+                Payroll Information
+            </div>
+            <div
+                className={style.forms}
+                style={{ display: 'flex', flexDirection: 'column' }}
+            >
                 <Input
                     IsUsername
                     type="number"
@@ -101,7 +115,18 @@ const ContratContent = () => {
             </div>
             <div className={style.border}></div>
 
-            <div style={{alignItems:'center',display:'flex', fontSize: '35px',color: '#333',fontWeight:'700',padding:'20px'}}>Add Bonus</div>
+            <div
+                style={{
+                    alignItems: 'center',
+                    display: 'flex',
+                    fontSize: '35px',
+                    color: '#333',
+                    fontWeight: '700',
+                    padding: '20px',
+                }}
+            >
+                Add Bonus
+            </div>
 
             <div
                 style={{
@@ -111,17 +136,21 @@ const ContratContent = () => {
                     gap: '20px',
                 }}
             >
-                <Input IsUsername label="Bonus" name="bonus" shrink={true} value={
-                    EditingPayroll
-                        ? EditingPayroll?.bonus
-                        : payroll.bonus
-                }
+                <Input
+                    IsUsername
+                    label="Bonus"
+                    name="bonus"
+                    shrink={true}
+                    value={
+                        EditingPayroll ? EditingPayroll?.bonus : payroll.bonus
+                    }
                 disabled={!isHr}
                     onChange={
                         EditingPayroll
                             ? handleUpdateChangePayroll
                             : handleChangePayroll
-                    } />
+                    }
+                />
                 <Input
                     IsUsername
                     label="Bonus Description"
@@ -141,22 +170,20 @@ const ContratContent = () => {
                     }
                 />
                 <div className={style.inputWidth}>
-              {isHr &&  <Button
-                    type={ButtonTypes.PRIMARY}
-                    btnText={
-                        EditingPayroll ? 'Update Payroll' : 'Create Payroll'
-                    }
-                    onClick={
-                        EditingPayroll
-                            ? handleUpdatePayroll
-                            : handleCreatePayroll
-                    }
-                    width="300px"
-                />}
+                  {isHr &&  <Button
+                        type={ButtonTypes.PRIMARY}
+                        btnText={
+                            EditingPayroll ? 'Update Payroll' : 'Create Payroll'
+                        }
+                        onClick={
+                            EditingPayroll
+                                ? handleUpdatePayroll
+                                : handleCreatePayroll
+                        }
+                        width="300px"
+                    />}
+                </div>
             </div>
-            </div>
-
-            
         </div>
     )
 }

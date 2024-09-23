@@ -13,7 +13,9 @@ import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 export const useGetAllEvents = () => {
     const [searchParams, setSearchParams] = useSearchParams()
-    const [searchEvent, setSearchEvent] = useState(searchParams.get('search') || '')
+    const [searchEvent, setSearchEvent] = useState(
+        searchParams.get('search') || '',
+    )
     const {currentUser} = useAuth()
     const currentUserId = currentUser?._id
 
@@ -153,11 +155,13 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
         },
         onError: (error: unknown) => {
             let errorMessage = 'An unexpected error occurred'
-            
+
             if (axios.isAxiosError(error)) {
                 if (error.response) {
-                    errorMessage = error.response.data.message || `Error: ${error.response.status}`
-                } 
+                    errorMessage =
+                        error.response.data.message ||
+                        `Error: ${error.response.status}`
+                }
             }
 
             setToastMessage(errorMessage)
@@ -393,11 +397,13 @@ export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
         },
         onError: (error: unknown) => {
             let errorMessage = 'An unexpected error occurred'
-            
+
             if (axios.isAxiosError(error)) {
                 if (error.response) {
-                    errorMessage = error.response.data.message || `Error: ${error.response.status}`
-                } 
+                    errorMessage =
+                        error.response.data.message ||
+                        `Error: ${error.response.status}`
+                }
             }
 
             setUpdateToastMessage(errorMessage)

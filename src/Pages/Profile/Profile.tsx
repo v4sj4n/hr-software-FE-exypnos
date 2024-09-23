@@ -46,7 +46,7 @@ export default function Profile() {
     const hr = currentUser?.role === 'hr'
     const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
-      }
+    }
 
     return (
         <Box
@@ -79,12 +79,11 @@ export default function Profile() {
                         marginRight: 5,
                         mt: 1.5,
                         fontFamily: 'Outfit, sans-serif',
-                        height:'70px',
+                        height: '70px',
                         fontWeight: '700',
                         fontSize: '18px',
                         borderRadius: '5px',
                         boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.15)',
-
                     },
                 }}
             >
