@@ -112,6 +112,7 @@ const ProfileFormContext = () => {
                     <Selecter
                        options={Places}
                        multiple={false} 
+                       disabled={!isAdmin}
                         width="350px"
                         label="Places of Birth"
                         name="pob"
@@ -124,7 +125,7 @@ const ProfileFormContext = () => {
 
             <div className={style.forms}>
                 <div className={style.inputWidth}>
-                <Selecter width='100%' name='gender' label='Gender' options={genderOptions} onChange={handleGenderChange} multiple={false} value={user.gender}/>
+                <Selecter disabled={!isAdmin} width='100%' name='gender' label='Gender' options={genderOptions} onChange={handleGenderChange} multiple={false} value={user.gender}/>
                 </div>
                 <div className={style.inputWidth}>
                     <Input
@@ -158,7 +159,7 @@ const ProfileFormContext = () => {
                     
                 </div>
                 <div className={style.inputWidth}>
-                < Selecter multiple={false} onChange={handlePositionChange} options={position}  name='position' label='Position' width="350px" value={user.position}
+                < Selecter   disabled={!isAdmin} multiple={false} onChange={handlePositionChange} options={position}  name='position' label='Position' width="350px" value={user.position}
                 />
                 </div>
             </div>

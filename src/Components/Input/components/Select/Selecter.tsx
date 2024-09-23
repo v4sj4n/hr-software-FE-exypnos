@@ -15,6 +15,7 @@ interface SelecterProps {
     label: string
     name: string
     width: string
+    disabled: boolean
 }
 
 const Selecter = ({
@@ -25,6 +26,7 @@ const Selecter = ({
     label,
     name,
     width,
+    disabled
 }: SelecterProps) => {
     const [isOpen, setIsOpen] = useState(false)
 
@@ -65,6 +67,7 @@ const Selecter = ({
             multiple={multiple}
             onOpen={() => setIsOpen(true)}
             onClose={() => setIsOpen(false)}
+            disabled={false || disabled}
             options={normalizedOptions}
             getOptionLabel={(option: Option) => option.label}
             value={getValue()}

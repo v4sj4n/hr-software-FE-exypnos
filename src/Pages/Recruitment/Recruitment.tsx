@@ -211,6 +211,7 @@ function RecruitmentBase() {
                         }) => (
                             <div>
                                 <Selecter
+                                disabled={false}
                                     width="100%"
                                     label="Applying Method"
                                     name="applicationMethod"
@@ -293,6 +294,7 @@ function RecruitmentBase() {
                         }) => (
                             <div className={style.spanTwoDiv}>
                                 <Selecter
+                                disabled={false}
                                     width="100%"
                                     multiple={false}
                                     label="Experience"
@@ -323,6 +325,7 @@ function RecruitmentBase() {
                         }) => (
                             <div className={style.spanTwoDiv}>
                                 <Selecter
+                                disabled={false}
                                     width="100%"
                                     options={technologies}
                                     multiple
