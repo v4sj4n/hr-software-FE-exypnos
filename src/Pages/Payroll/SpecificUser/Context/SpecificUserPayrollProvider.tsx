@@ -6,7 +6,9 @@ import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { getMonthName } from '../../utils/Utils'
 
-export const PayrollProviderSpecific: React.FC<{children: React.ReactNode}> = ({ children }) => {
+export const PayrollProviderSpecific: React.FC<{
+    children: React.ReactNode
+}> = ({ children }) => {
     const { id } = useParams()
     const [month, setMonth] = useState<number | undefined>(undefined)
     const [year, setYear] = useState<number | undefined>(undefined)
@@ -19,17 +21,17 @@ export const PayrollProviderSpecific: React.FC<{children: React.ReactNode}> = ({
     }
 
     const { data, isPending } = useQuery({
-        queryKey: ['payrollId',id, month, year, page, pageSize],
+        queryKey: ['payrollId', id, month, year, page, pageSize],
         queryFn: async () => {
             const res = await AxiosInstance.get(
-               `/salary/user/${id}?month=${month}&year=${year}&limit=${pageSize}&page=${page}` 
+                `/salary/user/${id}?month=${month}&year=${year}&limit=${pageSize}&page=${page}`,
             )
             return res.data
         },
     })
 
-    const payrollId = data?.data?? []
-    const totalPages = data?.totalPages?? 0
+    const payrollId = data?.data ?? []
+    const totalPages = data?.totalPages ?? 0
 
     const rows: PayrollRowSpecifc[] =
         payrollId.map((payrollData: any, index: number) => ({

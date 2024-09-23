@@ -3,12 +3,12 @@ import DataTable from '../../Components/Table/Table'
 import { usePayrollContext } from './Context/PayrollTableContext'
 import { PayrollProvider } from './Context/PayrollTableProvider'
 import style from './styles/Payroll.module.css'
-import { RingLoader } from 'react-spinners'
 import { Box, Collapse } from '@mui/material'
 import { useState } from 'react'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import Button from '@/Components/Button/Button'
 import { Close, FilterList } from '@mui/icons-material'
+import { Loader } from '@/Components/Loader/Loader'
 
 function PayrollContent() {
     const {
@@ -143,9 +143,7 @@ function PayrollContent() {
                 />
             </div>
             {isPending ? (
-                <div className={style.ring}>
-                    <RingLoader />
-                </div>
+                <Loader />
             ) : (
                 <DataTable
                     rows={rows}

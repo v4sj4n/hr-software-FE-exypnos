@@ -5,9 +5,11 @@
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
-border-radius: 10px;
+    border-radius: 10px;
     height: 430px;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    transition:
+        box-shadow 0.3s ease,
+        transform 0.3s ease;
     background-repeat: repeat-x;
     animation: gradient-flow 10s linear infinite;
 }

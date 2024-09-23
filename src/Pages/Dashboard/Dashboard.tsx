@@ -27,28 +27,31 @@ const DashboardContent: React.FC = () => {
     }
     const navigate = useNavigate()
 
-    const [animateOnLogin, setAnimateOnLogin] = useState(true); 
+    const [animateOnLogin, setAnimateOnLogin] = useState(true)
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setAnimateOnLogin(false); 
-        }, 10000); 
+            setAnimateOnLogin(false)
+        }, 10000)
 
-        return () => clearTimeout(timeout); 
-    }, []);
+        return () => clearTimeout(timeout)
+    }, [])
     return (
         <div className={style.dashboardContainer}>
             <div className={style.mainContent}>
                 <div className={style.rightContent}>
-                <div
-            className={`${style.welcome} ${animateOnLogin ? style.animate : ''}`}
-        >
+                    <div
+                        className={`${style.welcome} ${animateOnLogin ? style.animate : ''}`}
+                    >
                         <h1>
                             {greeter()}{' '}
                             <span
                                 onClick={handleNavigateToProfile}
                                 className={style.userNameClickable}
-                             style={{ cursor: 'pointer' ,transform: 'scale(1.1)'  }}  
+                                style={{
+                                    cursor: 'pointer',
+                                    transform: 'scale(1.1)',
+                                }}
                             >
                                 {userName}
                             </span>
@@ -91,7 +94,7 @@ const DashboardContent: React.FC = () => {
                         </div>
                     </div>
                     <div className={style.middleRow}>
-                      <Notes />
+                        <Notes />
                         <Card1
                             padding="20px"
                             borderRadius="10px"
@@ -105,8 +108,8 @@ const DashboardContent: React.FC = () => {
                             flex="2"
                             backgroundColor="rgba(255, 255, 255, 0.7)"
                         >
-                            <Weather/>
-                            </Card1>
+                            <Weather />
+                        </Card1>
                     </div>
                     <Card1
                         backgroundColor="rgba(255, 255, 255, 0.7)"

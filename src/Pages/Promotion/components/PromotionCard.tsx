@@ -279,7 +279,7 @@ export default function PromotionCard({ id }: { id: string }) {
                                 >
                                     <Selecter
                                         name="position"
-                                        width='100%'
+                                        width="100%"
                                         label="Position"
                                         multiple={false}
                                         value={formData.position}
@@ -293,7 +293,7 @@ export default function PromotionCard({ id }: { id: string }) {
                                     />
                                     <Selecter
                                         name="grade"
-                                        width='100%'
+                                        width="100%"
                                         label="Grade"
                                         multiple={false}
                                         value={formData.grade}

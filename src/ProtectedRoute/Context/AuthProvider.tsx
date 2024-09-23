@@ -1,5 +1,5 @@
-import React, {  useState, useEffect } from 'react'
-import {  AuthContext, User } from '../Interface/Interface'
+import React, { useState, useEffect } from 'react'
+import { AuthContext, User } from '../Interface/Interface'
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
@@ -12,9 +12,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const access_token = localStorage.getItem('access_token')
         const user_role = localStorage.getItem('user_role')
         const storedUserData = localStorage.getItem('user')
-     
-        if (access_token && user_role && storedUserData) {
 
+        if (access_token && user_role && storedUserData) {
             const user: User = JSON.parse(storedUserData)
             setIsAuthenticated(true)
             setUserRole(user_role)

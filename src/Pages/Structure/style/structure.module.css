@@ -92,7 +92,6 @@
     margin-bottom: 5px;
 }
 
-
 .create {
     color: #000000;
     font-size: 20px;
@@ -102,7 +101,7 @@
     align-items: center;
 }
 
-.search{
+.search {
     display: flex;
     gap: 10px;
     align-items: center;

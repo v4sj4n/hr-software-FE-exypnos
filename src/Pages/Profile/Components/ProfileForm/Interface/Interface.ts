@@ -21,13 +21,13 @@ export interface ProfileContextType {
     handleUpdatePayroll: (
         event: React.FormEvent<HTMLButtonElement>,
     ) => Promise<void>
-    handleGenderChange: (value: string | string[]) => void;
-    handlePositionChange: (value: string | string[]) => void;
-    handlePlaceChange: (value: string | string[]) => void;
+    handleGenderChange: (value: string | string[]) => void
+    handlePositionChange: (value: string | string[]) => void
+    handlePlaceChange: (value: string | string[]) => void
     updateToastOpen: boolean
     updateToastMessage: string
-    updateToastSeverity:'success' | 'error'
-    handleCancel : () => void
+    updateToastSeverity: 'success' | 'error'
+    handleCancel: () => void
 }
 
 export const ProfileContext = createContext<ProfileContextType | undefined>(
@@ -43,7 +43,7 @@ export interface EmployeePayroll {
     bonus: number | undefined
     userId: string
     extraHours: number | undefined
-    bonusDescription: string 
+    bonusDescription: string
 }
 
 export interface EmployePayroll {
@@ -52,5 +52,5 @@ export interface EmployePayroll {
     bonus: number | undefined
     userId: string
     extraHours: number | undefined
-    bonusDescription: string 
+    bonusDescription: string
 }

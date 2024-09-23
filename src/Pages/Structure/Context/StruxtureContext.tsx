@@ -1,20 +1,22 @@
-import { useState } from "react"
-import { StructureContext } from "../Interface/Index"
-import AxiosInstance from "@/Helpers/Axios"
+import { useState } from 'react'
+import { StructureContext } from '../Interface/Index'
+import AxiosInstance from '@/Helpers/Axios'
 
-export const StructureProvider: React.FC<{children: any}> = ({children}) => {
+export const StructureProvider: React.FC<{ children: any }> = ({
+    children,
+}) => {
     const [description, setDescription] = useState('')
     const [toastOpen, setToastOpen] = useState(false)
     const [toastMessage, setToastMessage] = useState('')
-    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>('success')
+    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
+        'success',
+    )
     const [openDrawer, setOpenDrawer] = useState(false)
     const [name, setName] = useState('')
     const [startDate, setStartDate] = useState('')
     const [status, setStatus] = useState('')
     const [projectManager, setProjectManager] = useState('')
-    const [teamMembers, setTeamMembers] = useState<string[]>([]) 
-    
-   
+    const [teamMembers, setTeamMembers] = useState<string[]>([])
 
     const handleDecriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setDescription(e.target.value)
@@ -41,18 +43,18 @@ export const StructureProvider: React.FC<{children: any}> = ({children}) => {
     }
 
     const handleStatusChange = (value: string | string[]) => {
-        setStatus(value as string);
-      };
-      
-      const handleProjectManagerChange = (value: string | string[]) => {
-        setProjectManager(value as string);
-      };
+        setStatus(value as string)
+    }
 
-      const handleTeamMembersChange = (value: string | string[]) => {
-        setTeamMembers(value as string[]);
-      };
+    const handleProjectManagerChange = (value: string | string[]) => {
+        setProjectManager(value as string)
+    }
 
-    const handleCreateProject = async() => {
+    const handleTeamMembersChange = (value: string | string[]) => {
+        setTeamMembers(value as string[])
+    }
+
+    const handleCreateProject = async () => {
         try {
             const res = await AxiosInstance.post('/project', {
                 name,
@@ -60,7 +62,7 @@ export const StructureProvider: React.FC<{children: any}> = ({children}) => {
                 description,
                 status,
                 projectManager,
-                teamMembers
+                teamMembers,
             })
             setToastMessage('Project created successfully')
             setToastOpen(true)
@@ -75,7 +77,6 @@ export const StructureProvider: React.FC<{children: any}> = ({children}) => {
             setOpenDrawer(false)
 
             return res.data
-
         } catch (error) {
             console.error('Error creating project:', error)
             setToastMessage('Error creating Project')
@@ -84,32 +85,31 @@ export const StructureProvider: React.FC<{children: any}> = ({children}) => {
         }
     }
 
-
-   const contextValue = {
-    handleDecriptionChange,
-    description,
-    handleCloseDrawer,
-    handleCloseToast,
-    handleOpenDrawer,
-    openDrawer,
-    toastOpen,
-    toastMessage,
-    toastSeverity,
-    setToastOpen,
-    setToastMessage,
-    setToastSeverity,
-    handleCreateProject,
-    handleTeamMembersChange,
-    handleProjectManagerChange,
-    handleNameChange,
-    handleStartDateChange,
-    handleStatusChange,
-    name,
-    startDate,
-    status, 
-    projectManager,
-    teamMembers,
-   }
+    const contextValue = {
+        handleDecriptionChange,
+        description,
+        handleCloseDrawer,
+        handleCloseToast,
+        handleOpenDrawer,
+        openDrawer,
+        toastOpen,
+        toastMessage,
+        toastSeverity,
+        setToastOpen,
+        setToastMessage,
+        setToastSeverity,
+        handleCreateProject,
+        handleTeamMembersChange,
+        handleProjectManagerChange,
+        handleNameChange,
+        handleStartDateChange,
+        handleStatusChange,
+        name,
+        startDate,
+        status,
+        projectManager,
+        teamMembers,
+    }
 
     return (
         <StructureContext.Provider value={contextValue}>

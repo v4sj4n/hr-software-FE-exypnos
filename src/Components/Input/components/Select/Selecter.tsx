@@ -3,8 +3,8 @@ import { useState } from 'react'
 import { inputStyles } from '../../Styles'
 
 interface Option {
-    label: string;
-    value: string;
+    label: string
+    value: string
 }
 
 interface SelecterProps {
@@ -28,8 +28,8 @@ const Selecter = ({
 }: SelecterProps) => {
     const [isOpen, setIsOpen] = useState(false)
 
-    const normalizedOptions: Option[] = options.map((option) => 
-        typeof option === 'string' ? { label: option, value: option } : option
+    const normalizedOptions: Option[] = options.map((option) =>
+        typeof option === 'string' ? { label: option, value: option } : option,
     )
 
     const handleChange = (
@@ -39,7 +39,7 @@ const Selecter = ({
         event.preventDefault()
         if (newValue !== null) {
             if (multiple) {
-                onChange((newValue as Option[]).map(option => option.value))
+                onChange((newValue as Option[]).map((option) => option.value))
             } else {
                 onChange((newValue as Option).value)
             }
@@ -50,11 +50,16 @@ const Selecter = ({
 
     const getValue = () => {
         if (multiple) {
-            return normalizedOptions.filter(option => 
-                Array.isArray(value) ? value.includes(option.value) : value === option.value
+            return normalizedOptions.filter((option) =>
+                Array.isArray(value)
+                    ? value.includes(option.value)
+                    : value === option.value,
             )
         } else {
-            return normalizedOptions.find(option => option.value === value) || null
+            return (
+                normalizedOptions.find((option) => option.value === value) ||
+                null
+            )
         }
     }
 

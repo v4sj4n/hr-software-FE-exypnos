@@ -1,4 +1,3 @@
-import { CircularProgress } from '@mui/material'
 import { useContext, useEffect } from 'react'
 import { InventoryContext } from '../InventoryContext'
 import { GridPaginationModel, GridRenderCellParams } from '@mui/x-data-grid'
@@ -9,6 +8,7 @@ import { useAllInventoryItems } from '../Hook'
 import { SingleInventoryItem } from './SingleInventoryItem'
 import { Asset } from '@/Pages/Holdings/TAsset'
 import { StatusBadge } from '@/Components/StatusBadge/StatusBadge'
+import { Loader } from '@/Components/Loader/Loader'
 
 export const InventoryTable = () => {
     const { isError, error, data, isPending } = useAllInventoryItems()
@@ -28,11 +28,15 @@ export const InventoryTable = () => {
     }, [searchParams, setSearchParams])
 
     if (isError) return <div>Error: {error.message}</div>
-    if (isPending) return <CircularProgress />
+    if (isPending) return <Loader />
     if (!data || !data.data) return <div>No data available</div>
 
-    const rows = data.data.map((asset: Asset) => ({
-        id: asset._id,
+    const rows = data.data.map((asset: Asset, index: number) => ({
+        id:
+            Number(searchParams.get('page')) *
+                Number(searchParams.get('limit')) +
+            index +
+            1,
         type: asset.type[0].toUpperCase() + asset.type.slice(1),
         occupant: asset.userId,
         status: asset.status,

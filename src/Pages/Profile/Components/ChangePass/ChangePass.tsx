@@ -4,7 +4,7 @@ import { ButtonTypes } from '../../../../Components/Button/ButtonTypes'
 import { usePassword } from './Context/PasswordContext'
 import { PasswordProvider } from './Context/PasswordProvider'
 import Toast from '@/Components/Toast/Toast'
-import style from "./style/ChangePass.module.css"
+import style from './style/ChangePass.module.css'
 
 function ChangePassContent() {
     const {
@@ -19,7 +19,7 @@ function ChangePassContent() {
         toastSeverity,
         handleToastClose,
         handleShowEye,
-        showPassword
+        showPassword,
     } = usePassword()
 
     return (
@@ -32,7 +32,13 @@ function ChangePassContent() {
                     message={toastMessage}
                     onClose={handleToastClose}
                 />
-                <div style={{display:'flex',alignItems:'center',padding:'20px'}}>
+                <div
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '20px',
+                    }}
+                >
                     To change your password add your current password then your
                     new password.
                 </div>

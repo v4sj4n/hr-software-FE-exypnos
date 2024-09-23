@@ -60,7 +60,7 @@ function EventsContentAndComponents() {
                 onClose={closeToastB}
             />
             <Forms />
-            <div className={style.search} >
+            <div className={style.search}>
                 <Input
                     IsUsername
                     type="search"
@@ -72,27 +72,45 @@ function EventsContentAndComponents() {
                     value={searchEvent}
                     onChange={onSearchChange}
                 />
-                {isAdmin ? <Button btnText="Create Event" padding="10px" width="150px"
-                    type={ButtonTypes.PRIMARY} onClick={() => handleOpenDrawer('create')} />
-                    : ''}
+                {isAdmin ? (
+                    <Button
+                        btnText="Create Event"
+                        padding="10px"
+                        width="150px"
+                        type={ButtonTypes.PRIMARY}
+                        onClick={() => handleOpenDrawer('create')}
+                    />
+                ) : (
+                    ''
+                )}
             </div>
             <div className={style.contanier}>
                 <div className={style.grid}>
-                    {isLoading ? <EventsContentLoader /> : events?.pages.map((page) =>
-                        page.data.map((event: EventsData) => (
-                            <CardContent
-                             event={event}
-                            formatDate={formatDate}
-                            handleSeeEventDetails={handleSeeEventDetails}
-                            isAdmin={isAdmin} />
-                        )),
+                    {isLoading ? (
+                        <EventsContentLoader />
+                    ) : (
+                        events?.pages.map((page) =>
+                            page.data.map((event: EventsData) => (
+                                <CardContent
+                                    event={event}
+                                    formatDate={formatDate}
+                                    handleSeeEventDetails={
+                                        handleSeeEventDetails
+                                    }
+                                    isAdmin={isAdmin}
+                                />
+                            )),
+                        )
                     )}
                 </div>
                 {showModal && (
                     <ModalComponent open={showModal} handleClose={closeModal}>
                         <div className={style.modal}>
                             <div className={style.title}>Confirm Action.</div>
-                            <div> Are you sure you want to delete this event?</div>
+                            <div>
+                                {' '}
+                                Are you sure you want to delete this event?
+                            </div>
                             <div className={style.modalCnt}>
                                 <Button
                                     type={ButtonTypes.PRIMARY}

@@ -1,5 +1,5 @@
-import AxiosInstance from "@/Helpers/Axios"
-import { PayrollRow } from "../Interface/Payroll"
+import AxiosInstance from '@/Helpers/Axios'
+import { PayrollRow } from '../Interface/Payroll'
 
 export const getMonthName = (monthNumber: number): string => {
     const monthNames = [
@@ -19,8 +19,6 @@ export const getMonthName = (monthNumber: number): string => {
     return monthNames[monthNumber - 1]
 }
 
-
-
 // export const fetchEvents = async (
 //     search: string,
 //     pageParam: number,
@@ -32,7 +30,6 @@ export const getMonthName = (monthNumber: number): string => {
 //     return response.data
 // }
 
-
 export const fetchPayroll = async (
     month: number | undefined,
     year: number | undefined,
@@ -42,10 +39,10 @@ export const fetchPayroll = async (
     minNetSalary: number | undefined,
     maxNetSalary: number | undefined,
     bonus: number | undefined,
-    ): Promise<PayrollRow[]> => {
-        const pageSize = 6
-        const response = await AxiosInstance.get<PayrollRow[]>(
-            `/salary?month=${month}&year=${year}&bonus=${bonus}&maxNetSalary=${maxNetSalary}&minNetSalary=${minNetSalary}&workingDays=${workingDays}&fullName=${fullName}&limit=${pageSize}&page=${page}`,
-        )
-        return response.data
-    }
+): Promise<PayrollRow[]> => {
+    const pageSize = 6
+    const response = await AxiosInstance.get<PayrollRow[]>(
+        `/salary?month=${month}&year=${year}&bonus=${bonus}&maxNetSalary=${maxNetSalary}&minNetSalary=${minNetSalary}&workingDays=${workingDays}&fullName=${fullName}&limit=${pageSize}&page=${page}`,
+    )
+    return response.data
+}

@@ -3,7 +3,7 @@ import { PayrollProviderSpecific } from './Context/SpecificUserPayrollProvider'
 import style from '../styles/Payroll.module.css'
 import { usePayrollContextSpecific } from './Context/SpecificUserPayrollContext'
 import Input from '@/Components/Input/Index'
-import { RingLoader } from 'react-spinners'
+import { Loader } from '@/Components/Loader/Loader'
 
 function SpecificUserPayrollContent() {
     const {
@@ -22,9 +22,7 @@ function SpecificUserPayrollContent() {
     return (
         <div className={style.payroll}>
             <div className={style.search}>
-            <div className={style.name}>  
-                  {fullName}
-                </div>
+                <div className={style.name}>{fullName}</div>
                 <Input
                     width={250}
                     name="Filter"
@@ -34,27 +32,28 @@ function SpecificUserPayrollContent() {
                     onChange={handleDateChange}
                 />
             </div>
-            {isPending ? 
-                <div className={style.ring}>
-                    <RingLoader />
-                </div> :  <DataTable
-                rows={rows}
-                columns={columns}
-                getRowId={getRowId}
-                totalPages={totalPages}
-                page={page}
-                pageSize={pageSize}
-                onPaginationModelChange={handlePaginationModelChange}
-            /> }
+            {isPending ? (
+                <Loader />
+            ) : (
+                <DataTable
+                    rows={rows}
+                    columns={columns}
+                    getRowId={getRowId}
+                    totalPages={totalPages}
+                    page={page}
+                    pageSize={pageSize}
+                    onPaginationModelChange={handlePaginationModelChange}
+                />
+            )}
         </div>
     )
 }
 
 const SpecificUserPayroll: React.FC = () => {
     return (
-            <PayrollProviderSpecific>
-                <SpecificUserPayrollContent />
-            </PayrollProviderSpecific>
+        <PayrollProviderSpecific>
+            <SpecificUserPayrollContent />
+        </PayrollProviderSpecific>
     )
 }
 

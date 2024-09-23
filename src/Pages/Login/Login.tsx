@@ -8,12 +8,12 @@ import logo from '/Images/image_1-removebg-preview.png'
 import Card from '@/Components/Card/Card'
 import Input from '@/Components/Input/Index'
 import Button from '@/Components/Button/Button'
-import { RingLoader } from 'react-spinners'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import style from './styles/Login.module.css'
 import Toast from '@/Components/Toast/Toast'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+import { Loader } from '@/Components/Loader/Loader'
 
 const LoginComponent = () => {
     const { isAuthenticated } = useAuth()
@@ -48,12 +48,7 @@ const LoginComponent = () => {
         }
     })
 
-    if (checkingIsAuthenticated)
-        return (
-            <div className={style.checkIsAuthenticated}>
-                <RingLoader />
-            </div>
-        )
+    if (checkingIsAuthenticated) return <Loader />
 
     return (
         <div className={style.container}>

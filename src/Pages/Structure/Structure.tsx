@@ -20,7 +20,6 @@ import { StructureProvider } from './Context/StruxtureContext'
 import { useGetProject } from './Hook/Index'
 
 function StructureContent() {
-
     const transformProjectData = (
         projects: ProjectData[],
     ): CustomTreeNode[] => {
@@ -118,7 +117,8 @@ function StructureContent() {
 
     const transformedData = data ? transformProjectData(data) : []
 
-    const {  handleDecriptionChange,
+    const {
+        handleDecriptionChange,
         description,
         handleCloseDrawer,
         handleCloseToast,
@@ -135,48 +135,108 @@ function StructureContent() {
         handleStatusChange,
         name,
         startDate,
-        status, 
+        status,
         projectManager,
         teamMembers,
     } = useStructureContext()
-    
+
     const { data: users = [] } = useGetAllUsers()
     const userOptions = users.map((user) => ({
         label: `${user.firstName} ${user.lastName}`,
-        value: user._id.toString()
+        value: user._id.toString(),
     }))
 
-
     const statusOptions = ['in_progress', 'completed', 'planed']
-    
+
     return (
         <div className={styles.container}>
-             <Toast
+            <Toast
                 severity={toastSeverity}
                 open={toastOpen}
                 message={toastMessage}
                 onClose={handleCloseToast}
             />
             <div className={styles.search}>
-            <Button onClick={handleOpenDrawer} btnText='Add Project' type={ButtonTypes.PRIMARY}/>
+                <Button
+                    onClick={handleOpenDrawer}
+                    btnText="Add Project"
+                    type={ButtonTypes.PRIMARY}
+                />
             </div>
             <DrawerComponent open={openDrawer} onClose={handleCloseDrawer}>
                 <div className={styles.create}>
-                   Create New Project
-                   <CloseIcon
+                    Create New Project
+                    <CloseIcon
                         onClick={handleCloseDrawer}
                         style={{ cursor: 'pointer' }}
                     />
                 </div>
-                 <Input IsUsername name='name' onChange={handleNameChange} value={name}  label='Project Name'/>
-                 <Input IsUsername name='startDate' label='Start date' shrink={true}  type="date" onChange={handleStartDateChange} value={startDate}/>
-                 <Input IsUsername name='description' label='Description' type='textarea' rows={3} multiline={true} onChange={handleDecriptionChange} value={description} />
-                 <Selecter width='100%' name='status' label='Status' options={statusOptions} onChange={handleStatusChange} multiple={false} value={status}/>
-                 <Selecter width='100%' name='projectManager' label='Project Manager' multiple={false} onChange={handleProjectManagerChange} value={projectManager} options={userOptions}/>
-                 <Selecter width='100%' name='teamMembers' label='Team Members' onChange={handleTeamMembersChange} value={teamMembers} multiple options={userOptions}/>
-                 <Button type={ButtonTypes.PRIMARY} btnText='Create' onClick={handleCreateProject}  />
+                <Input
+                    IsUsername
+                    name="name"
+                    onChange={handleNameChange}
+                    value={name}
+                    label="Project Name"
+                />
+                <Input
+                    IsUsername
+                    name="startDate"
+                    label="Start date"
+                    shrink={true}
+                    type="date"
+                    onChange={handleStartDateChange}
+                    value={startDate}
+                />
+                <Input
+                    IsUsername
+                    name="description"
+                    label="Description"
+                    type="textarea"
+                    rows={3}
+                    multiline={true}
+                    onChange={handleDecriptionChange}
+                    value={description}
+                />
+                <Selecter
+                    width="100%"
+                    name="status"
+                    label="Status"
+                    options={statusOptions}
+                    onChange={handleStatusChange}
+                    multiple={false}
+                    value={status}
+                />
+                <Selecter
+                    width="100%"
+                    name="projectManager"
+                    label="Project Manager"
+                    multiple={false}
+                    onChange={handleProjectManagerChange}
+                    value={projectManager}
+                    options={userOptions}
+                />
+                <Selecter
+                    width="100%"
+                    name="teamMembers"
+                    label="Team Members"
+                    onChange={handleTeamMembersChange}
+                    value={teamMembers}
+                    multiple
+                    options={userOptions}
+                />
+                <Button
+                    type={ButtonTypes.PRIMARY}
+                    btnText="Create"
+                    onClick={handleCreateProject}
+                />
             </DrawerComponent>
-            <Card borderRadius="5px" padding="32px" border="1px solid #ebebeb" height='400px' overflow='auto'>
+            <Card
+                borderRadius="5px"
+                padding="32px"
+                border="1px solid #ebebeb"
+                height="400px"
+                overflow="auto"
+            >
                 {isLoading ? (
                     <div>Loading...</div>
                 ) : error ? (
@@ -193,7 +253,6 @@ function StructureContent() {
         </div>
     )
 }
-
 
 const Structure: React.FC = () => {
     return (

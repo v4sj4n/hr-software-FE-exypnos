@@ -37,8 +37,6 @@ function VacationComponent() {
         }
     }, [searchParams, setSearchParams, userRole])
 
-    // Do hiqet dhe devit do i lihet vetem nje faqe qe te shikoj asetet qe ka marr dhe vacations
-
     return (
         <main className={style.main}>
             <div

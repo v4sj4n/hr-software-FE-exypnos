@@ -1,5 +1,3 @@
-
-
 import { useState, useCallback, useMemo } from 'react'
 import style from './Style/Career.module.css'
 import Button from '@/Components/Button/Button'
@@ -17,13 +15,21 @@ import Workers from '/public/Images/happy workers.webp'
 import worker3 from '/public/Images/happyWork3.jpeg'
 import worker2 from '/public/Images/happyWorkers2.jpg'
 import { Link } from 'react-router-dom'
-import  { useAuth }  from '@/ProtectedRoute/Context/AuthContext.tsx'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext.tsx'
 
 export const Careers = () => {
     const { events, setEvents, isLoading } = useGetAllEvents()
-    const { createEvent, handleChange, event, createEventError } = useCreateEvent(setEvents)
-    const { editingEvent, handleEditChange, updateEvent, setEditingEvent } = useUpdateEvent(setEvents)
-    const { handleDelete, closeModal, showModal, handleDeleteEventModal, eventToDeleteId } = useDeleteEvent(setEvents)
+    const { createEvent, handleChange, event, createEventError } =
+        useCreateEvent(setEvents)
+    const { editingEvent, handleEditChange, updateEvent, setEditingEvent } =
+        useUpdateEvent(setEvents)
+    const {
+        handleDelete,
+        closeModal,
+        showModal,
+        handleDeleteEventModal,
+        eventToDeleteId,
+    } = useDeleteEvent(setEvents)
     const { currentUser } = useAuth()
 
     const [showForm, setShowForm] = useState(false)
@@ -31,35 +37,43 @@ export const Careers = () => {
 
     // Toggle form display
     const toggleForm = useCallback(() => {
-        setShowForm(prev => !prev)
+        setShowForm((prev) => !prev)
     }, [])
 
     // Handle filter input change
-    const handleFilterChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setFilter(e.target.value)
-    }, [])
+    const handleFilterChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            setFilter(e.target.value)
+        },
+        [],
+    )
 
     // Memoized filtered events to optimize performance
     const filteredEvents = useMemo(() => {
         return events.filter(
             (event) =>
                 event.title.toLowerCase().includes(filter.toLowerCase()) ||
-                event.description.toLowerCase().includes(filter.toLowerCase())
+                event.description.toLowerCase().includes(filter.toLowerCase()),
         )
     }, [events, filter])
 
-    const [openDropdown, setOpenDropdown] = useState<string | number | null>(null)
+    const [openDropdown, setOpenDropdown] = useState<string | number | null>(
+        null,
+    )
 
     // Toggle dropdown menu
     const toggleDropdown = useCallback((eventId: string) => {
-        setOpenDropdown(prev => (prev === eventId ? null : eventId))
+        setOpenDropdown((prev) => (prev === eventId ? null : eventId))
     }, [])
 
     // Handle edit button click
-    const handleEditClick = useCallback((event: EventsData) => {
-        setEditingEvent(event)
-        setShowForm(true)
-    }, [setEditingEvent])
+    const handleEditClick = useCallback(
+        (event: EventsData) => {
+            setEditingEvent(event)
+            setShowForm(true)
+        },
+        [setEditingEvent],
+    )
 
     const isAdmin = currentUser?.role === 'hr'
 
@@ -69,7 +83,8 @@ export const Careers = () => {
                 <div className={style.hero}>
                     <h1>Join Our Team</h1>
                     <p>
-                        Be part of something bigger. Make a difference in the world of technology.
+                        Be part of something bigger. Make a difference in the
+                        world of technology.
                     </p>
                 </div>
 
@@ -106,18 +121,28 @@ export const Careers = () => {
                                 {isAdmin && (
                                     <div className={style.dropdownContainer}>
                                         <MoreHorizIcon
-                                            onClick={() => toggleDropdown(event._id.toString())}
+                                            onClick={() =>
+                                                toggleDropdown(
+                                                    event._id.toString(),
+                                                )
+                                            }
                                             className={style.moreIcon}
                                         />
                                         {openDropdown === event._id && (
                                             <div className={style.dropdownMenu}>
                                                 <button
-                                                    onClick={() => handleEditClick(event)}
+                                                    onClick={() =>
+                                                        handleEditClick(event)
+                                                    }
                                                 >
                                                     Edit
                                                 </button>
                                                 <button
-                                                    onClick={() => handleDeleteEventModal(event._id)}
+                                                    onClick={() =>
+                                                        handleDeleteEventModal(
+                                                            event._id,
+                                                        )
+                                                    }
                                                 >
                                                     Delete
                                                 </button>
@@ -137,25 +162,51 @@ export const Careers = () => {
                             <input
                                 type="text"
                                 name="title"
-                                value={editingEvent ? editingEvent.title : event.title}
-                                onChange={editingEvent ? handleEditChange : handleChange}
+                                value={
+                                    editingEvent
+                                        ? editingEvent.title
+                                        : event.title
+                                }
+                                onChange={
+                                    editingEvent
+                                        ? handleEditChange
+                                        : handleChange
+                                }
                                 placeholder="Event Title"
                             />
                             <textarea
                                 name="description"
-                                value={editingEvent ? editingEvent.description : event.description}
-                                onChange={editingEvent ? handleEditChange : handleChange}
+                                value={
+                                    editingEvent
+                                        ? editingEvent.description
+                                        : event.description
+                                }
+                                onChange={
+                                    editingEvent
+                                        ? handleEditChange
+                                        : handleChange
+                                }
                                 placeholder="Event Description"
                             />
                             <input
                                 type="text"
                                 name="location"
-                                value={editingEvent ? editingEvent.location : event.location}
-                                onChange={editingEvent ? handleEditChange : handleChange}
+                                value={
+                                    editingEvent
+                                        ? editingEvent.location
+                                        : event.location
+                                }
+                                onChange={
+                                    editingEvent
+                                        ? handleEditChange
+                                        : handleChange
+                                }
                                 placeholder="Location"
                             />
                             {createEventError && (
-                                <p className={style.error}>{createEventError}</p>
+                                <p className={style.error}>
+                                    {createEventError}
+                                </p>
                             )}
                             <div className={style.modalFooter}>
                                 <Button
@@ -164,7 +215,9 @@ export const Careers = () => {
                                     height="40px"
                                     alignItems="center"
                                     width="120px"
-                                    onClick={editingEvent ? updateEvent : createEvent}
+                                    onClick={
+                                        editingEvent ? updateEvent : createEvent
+                                    }
                                 />
                                 <Button
                                     btnText="Cancel"
@@ -204,26 +257,46 @@ export const Careers = () => {
 
                 <div className={style.culture}>
                     <h2>Our Culture</h2>
-                    <p >
-                        At our company, we value innovation, collaboration, and growth. Join us and thrive in a supportive and dynamic environment.
+                    <p>
+                        At our company, we value innovation, collaboration, and
+                        growth. Join us and thrive in a supportive and dynamic
+                        environment.
                     </p>
                     <div className={style.cultureImages}>
-                        <img src={Workers} alt="" className={style.cultureImage}></img>
-                        <img src={worker3} alt="" className={style.cultureImage}></img>
-                        <img src={worker2} alt="" className={style.cultureImage}></img>
+                        <img
+                            src={Workers}
+                            alt=""
+                            className={style.cultureImage}
+                        ></img>
+                        <img
+                            src={worker3}
+                            alt=""
+                            className={style.cultureImage}
+                        ></img>
+                        <img
+                            src={worker2}
+                            alt=""
+                            className={style.cultureImage}
+                        ></img>
                     </div>
                 </div>
 
                 <div className={style.testimonials}>
                     <h2>What Our Employees Say</h2>
-                    <p>"This company has provided me with numerous opportunities for growth and development."</p>
-                    <p>"I love the collaborative and inclusive culture here."</p>
+                    <p>
+                        "This company has provided me with numerous
+                        opportunities for growth and development."
+                    </p>
+                    <p>
+                        "I love the collaborative and inclusive culture here."
+                    </p>
                 </div>
 
                 <div className={style.footer}>
                     <p>
                         &copy; 2024{' '}
-                        <a href="https://www.codevider.com/">Codevider. </a>All rights reserved.
+                        <a href="https://www.codevider.com/">Codevider. </a>All
+                        rights reserved.
                     </p>
                     <p>
                         Follow us on <a href="#">LinkedIn</a>.

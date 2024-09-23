@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
 import AxiosInstance from '@/Helpers/Axios'
-import { EventsData,EventsCreationData ,EventType} from '../Interfaces/interface'
+import {
+    EventsData,
+    EventsCreationData,
+    EventType,
+} from '../Interfaces/interface'
 
 // Hook to fetch all events
 export const useGetAllEvents = () => {

@@ -25,14 +25,15 @@ const ResetPasswordComponent = () => {
                     <img className={style.img2} alt="img" src={logo} />
                 </div>
                 <div className={style.title}>Forgot Password</div>
-                
 
                 {sP[0].get('token') ? (
                     <ResetPasswordForm />
                 ) : (
                     <ForgetPasswordForm />
                 )}
-          <Link to="/" style={{textAlign:"center", color:"black"}}>Back to Login</Link>
+                <Link to="/" style={{ textAlign: 'center', color: 'black' }}>
+                    Back to Login
+                </Link>
             </Card>
         </div>
     )
