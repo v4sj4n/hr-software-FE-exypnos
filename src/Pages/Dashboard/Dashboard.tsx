@@ -14,7 +14,7 @@ import Weather from './components/Weather.tsx'
 import { Notes } from './components/notes.tsx'
 
 const DashboardContent: React.FC = () => {
-    const { employeeData } = useDashboardContext()
+    const { employeeData } = useDashboardContext();
     greeter()
 
     const { currentUser } = useAuth()
@@ -79,9 +79,9 @@ const DashboardContent: React.FC = () => {
                     <div className={style.cardContainer}>
                         <div className={style.cardGreen}>
                             <Card
-                                title="Present"
-                                content={employeeData.present.toString()}
-                                icon="Present"
+                                 title="Present Employees"
+                                 content={String(employeeData.present)} 
+                                 icon="Present"
                             />
                         </div>
                         <div className={style.cardBlue}>
@@ -93,17 +93,17 @@ const DashboardContent: React.FC = () => {
                         </div>
                         <div className={style.cardYellow}>
                             <Card
-                                title="On Leave"
-                                content={employeeData.onLeave.toString()}
-                                icon="On Leave"
-                            />
+                              title="Employees on Leave"
+                              content={String(employeeData.onLeave)} // Pass the number of employees on leave
+                              icon="On Leave" // Icon for on leave employees
+                          />
                         </div>
                         <div className={style.cardPurple}>
                             <Card
-                                title="Remote"
-                                content={employeeData.remote.toString()}
-                                icon="Remote"
-                            />
+                              title="Remote Employees"
+                              content={String(employeeData.remote)} // Pass the number of remote employees
+                              icon="Remote" // Icon for remote employees
+                          />
                         </div>
                     </div>
                     <div className={style.middleRow}>
