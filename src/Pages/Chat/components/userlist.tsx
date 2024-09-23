@@ -26,7 +26,7 @@ interface UserListProps {
 }
 
 const UserList: React.FC<UserListProps> = ({ users }) => {
-  const { setRecipientId, setMessages, senderId, unreadMessages, setUnreadMessages } = useChat(); // Get unreadMessages from context
+  const { setRecipientId, setMessages, senderId, unreadMessages, setUnreadMessages } = useChat(); 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [searchActiveChatsQuery, setSearchActiveChatsQuery] = useState<string>('');
@@ -35,9 +35,8 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
-  // Initialize socket connection when component mounts
   useEffect(() => {
-    const socket = io('http://localhost:3000'); // Adjust the URL as per your backend setup
+    const socket = io('http://localhost:3000'); 
 
     socket.on('newMessage', (message) => {
       if (message.recipientId === senderId) {
@@ -57,13 +56,11 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
       }
     });
 
-    // Clean up the socket when the component unmounts
     return () => {
       socket.close();
     };
   }, [senderId, users]);
 
-  // Fetch active chats on component mount or when senderId changes
   useEffect(() => {
     const fetchActiveChats = async () => {
       try {
@@ -103,10 +100,9 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
     }
   }, [senderId]);
 
-  // Filter active users based on search query
   const filteredActiveUsers = useMemo(() => {
     const activeUsers = users.filter((user) => activeUserIds.includes(user._id));
-    console.log('Filtered active users:', activeUsers); // Log the filtered active users
+    console.log('Filtered active users:', activeUsers); 
 
     if (searchActiveChatsQuery.trim()) {
       return activeUsers.filter((user) =>
@@ -119,7 +115,6 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
     return activeUsers;
   }, [searchActiveChatsQuery, users, activeUserIds]);
 
-  // Filter all users based on search query
   const filteredAllUsers = useMemo(() => {
     if (searchUsersQuery.trim()) {
       return users.filter((user) =>
@@ -132,11 +127,10 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
     return [];
   }, [searchUsersQuery, users]);
 
-  // Handle selecting a user to open chat
   const handleSelectUser = async (userId: string) => {
     console.log('Selected Recipient ID:', userId);
     setRecipientId(userId);
-    setSelectedChatId(userId); // Set the selected chat ID
+    setSelectedChatId(userId); 
     setLoading(true);
     setError(null);
 
@@ -150,10 +144,9 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
         return Array.from(newActiveUserIds);
       });
 
-      // Mark messages as read for the selected user
       setUnreadMessages((prevUnread) => ({
         ...prevUnread,
-        [userId]: 0, // Reset unread message count
+        [userId]: 0, 
       }));
     } catch (error) {
       console.error('Error fetching messages:', error);

@@ -9,9 +9,8 @@ import SendMessage from './components/chatinput'
 import { SocketProvider } from './context/SocketContext'
 
 const Chat: React.FC = () => {
-    const { users, setUsers } = useChat() // Removed messages from the destructuring
+    const { users, setUsers } = useChat() 
 
-    // Fetch users from the backend
     useEffect(() => {
         const fetchUsers = async () => {
             const response = await AxiosInstance('/user')

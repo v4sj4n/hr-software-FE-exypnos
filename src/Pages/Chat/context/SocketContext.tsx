@@ -44,11 +44,10 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
         }
     }, [currentUser])
 
-    console.log('Socket:', socket) // Log the socket
+    console.log('Socket:', socket) 
 
-    // Check if socket is available before rendering
     if (!socket) {
-        return null // Or a loading state if you need one
+        return null 
     }
 
     return (

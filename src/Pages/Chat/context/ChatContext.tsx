@@ -49,14 +49,12 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
             ? prevMessages
             : [];
   
-          // Ensure no duplicate messages
           if (!updatedMessages.some((msg) => msg.timestamp === data.timestamp)) {
             return [...updatedMessages, data];
           }
           return updatedMessages;
         });
   
-        // Update unread message count if the message is not in the active conversation
         if (data.senderId !== recipientId) {
           setUnreadMessages((prevUnread) => ({
             ...prevUnread,
@@ -87,8 +85,8 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
         loggedInUser,
         setLoggedInUser,
         socket,
-        unreadMessages, // Pass unread messages
-        setUnreadMessages, // Allow to update unread messages
+        unreadMessages, 
+        setUnreadMessages, 
       }}
     >
       {children}
