@@ -15,14 +15,12 @@ import Selecter from '@/Components/Input/components/Select/Selecter'
 import { useGetAllUsers } from '../Employees/Hook'
 import CloseIcon from '@mui/icons-material/Close'
 import Toast from '@/Components/Toast/Toast'
-import { useStructureContext } from './Context/StructureProvider'
-import { StructureProvider } from './Context/StruxtureContext'
-import { useGetProject } from './Hook/Index'
+import { useCreateProject, useDeleteProject,  useGetProject } from './Hook/Index'
+import { ModalComponent } from '@/Components/Modal/Modal'
 
-function StructureContent() {
-    const transformProjectData = (
-        projects: ProjectData[],
-    ): CustomTreeNode[] => {
+function Structure() {    
+    const {projects, setProjects} = useGetProject()
+    const transformProjectData = (projects: ProjectData[],  handleOpenModal: (projectId: string) => void): CustomTreeNode[] => {
         const rootNode: CustomTreeNode = {
             expanded: true,
             type: 'person',
@@ -49,7 +47,11 @@ function StructureContent() {
                     className: styles.bgPurple500,
                     data: {
                         name: `${project.projectManager.firstName} ${project.projectManager.lastName}`,
-                        title: project.name,
+                        title: (
+                            <>
+                                {project.name} <CloseIcon style={{cursor:"pointer"}}  onClick={() => handleOpenModal(project._id)}/>
+                            </>
+                        ),
                         teamMembers: project.teamMembers,
                     },
                     children: [
@@ -64,10 +66,12 @@ function StructureContent() {
                     ],
                 })),
             ],
-        }
+        };
+    
+        return [rootNode];
+    };
 
-        return [rootNode]
-    }
+   
 
     const nodeTemplate = (node: CustomTreeNode) => {
         if (node.type === 'person') {
@@ -85,6 +89,7 @@ function StructureContent() {
                         )}
                         <span className={styles.nodeName}>
                             {node.data.title}
+                            
                         </span>
                         <span style={{ fontSize: '12px' }}>
                             {node.data.name}
@@ -111,34 +116,41 @@ function StructureContent() {
             )
         }
         return node.label
-    }
+    }    
 
-    const { data, isLoading, error } = useGetProject()
-
-    const transformedData = data ? transformProjectData(data) : []
-
+    
+    const {handleOpenModal, handleCloseModal, handleDelete, showModal} = useDeleteProject(setProjects)
     const {
-        handleDecriptionChange,
-        description,
-        handleCloseDrawer,
-        handleCloseToast,
-        handleOpenDrawer,
-        openDrawer,
-        toastOpen,
-        toastMessage,
-        toastSeverity,
         handleCreateProject,
-        handleTeamMembersChange,
-        handleProjectManagerChange,
+        handleDecriptionChange,
         handleNameChange,
         handleStartDateChange,
         handleStatusChange,
+        handleProjectManagerChange,
+        handleTeamMembersChange,
+        handleOpenDrawer,
+        handleCloseDrawer,
+        openDrawer,
+        handleCloseToast,
+        toastOpen,
+        toastMessage,
+        toastSeverity,
+        projectManager,
         name,
         startDate,
         status,
-        projectManager,
         teamMembers,
-    } = useStructureContext()
+        description
+    } = useCreateProject()
+
+    const handleCreateAndUpdateUI = async () => {
+        const newProject = await handleCreateProject();
+        if (newProject) {
+            setProjects(prevProjects => [...prevProjects, newProject]);
+        }
+    }
+
+    const transformedData = projects && transformProjectData(projects, handleOpenModal);
 
     const { data: users = [] } = useGetAllUsers()
     const userOptions = users.map((user) => ({
@@ -148,117 +160,72 @@ function StructureContent() {
 
     const statusOptions = ['in_progress', 'completed', 'planed']
 
+
     return (
         <div className={styles.container}>
             <Toast
-                severity={toastSeverity}
+                severity={ toastSeverity}
                 open={toastOpen}
                 message={toastMessage}
                 onClose={handleCloseToast}
             />
             <div className={styles.search}>
-                <Button
-                    onClick={handleOpenDrawer}
-                    btnText="Add Project"
-                    type={ButtonTypes.PRIMARY}
-                />
+                <Button onClick={handleOpenDrawer} btnText='Add Project' type={ButtonTypes.PRIMARY} />
             </div>
             <DrawerComponent open={openDrawer} onClose={handleCloseDrawer}>
                 <div className={styles.create}>
+                    Create New Project
+                    <CloseIcon
                     Create New Project
                     <CloseIcon
                         onClick={handleCloseDrawer}
                         style={{ cursor: 'pointer' }}
                     />
                 </div>
-                <Input
-                    IsUsername
-                    name="name"
-                    onChange={handleNameChange}
-                    value={name}
-                    label="Project Name"
-                />
-                <Input
-                    IsUsername
-                    name="startDate"
-                    label="Start date"
-                    shrink={true}
-                    type="date"
-                    onChange={handleStartDateChange}
-                    value={startDate}
-                />
-                <Input
-                    IsUsername
-                    name="description"
-                    label="Description"
-                    type="textarea"
-                    rows={3}
-                    multiline={true}
-                    onChange={handleDecriptionChange}
-                    value={description}
-                />
-                <Selecter
-                    width="100%"
-                    name="status"
-                    label="Status"
-                    options={statusOptions}
-                    onChange={handleStatusChange}
-                    multiple={false}
-                    value={status}
-                />
-                <Selecter
-                    width="100%"
-                    name="projectManager"
-                    label="Project Manager"
-                    multiple={false}
-                    onChange={handleProjectManagerChange}
-                    value={projectManager}
-                    options={userOptions}
-                />
-                <Selecter
-                    width="100%"
-                    name="teamMembers"
-                    label="Team Members"
-                    onChange={handleTeamMembersChange}
-                    value={teamMembers}
-                    multiple
-                    options={userOptions}
-                />
-                <Button
-                    type={ButtonTypes.PRIMARY}
-                    btnText="Create"
-                    onClick={handleCreateProject}
-                />
+                <Input IsUsername name='name' onChange={handleNameChange} value={name} label='Project Name' />
+                <Input IsUsername name='startDate' label='Start date' shrink={true} type="date" onChange={handleStartDateChange} value={startDate} />
+                <Input IsUsername name='description' label='Description' type='textarea' rows={3} multiline={true} onChange={handleDecriptionChange} value={description} />
+                <Selecter disabled={false} width='100%' name='status' label='Status' options={statusOptions} onChange={handleStatusChange} multiple={false} value={status} />
+                <Selecter disabled={false} width='100%' name='projectManager' label='Project Manager' multiple={false} onChange={handleProjectManagerChange} value={projectManager} options={userOptions} />
+                <Selecter disabled={false} width='100%' name='teamMembers' label='Team Members' onChange={handleTeamMembersChange} value={teamMembers} multiple options={userOptions} />
+                <Button type={ButtonTypes.PRIMARY} btnText='Create'  onClick={handleCreateAndUpdateUI}  />
             </DrawerComponent>
-            <Card
-                borderRadius="5px"
-                padding="32px"
-                border="1px solid #ebebeb"
-                height="400px"
-                overflow="auto"
-            >
-                {isLoading ? (
-                    <div>Loading...</div>
-                ) : error ? (
-                    <div>{error.message}</div>
-                ) : (
+            <Card borderRadius="5px" padding="32px" border="1px solid #ebebeb" height='400px' overflow='auto'>
+              
                     <div className={styles.organizationChart}>
                         <OrganizationChart
                             value={transformedData}
                             nodeTemplate={nodeTemplate}
                         />
                     </div>
-                )}
+              
             </Card>
+            {showModal && <ModalComponent open={showModal} handleClose={handleCloseModal}>
+            <div className={styles.modal}>
+                            <div className={styles.title}>Confirm Action.</div>
+                            <div> Are you sure you want to delete this project?</div>
+                            <div className={styles.modalCnt}>
+                                <Button
+                                    type={ButtonTypes.PRIMARY}
+                                    backgroundColor="#D32F2F"
+                                    borderColor="#D32F2F"
+                                    btnText="Confirm"
+                                    width="100%"
+                                    onClick={() => {
+                                        handleDelete()
+                                        handleCloseModal()
+                                    }}
+                                />
+                                <Button
+                                    type={ButtonTypes.SECONDARY}
+                                    btnText="Cancel"
+                                    width="100%"
+                                    onClick={handleCloseModal}
+                                />
+                            </div>
+                        </div>
+                </ModalComponent>}
         </div>
-    )
-}
-
-const Structure: React.FC = () => {
-    return (
-        <StructureProvider>
-            <StructureContent />
-        </StructureProvider>
     )
 }
 

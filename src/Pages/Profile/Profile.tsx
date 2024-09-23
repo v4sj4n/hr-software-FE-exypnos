@@ -5,6 +5,8 @@ import Box from '@mui/material/Box'
 import Contrat from './Components/Contrat/Contrat'
 import ProfileForm from './Components/ProfileForm/ProfileForm'
 import ChangePass from './Components/ChangePass/ChangePass'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+import { useParams } from 'react-router-dom'
 
 interface TabPanelProps {
     children?: React.ReactNode
@@ -37,7 +39,11 @@ function a11yProps(index: number) {
 
 export default function Profile() {
     const [value, setValue] = React.useState(0)
+ const {currentUser} = useAuth()
+ const {id} = useParams()
 
+    const currentUserId = currentUser?._id === id
+    const hr = currentUser?.role === 'hr'
     const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
     }
@@ -82,8 +88,8 @@ export default function Profile() {
                 }}
             >
                 <Tab label="Profile" {...a11yProps(0)} />
-                <Tab label="payroll" {...a11yProps(1)} />
-                <Tab label="Change Password" {...a11yProps(2)} />
+                {currentUserId || hr ? <Tab label="payroll" {...a11yProps(1)} /> : null  }
+                {currentUserId || hr ?  <Tab label="Change Password" {...a11yProps(2)} /> : null  }
             </Tabs>
             <TabPanel value={value} index={0}>
                 <ProfileForm />

@@ -9,17 +9,20 @@ import {
 } from '@tanstack/react-query'
 import { fetchEvents } from '../utils/utils'
 import axios from 'axios'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 export const useGetAllEvents = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const [searchEvent, setSearchEvent] = useState(
         searchParams.get('search') || '',
     )
+    const {currentUser} = useAuth()
+    const currentUserId = currentUser?._id
 
     const query = useInfiniteQuery({
-        queryKey: ['events', searchEvent],
+        queryKey: ['events', searchEvent, currentUserId],
         queryFn: ({ pageParam = 0 }) =>
-            fetchEvents(searchEvent || '', pageParam),
+            fetchEvents(searchEvent || '', pageParam, currentUserId),
         initialPageParam: 0,
         getNextPageParam: (lastPage, allPages) => {
             if (lastPage.length < 6) {

@@ -5,6 +5,7 @@ import style from '../ProfileForm/style/ProfileForm.module.css'
 import { ProfileProvider } from '../ProfileForm/Context/ProfileProvider'
 import { useCreatePayroll, useUpdatePayroll } from '../ProfileForm/Hook/Index'
 import Toast from '@/Components/Toast/Toast'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 const ContratContent = () => {
     const {
@@ -26,6 +27,9 @@ const ContratContent = () => {
         createToastOpen,
         handleCreateToastClose,
     } = useCreatePayroll()
+
+    const { currentUser } = useAuth()
+    const isHr = currentUser?.role === 'hr'
 
     return (
         <div className={style.container} style={{ width: '800px' }}>
@@ -57,6 +61,7 @@ const ContratContent = () => {
                     IsUsername
                     type="number"
                     label="WorkingDays"
+                    disabled={!isHr}
                     name="workingDays"
                     shrink={true}
                     width={300}
@@ -75,6 +80,7 @@ const ContratContent = () => {
                     IsUsername
                     shrink={true}
                     name="grossSalary"
+                    disabled={!isHr}
                     label="Gross salary"
                     width={300}
                     value={
@@ -92,6 +98,7 @@ const ContratContent = () => {
                     IsUsername
                     shrink={true}
                     width={300}
+                    disabled={!isHr}
                     name="extraHours"
                     label="Extra Hours"
                     value={
@@ -137,6 +144,7 @@ const ContratContent = () => {
                     value={
                         EditingPayroll ? EditingPayroll?.bonus : payroll.bonus
                     }
+                disabled={!isHr}
                     onChange={
                         EditingPayroll
                             ? handleUpdateChangePayroll
@@ -147,6 +155,7 @@ const ContratContent = () => {
                     IsUsername
                     label="Bonus Description"
                     name="bonusDescription"
+                    disabled={!isHr}
                     multiline={true}
                     rows={3}
                     value={
@@ -161,7 +170,7 @@ const ContratContent = () => {
                     }
                 />
                 <div className={style.inputWidth}>
-                    <Button
+                  {isHr &&  <Button
                         type={ButtonTypes.PRIMARY}
                         btnText={
                             EditingPayroll ? 'Update Payroll' : 'Create Payroll'
@@ -172,7 +181,7 @@ const ContratContent = () => {
                                 : handleCreatePayroll
                         }
                         width="300px"
-                    />
+                    />}
                 </div>
             </div>
         </div>

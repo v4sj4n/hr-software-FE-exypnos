@@ -21,7 +21,6 @@ export const SideBar = () => {
     const { isSidebarOpen: isOpen } = useContext(SidebarHeaderContext)
     const { currentUser } = useAuth()
     const hr = currentUser?.role === 'hr'
-    const currentUserID = currentUser?._id
     const navigate = useNavigate()
     const location = useLocation()
     const [activeItem, setActiveItem] = useState('')
