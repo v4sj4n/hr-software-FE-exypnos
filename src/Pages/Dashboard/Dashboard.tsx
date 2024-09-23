@@ -2,7 +2,8 @@ import Card1 from '../../Components/Card/Card.tsx'
 import style from '../Dashboard/style/dashboard.module.css'
 import Card from './components/card.tsx'
 import InfoSection from './components/infoSection.tsx'
-// import PieChartComponent from './components/piechart.tsx'
+
+import PieChartComponent from './components/piechart.tsx'
 import { DashboardProvider, useDashboardContext } from './context/hook.tsx'
 import { greeter } from '@/Helpers/Greeter.tsx'
 import { useNavigate } from 'react-router-dom'
@@ -40,26 +41,41 @@ const DashboardContent: React.FC = () => {
         <div className={style.dashboardContainer}>
             <div className={style.mainContent}>
                 <div className={style.rightContent}>
-                <div
-            className={`${style.welcome} ${animateOnLogin ? style.animate : ''}`}
-        >
-                        <h1>
-                            {greeter()}{' '}
-                            <span
-                                onClick={handleNavigateToProfile}
-                                className={style.userNameClickable}
-                             style={{ cursor: 'pointer' ,transform: 'scale(1.1)'  }}  
-                            >
-                                {userName}
-                            </span>
-                            !
-                        </h1>
-                        {isAdmin ? (
-                            <p>Here's what's happening with your team today</p>
-                        ) : (
-                            ' Let’s achieve your goals today! '
-                        )}
-                    </div>
+                <div className={style.welcomeContainer}>
+    <div 
+        className={`${style.welcome} ${animateOnLogin ? style.animate : ''}`}
+        style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            width: '100%' 
+        }}
+    >
+        <div style={{ flex: 1 }}>
+            <h1>
+                {greeter()}{' '}
+                <span
+                    onClick={handleNavigateToProfile}
+                    className={style.userNameClickable}
+                    style={{ cursor: 'pointer', transform: 'scale(1.1)' }}
+                >
+                    {userName}
+                </span>
+                !
+            </h1>
+            {isAdmin ? (
+                <p>Here's what's happening with your team today</p>
+            ) : (
+                <p>Let’s achieve your goals today!</p>
+            )}
+        </div>
+        <div style={{ flex: 'none' }}>
+            <Weather />
+        </div>
+    </div>
+</div>
+
+
                     <div className={style.cardContainer}>
                         <div className={style.cardGreen}>
                             <Card
@@ -100,13 +116,24 @@ const DashboardContent: React.FC = () => {
                         >
                             <InfoSection />
                         </Card1>
+ 
                         <Card1
+                        
+                            borderRadius="10px"
+                            flex="2"
+                            padding='20px'
+                            backgroundColor="rgba(255, 255, 255, 0.7)"
+                        >
+                            <h2>Employee Status</h2>
+                            <PieChartComponent/>
+                            </Card1>
+                            {/* <Card1
                             borderRadius="10px"
                             flex="2"
                             backgroundColor="rgba(255, 255, 255, 0.7)"
                         >
                             <Weather/>
-                            </Card1>
+                            </Card1> */}
                     </div>
                     <Card1
                         backgroundColor="rgba(255, 255, 255, 0.7)"
@@ -118,6 +145,7 @@ const DashboardContent: React.FC = () => {
                     >
                         <EmployeeSection />
                     </Card1>
+                    
                 </div>
             </div>
         </div>

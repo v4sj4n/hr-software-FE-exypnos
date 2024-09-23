@@ -118,7 +118,9 @@ export const HeaderContent = () => {
                                             height: '70px',
                                             borderRadius: '50%',
                                             marginBottom: '10px',
-                                        }}
+
+                                        }}          onClick={handleProfileClick}
+
                                     />
                                     <div className={style.userDetails}>
                                         <strong style={{ fontSize: '18px' }}>

@@ -11,11 +11,12 @@ const PieChartComponent = () => {
     return (
         <PieChart
             height={300}
+            width={500}
             series={[
                 {
                     data: [...data],
                     innerRadius: 30,
-                    outerRadius: 105,
+                    outerRadius: 100,
                     paddingAngle: 2.5,
                     cornerRadius: 5,
                     startAngle: 0,

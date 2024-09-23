@@ -70,28 +70,27 @@ const Weather = () => {
                     style={{
                         width: '100%',
                         display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: '20px',
                         padding: '10px',
+                        alignContent:'center',
+                       
                     }}
                 >
                     <div className={style.weatherHeader}>
-                        <h2>{weatherData.name}</h2>
+                        {/* <h2>{weatherData.name}</h2> */}
                         <p>{new Date().toLocaleDateString()}</p>
                     </div>
 
                     <div
-                        style={{
-                            width: '150px', 
-                            height: '150px', 
+                         style={{
+                            width: '100px', 
+                            height: '100px', 
                             backgroundImage: weatherData
                                 ? `url(${getBackgroundImage(weatherData.weather[0].description)})`
                                 : 'none',
-                            backgroundSize: 'contain', 
+                            backgroundSize: 'cover', 
                             backgroundRepeat: 'no-repeat',
                             backgroundPosition: 'center',
+                           
                         }}
                     ></div>
 

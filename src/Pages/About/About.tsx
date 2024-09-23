@@ -127,7 +127,6 @@ const About = () => {
                 </div>
             </div>
 
-            {/* <div className={styles.ctaContainer}> */}
             <a
                 href="https://www.codevider.com/"
                 target="_blank"
@@ -138,7 +137,6 @@ const About = () => {
             >
                 Discover More About CodeVider
             </a>
-            {/* </div> */}
         </div>
     )
 }
