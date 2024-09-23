@@ -306,47 +306,48 @@ export const SideBar = () => {
                         </div>
                     </div>
                     {hr && (
+                        <div
+                            className={`${style.item} ${activeItem.startsWith('/assets') ? style.active : ''}`}
+                            onClick={() => toggleDropdown('assets')}
+                            onMouseEnter={(e) =>
+                                (e.currentTarget.style.backgroundColor = alpha(
+                                    theme.palette.background.default,
+                                    0.5,
+                                ))
+                            }
+                            onMouseLeave={(e) =>
+                                (e.currentTarget.style.backgroundColor =
+                                    'transparent')
+                            }
+                        >
+                            <div className={style.link}>
+                                <div className={style.iconTextContainer}>
+                                    <DevicesIcon
+                                        className={style.icon}
+                                        style={{
+                                            color: theme.palette.text.primary,
+                                            marginLeft: '2px',
+                                        }}
+                                    />
 
-                    <div
-                        className={`${style.item} ${activeItem.startsWith('/assets') ? style.active : ''}`}
-                        onClick={() => toggleDropdown('assets')}
-                        onMouseEnter={(e) =>
-                            (e.currentTarget.style.backgroundColor = alpha(
-                                theme.palette.background.default,
-                                0.5,
-                            ))
-                        }
-                        onMouseLeave={(e) =>
-                            (e.currentTarget.style.backgroundColor =
-                                'transparent')
-                        }
-                    >
-                        <div className={style.link}>
-                            <div className={style.iconTextContainer}>
-                                <DevicesIcon
-                                    className={style.icon}
-                                    style={{
-                                        color: theme.palette.text.primary,
-                                        marginLeft: '2px',
-                                    }}
-                                />
-
-                                {isOpen && (
-                                    <span className={style.text}>Assets</span>
-                                )}
+                                    {isOpen && (
+                                        <span className={style.text}>
+                                            Assets
+                                        </span>
+                                    )}
+                                </div>
+                                {isOpen &&
+                                    (dropdownOpen.assets ? (
+                                        <ExpandLessIcon
+                                            className={style.expandIcon}
+                                        />
+                                    ) : (
+                                        <ExpandMoreIcon
+                                            className={style.expandIcon}
+                                        />
+                                    ))}
                             </div>
-                            {isOpen &&
-                                (dropdownOpen.assets ? (
-                                    <ExpandLessIcon
-                                        className={style.expandIcon}
-                                    />
-                                ) : (
-                                    <ExpandMoreIcon
-                                        className={style.expandIcon}
-                                    />
-                                ))}
                         </div>
-                    </div>
                     )}
                     <div
                         className={`${style.dropdownMenu} ${

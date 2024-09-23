@@ -4,7 +4,7 @@
     min-height: 100vh;
     background-color: transparent;
     width: 100%;
-    overflow: 'auto',
+    overflow: 'auto';
 }
 
 .mainContent {
@@ -99,12 +99,11 @@
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
 
-
 .employeeProfile {
     background: rgba(255, 255, 255, 0.7);
     border-radius: 15px;
     padding: 20px;
-    padding-bottom:10px;
+    padding-bottom: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     flex-grow: 1;
     min-height: 400px;
@@ -174,7 +173,9 @@ h3 {
 }
 
 .welcome.animate {
-    animation: gradient-flow 5s ease infinite, continuous-pulse 4s ease-in-out infinite;
+    animation:
+        gradient-flow 5s ease infinite,
+        continuous-pulse 4s ease-in-out infinite;
 }
 
 .welcome:hover {
@@ -198,4 +199,3 @@ h3 {
     flex-direction: row;
     gap: 10px;
 }
-
