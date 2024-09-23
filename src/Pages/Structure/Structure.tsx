@@ -175,8 +175,7 @@ function Structure() {
             <DrawerComponent open={openDrawer} onClose={handleCloseDrawer}>
                 <div className={styles.create}>
                     Create New Project
-                    <CloseIcon
-                    Create New Project
+                  
                     <CloseIcon
                         onClick={handleCloseDrawer}
                         style={{ cursor: 'pointer' }}
