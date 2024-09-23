@@ -11,15 +11,15 @@ const MessageList: React.FC = () => {
         messageEndRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [messages])
 
-    const filteredMessages = Array.isArray(messages)
-        ? messages.filter(
-              (msg) =>
-                  (msg.senderId === senderId &&
-                      msg.recipientId === recipientId) ||
-                  (msg.senderId === recipientId &&
-                      msg.recipientId === senderId),
-          )
-        : []
+
+const filteredMessages = Array.isArray(messages)
+    ? messages.filter(
+          (msg) =>
+              (msg.senderId === senderId && msg.recipientId === recipientId) ||
+              (msg.senderId === recipientId && msg.recipientId === senderId),
+      )
+    : [];
+
 
     if (!recipientId) {
         return (

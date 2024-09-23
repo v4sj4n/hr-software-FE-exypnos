@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import { useChat } from '../context/ChatContext'
 import { Box, TextField, IconButton, InputAdornment } from '@mui/material'
-import { Send as SendIcon, AttachFile as AttachFileIcon } from '@mui/icons-material'
+import {
+    Send as SendIcon,
+    AttachFile as AttachFileIcon,
+} from '@mui/icons-material'
 import { useSocket } from '../context/SocketContext'
 import AxiosInstance from '@/Helpers/Axios'
 
@@ -25,7 +28,7 @@ const SendMessage: React.FC = () => {
         recipientId: string,
     ) => {
         try {
-            const token = getAuthToken()
+            const token = getAuthToken() // You already have this
             const response = await fetch(`${API_URL}/messages`, {
                 method: 'POST',
                 headers: {
@@ -34,8 +37,8 @@ const SendMessage: React.FC = () => {
                 },
                 body: JSON.stringify({
                     message,
-                    senderId,
-                    recipientId,
+                    senderId, // Ensure this is a string
+                    recipientId, // Ensure this is a string
                 }),
             })
 
@@ -47,7 +50,7 @@ const SendMessage: React.FC = () => {
             setMessages((prevMessages) => [...prevMessages, data])
             return data
         } catch (error) {
-            console.error('Error sending message:', (error as Error).message)
+            console.error('Error sending message:', error)
         }
     }
 
@@ -98,7 +101,14 @@ const SendMessage: React.FC = () => {
     }
 
     return (
-        <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', marginTop: 2 }}>
+        <Box
+            sx={{
+                display: 'flex',
+                gap: 1.5,
+                alignItems: 'center',
+                marginTop: 2,
+            }}
+        >
             <TextField
                 fullWidth
                 label="Type a message..."

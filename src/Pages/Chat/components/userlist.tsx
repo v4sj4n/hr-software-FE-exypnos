@@ -40,6 +40,7 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
     const socket = io('http://localhost:3000'); // Adjust the URL as per your backend setup
 
     socket.on('newMessage', (message) => {
+      // Check if the recipient is the current user (senderId in context)
       if (message.recipientId === senderId) {
         const sender = users.find((user) => user._id === message.senderId);
         if (sender) {
@@ -54,6 +55,12 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
           console.log('Active chats after update:', Array.from(newActiveUserIds));
           return Array.from(newActiveUserIds);
         });
+
+        // Increment unread messages for this specific sender
+        setUnreadMessages((prevUnread) => ({
+          ...prevUnread,
+          [message.senderId]: (prevUnread[message.senderId] || 0) + 1,
+        }));
       }
     });
 
@@ -61,7 +68,7 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
     return () => {
       socket.close();
     };
-  }, [senderId, users]);
+  }, [senderId, users, setUnreadMessages]);
 
   // Fetch active chats on component mount or when senderId changes
   useEffect(() => {
