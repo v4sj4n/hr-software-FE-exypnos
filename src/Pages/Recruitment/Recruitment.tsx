@@ -404,6 +404,7 @@ function RecruitmentBase() {
                     />
                     <MyButton
                         type={ButtonTypes.TERTIARY}
+                         width="100%"
                         btnText={
                             form.state.isSubmitting ? 'Submitting...' : 'Submit'
                         }

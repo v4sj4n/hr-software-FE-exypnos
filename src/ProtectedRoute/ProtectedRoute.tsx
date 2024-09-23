@@ -25,7 +25,7 @@ const PrivateRoute = () => {
                             backgroundColor: theme.palette.background.default,
                             color: theme.palette.text.primary,
                             width: '100%',
-                            minHeight: '100vh',
+                            minHeight: '90.9vh',
                             height: '100%',
                             padding: '20px',
                         }}
