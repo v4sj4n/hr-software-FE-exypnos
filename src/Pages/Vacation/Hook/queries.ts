@@ -18,7 +18,9 @@ export const getAllVacations = async (
         .data
 }
 
-export const getMyVacations = async (id: string): Promise<{data: UserWithVacation}> => {
+export const getMyVacations = async (
+    id: string,
+): Promise<{ data: UserWithVacation }> => {
     return await AxiosInstance.get(`/vacation/user/${id}`)
 }
 

@@ -1,66 +1,66 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import style from './../style/weather.module.css';
-import image1 from './../../../../public/Images/s1.webp';
-import image2 from './../../../../public/Images/s2.webp';
-import image3 from './../../../../public/Images/s3.webp';
-import image4 from './../../../../public/Images/s4.jpg';
-import image5 from './../../../../public/Images/s5.jpg';
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+import style from './../style/weather.module.css'
+import image1 from './../../../../public/Images/s1.webp'
+import image2 from './../../../../public/Images/s2.webp'
+import image3 from './../../../../public/Images/s3.webp'
+import image4 from './../../../../public/Images/s4.jpg'
+import image5 from './../../../../public/Images/s5.jpg'
 
 const getBackgroundImage = (description: string) => {
     switch (description.toLowerCase()) {
-        case "clear sky":
-            return image1;
-        case "few clouds":
-        case "scattered clouds":
-        case "broken clouds":
-            return image2;
-        case "rain":
-        case "shower rain":
-            return image3;
-        case "thunderstorm":
-            return image4;
-        case "snow":
-            return image5;
+        case 'clear sky':
+            return image1
+        case 'few clouds':
+        case 'scattered clouds':
+        case 'broken clouds':
+            return image2
+        case 'rain':
+        case 'shower rain':
+            return image3
+        case 'thunderstorm':
+            return image4
+        case 'snow':
+            return image5
         default:
-            return image2;
+            return image2
     }
-};
+}
 
 interface WeatherData {
-    name: string;
+    name: string
     main: {
-        temp: number;
-        humidity: number;
-    };
+        temp: number
+        humidity: number
+    }
     weather: {
-        description: string;
-        icon: string;
-    }[];
+        description: string
+        icon: string
+    }[]
     wind: {
-        speed: number;
-    };
+        speed: number
+    }
 }
 
 const Weather = () => {
-    const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
-    const API_KEY = "ae7dda8ea8fa8b8d83e59fb0172ec1ed";
+    const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
+    const API_KEY = 'ae7dda8ea8fa8b8d83e59fb0172ec1ed'
 
     const getWeatherForTirana = async () => {
         try {
             const response = await axios.get(
-                `https://api.openweathermap.org/data/2.5/weather?q=Tirana&appid=${API_KEY}&units=metric`
-            );
-            setWeatherData(response.data);
+                `https://api.openweathermap.org/data/2.5/weather?q=Tirana&appid=${API_KEY}&units=metric`,
+            )
+            setWeatherData(response.data)
         } catch (error) {
-            console.error("Error fetching the weather data:", error);
-            alert("Failed to fetch weather data for Tirana!");
+            console.error('Error fetching the weather data:', error)
+            alert('Failed to fetch weather data for Tirana!')
         }
-    };
+    }
 
     useEffect(() => {
-        getWeatherForTirana();
-    }, []);
+        getWeatherForTirana()
+    }, [])
 
     return (
         <div className={style.container}>
@@ -104,7 +104,7 @@ const Weather = () => {
                 </div>
             )}
         </div>
-    );
-};
+    )
+}
 
-export default Weather;
+export default Weather

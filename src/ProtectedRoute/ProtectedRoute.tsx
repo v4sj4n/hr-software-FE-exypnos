@@ -9,11 +9,11 @@ const PrivateRoute = () => {
     const isAuthenticated = !!localStorage.getItem('access_token')
 
     const theme = useTheme()
-  
-  if (!isAuthenticated) {
+
+    if (!isAuthenticated) {
         return <Navigate to="/" />
     }
-  
+
     return (
         <>
             <SidebarHeaderProvider>
@@ -25,7 +25,7 @@ const PrivateRoute = () => {
                             backgroundColor: theme.palette.background.default,
                             color: theme.palette.text.primary,
                             width: '100%',
-                            minHeight: '100vh',
+                            minHeight: '90.9vh',
                             height: '100%',
                             padding: '20px',
                             margin: '0',

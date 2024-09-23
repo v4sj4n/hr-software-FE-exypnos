@@ -37,4 +37,3 @@ export interface PayrollRowSpecifc {
         lastName: string
     }
 }
-

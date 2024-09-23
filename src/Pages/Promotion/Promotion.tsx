@@ -45,7 +45,7 @@ export default function Promotion() {
     }
 
     const handleClickButton = () => {
-        if(buttonText === 'Go Back') {
+        if (buttonText === 'Go Back') {
             setId(currentUser!._id.toString())
             setName(`${currentUser?.firstName} ${currentUser?.lastName}`)
             setButtonText('Look At Team Members')
@@ -60,34 +60,44 @@ export default function Promotion() {
 
     const handelTeamMemberClick = (memberId: string) => {
         setId(memberId)
-        setName(teamMembers.find((member) => member._id === memberId)!.firstName + ' ' + teamMembers.find((member) => member._id === memberId)!.lastName)
+        setName(
+            teamMembers.find((member) => member._id === memberId)!.firstName +
+                ' ' +
+                teamMembers.find((member) => member._id === memberId)!.lastName,
+        )
         setOpenDrawer(false)
         setButtonText('Go Back')
     }
 
     return (
         <>
-        <div style={{display:"flex"}}>
-            <h3 style={{position:"absolute", top:"95px", right:"20px"}}>{name}</h3>
-        </div>
+            <div style={{ display: 'flex' }}>
+                <h3
+                    style={{ position: 'absolute', top: '95px', right: '20px' }}
+                >
+                    {name}
+                </h3>
+            </div>
             <div className={style.container}>
                 <DrawerComponent open={openDrawer} onClose={handleDrawerClose}>
                     <h1>Team Members</h1>
-                    {teamMembers.map((member) => (
+                    {teamMembers.map((member) =>
                         member._id !== currentUser?._id?.toString() ? (
-                        <div
-                            key={member._id}
-                            className={style.member}
-                            onClick={() => handelTeamMemberClick(member._id)}
-                        >
-                            <h5>
-                                {member.firstName} {member.lastName}
-                            </h5>
-                            <p>{member.grade}</p>
-                            <p>{member.position}</p>
-                        </div>
-                        ) : null
-                    ))}
+                            <div
+                                key={member._id}
+                                className={style.member}
+                                onClick={() =>
+                                    handelTeamMemberClick(member._id)
+                                }
+                            >
+                                <h5>
+                                    {member.firstName} {member.lastName}
+                                </h5>
+                                <p>{member.grade}</p>
+                                <p>{member.position}</p>
+                            </div>
+                        ) : null,
+                    )}
                 </DrawerComponent>
                 <div className={style.firstDiv}>
                     <Card

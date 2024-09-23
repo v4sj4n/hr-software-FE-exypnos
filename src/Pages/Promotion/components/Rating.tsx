@@ -32,10 +32,14 @@ export default function Rating({ id }: { id: string }) {
     const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
         'success',
     )
-console.log('Rating', currentUser?._id, id,(currentUser?.role === 'hr' ||
-    (currentUser?.role === 'pm' &&
-        (currentUser?._id as unknown as string) !==
-            id)))
+    console.log(
+        'Rating',
+        currentUser?._id,
+        id,
+        currentUser?.role === 'hr' ||
+            (currentUser?.role === 'pm' &&
+                (currentUser?._id as unknown as string) !== id),
+    )
     const handleOpen = (rating: Rating) => {
         setUpdateRating(rating)
         setOpen(true)
@@ -161,30 +165,28 @@ console.log('Rating', currentUser?._id, id,(currentUser?.role === 'hr' ||
                                     (currentUser?.role === 'pm' &&
                                         (currentUser?._id as unknown as string) !==
                                             id)) && (
-                                            <div
-                                                style={{
-                                                    display: 'flex',
-                                                    justifyContent: 'flex-end',
-                                                    width: '100%',
-                                                }}
-                                            >
-                                                <Button
-                                                    type={ButtonTypes.SECONDARY}
-                                                    btnText=""
-                                                    width="40px"
-                                                    height="30px"
-                                                    display="flex"
-                                                    justifyContent="center"
-                                                    alignItems="center"
-                                                    color="#2457A3"
-                                                    borderColor="#2457A3"
-                                                    icon={<EditIcon />}
-                                                    onClick={() =>
-                                                        handleOpen(rating)
-                                                    }
-                                                />
-                                            </div>
-                                        )}
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'flex-end',
+                                            width: '100%',
+                                        }}
+                                    >
+                                        <Button
+                                            type={ButtonTypes.SECONDARY}
+                                            btnText=""
+                                            width="40px"
+                                            height="30px"
+                                            display="flex"
+                                            justifyContent="center"
+                                            alignItems="center"
+                                            color="#2457A3"
+                                            borderColor="#2457A3"
+                                            icon={<EditIcon />}
+                                            onClick={() => handleOpen(rating)}
+                                        />
+                                    </div>
+                                )}
                             </Card>
                         ))}
                 </div>

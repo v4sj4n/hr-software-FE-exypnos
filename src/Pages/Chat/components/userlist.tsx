@@ -6,7 +6,6 @@ import {
     ListItem,
     ListItemButton,
     ListItemText,
-    CircularProgress,
     Typography,
     Box,
     TextField,
@@ -20,6 +19,7 @@ import AxiosInstance from '@/Helpers/Axios'
 import { io, Socket } from 'socket.io-client'
 import styles from '@/Pages/Chat/styles/chat.module.css'
 import AddIcon from '@mui/icons-material/Add'
+import { Loader } from '@/Components/Loader/Loader'
 
 interface UserListProps {
     users: User[]
@@ -287,11 +287,7 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
                 </DialogActions>
             </Dialog>
 
-            {loading && (
-                <Box className={styles.loadingContainer}>
-                    <CircularProgress />
-                </Box>
-            )}
+            {loading && <Loader />}
 
             {error && (
                 <Typography

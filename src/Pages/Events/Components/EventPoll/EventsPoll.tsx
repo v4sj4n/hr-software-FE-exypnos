@@ -6,7 +6,6 @@ import AxiosInstance from '@/Helpers/Axios'
 import { EventPollProps, Poll, PollOption, Voter } from './Interface/Interface'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
-
 const EventPoll: React.FC<EventPollProps> = ({ poll, eventId, userId }) => {
     const { currentUser } = useAuth()
     const [localPoll, setLocalPoll] = useState<Poll>(poll)

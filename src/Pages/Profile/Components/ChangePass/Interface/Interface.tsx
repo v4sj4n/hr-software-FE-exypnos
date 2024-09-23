@@ -11,7 +11,7 @@ export interface PasswordContextType {
     handleUpdatePassword: (
         event: React.FormEvent<HTMLButtonElement>,
     ) => Promise<void>
-    toastMessage: string,
+    toastMessage: string
     handleToastClose: () => void
     handleShowEye: () => void
     showPassword: boolean

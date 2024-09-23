@@ -149,7 +149,9 @@ export const SideBar = () => {
                             >
                                 <div
                                     className={`${style.dropdownItem} ${activeItem === '/candidates' ? style.active : ''}`}
-                                    onClick={() => handleItemClick('/candidates')}
+                                    onClick={() =>
+                                        handleItemClick('/candidates')
+                                    }
                                     onMouseEnter={(e) =>
                                         (e.currentTarget.style.backgroundColor =
                                             alpha(
@@ -167,7 +169,9 @@ export const SideBar = () => {
                                 </div>
                                 <div
                                     className={`${style.dropdownItem} ${activeItem === '/interview' ? style.active : ''}`}
-                                    onClick={() => handleItemClick('/interview')}
+                                    onClick={() =>
+                                        handleItemClick('/interview')
+                                    }
                                     onMouseEnter={(e) =>
                                         (e.currentTarget.style.backgroundColor =
                                             alpha(
@@ -254,10 +258,11 @@ export const SideBar = () => {
                                 className={`${style.dropdownItem} ${activeItem === '/payroll' ? style.active : ''}`}
                                 onClick={() => handleItemClick('/payroll')}
                                 onMouseEnter={(e) =>
-                                    (e.currentTarget.style.backgroundColor = alpha(
-                                        theme.palette.background.default,
-                                        0.5,
-                                    ))
+                                    (e.currentTarget.style.backgroundColor =
+                                        alpha(
+                                            theme.palette.background.default,
+                                            0.5,
+                                        ))
                                 }
                                 onMouseLeave={(e) =>
                                     (e.currentTarget.style.backgroundColor =
@@ -532,5 +537,3 @@ export const SideBar = () => {
         </div>
     )
 }
-
-

@@ -24,44 +24,43 @@ export const useGetAndUpdateUserById = () => {
     const genderOptions = ['Male', 'Female']
     const [isCancel, setIsCancel] = useState(false)
 
-
     const Places = [
-        "Tirana",
-        "Durrës",
-        "Vlorë",
-        "Shkodër",
-        "Fier",
-        "Elbasan",
-        "Korçë",
-        "Berat",
-        "Lushnjë",
-        "Pogradec",
-        "Lezhë",
-        "Gjirokastër",
-        "Kukës",
-        "Sarandë",
-        "Kavajë",
-        "Kamëz",
-        "Laç",
-        "Patos",
-        "Tepelenë",
-        "Përmet",
-        "Gramsh",
-        "Librazhd",
-        "Rrëshen",
-        "Bulqizë",
-        "Peshkopi",
-        "Çorovodë",
-        "Divjakë",
-        "Krujë",
-        "Himarë",
-        "Ersekë",
-        "Delvinë",
-        "Mallakastër",
-        "Ballsh",
-        "Bajram Curri",
-        "Selenicë"
-    ];
+        'Tirana',
+        'Durrës',
+        'Vlorë',
+        'Shkodër',
+        'Fier',
+        'Elbasan',
+        'Korçë',
+        'Berat',
+        'Lushnjë',
+        'Pogradec',
+        'Lezhë',
+        'Gjirokastër',
+        'Kukës',
+        'Sarandë',
+        'Kavajë',
+        'Kamëz',
+        'Laç',
+        'Patos',
+        'Tepelenë',
+        'Përmet',
+        'Gramsh',
+        'Librazhd',
+        'Rrëshen',
+        'Bulqizë',
+        'Peshkopi',
+        'Çorovodë',
+        'Divjakë',
+        'Krujë',
+        'Himarë',
+        'Ersekë',
+        'Delvinë',
+        'Mallakastër',
+        'Ballsh',
+        'Bajram Curri',
+        'Selenicë',
+    ]
 
     const position = [
         'designer',
@@ -69,10 +68,8 @@ export const useGetAndUpdateUserById = () => {
         'frontend_developer',
         'fullstack_developer',
         'tester',
-        'devops'
-    ];
-
-
+        'devops',
+    ]
 
     useEffect(() => {
         setIsLoading(true)
@@ -135,38 +132,37 @@ export const useGetAndUpdateUserById = () => {
     }
 
     const handleGenderChange = (value: string | string[]) => {
-        if (!isAdmin) return;
+        if (!isAdmin) return
         setUser((prevUser) => {
-            if (!prevUser) return null;
+            if (!prevUser) return null
             return {
                 ...prevUser,
                 gender: Array.isArray(value) ? value[0] : value,
-            };
-        });
-    };
-
+            }
+        })
+    }
 
     const handlePositionChange = (value: string | string[]) => {
-        if (!isAdmin) return;
+        if (!isAdmin) return
         setUser((prevUser) => {
-            if (!prevUser) return null;
+            if (!prevUser) return null
             return {
                 ...prevUser,
                 position: Array.isArray(value) ? value[0] : value,
-            };
-        });
-    };
+            }
+        })
+    }
 
     const handlePlaceChange = (value: string | string[]) => {
-        if (!isAdmin) return;
+        if (!isAdmin) return
         setUser((prevUser) => {
-            if (!prevUser) return null;
+            if (!prevUser) return null
             return {
                 ...prevUser,
                 pob: Array.isArray(value) ? value[0] : value,
-            };
-        });
-    };
+            }
+        })
+    }
 
     const handleUpdate = async (event: React.FormEvent<HTMLButtonElement>) => {
         event.preventDefault()
@@ -202,7 +198,6 @@ export const useGetAndUpdateUserById = () => {
                 setUpdateToastMessage(error.response?.data.message)
                 setUpdateToastSeverity('error')
             }
-
         }
     }
 
@@ -230,7 +225,7 @@ export const useGetAndUpdateUserById = () => {
         isCancel,
         setIsCancel,
         position,
-        handlePositionChange
+        handlePositionChange,
     }
 }
 
@@ -243,7 +238,7 @@ export const useCreatePayroll = () => {
         userId: id || '',
         bonus: undefined,
         extraHours: undefined,
-        bonusDescription: ''
+        bonusDescription: '',
     })
     const [createToastOpen, setCreateToastOpen] = useState(false)
     const [createToastMessage, setCreateToastMessage] = useState('')
@@ -252,16 +247,23 @@ export const useCreatePayroll = () => {
     >('success')
 
     const handleChangePayroll = (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLInputElement>,
     ) => {
-        const { name, value } = event.target;
+        const { name, value } = event.target
         setPayroll((prevPayroll) => ({
             ...prevPayroll,
-            [name]: ["workingDays", "grossSalary", "bonus", "extraHours"].includes(name)
-                ? (value === '' ? undefined : Number(value))
+            [name]: [
+                'workingDays',
+                'grossSalary',
+                'bonus',
+                'extraHours',
+            ].includes(name)
+                ? value === ''
+                    ? undefined
+                    : Number(value)
                 : value,
-        }));
-    };
+        }))
+    }
 
     const handleCreatePayroll = async (
         event: React.FormEvent<HTMLButtonElement>,
@@ -331,7 +333,6 @@ export const useUpdatePayroll = () => {
         },
     })
 
-
     const handleUpdateChangePayroll = (
         event: React.ChangeEvent<HTMLInputElement>,
     ) => {
@@ -340,8 +341,15 @@ export const useUpdatePayroll = () => {
             if (!prevPayroll) return null
             return {
                 ...prevPayroll,
-                [name]: ["workingDays", "grossSalary", "bonus", "extraHours"].includes(name)
-                    ? (value === '' ? undefined : Number(value))
+                [name]: [
+                    'workingDays',
+                    'grossSalary',
+                    'bonus',
+                    'extraHours',
+                ].includes(name)
+                    ? value === ''
+                        ? undefined
+                        : Number(value)
                     : value,
             }
         })
@@ -376,8 +384,6 @@ export const useUpdatePayroll = () => {
                 setToastSeverity('error')
                 setToastOpen(true)
             }
-
-
         }
     }
 
@@ -395,6 +401,5 @@ export const useUpdatePayroll = () => {
         toastOpen,
         toastMessage,
         toastSeverity,
-
     }
 }

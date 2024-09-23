@@ -28,15 +28,15 @@ const DashboardContent: React.FC = () => {
     }
     const navigate = useNavigate()
 
-    const [animateOnLogin, setAnimateOnLogin] = useState(true); 
+    const [animateOnLogin, setAnimateOnLogin] = useState(true)
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setAnimateOnLogin(false); 
-        }, 10000); 
+            setAnimateOnLogin(false)
+        }, 10000)
 
-        return () => clearTimeout(timeout); 
-    }, []);
+        return () => clearTimeout(timeout)
+    }, [])
     return (
         <div className={style.dashboardContainer}>
             <div className={style.mainContent}>
@@ -107,7 +107,7 @@ const DashboardContent: React.FC = () => {
                         </div>
                     </div>
                     <div className={style.middleRow}>
-                      <Notes />
+                        <Notes />
                         <Card1
                             padding="20px"
                             borderRadius="10px"

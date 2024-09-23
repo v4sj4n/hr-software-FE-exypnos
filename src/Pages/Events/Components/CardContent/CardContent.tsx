@@ -9,14 +9,18 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import { Tooltip } from '@mui/material'
 
 interface CardContentProps {
-    event: EventsData;
-    formatDate: (date: string) => string;
-    isAdmin: boolean;
-    handleSeeEventDetails: (event: EventsData) => void;
-  }
+    event: EventsData
+    formatDate: (date: string) => string
+    isAdmin: boolean
+    handleSeeEventDetails: (event: EventsData) => void
+}
 
-  export default function CardContent({ event, formatDate, isAdmin, handleSeeEventDetails }: CardContentProps) {
-
+export default function CardContent({
+    event,
+    formatDate,
+    isAdmin,
+    handleSeeEventDetails,
+}: CardContentProps) {
     return (
         <div>
             <Card
@@ -30,21 +34,38 @@ interface CardContentProps {
                     <div className={style.title}> {event.title} </div>
                     {isAdmin && <LongMenu event={event} />}
                 </div>
-                <div className={style.description}>
-                    {event.description}
-                </div>
+                <div className={style.description}>{event.description}</div>
                 <div className={style.dataContainer}>
                     <div className={style.dateContainer}>
                         <div className={style.data}>
                             <Tooltip title="Date">
-                                <div> <CalendarTodayIcon sx={{ height: 20, idth: 20, color: '#2457a3' }} /> </div>
+                                <div>
+                                    {' '}
+                                    <CalendarTodayIcon
+                                        sx={{
+                                            height: 20,
+                                            idth: 20,
+                                            color: '#2457a3',
+                                        }}
+                                    />{' '}
+                                </div>
                             </Tooltip>
-                            {formatDate(event.startDate)} - {formatDate(event.endDate)}
+                            {formatDate(event.startDate)} -{' '}
+                            {formatDate(event.endDate)}
                         </div>
                     </div>
                     <div className={style.data}>
                         <Tooltip title="Location">
-                            <div> <LocationOnOutlinedIcon sx={{ height: 20, width: 20, color: '#2457a3' }} /> </div>
+                            <div>
+                                {' '}
+                                <LocationOnOutlinedIcon
+                                    sx={{
+                                        height: 20,
+                                        width: 20,
+                                        color: '#2457a3',
+                                    }}
+                                />{' '}
+                            </div>
                         </Tooltip>
                         <div className={style.location}>{event.location}</div>
                     </div>

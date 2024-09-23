@@ -97,11 +97,12 @@ export interface EventsContextProps {
     hideToast?: () => void
     createdEvents: EventsData[]
     formatDate: (date: string) => string
-    severityB: 'success' | 'error' 
+    severityB: 'success' | 'error'
     openToastB: boolean
     toastMessageB: string
     closeToastB: () => void
 }
 
-
-export const EventsContext = React.createContext<EventsContextProps | undefined>(undefined)
+export const EventsContext = React.createContext<
+    EventsContextProps | undefined
+>(undefined)

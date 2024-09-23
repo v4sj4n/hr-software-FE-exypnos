@@ -1,8 +1,9 @@
-import { Backdrop, Modal, Fade, Card, CircularProgress } from '@mui/material'
+import { Backdrop, Modal, Fade, Card } from '@mui/material'
 import { useContext } from 'react'
 import { VacationContext } from '../../VacationContext'
 import { useGetVacation } from '../../Hook'
 import { UpdateVacationForm } from './UpdateVacationForm'
+import { Loader } from '@/Components/Loader/Loader'
 
 export const SelectedVacationModal = () => {
     const { searchParams, handleCloseVacationModalOpen: handleClose } =
@@ -10,7 +11,7 @@ export const SelectedVacationModal = () => {
 
     const vacation = useGetVacation()
 
-    if (vacation.isLoading) return <CircularProgress />
+    if (vacation.isLoading) return <Loader />
     if (vacation.error) return <div>Error: {vacation.error.message}</div>
 
     return (

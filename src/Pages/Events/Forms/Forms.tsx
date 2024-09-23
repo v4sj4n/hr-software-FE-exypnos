@@ -40,7 +40,7 @@ export default function Forms() {
         endDate,
         handleCloseDrawer,
         drawerOpen,
-        handleMapChange
+        handleMapChange,
     } = useEvents()
 
     return (
@@ -97,7 +97,9 @@ export default function Forms() {
                 </div>
                 <MapComponent
                     onLocationChange={handleMapChange}
-                    savedLocation={ editingEvent ? editingEvent.location : event.location }
+                    savedLocation={
+                        editingEvent ? editingEvent.location : event.location
+                    }
                     showInput={true}
                 />
                 <Input

@@ -1,7 +1,6 @@
 import { Dispatch } from 'react'
 import { DropResult } from 'react-beautiful-dnd'
 
-
 export interface Interview {
     phase: string
     firstName: string
@@ -20,9 +19,8 @@ export interface Interview {
     customSubject: string
     startDate: string
     endDate: string
-    notes:string
+    notes: string
 }
-
 
 export interface InterviewContextType {
     interviews: Interview[]
@@ -73,7 +71,7 @@ export interface InterviewContextType {
     setScheduleType: Dispatch<React.SetStateAction<'schedule' | 'reschedule'>>
 }
 
- export interface RescheduleModalProps {
+export interface RescheduleModalProps {
     open: boolean
     handleClose: () => void
     handleSchedule: (

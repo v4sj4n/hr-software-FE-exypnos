@@ -31,7 +31,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
         Places,
         handleCancel,
         handlePositionChange,
-        position
+        position,
     } = useGetAndUpdateUserById()
 
     const {
@@ -86,7 +86,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
         Places,
         handleCancel,
         handlePositionChange,
-        position
+        position,
     }
 
     return (

@@ -7,7 +7,7 @@ const Filter: React.FC<InputProps> = (props) => {
     return (
         <Box
             component="form"
-            sx={{ '& > :not(style)': { m: 1, } }}
+            sx={{ '& > :not(style)': { m: 1 } }}
             noValidate
             autoComplete="off"
         >
@@ -16,7 +16,7 @@ const Filter: React.FC<InputProps> = (props) => {
                 id="standard-basic"
                 label={label}
                 name={name}
-                type={typeof type === 'string' ? type : undefined}  // Ensure only valid string or undefined is passed
+                type={typeof type === 'string' ? type : undefined} // Ensure only valid string or undefined is passed
                 variant="standard"
                 size="small"
                 sx={{
