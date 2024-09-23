@@ -4,6 +4,7 @@
     min-height: 100vh;
     background-color: transparent;
     width: 100%;
+    overflow: 'auto',
 }
 
 .mainContent {
@@ -98,13 +99,15 @@
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
 
+
 .employeeProfile {
     background: rgba(255, 255, 255, 0.7);
     border-radius: 15px;
     padding: 20px;
+    padding-bottom:10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     flex-grow: 1;
-    min-height: 300px;
+    min-height: 400px;
 }
 
 h2,
@@ -162,8 +165,8 @@ h3 {
     padding: 2.5rem 2rem;
     margin-bottom: 20px;
     display: flex;
-    flex-direction: column;
     gap: 0.333rem;
+
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition:
         box-shadow 0.3s ease,
@@ -171,14 +174,10 @@ h3 {
 }
 
 .welcome.animate {
-    /* This class will be added only for the first 30 seconds after login */
-    animation:
-        gradient-flow 5s ease infinite,
-        continuous-pulse 4s ease-in-out infinite;
+    animation: gradient-flow 5s ease infinite, continuous-pulse 4s ease-in-out infinite;
 }
 
 .welcome:hover {
-    /* Hover effect */
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
     transition: box-shadow 0.4s ease;
     animation:
@@ -199,3 +198,4 @@ h3 {
     flex-direction: row;
     gap: 10px;
 }
+

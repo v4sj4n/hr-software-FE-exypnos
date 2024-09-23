@@ -1,8 +1,7 @@
 import Breadcrumbs from '@mui/material/Breadcrumbs'
-import Link from '@mui/material/Link'
 import Stack from '@mui/material/Stack'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
-import { useLocation, Link as RouterLink } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 interface BreadcrumbItem {
     name: string
@@ -82,33 +81,19 @@ export const BreadcrumbComponent = () => {
                 separator={<NavigateNextIcon fontSize="medium" />}
                 aria-label="breadcrumb"
             >
-                {breadcrumbs.map((crumb, index) => {
-                    const isLast = index === breadcrumbs.length - 1
-                    return isLast ? (
-                        <div
-                            style={{
-                                color: '#000000',
-                                fontWeight: 'bolder',
-                                fontSize: '18px',
-                                fontFamily: 'Outfit, sans-serif',
-                            }}
-                            key={crumb.path}
-                        >
-                            {crumb.name}
-                        </div>
-                    ) : (
-                        <Link
-                            component={RouterLink}
-                            underline="hover"
-                            key={crumb.path}
-                            color="inherit"
-                            to={crumb.path}
-                            style={{ fontFamily: 'Outfit, sans-serif' }}
-                        >
-                            {crumb.name}
-                        </Link>
-                    )
-                })}
+                {breadcrumbs.map((crumb) => (
+                    <div
+                        key={crumb.path}
+                        style={{
+                            color: '#000000',
+                            fontWeight: 'bolder',
+                            fontSize: '18px',
+                            fontFamily: 'Outfit, sans-serif',
+                        }}
+                    >
+                        {crumb.name}
+                    </div>
+                ))}
             </Breadcrumbs>
         </Stack>
     )

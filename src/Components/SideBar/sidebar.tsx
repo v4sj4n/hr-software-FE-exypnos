@@ -305,6 +305,7 @@ export const SideBar = () => {
                             Promotion
                         </div>
                     </div>
+                    {hr && (
 
                     <div
                         className={`${style.item} ${activeItem.startsWith('/assets') ? style.active : ''}`}
@@ -346,7 +347,7 @@ export const SideBar = () => {
                                 ))}
                         </div>
                     </div>
-
+                    )}
                     <div
                         className={`${style.dropdownMenu} ${
                             dropdownOpen.assets ? style.open : style.close

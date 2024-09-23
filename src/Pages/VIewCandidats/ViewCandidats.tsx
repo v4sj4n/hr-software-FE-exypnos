@@ -275,7 +275,7 @@ export default function ViewCandidats() {
                                     IsUsername
                                     type="textarea"
                                     name="costumMessage"
-                                    label="Message"
+                                    label="Subject"
                                     multiline
                                     rows={3}
                                     value={customMessage}

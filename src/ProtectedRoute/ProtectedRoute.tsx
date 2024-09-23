@@ -28,6 +28,7 @@ const PrivateRoute = () => {
                             minHeight: '90.9vh',
                             height: '100%',
                             padding: '20px',
+                            margin: '0',
                         }}
                     >
                         <BreadcrumbComponent />
