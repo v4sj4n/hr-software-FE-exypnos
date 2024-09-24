@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import style from './../style/weather.module.css'
-import image1 from './../../../../public/Images/s1.webp'
-import image2 from './../../../../public/Images/s2.webp'
-import image3 from './../../../../public/Images/s3.webp'
-import image4 from './../../../../public/Images/s4.jpg'
-import image5 from './../../../../public/Images/s5.jpg'
+import image1 from '/Images/s1.webp'
+import image2 from '/Images/s2.webp'
+import image3 from '/Images/s3.webp'
+import image4 from '/Images/s4.jpg'
+import image5 from '/Images/s5.jpg'
 
 const getBackgroundImage = (description: string) => {
     switch (description.toLowerCase()) {
@@ -44,12 +44,11 @@ interface WeatherData {
 
 const Weather = () => {
     const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
-    const API_KEY = 'ae7dda8ea8fa8b8d83e59fb0172ec1ed'
 
     const getWeatherForTirana = async () => {
         try {
             const response = await axios.get(
-                `https://api.openweathermap.org/data/2.5/weather?q=Tirana&appid=${API_KEY}&units=metric`,
+                `https://api.openweathermap.org/data/2.5/weather?q=Tirana&appid=${import.meta.env.VITE_WEATHER_API}&units=metric`,
             )
             setWeatherData(response.data)
         } catch (error) {

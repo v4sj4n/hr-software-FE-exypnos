@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import AxiosInstance from '../../../Helpers/Axios'
+import AxiosInstance from '@/Helpers/Axios'
 
 const EmailConfirmation: React.FC = () => {
     const { search } = useLocation()
     const query = new URLSearchParams(search)
     const token = query.get('token')
-    const [status, setStatus] = useState<'confirming' | 'success' | 'error'>(
-        'confirming',
+    const [status, setStatus] = useState<'pending' | 'success' | 'error'>(
+        'pending',
     )
     const navigate = useNavigate()
 
@@ -15,11 +15,10 @@ const EmailConfirmation: React.FC = () => {
         const confirm = async () => {
             if (token) {
                 try {
-                    const confirmationUrl = `/applicant/confirm?token=${token}&status=success`
+                    const confirmationUrl = `/applicant/confirm?token=${token}`
                     const response = await AxiosInstance.get(confirmationUrl)
 
                     if (response.status === 200) {
-                        navigate('/career')
                         setStatus('success')
                     } else {
                         setStatus('error')
@@ -40,11 +39,11 @@ const EmailConfirmation: React.FC = () => {
         if (status === 'success') {
             setTimeout(() => {
                 navigate('/career')
-            }, 3000)
+            }, 5000)
         }
     }, [status, navigate])
 
-    if (status === 'confirming') {
+    if (status === 'pending') {
         return <div>Confirming your application...</div>
     }
 
