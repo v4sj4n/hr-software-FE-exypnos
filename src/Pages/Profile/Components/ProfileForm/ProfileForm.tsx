@@ -10,7 +10,6 @@ import { FileUploadProvider } from '../../Context/FileUpoadProvider'
 import { ProfileProvider } from './Context/ProfileProvider'
 import Selecter from '@/Components/Input/components/Select/Selecter'
 import Toast from '@/Components/Toast/Toast'
-// import {handleCancel} from './../ProfileForm/Hook/Index'
 
 const ProfileFormContext = () => {
     const { uploadImage, previewImage } = useFileUpload()
@@ -40,7 +39,6 @@ const ProfileFormContext = () => {
 
     return (
         <div className={style.container}>
-            {/* <div className={style.title}>Personal Information</div> */}
             <Toast
                 open={updateToastOpen}
                 message={updateToastMessage}
@@ -198,27 +196,6 @@ const ProfileFormContext = () => {
                         value={user.position}
                     />
                 </div>
-            </div>
-
-            <div className={style.checkboxDiv}>
-                <Input
-                    isCheckBox
-                    label="Public Holidays"
-                    name="check"
-                    disabled={!isAdmin}
-                />
-                <Input
-                    isCheckBox
-                    label="Remote"
-                    name="check"
-                    disabled={!isAdmin}
-                />
-                <Input
-                    isCheckBox
-                    label="External"
-                    name="check"
-                    disabled={!isAdmin}
-                />
             </div>
             <div className={style.border}> </div>
             {isAdmin ? (
