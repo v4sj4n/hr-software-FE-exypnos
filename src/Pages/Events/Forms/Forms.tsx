@@ -117,6 +117,7 @@ export default function Forms() {
                     }
                 />
                 <Selecter
+                  disabled={false}
                     width="100%"
                     value={editingEvent ? editParticipants : participants}
                     onChange={(newValue) => {
@@ -138,6 +139,7 @@ export default function Forms() {
                     label="Participants"
                 />
                 <Selecter
+                disabled={false}
                     width="100%"
                     value={editingEvent ? editType : event.type}
                     onChange={(newValue) => {
