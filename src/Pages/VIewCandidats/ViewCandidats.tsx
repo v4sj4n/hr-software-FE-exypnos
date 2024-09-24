@@ -156,7 +156,7 @@ export default function ViewCandidats() {
                     <div className={style.section}>
                         <div className={style.label}>Technologies Used</div>
                         <div className={style.value}>
-                            {applicant?.technologiesUsed?.toString()}
+                        {applicant?.technologiesUsed?.replace(/^\[|\]|"/g, '') || "None specified"}
                         </div>
                     </div>
                     <div className={style.border}></div>{' '}
@@ -190,7 +190,6 @@ export default function ViewCandidats() {
                         type={ButtonTypes.PRIMARY}
                         btnText="Create Interview"
                         width="100%"
-                        // marginTop='150px'
                         onClick={() => handleOpenModal('active')}
                     />
                 </div>
