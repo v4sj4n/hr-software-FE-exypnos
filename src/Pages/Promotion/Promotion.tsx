@@ -26,19 +26,23 @@ export default function Promotion() {
     const [buttonText, setButtonText] = useState('Look At Team Members')
 
     useEffect(() => {
-        if (currentUser?.role === 'hr' || currentUser?.role === 'pm') {
-            fetchTeamMembers()
+        if (currentUser) {
+            if (currentUser.role === 'hr' || currentUser.role === 'pm') {
+                fetchTeamMembers()
+            }
+            setId(currentUser._id.toString())
+            setName(`${currentUser.firstName} ${currentUser.lastName}`)
         }
-        setId(currentUser!._id.toString())
-        setName(`${currentUser?.firstName} ${currentUser?.lastName}`)
     }, [currentUser])
 
     const fetchTeamMembers = async () => {
         try {
-            const response = await AxiosInstance.get(
-                `/project/pm/${currentUser?._id}`,
-            )
-            setTeamMembers(response.data)
+            if (currentUser && currentUser._id) {
+                const response = await AxiosInstance.get(
+                    `/project/pm/${currentUser._id}`,
+                )
+                setTeamMembers(response.data)
+            }
         } catch (error) {
             console.error('Error fetching team members:', error)
         }
@@ -46,8 +50,10 @@ export default function Promotion() {
 
     const handleClickButton = () => {
         if (buttonText === 'Go Back') {
-            setId(currentUser!._id.toString())
-            setName(`${currentUser?.firstName} ${currentUser?.lastName}`)
+            if (currentUser) {
+                setId(currentUser._id.toString())
+                setName(`${currentUser.firstName} ${currentUser.lastName}`)
+            }
             setButtonText('Look At Team Members')
             return
         }
@@ -60,13 +66,16 @@ export default function Promotion() {
 
     const handelTeamMemberClick = (memberId: string) => {
         setId(memberId)
-        setName(
-            teamMembers.find((member) => member._id === memberId)!.firstName +
-                ' ' +
-                teamMembers.find((member) => member._id === memberId)!.lastName,
-        )
+        const member = teamMembers.find((member) => member._id === memberId)
+        if (member) {
+            setName(`${member.firstName} ${member.lastName}`)
+        }
         setOpenDrawer(false)
         setButtonText('Go Back')
+    }
+
+    if (!currentUser) {
+        return <div>Loading...</div>
     }
 
     return (
@@ -82,7 +91,7 @@ export default function Promotion() {
                 <DrawerComponent open={openDrawer} onClose={handleDrawerClose}>
                     <h1>Team Members</h1>
                     {teamMembers.map((member) =>
-                        member._id !== currentUser?._id?.toString() ? (
+                        member._id !== currentUser._id.toString() ? (
                             <div
                                 key={member._id}
                                 className={style.member}
@@ -109,8 +118,8 @@ export default function Promotion() {
                     <Rating id={id} />
                 </div>
                 <div className={style.thirdDiv}>
-                    {(currentUser?.role === 'hr' ||
-                        currentUser?.role === 'pm') && (
+                    {(currentUser.role === 'hr' ||
+                        currentUser.role === 'pm') && (
                         <Button
                             variant="contained"
                             color="primary"
