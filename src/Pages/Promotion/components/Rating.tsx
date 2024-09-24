@@ -11,6 +11,7 @@ import { ModalComponent } from '@/Components/Modal/Modal'
 import CloseIcon from '@mui/icons-material/Close'
 import Toast from '@/Components/Toast/Toast'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+import axios from 'axios'
 
 export type Rating = {
     _id: string
@@ -73,11 +74,12 @@ export default function Rating({ id }: { id: string }) {
             setToastOpen(true)
             setToastMessage('Rating updated successfully')
             setToastSeverity('success')
-        } catch (error) {
-            setToastOpen(true)
-            setToastMessage(`Error updating rating: ${error}`)
-            setToastSeverity('error')
-            console.error('Error updating rating:', error)
+        } catch (error: unknown) {
+            if (error instanceof axios.AxiosError) {
+                setToastMessage(error.response?.data.message)
+                setToastOpen(true)
+                setToastSeverity('error')
+            }
         }
     }
 
