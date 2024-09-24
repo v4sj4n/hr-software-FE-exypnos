@@ -40,9 +40,6 @@ export default function ChartBar({ id }: { id: string }) {
             [`& .${axisClasses.directionY} .${axisClasses.label}`]: {
                 transform: 'translateX(-10px)',
             },
-            '.css-1qdzy9k-MuiBarElement-root': {
-                fill: theme.palette.primary.main,
-            },
             '.MuiChartsLegend-mark': {
                 fill: theme.palette.primary.main,
             },
@@ -75,6 +72,7 @@ export default function ChartBar({ id }: { id: string }) {
                             hideTooltip: true,
                         },
                     ]}
+                    colors={[theme.palette.primary.main]}
                     {...chartSetting}
                     tooltip={{
                         trigger: 'none',
