@@ -11,7 +11,6 @@ const PieChartComponent = () => {
     return (
         <PieChart
             height={300}
-            width={500}
             series={[
                 {
                     data: [...data],

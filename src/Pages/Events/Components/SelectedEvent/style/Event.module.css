@@ -1,0 +1,45 @@
+.Wrap{
+padding: 20px;
+    width: 100%;
+    overflow-y: auto;
+    max-height: 500px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.selectedEvent{
+    display: flex;
+    flex-direction: column;
+}
+
+.flex{
+    display: flex;
+    justify-content: space-between;
+    color: rgb(44, 56, 68);
+    font-weight: 500;
+}
+
+.title{
+    font-size: 18px;
+}
+
+.border{
+    border-bottom: 2px solid #ebebeb;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+.description{
+    color: rgb(44, 56, 68);
+    margin-bottom: 15px;
+}
+
+.descripLabel{
+    color: rgb(44, 56, 68);
+    font-weight: 500;
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}

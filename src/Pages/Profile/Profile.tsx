@@ -67,7 +67,6 @@ export default function Profile() {
                 sx={{
                     borderRight: 1,
                     borderColor: 'divider',
-                    padding: '10px',
                     display: 'flex',
                     justifyContent: 'center',
                     flexDirection: 'column',

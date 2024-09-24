@@ -1,7 +1,7 @@
 import EventPoll from '../EventPoll/EventsPoll'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
-import style from '../../styles/Events.module.css'
+import style from './style/Event.module.css'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import Example from '@/Components/Carosel/Carosel'
 import MapComponent from '../GoogleMap/MapPicker'
@@ -51,27 +51,32 @@ const SelectedEventCard = () => {
                         }}
                     />
                 </div>
+                <div className={style.border}></div>
+                <div className={style.descripLabel}>Description</div>
                 <div className={style.description}>
                     {selectedEvent.description}
                 </div>
-                <div className={style.dataContainer}>
-                    <div className={style.dateContainer}>
-                        <div className={style.data}>
-                            <CalendarTodayIcon
-                                sx={{ height: 20, width: 20, color: '#6b7280' }}
-                            />
-                            {formatDate(selectedEvent.startDate)} -{' '}
-                            {formatDate(selectedEvent.endDate)}
-                        </div>
+                <div className={style.descripLabel}>
+                    <div><CalendarTodayIcon
+                        sx={{ height: 20, width: 20, color: '#6b7280' }}
+                    />
                     </div>
-                    <div className={style.data}>
-                        <LocationOnOutlinedIcon
+                    <div>Date Range</div>
+                </div>
+                <div className={style.description}>  {formatDate(selectedEvent.startDate)} -{' '}
+                    {formatDate(selectedEvent.endDate)}</div>
+
+     
+                    <div className={style.descripLabel}>
+                        <div><LocationOnOutlinedIcon
                             sx={{ height: 20, width: 20, color: '#6b7280' }}
                         />
-                        <div>{selectedEvent.location}</div>
+                        </div>
+                        <div>Location</div>
                     </div>
+                    <div className={style.description}>  {selectedEvent.location}</div>
                 </div>
-                <div style={{ width: '100%', height: '400px' }}>
+                <div style={{ width: '100%', height: '100%' }}>
                     <MapComponent
                         onLocationChange={(address, lat, lng) =>
                             console.log(address, lat, lng)
@@ -87,7 +92,7 @@ const SelectedEventCard = () => {
                         userId={currentUser?._id}
                     />
                 )}
-            </div>
+        
         </div>
     )
 }
