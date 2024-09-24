@@ -2,7 +2,6 @@ import Card1 from '../../Components/Card/Card.tsx'
 import style from '../Dashboard/style/dashboard.module.css'
 import Card from './components/card.tsx'
 import InfoSection from './components/infoSection.tsx'
-
 import PieChartComponent from './components/piechart.tsx'
 import { DashboardProvider, useDashboardContext } from './context/hook.tsx'
 import { greeter } from '@/Helpers/Greeter.tsx'
@@ -16,21 +15,6 @@ import { Notes } from './components/notes.tsx'
 const DashboardContent: React.FC = () => {
     const { employeeData, isLoading, error } = useDashboardContext()
     greeter()
-
-    console.log('Employee Data in DashboardContent:', employeeData)
-
-    if (isLoading) return <p>Loading...</p>
-    if (error) return <p>{error}</p>
-
-    const { currentUser } = useAuth()
-    const userName = currentUser ? currentUser.firstName : 'User'
-    const isAdmin = currentUser?.role === 'hr'
-
-    const handleNavigateToProfile = () => {
-        if (currentUser) {
-            navigate(`/profile/${currentUser._id}`)
-        }
-    }
     const navigate = useNavigate()
 
     const [animateOnLogin, setAnimateOnLogin] = useState(true)
@@ -42,6 +26,21 @@ const DashboardContent: React.FC = () => {
 
         return () => clearTimeout(timeout)
     }, [])
+
+const { currentUser } = useAuth()
+    if (isLoading) return <p>Loading...</p>
+    if (error) return <p>{error}</p>
+
+    
+    const userName = currentUser ? currentUser.firstName : 'User'
+    const isAdmin = currentUser?.role === 'hr'
+
+    const handleNavigateToProfile = () => {
+        if (currentUser) {
+            navigate(`/profile/${currentUser._id}`)
+        }
+    }
+   
     return (
         <div className={style.dashboardContainer}>
             <div className={style.mainContent}>
@@ -105,7 +104,7 @@ const DashboardContent: React.FC = () => {
                         <div className={style.cardYellow}>
                             <Card
                                 title="Employees on Leave"
-                                content={String(employeeData.onLeave)} // Display the number of employees on leave
+                                content={String(employeeData.onLeave)} 
                                 icon="On Leave"
                             />
                         </div>
@@ -123,7 +122,7 @@ const DashboardContent: React.FC = () => {
                         <Card1
                             padding="20px"
                             borderRadius="10px"
-                            flex="2"
+                            flex="5"
                             backgroundColor="rgba(255, 255, 255, 0.7)"
                         >
                             <InfoSection />
@@ -131,20 +130,13 @@ const DashboardContent: React.FC = () => {
 
                         <Card1
                             borderRadius="10px"
-                            flex="2"
+                            flex=""
                             padding="20px"
                             backgroundColor="rgba(255, 255, 255, 0.7)"
                         >
                             <h2>Employee Status</h2>
                             <PieChartComponent />
                         </Card1>
-                        {/* <Card1
-                            borderRadius="10px"
-                            flex="2"
-                            backgroundColor="rgba(255, 255, 255, 0.7)"
-                        >
-                            <Weather/>
-                            </Card1> */}
                     </div>
                     <Card1
                         backgroundColor="rgba(255, 255, 255, 0.7)"

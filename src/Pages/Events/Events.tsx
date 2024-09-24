@@ -41,15 +41,16 @@ function EventsContentAndComponents() {
         isLoading,
         onSearchChange,
         searchEvent,
+        hasNextPage
     } = useGetAllEvents()
 
     const { ref, inView } = useInView()
 
     useEffect(() => {
-        if (inView) {
+        if (inView && hasNextPage && !isFetchingNextPage) {
             fetchNextPage()
         }
-    }, [fetchNextPage, inView])
+    }, [fetchNextPage, inView, hasNextPage, isFetchingNextPage])
 
     return (
         <div className={style.contanier}>
