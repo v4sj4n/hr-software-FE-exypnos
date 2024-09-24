@@ -3,7 +3,6 @@ import styles from './Style/About.module.css'
 import image5 from '/Images/employe.webp'
 import ImageCarousel from './Component/ImageCarousel'
 import AOS from 'aos'
-import 'aos/dist/aos.css'
 import { useEffect } from 'react'
 import Stepper from './Component/Stepper'
 import { useTheme } from '@mui/material'
@@ -91,6 +90,7 @@ const About = () => {
                 <div
                     data-aos="fade-up"
                     data-aos-duration="2000"
+                    
                     className={styles.infoSection}
                 >
                     <h2 style={themeStyle}>Our Mission</h2>
