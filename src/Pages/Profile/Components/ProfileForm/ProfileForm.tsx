@@ -209,27 +209,6 @@ const ProfileFormContext = () => {
                     />
                 </div>
             </div>
-
-            <div className={style.checkboxDiv}>
-                <Input
-                    isCheckBox
-                    label="Public Holidays"
-                    name="check"
-                    disabled={!isAdmin}
-                />
-                <Input
-                    isCheckBox
-                    label="Remote"
-                    name="check"
-                    disabled={!isAdmin}
-                />
-                <Input
-                    isCheckBox
-                    label="External"
-                    name="check"
-                    disabled={!isAdmin}
-                />
-            </div>
             <div className={style.border}> </div>
             {isAdmin ? (
                 <div

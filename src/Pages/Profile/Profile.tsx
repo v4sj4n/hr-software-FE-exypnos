@@ -88,12 +88,8 @@ export default function Profile() {
                 }}
             >
                 <Tab label="Profile" {...a11yProps(0)} />
-                {currentUserId || hr ? (
-                    <Tab label="payroll" {...a11yProps(1)} />
-                ) : null}
-                {currentUserId || hr ? (
-                    <Tab label="Change Password" {...a11yProps(2)} />
-                ) : null}
+                {currentUserId || hr ? <Tab label="payroll" {...a11yProps(1)} /> : null  }
+                {currentUserId  ?  <Tab label="Change Password" {...a11yProps(2)} /> : null  }
             </Tabs>
             <TabPanel value={value} index={0}>
                 <ProfileForm />

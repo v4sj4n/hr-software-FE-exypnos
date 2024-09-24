@@ -12,6 +12,7 @@ import Input from '@/Components/Input/Index'
 import Selecter from '@/Components/Input/components/Select/Selecter'
 import Toast from '@/Components/Toast/Toast'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+import axios from 'axios'
 
 export type Promotion = {
     _id: string
@@ -83,11 +84,12 @@ export default function PromotionCard({ id }: { id: string }) {
             setToastOpen(true)
             setToastMessage('Promotion created successfully')
             setToastSeverity('success')
-        } catch (error) {
-            setToastOpen(true)
-            setToastMessage('Error creating promotion')
-            setToastSeverity('error')
-            console.error('Error creating promotion:', error)
+        } catch (error: unknown) {
+            if (error instanceof axios.AxiosError) {
+                setToastMessage(error.response?.data.message)
+                setToastOpen(true)
+                setToastSeverity('error')
+            }
         }
     }
 
@@ -101,13 +103,14 @@ export default function PromotionCard({ id }: { id: string }) {
             )
             fetchPromotions()
             setToastOpen(true)
-            setToastMessage('Rating updated successfully')
+            setToastMessage('Promotion updated successfully')
             setToastSeverity('success')
-        } catch (error) {
-            setToastOpen(true)
-            setToastMessage('Error updating promotion')
-            setToastSeverity('error')
-            console.error('Error updating promotion:', error)
+        } catch (error: unknown) {
+            if (error instanceof axios.AxiosError) {
+                setToastMessage(error.response?.data.message)
+                setToastOpen(true)
+                setToastSeverity('error')
+            }
         }
     }
 
@@ -120,13 +123,14 @@ export default function PromotionCard({ id }: { id: string }) {
                 promotions.filter((item) => item._id !== selectedPromotion._id),
             )
             setToastOpen(true)
-            setToastMessage('Rating delete successfully')
+            setToastMessage('Promotion delete successfully')
             setToastSeverity('success')
-        } catch (error) {
-            setToastOpen(true)
-            setToastMessage('Error deleting promotion')
-            setToastSeverity('error')
-            console.error('Error deleting promotion:', error)
+        } catch (error: unknown) {
+            if (error instanceof axios.AxiosError) {
+                setToastMessage(error.response?.data.message)
+                setToastOpen(true)
+                setToastSeverity('error')
+            }
         }
     }
 
@@ -278,27 +282,35 @@ export default function PromotionCard({ id }: { id: string }) {
                                     }}
                                 >
                                     <Selecter
-                                            name="position"
-                                            width="100%"
-                                            label="Position"
-                                            multiple={false}
-                                            value={formData.position}
-                                            options={PositionType}
-                                            onChange={(newValue) => setFormData({
+                                        name="position"
+                                        width="100%"
+                                        label="Position"
+                                        multiple={false}
+                                        value={formData.position}
+                                        options={PositionType}
+                                        onChange={(newValue) =>
+                                            setFormData({
                                                 ...formData,
                                                 position: newValue as string,
-                                            })} disabled={false}                                    />
+                                            })
+                                        }
+                                        disabled={false}
+                                    />
                                     <Selecter
-                                            name="grade"
-                                            width="100%"
-                                            label="Grade"
-                                            multiple={false}
-                                            value={formData.grade}
-                                            options={GradeType}
-                                            onChange={(newValue) => setFormData({
+                                        name="grade"
+                                        width="100%"
+                                        label="Grade"
+                                        multiple={false}
+                                        value={formData.grade}
+                                        options={GradeType}
+                                        onChange={(newValue) =>
+                                            setFormData({
                                                 ...formData,
                                                 grade: newValue as string,
-                                            })} disabled={false}                                    />
+                                            })
+                                        }
+                                        disabled={false}
+                                    />
                                     <Input
                                         IsUsername
                                         type="datetime-local"
