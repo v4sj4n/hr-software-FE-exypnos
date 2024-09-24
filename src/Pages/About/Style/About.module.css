@@ -51,7 +51,7 @@
 
 @keyframes fadeIn {
     from {
-        opacity: 0;
+        opacity: 1;
         transform: translate(-50%, -60%);
     }
     to {

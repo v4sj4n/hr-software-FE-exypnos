@@ -2,9 +2,7 @@ import { useTheme } from '@mui/material/styles'
 import AxiosInstance from '@/Helpers/Axios'
 import { BarChart } from '@mui/x-charts/BarChart'
 import { axisClasses } from '@mui/x-charts/ChartsAxis'
-import { DatasetType } from '@mui/x-charts/internals'
 import { useEffect, useState } from 'react'
-
 import {
     ChartsAxisContentProps,
     ChartsTooltip,
@@ -24,7 +22,7 @@ export type Salary = {
 }
 
 export default function ChartBar({ id }: { id: string }) {
-    const [dataset, setDataset] = useState<DatasetType>([])
+    const [dataset, setDataset] = useState<Salary[]>([])
     const theme = useTheme()
 
     const chartSetting = {
@@ -48,13 +46,16 @@ export default function ChartBar({ id }: { id: string }) {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await AxiosInstance<Salary[]>(
-                `/salary/user/${id}?graph=true`,
-            )
-            response.data.forEach((item) => {
-                item.month = getMonthName(Number(item.month) + 1)
-            })
-            setDataset(response.data)
+            try {
+                const response = await AxiosInstance.get<Salary[]>(`/salary/user/${id}?graph=true`)
+                const processedData = response.data.map(item => ({
+                    ...item,
+                    month: getMonthName(Number(item.month) + 1)
+                }))
+                setDataset(processedData)
+            } catch (error) {
+                console.error('Error fetching salary data:', error)
+            }
         }
 
         fetchData()
@@ -82,13 +83,12 @@ export default function ChartBar({ id }: { id: string }) {
                         slots={{
                             axisContent: (props: ChartsAxisContentProps) => {
                                 const { dataIndex } = props
-                                const data = dataset[dataIndex]
+                                const data = dataIndex !== null && dataIndex !== undefined ? dataset[dataIndex] : undefined
 
                                 return (
                                     <div
                                         style={{
-                                            backgroundColor:
-                                                theme.palette.background.paper,
+                                            backgroundColor: theme.palette.background.paper,
                                             padding: '10px',
                                             borderRadius: '5px',
                                             boxShadow: `0 4px 6px ${theme.palette.grey[500]}`,
@@ -96,22 +96,11 @@ export default function ChartBar({ id }: { id: string }) {
                                     >
                                         <p>Month: {data?.month ?? ''}</p>
                                         <p>Year: {data?.year ?? ''}</p>
-                                        <p>
-                                            Net Salary: {data?.netSalary ?? ''}
-                                        </p>
-                                        <p>
-                                            Gross Salary:{' '}
-                                            {data?.grossSalary ?? ''}
-                                        </p>
+                                        <p>Net Salary: {data?.netSalary ?? ''}</p>
+                                        <p>Gross Salary: {data?.grossSalary ?? ''}</p>
                                         <p>Bonus: {data?.bonus ?? ''}</p>
-                                        <p>
-                                            Health Insurance:{' '}
-                                            {data?.healthInsurance ?? ''}
-                                        </p>
-                                        <p>
-                                            Social Security:{' '}
-                                            {data?.socialSecurity ?? ''}
-                                        </p>
+                                        <p>Health Insurance: {data?.healthInsurance ?? ''}</p>
+                                        <p>Social Security: {data?.socialSecurity ?? ''}</p>
                                     </div>
                                 )
                             },
