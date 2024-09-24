@@ -53,15 +53,16 @@ export const PayrollProviderSpecific: React.FC<{
 
     const columns = [
         { field: 'id', headerName: 'No', flex: 0.5 },
-        { field: 'fullName', headerName: 'Full Name', flex: 1.7 },
-        { field: 'netSalary', headerName: 'netSalary', flex: 1.7 },
-        { field: 'healthInsurance', headerName: 'healthInsurance', flex: 1.7 },
-        { field: 'month', headerName: 'month', flex: 1 },
-        { field: 'workingDays', headerName: 'workingDays', flex: 1.5 },
-        { field: 'socialSecurity', headerName: 'socialSecurity', flex: 1.5 },
-        { field: 'grossSalary', headerName: 'grossSalary', flex: 1 },
-        { field: 'year', headerName: 'year', flex: 1.5 },
-        { field: 'bonusDescription', headerName: 'bonusDescription', flex: 2 },
+        { field: 'fullName', headerName: 'Full Name', flex: 1 },
+        { field: 'netSalary', headerName: ' Net Salary', flex: 1 },
+        { field: 'healthInsurance', headerName: 'Health Insurance', flex: 1 },
+        { field: 'month', headerName: 'Month', flex: 1 },
+        { field: 'workingDays', headerName: 'Working Days', flex: 1 },
+        { field: 'socialSecurity', headerName: 'Social Security', flex: 1 },
+        { field: 'grossSalary', headerName: 'Gross Salary', flex: 1 },
+        { field: 'year', headerName: 'Year', flex: 0.8 },
+        { field: 'bonus', headerName: 'Bonus', flex: 0.7 },
+        { field: 'bonusDescription', headerName: 'Bonus Description', flex: 2 },
     ]
 
     const getRowId = (row: PayrollRowSpecifc) => row.id
