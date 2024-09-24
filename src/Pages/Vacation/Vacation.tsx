@@ -48,7 +48,7 @@ function VacationComponent() {
                     gap: '1rem',
                 }}
             >
-                {userRole === 'hr' && (
+                {['hr', "admin"].includes(userRole as string) && (
                     <ToggleButtonGroup
                         color="primary"
                         value={searchParams.get('vacationType')}
@@ -76,7 +76,7 @@ function VacationComponent() {
                     onClick={createVacationToggler}
                 />
             </div>
-            {userRole === 'hr' ? (
+            {['hr', "admin"].includes(userRole as string) ? (
                 <div>
                     {searchParams.get('vacationType') === 'requests' && (
                         <VacationTable />

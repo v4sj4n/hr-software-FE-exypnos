@@ -32,43 +32,47 @@ export const EmployeesWithVacations = () => {
     if (isLoading) return <Loader />
 
     return (
-        <div className={style.employeesContainer}>
+        <div>
             <EmployeesWithVacationsSearchFilter />
-            {data?.pages.map((page) =>
-                page.data.map((user: UserWithVacation) => (
-                    <SimpleCollapsableCard
-                        key={user._id}
-                        user={user}
-                        searchParams={searchParams}
-                        setSearchParams={setSearchParams}
-                        items={
-                            user.vacations
-                                ? {
-                                      type: 'Vacation',
-                                      itemArr: user.vacations,
-                                  }
-                                : undefined
-                        }
-                    >
-                        <div className={style.collapsedData}>
-                            <div className={style.collapseDataVacationList}>
-                                <h3>Vacations this year</h3>
-                                <div>
-                                    {user.vacations &&
-                                    user.vacations.length > 0 ? (
-                                        user.vacations.map(({ type, _id }) => (
-                                            <p key={_id}>{type}</p>
-                                        ))
-                                    ) : (
-                                        <p>No vacations this year</p>
-                                    )}
+            <div className={style.employeesContainer}>
+                {data?.pages.map((page) =>
+                    page.data.map((user: UserWithVacation) => (
+                        <SimpleCollapsableCard
+                            key={user._id}
+                            user={user}
+                            searchParams={searchParams}
+                            setSearchParams={setSearchParams}
+                            items={
+                                user.vacations
+                                    ? {
+                                          type: 'Vacation',
+                                          itemArr: user.vacations,
+                                      }
+                                    : undefined
+                            }
+                        >
+                            <div className={style.collapsedData}>
+                                <div className={style.collapseDataVacationList}>
+                                    <h3>Vacations this year</h3>
+                                    <div>
+                                        {user.vacations &&
+                                        user.vacations.length > 0 ? (
+                                            user.vacations.map(
+                                                ({ type, _id }) => (
+                                                    <p key={_id}>{type}</p>
+                                                ),
+                                            )
+                                        ) : (
+                                            <p>No vacations this year</p>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </SimpleCollapsableCard>
-                )),
-            )}
-            <div ref={ref}>{isFetchingNextPage && 'Loading...'}</div>
+                        </SimpleCollapsableCard>
+                    )),
+                )}
+                <div ref={ref}>{isFetchingNextPage && 'Loading...'}</div>
+            </div>
         </div>
     )
 }
