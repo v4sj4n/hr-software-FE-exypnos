@@ -104,7 +104,6 @@ export default function Router() {
                     path: '/events',
                     element: <Events />,
                 },
-
                 {
                     path: '/interview',
                     element: <Interview />,

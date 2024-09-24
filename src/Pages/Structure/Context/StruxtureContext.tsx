@@ -12,7 +12,7 @@
 //     const [startDate, setStartDate] = useState('')
 //     const [status, setStatus] = useState('')
 //     const [projectManager, setProjectManager] = useState('')
-//     const [teamMembers, setTeamMembers] = useState<string[]>([]) 
+//     const [teamMembers, setTeamMembers] = useState<string[]>([])
 
 //     const handleDecriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 //         setDescription(e.target.value)
@@ -41,7 +41,7 @@
 //     const handleStatusChange = (value: string | string[]) => {
 //         setStatus(value as string);
 //       };
-      
+
 //       const handleProjectManagerChange = (value: string | string[]) => {
 //         setProjectManager(value as string);
 //       };
@@ -82,8 +82,6 @@
 //             setToastOpen(true)
 //         }
 //     }
-    
-
 
 //    const contextValue = {
 //     handleDecriptionChange,
@@ -106,7 +104,7 @@
 //     handleStatusChange,
 //     name,
 //     startDate,
-//     status, 
+//     status,
 //     projectManager,
 //     teamMembers,
 //    }

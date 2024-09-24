@@ -39,8 +39,8 @@ function a11yProps(index: number) {
 
 export default function Profile() {
     const [value, setValue] = React.useState(0)
- const {currentUser} = useAuth()
- const {id} = useParams()
+    const { currentUser } = useAuth()
+    const { id } = useParams()
 
     const currentUserId = currentUser?._id === id
     const hr = currentUser?.role === 'hr'
@@ -88,8 +88,12 @@ export default function Profile() {
                 }}
             >
                 <Tab label="Profile" {...a11yProps(0)} />
-                {currentUserId || hr ? <Tab label="payroll" {...a11yProps(1)} /> : null  }
-                {currentUserId || hr ?  <Tab label="Change Password" {...a11yProps(2)} /> : null  }
+                {currentUserId || hr ? (
+                    <Tab label="payroll" {...a11yProps(1)} />
+                ) : null}
+                {currentUserId || hr ? (
+                    <Tab label="Change Password" {...a11yProps(2)} />
+                ) : null}
             </Tabs>
             <TabPanel value={value} index={0}>
                 <ProfileForm />

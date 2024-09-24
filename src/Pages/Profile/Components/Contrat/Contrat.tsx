@@ -144,7 +144,7 @@ const ContratContent = () => {
                     value={
                         EditingPayroll ? EditingPayroll?.bonus : payroll.bonus
                     }
-                disabled={!isHr}
+                    disabled={!isHr}
                     onChange={
                         EditingPayroll
                             ? handleUpdateChangePayroll
@@ -170,18 +170,22 @@ const ContratContent = () => {
                     }
                 />
                 <div className={style.inputWidth}>
-                  {isHr &&  <Button
-                        type={ButtonTypes.PRIMARY}
-                        btnText={
-                            EditingPayroll ? 'Update Payroll' : 'Create Payroll'
-                        }
-                        onClick={
-                            EditingPayroll
-                                ? handleUpdatePayroll
-                                : handleCreatePayroll
-                        }
-                        width="300px"
-                    />}
+                    {isHr && (
+                        <Button
+                            type={ButtonTypes.PRIMARY}
+                            btnText={
+                                EditingPayroll
+                                    ? 'Update Payroll'
+                                    : 'Create Payroll'
+                            }
+                            onClick={
+                                EditingPayroll
+                                    ? handleUpdatePayroll
+                                    : handleCreatePayroll
+                            }
+                            width="300px"
+                        />
+                    )}
                 </div>
             </div>
         </div>

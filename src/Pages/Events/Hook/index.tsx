@@ -16,7 +16,7 @@ export const useGetAllEvents = () => {
     const [searchEvent, setSearchEvent] = useState(
         searchParams.get('search') || '',
     )
-    const {currentUser} = useAuth()
+    const { currentUser } = useAuth()
     const currentUserId = currentUser?._id
 
     const query = useInfiniteQuery({
