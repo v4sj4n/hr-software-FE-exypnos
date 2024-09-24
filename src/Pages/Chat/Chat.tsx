@@ -9,7 +9,7 @@ import SendMessage from './components/chatinput'
 import { SocketProvider } from './context/SocketContext'
 
 const Chat: React.FC = () => {
-    const { users, setUsers } = useChat() 
+    const { users, setUsers } = useChat()
 
     useEffect(() => {
         const fetchUsers = async () => {

@@ -76,7 +76,8 @@ export default function SimpleCollapsableCard({
                             {TitleCaser(firstName)} {TitleCaser(lastName)}
                         </h3>
                         <p>
-                            {FormatPhoneNumber(`+355${phone}`)} - {role}
+                            {FormatPhoneNumber(`+355${phone}`)} -{' '}
+                            {role.toUpperCase()}
                         </p>
                     </div>
                 </div>

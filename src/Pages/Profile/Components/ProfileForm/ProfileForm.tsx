@@ -48,47 +48,58 @@ const ProfileFormContext = () => {
             />
 
             <div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-    <div style={{ position: 'relative', display: 'inline-block' }}>
-        <Avatar
-            src={previewImage || user.imageUrl}
-            style={{
-                width: '150px',
-                height: '150px',
-                borderRadius: '50%',
-            }}
-        />
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <div
+                        style={{
+                            position: 'relative',
+                            display: 'inline-block',
+                        }}
+                    >
+                        <Avatar
+                            src={previewImage || user.imageUrl}
+                            style={{
+                                width: '150px',
+                                height: '150px',
+                                borderRadius: '50%',
+                            }}
+                        />
 
-        {isCurrentUser && (
-            <div
-                style={{
-                    position: 'absolute',
-                    bottom: '5px', 
-                    right: '5px',  
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    cursor: 'pointer',
-                    backgroundColor: '#fff', 
-                    borderRadius: '50%',    
-                    padding: '5px',         
-                }}
-            >
-                <Image onChange={uploadImage} />
+                        {isCurrentUser && (
+                            <div
+                                style={{
+                                    position: 'absolute',
+                                    bottom: '5px',
+                                    right: '5px',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    cursor: 'pointer',
+                                    backgroundColor: '#fff',
+                                    borderRadius: '50%',
+                                    padding: '5px',
+                                }}
+                            >
+                                <Image onChange={uploadImage} />
+                            </div>
+                        )}
+                    </div>
+
+                    <div style={{ marginTop: '15px', textAlign: 'center' }}>
+                        <div style={{ fontSize: '30px', color: '#000000' }}>
+                            {`${user.firstName} ${user.lastName}`}
+                        </div>
+                        <div style={{ color: '#000000' }}>
+                            {user.auth.email}
+                        </div>
+                    </div>
+                </div>
             </div>
-        )}
-    </div>
-
-    <div style={{ marginTop: '15px', textAlign: 'center' }}>
-        <div style={{ fontSize: '30px', color: '#000000' }}>
-            {`${user.firstName} ${user.lastName}`}
-        </div>
-        <div style={{ color: '#000000' }}>{user.auth.email}</div>
-    </div>
-</div>
-</div>
-
-
 
             <div className={style.forms}></div>
 
@@ -136,7 +147,7 @@ const ProfileFormContext = () => {
                     <Selecter
                         options={Places}
                         multiple={false}
-                       disabled={!isAdmin}
+                        disabled={!isAdmin}
                         width="350px"
                         label="Places of Birth"
                         name="pob"
@@ -148,7 +159,8 @@ const ProfileFormContext = () => {
 
             <div className={style.forms}>
                 <div className={style.inputWidth}>
-                    <Selecter disabled={!isAdmin}
+                    <Selecter
+                        disabled={!isAdmin}
                         width="100%"
                         name="gender"
                         label="Gender"
@@ -185,7 +197,8 @@ const ProfileFormContext = () => {
                     />
                 </div>
                 <div className={style.inputWidth}>
-                    <Selecter   disabled={!isAdmin}
+                    <Selecter
+                        disabled={!isAdmin}
                         multiple={false}
                         onChange={handlePositionChange}
                         options={position}

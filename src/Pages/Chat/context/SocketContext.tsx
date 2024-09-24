@@ -44,10 +44,10 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
         }
     }, [currentUser])
 
-    console.log('Socket:', socket) 
+    console.log('Socket:', socket)
 
     if (!socket) {
-        return null 
+        return null
     }
 
     return (

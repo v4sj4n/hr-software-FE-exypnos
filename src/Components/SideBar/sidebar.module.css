@@ -4,7 +4,7 @@
     left: 0;
     top: 62px;
     z-index: 1;
-    height: 100vh; 
+    height: 100vh;
     width: 200px;
     transition: width 0.3s ease;
 }
@@ -176,19 +176,19 @@
 
 @media (max-width: 768px) {
     .sidebarContainer {
-        width: 65px; 
+        width: 65px;
     }
 
     .navOpen {
-        width: 65px; 
+        width: 65px;
     }
 
     .text {
-        display: none; 
+        display: none;
     }
 
     .navbar {
-        align-items: center; 
+        align-items: center;
     }
 
     .toggleButton {
@@ -200,15 +200,15 @@
 
 @media (max-width: 576px) {
     .sidebarContainer {
-        position: fixed; 
+        position: fixed;
         width: 0;
-        overflow: hidden; 
-        z-index: 999; 
+        overflow: hidden;
+        z-index: 999;
         transition: width 0.3s ease;
     }
 
     .sidebarContainer.open {
-        width: 200px; 
+        width: 200px;
     }
 
     .toggleButton {

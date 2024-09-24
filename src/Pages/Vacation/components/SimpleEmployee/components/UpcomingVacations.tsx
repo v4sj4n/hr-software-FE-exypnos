@@ -9,7 +9,7 @@ import { TitleCaser } from '@/Helpers/TitleCaser'
 export const UpcomingVacations = ({ vacations }: { vacations: Vacation[] }) => {
     return (
         <div className={style.vacationsContainer}>
-            {vacations ? (
+            {vacations.length > 0 ? (
                 vacations.map(({ _id, endDate, startDate, status, type }) => {
                     return (
                         <div className={style.vacationContainer} key={_id}>

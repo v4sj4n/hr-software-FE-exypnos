@@ -20,10 +20,10 @@ export interface CustomTreeNode extends TreeNode {
     type?: string
     data: {
         name?: string
-        title?: string | ReactNode;
+        title?: string | ReactNode
         teamMembers?: Array<{ firstName: string; lastName: string }>
         image?: string
-        projectId?: string;  
+        projectId?: string
     }
     children?: CustomTreeNode[]
 }

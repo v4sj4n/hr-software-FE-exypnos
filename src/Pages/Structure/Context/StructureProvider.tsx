@@ -1,8 +1,6 @@
 // import React from "react";
 // import { StructureContext } from "../Interface/Index";
 
-
-
 // export const useStructureContext = () => {
 //     const context = React.useContext(StructureContext);
 //     if(context === undefined) {
