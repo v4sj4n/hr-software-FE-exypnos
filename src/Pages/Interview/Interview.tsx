@@ -59,7 +59,7 @@ function InterviewKanbanContent() {
         <div className={style.kanbanBoard}>
             <div style={{
                 display: 'flex',
-                justifyContent: 'space-between',
+                justifyContent: 'flex-start',
                 marginBottom: 2,
                 alignItems: "center"
             }}>
@@ -96,7 +96,7 @@ function InterviewKanbanContent() {
                         label="Current Phase"
                         multiple={false}
                         value={currentPhase}
-                        width="250px"
+                        width="200px"
                         options={phases}
                         onChange={(newValue) =>
                             setCurrentPhase(
@@ -113,7 +113,7 @@ function InterviewKanbanContent() {
                         label="Start Date"
                         type="date"
                         value={startDate || ''}
-                        width="250px"
+                        width="150px"
                         onChange={(e) => setStartDate(e.target.value)}
                         className={style.filterField}
                     />
@@ -124,20 +124,20 @@ function InterviewKanbanContent() {
                         type="date"
                         shrink
                         value={endDate || ''}
-                        width="250px"
+                        width="150px"
                         onChange={(e) => setEndDate(e.target.value)}
                         className={style.filterField}
                     />
                     <Button
                         type={ButtonTypes.PRIMARY}
-                        width="170px"
+                        width="130px"
                         btnText="Apply Filter"
                         onClick={handleApplyFilter}
                     />
                     {isFiltered && (
                         <Button
                             type={ButtonTypes.SECONDARY}
-                            width="170px"
+                            width="130px"
                             btnText="Clear Filter"
                             onClick={handleClearFilter}
                         />
