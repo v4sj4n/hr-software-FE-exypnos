@@ -2,15 +2,16 @@ import React, { useEffect } from 'react'
 import { User } from '@/Pages/Chat/Interfaces/types'
 import { ChatProvider, useChat } from './context/ChatContext'
 import AxiosInstance from '@/Helpers/Axios'
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import UserList from './components/userlist'
 import MessageList from './components/messagelist'
 import SendMessage from './components/chatinput'
 import { SocketProvider } from './context/SocketContext'
 
 const Chat: React.FC = () => {
-    const { users, setUsers } = useChat()
+    const { users, setUsers } = useChat() 
 
+    // Fetch users from the backend
     useEffect(() => {
         const fetchUsers = async () => {
             const response = await AxiosInstance('/user')

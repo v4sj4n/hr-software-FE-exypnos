@@ -17,7 +17,7 @@ import {
     Button,
 } from '@mui/material'
 import AxiosInstance from '@/Helpers/Axios'
-import { io } from 'socket.io-client'
+import { io, Socket } from 'socket.io-client'
 import styles from '@/Pages/Chat/styles/chat.module.css'
 import AddIcon from '@mui/icons-material/Add'
 
@@ -26,56 +26,64 @@ interface UserListProps {
 }
 
 const UserList: React.FC<UserListProps> = ({ users }) => {
-    const {
-        setRecipientId,
-        setMessages,
-        senderId,
-        unreadMessages,
-        setUnreadMessages,
-    } = useChat()
+    const { setRecipientId, setMessages, senderId } = useChat()
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<string | null>(null)
     const [searchActiveChatsQuery, setSearchActiveChatsQuery] =
         useState<string>('')
     const [searchUsersQuery, setSearchUsersQuery] = useState<string>('')
     const [activeUserIds, setActiveUserIds] = useState<string[]>([])
+    const [socket, setSocket] = useState<Socket | null>(null)
     const [selectedChatId, setSelectedChatId] = useState<string | null>(null)
     const [open, setOpen] = useState(false)
 
     useEffect(() => {
-        const socket = io('https://seashell-app-rvw8f.ondigitalocean.app/')
-
-        socket.on('newMessage', (message) => {
-            if (message.recipientId === senderId) {
-                const sender = users.find(
-                    (user) => user._id === message.senderId,
-                )
-                if (sender) {
-                    console.log(
-                        'Sender found:',
-                        sender.firstName,
-                        sender.lastName,
-                    )
-                } else {
-                    console.log('Sender not found in users array')
-                }
-
-                setActiveUserIds((prevActiveUserIds) => {
-                    const newActiveUserIds = new Set(prevActiveUserIds)
-                    newActiveUserIds.add(message.senderId)
-                    console.log(
-                        'Active chats after update:',
-                        Array.from(newActiveUserIds),
-                    )
-                    return Array.from(newActiveUserIds)
-                })
-            }
-        })
-
+        const newSocket = io('https://seashell-app-rvw8f.ondigitalocean.app', {
+          transports: ['websocket'],  
+          withCredentials: true,     
+        });
+        setSocket(newSocket);
+      
         return () => {
-            socket.close()
+          newSocket.close();
+        };
+      }, []);
+      
+
+    useEffect(() => {
+        if (socket) {
+            socket.on('newMessage', (message) => {
+                if (message.recipientId === senderId) {
+                    const sender = users.find(
+                        (user) => user._id === message.senderId,
+                    )
+                    if (sender) {
+                        console.log(
+                            'Sender found:',
+                            sender.firstName,
+                            sender.lastName,
+                        )
+                    } else {
+                        console.log('Sender not found in users array')
+                    }
+
+                    setActiveUserIds((prevActiveUserIds) => {
+                        const newActiveUserIds = new Set(prevActiveUserIds)
+                        newActiveUserIds.add(message.senderId)
+                        console.log(
+                            'Active chats after update:',
+                            Array.from(newActiveUserIds),
+                        )
+                        return Array.from(newActiveUserIds)
+                    })
+                }
+            })
+
+            return () => {
+                socket.off('newMessage')
+            }
         }
-    }, [senderId, users])
+    }, [socket, senderId, users])
 
     useEffect(() => {
         const fetchActiveChats = async () => {
@@ -129,7 +137,7 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
         const activeUsers = users.filter((user) =>
             activeUserIds.includes(user._id),
         )
-        console.log('Filtered active users:', activeUsers)
+        console.log('Filtered active users:', activeUsers) 
 
         if (searchActiveChatsQuery.trim()) {
             return activeUsers.filter((user) =>
@@ -157,7 +165,7 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
     const handleSelectUser = async (userId: string) => {
         console.log('Selected Recipient ID:', userId)
         setRecipientId(userId)
-        setSelectedChatId(userId)
+        setSelectedChatId(userId) 
         setLoading(true)
         setError(null)
 
@@ -172,11 +180,6 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
                 newActiveUserIds.add(userId)
                 return Array.from(newActiveUserIds)
             })
-
-            setUnreadMessages((prevUnread) => ({
-                ...prevUnread,
-                [userId]: 0,
-            }))
         } catch (error) {
             console.error('Error fetching messages:', error)
             setError('Failed to fetch messages. Please try again later.')
@@ -229,12 +232,6 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
                                 <ListItemText
                                     primary={`${user.firstName} ${user.lastName}`}
                                 />
-                                {/* Show unread message dot */}
-                                {unreadMessages[user._id] > 0 && (
-                                    <span className={styles.unreadDot}>
-                                        {unreadMessages[user._id]}
-                                    </span>
-                                )}
                             </ListItemButton>
                         </ListItem>
                     ))
