@@ -75,14 +75,13 @@ const Weather = () => {
                     }}
                 >
                     <div className={style.weatherHeader}>
-                        {/* <h2>{weatherData.name}</h2> */}
                         <p>{new Date().toLocaleDateString()}</p>
                     </div>
 
                     <div
-                        style={{
-                            width: '100px',
-                            height: '100px',
+                         style={{
+                            width: '145px', 
+                            height: '100px', 
                             backgroundImage: weatherData
                                 ? `url(${getBackgroundImage(weatherData.weather[0].description)})`
                                 : 'none',

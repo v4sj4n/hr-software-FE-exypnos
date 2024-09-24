@@ -5,9 +5,8 @@
         box-shadow 0.3s ease,
         transform 0.3s ease;
     animation: gradient-flow 10s linear infinite;
-    /* align-items: center; */
     justify-content: flex-end;
-    top: 20%;
+    gap: 30px;
 }
 
 .weatherInfo {

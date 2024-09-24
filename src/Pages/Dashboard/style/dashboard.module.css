@@ -52,11 +52,11 @@
         color 0.3s ease;
 }
 
-.cardGreen {
+.cardBlue {
     background-image: linear-gradient(180deg, #e0f2f7, #a8e0f0);
 }
 
-.cardBlue {
+.cardGreen {
     background-image: linear-gradient(180deg, #ede5ef, #c5b3e6);
 }
 
@@ -161,7 +161,7 @@ h3 {
     background-size: 200% 200%;
     color: #1e299ebd;
     border-radius: 15px;
-    padding: 2.5rem 2rem;
+    padding: 1rem 2rem;
     margin-bottom: 20px;
     display: flex;
     gap: 0.333rem;

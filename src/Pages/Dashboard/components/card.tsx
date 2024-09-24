@@ -1,11 +1,11 @@
 import React from 'react'
 import PersonIcon from '@mui/icons-material/Person'
-import PersonOffIcon from '@mui/icons-material/PersonOff'
+import GroupsIcon from '@mui/icons-material/Groups';
 import WatchLaterIcon from '@mui/icons-material/WatchLater'
 import DesktopMacIcon from '@mui/icons-material/DesktopMac'
 import style from '@/Pages/Dashboard/style/card.module.css'
 
-type IconType = 'Present' | 'Absent' | 'On Leave' | 'Remote'
+type IconType = 'Present' | 'All' | 'On Leave' | 'Remote'
 
 interface CardProps {
     title: string
@@ -17,7 +17,7 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ title, content, icon }) => {
     const icons = {
         Present: <PersonIcon />,
-        Absent: <PersonOffIcon />,
+        All: <GroupsIcon />,
         'On Leave': <WatchLaterIcon />,
         Remote: <DesktopMacIcon />,
     }
@@ -29,6 +29,5 @@ const Card: React.FC<CardProps> = ({ title, content, icon }) => {
             <p>{content}</p>
         </div>
     )
-}
-
+} 
 export default Card
