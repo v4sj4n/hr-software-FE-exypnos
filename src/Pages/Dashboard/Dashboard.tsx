@@ -51,40 +51,45 @@ const DashboardContent: React.FC = () => {
         <div className={style.dashboardContainer}>
             <div className={style.mainContent}>
                 <div className={style.rightContent}>
-                <div className={style.welcomeContainer}>
-    <div 
-        className={`${style.welcome} ${animateOnLogin ? style.animate : ''}`}
-        style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center', 
-            width: '100%' 
-        }}
-    >
-        <div style={{ flex: 1 }}>
-            <h1>
-                {greeter()}{' '}
-                <span
-                    onClick={handleNavigateToProfile}
-                    className={style.userNameClickable}
-                    style={{ cursor: 'pointer', transform: 'scale(1.1)' }}
-                >
-                    {userName}
-                </span>
-                !
-            </h1>
-            {isAdmin ? (
-                <p>Here's what's happening with your team today</p>
-            ) : (
-                <p>Let’s achieve your goals today!</p>
-            )}
-        </div>
-        <div style={{ flex: 'none' }}>
-            <Weather />
-        </div>
-    </div>
-</div>
-
+                    <div className={style.welcomeContainer}>
+                        <div
+                            className={`${style.welcome} ${animateOnLogin ? style.animate : ''}`}
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                width: '100%',
+                            }}
+                        >
+                            <div style={{ flex: 1 }}>
+                                <h1>
+                                    {greeter()}{' '}
+                                    <span
+                                        onClick={handleNavigateToProfile}
+                                        className={style.userNameClickable}
+                                        style={{
+                                            cursor: 'pointer',
+                                            transform: 'scale(1.1)',
+                                        }}
+                                    >
+                                        {userName}
+                                    </span>
+                                    !
+                                </h1>
+                                {isAdmin ? (
+                                    <p>
+                                        Here's what's happening with your team
+                                        today
+                                    </p>
+                                ) : (
+                                    <p>Let’s achieve your goals today!</p>
+                                )}
+                            </div>
+                            <div style={{ flex: 'none' }}>
+                                <Weather />
+                            </div>
+                        </div>
+                    </div>
 
 <div className={style.cardContainer}>
 <div className={style.cardBlue}>
@@ -128,18 +133,17 @@ const DashboardContent: React.FC = () => {
                         >
                             <InfoSection />
                         </Card1>
- 
+
                         <Card1
-                        
                             borderRadius="10px"
                             flex="2"
-                            padding='20px'
+                            padding="20px"
                             backgroundColor="rgba(255, 255, 255, 0.7)"
                         >
                             <h2>Employee Status</h2>
-                            <PieChartComponent/>
-                            </Card1>
-                            {/* <Card1
+                            <PieChartComponent />
+                        </Card1>
+                        {/* <Card1
                             borderRadius="10px"
                             flex="2"
                             backgroundColor="rgba(255, 255, 255, 0.7)"
@@ -157,7 +161,6 @@ const DashboardContent: React.FC = () => {
                     >
                         <EmployeeSection />
                     </Card1>
-                    
                 </div>
             </div>
         </div>

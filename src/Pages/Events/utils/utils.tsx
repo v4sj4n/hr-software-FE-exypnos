@@ -4,10 +4,12 @@ import { EventsData } from '../Interface/Events'
 export const fetchEvents = async (
     search: string,
     pageParam: number,
+    currentUserId: number | undefined,
 ): Promise<EventsData[]> => {
+
     const Limit = 6
     const response = await AxiosInstance.get<EventsData[]>(
-        `/event?search=${search}&page=${pageParam}&limit=${Limit}`,
+        `/event/user/${currentUserId}?search=${search}&page=${pageParam}&limit=${Limit}`,
     )
     return response.data
 }

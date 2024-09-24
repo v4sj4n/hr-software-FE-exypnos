@@ -1,5 +1,5 @@
 import { TreeNode } from 'primereact/treenode'
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 export interface ProjectData {
     _id: string
@@ -20,9 +20,10 @@ export interface CustomTreeNode extends TreeNode {
     type?: string
     data: {
         name?: string
-        title?: string
+        title?: string | ReactNode;
         teamMembers?: Array<{ firstName: string; lastName: string }>
         image?: string
+        projectId?: string;  
     }
     children?: CustomTreeNode[]
 }

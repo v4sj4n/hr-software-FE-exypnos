@@ -71,8 +71,7 @@ const Weather = () => {
                         width: '100%',
                         display: 'flex',
                         padding: '10px',
-                        alignContent:'center',
-                       
+                        alignContent: 'center',
                     }}
                 >
                     <div className={style.weatherHeader}>
@@ -86,10 +85,9 @@ const Weather = () => {
                             backgroundImage: weatherData
                                 ? `url(${getBackgroundImage(weatherData.weather[0].description)})`
                                 : 'none',
-                            backgroundSize: 'cover', 
+                            backgroundSize: 'cover',
                             backgroundRepeat: 'no-repeat',
                             backgroundPosition: 'center',
-                           
                         }}
                     ></div>
 

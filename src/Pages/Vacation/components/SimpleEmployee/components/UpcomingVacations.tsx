@@ -9,44 +9,50 @@ import { TitleCaser } from '@/Helpers/TitleCaser'
 export const UpcomingVacations = ({ vacations }: { vacations: Vacation[] }) => {
     return (
         <div className={style.vacationsContainer}>
-            {vacations.map(({ _id, endDate, startDate, status, type }) => {
-                return (
-                    <div className={style.vacationContainer} key={_id}>
-                        <div>
-                            <p>
-                                <StatusBadge
-                                    color={
-                                        status === 'pending'
-                                            ? 'orange'
-                                            : status === 'accepted'
-                                              ? 'green'
-                                              : 'red'
-                                    }
-                                    status={TitleCaser(status)}
-                                    key={_id}
-                                />
-                            </p>
-                            <p>{TitleCaser(type)}</p>
+            {vacations ? (
+                vacations.map(({ _id, endDate, startDate, status, type }) => {
+                    return (
+                        <div className={style.vacationContainer} key={_id}>
+                            <div>
+                                <p>
+                                    <StatusBadge
+                                        color={
+                                            status === 'pending'
+                                                ? 'orange'
+                                                : status === 'accepted'
+                                                  ? 'green'
+                                                  : 'red'
+                                        }
+                                        status={TitleCaser(status)}
+                                        key={_id}
+                                    />
+                                </p>
+                                <p>{TitleCaser(type)}</p>
+                            </div>
+                            <div className={style.datesContainer}>
+                                <p>
+                                    <TooltipImproved
+                                        children={<Start />}
+                                        text="Starting date"
+                                    />
+                                    {dayjs(startDate).format('MMMM Do, YYYY')}
+                                </p>
+                                <p>
+                                    {dayjs(endDate).format('MMMM Do, YYYY')}
+                                    <TooltipImproved
+                                        children={<KeyboardTab />}
+                                        text="Ending date"
+                                    />
+                                </p>
+                            </div>
                         </div>
-                        <div className={style.datesContainer}>
-                            <p>
-                                <TooltipImproved
-                                    children={<Start />}
-                                    text="Starting date"
-                                />
-                                {dayjs(startDate).format('MMMM Do, YYYY')}
-                            </p>
-                            <p>
-                                {dayjs(endDate).format('MMMM Do, YYYY')}
-                                <TooltipImproved
-                                    children={<KeyboardTab />}
-                                    text="Ending date"
-                                />
-                            </p>
-                        </div>
-                    </div>
-                )
-            })}
+                    )
+                })
+            ) : (
+                <div>
+                    <p>No vacations found.</p>
+                </div>
+            )}
         </div>
     )
 }
