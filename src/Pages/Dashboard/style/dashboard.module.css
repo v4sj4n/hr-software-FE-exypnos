@@ -52,11 +52,11 @@
         color 0.3s ease;
 }
 
-.cardGreen {
+.cardBlue {
     background-image: linear-gradient(180deg, #e0f2f7, #a8e0f0);
 }
 
-.cardBlue {
+.cardGreen {
     background-image: linear-gradient(180deg, #ede5ef, #c5b3e6);
 }
 

@@ -21,53 +21,58 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
     const [employeeData, setEmployeeData] = useState<EmployeeData>({
-        present: 0,
+        present: 0 ,
         absent: 0,
         onLeave: 0,
         remote: 0,
     })
-    const [isLoading, setIsLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     const updateEmployeeData = (data: Partial<EmployeeData>) => {
-        setEmployeeData((prevData) => ({ ...prevData, ...data }))
-    }
+        setEmployeeData((prevData) => ({
+            ...prevData,
+            ...data,
+        }));
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true)
-            setError(null)
-            try {
-                const [presentResponse, onLeaveResponse, remoteResponse] = await Promise.all([
-                    AxiosInstance.get('/user/remote/false'),
-                    AxiosInstance.get('/vacation/onLeave'),
-                    AxiosInstance.get('/user/remote/true')
-                ])
+                const fetchData = async () => {
+                    setIsLoading(true);
+                    setError(null);
+                    try {
+                        const [presentResponse, onLeaveResponse, remoteResponse] = await Promise.all([
+                            AxiosInstance.get('/user/remote/false'),
+                            AxiosInstance.get('/vacation/onLeave'),
+                            AxiosInstance.get('/user/remote/true')
+                        ]);
 
-                const present = presentResponse.data.number
-                const onLeave = onLeaveResponse.data.number
-                const remote = remoteResponse.data.number
-                const total = present + onLeave + remote
+                        const present = presentResponse?.data ;
+                        const onLeave = onLeaveResponse?.data;
+                        const remote = remoteResponse?.data;
+                        const absent = (present + remote);
 
-                updateEmployeeData({
-                    present,
-                    onLeave,
-                    remote,
-                    absent: total - (present + onLeave + remote)
-                })
-            } catch (error) {
-                console.error('Failed to fetch employee data:', error)
-                setError('Failed to fetch employee data. Please try again later.')
-            } finally {
-                setIsLoading(false)
-            }
-        }
+                        setEmployeeData({ present, onLeave, remote, absent });
 
-        fetchData()
-    }, [])
+                        console.log('Updated Employee Data:', { present, onLeave, remote, absent });
+                    } catch (error) {
+                        console.error('Failed to fetch employee data:', error);
+                        setError('Failed to fetch employee data. Please try again later.');
+                    } finally {
+                        setIsLoading(false);
+                    }
+                };
+    
+        fetchData();
+    }, []);
+    
+
 
     return (
-        <DashboardContext.Provider value={{ employeeData, updateEmployeeData, isLoading, error }}>
+        <DashboardContext.Provider
+        value={{ employeeData, updateEmployeeData, isLoading, error }}
+
+         >
             {children}
         </DashboardContext.Provider>
     )

@@ -5,7 +5,10 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    height: 2000px;
+    height: 90.9vh;
+    padding: 20px;
+    overflow: hidden;
+
 }
 
 .filterContainer {
@@ -19,7 +22,7 @@
 }
 
 .filterField {
-    background-color: #e0dfff; /* Input background color */
+    background-color: #e0dfff; 
     border: 1px solid #bcc2cc;
     border-radius: 5px;
     padding: 10px;
@@ -30,7 +33,6 @@
     display: flex;
     justify-content: space-between;
     gap: 20px;
-    height: auto;
 }
 .kanbanColumns h2 {
     color: #373535;
@@ -40,7 +42,6 @@
     border-radius: 10px;
     padding: 20px;
     width: 100%;
-    height: auto;
 }
 
 .kanbanItem {
