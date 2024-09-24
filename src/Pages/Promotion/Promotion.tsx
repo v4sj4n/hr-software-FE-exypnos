@@ -82,7 +82,7 @@ export default function Promotion() {
         <>
             <div style={{ display: 'flex' }}>
                 <h3
-                    style={{ position: 'absolute', top: '95px', right: '20px' }}
+                    style={{ position: 'absolute', top: '95px', right: '10%' }}
                 >
                     {name}
                 </h3>
