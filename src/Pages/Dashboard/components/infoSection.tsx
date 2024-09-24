@@ -51,7 +51,8 @@ const InfoSectionContent: React.FC = () => {
                                 </h3>
                                 <span>{formatDate(event.startDate)}</span>
                             </div>
-                            <p>{event.description}</p>
+                           
+                            <p className={style.description}>{event.description}</p>
                         </div>
                     </li>
                 ))}

@@ -15,6 +15,7 @@ const PasswordInput: React.FC<InputProps> = (props) => {
                 onChange={props.onChange}
                 helperText={props.error ? props.errortext : ''}
                 error={props.error}
+                placeholder={props.placeholder}
                 name={props.name}
                 label={props.label}
                 onBlur={props.onBlur}

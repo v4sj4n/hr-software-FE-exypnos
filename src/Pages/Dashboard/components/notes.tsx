@@ -8,7 +8,6 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton'
 import { ModalComponent } from '@/Components/Modal/Modal'
 import Input from '@/Components/Input/Index'
-import Card1 from '@/Components/Card/Card'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
@@ -127,12 +126,7 @@ export const Notes = () => {
     }
 
     return (
-        <Card1
-            padding="20px"
-            borderRadius="15px"
-            flex="1"
-            backgroundColor="rgba(255, 255, 255, 0.7)"
-        >
+       <div>
             <div
                 style={{
                     display: 'flex',
@@ -327,7 +321,7 @@ export const Notes = () => {
                     }
                 />
             </ModalComponent>
-        </Card1>
+            </div>
     )
 }
 

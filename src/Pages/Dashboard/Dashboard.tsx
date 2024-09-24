@@ -110,18 +110,26 @@ const DashboardContent: React.FC = () => {
                         <div className={style.cardPurple}>
                             <Card
                                 title="Remote Employees"
-                                content={String(employeeData.remote)} // Display the number of remote employees
+                                content={String(employeeData.remote)} 
                                 icon="Remote"
                             />
                         </div>
                     </div>
 
                     <div className={style.middleRow}>
-                        <Notes />
+                       
                         <Card1
                             padding="20px"
                             borderRadius="10px"
-                            flex="5"
+                            flex="0.8"
+                            backgroundColor="rgba(255, 255, 255, 0.7)"
+                        >
+                             <Notes />
+                        </Card1>
+                        <Card1
+                            padding="20px"
+                            borderRadius="10px"
+                            flex="1.2"
                             backgroundColor="rgba(255, 255, 255, 0.7)"
                         >
                             <InfoSection />
@@ -129,7 +137,7 @@ const DashboardContent: React.FC = () => {
 
                         <Card1
                             borderRadius="10px"
-                            flex=""
+                            flex="1"
                             padding="20px"
                             backgroundColor="rgba(255, 255, 255, 0.7)"
                         >
@@ -139,7 +147,7 @@ const DashboardContent: React.FC = () => {
                     </div>
                     <Card1
                         backgroundColor="rgba(255, 255, 255, 0.7)"
-                        padding="20px"
+                      
                         border="15px"
                         marginTop="20px"
                         borderRadius="10px"
