@@ -43,7 +43,7 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
     const [open, setOpen] = useState(false)
 
     useEffect(() => {
-        const socket = io('http://localhost:3000')
+        const socket = io('https://seashell-app-rvw8f.ondigitalocean.app/')
 
         socket.on('newMessage', (message) => {
             if (message.recipientId === senderId) {
