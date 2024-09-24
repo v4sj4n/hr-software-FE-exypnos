@@ -14,15 +14,13 @@ import Weather from './components/Weather.tsx'
 import { Notes } from './components/notes.tsx'
 
 const DashboardContent: React.FC = () => {
-      
-    const { employeeData, isLoading, error } = useDashboardContext();
+    const { employeeData, isLoading, error } = useDashboardContext()
     greeter()
 
-    console.log('Employee Data in DashboardContent:', employeeData);
+    console.log('Employee Data in DashboardContent:', employeeData)
 
-    if (isLoading) return <p>Loading...</p>;
-    if (error) return <p>{error}</p>;
-   
+    if (isLoading) return <p>Loading...</p>
+    if (error) return <p>{error}</p>
 
     const { currentUser } = useAuth()
     const userName = currentUser ? currentUser.firstName : 'User'
@@ -37,9 +35,6 @@ const DashboardContent: React.FC = () => {
 
     const [animateOnLogin, setAnimateOnLogin] = useState(true)
 
-
-
-  
     useEffect(() => {
         const timeout = setTimeout(() => {
             setAnimateOnLogin(false)
@@ -91,37 +86,37 @@ const DashboardContent: React.FC = () => {
                         </div>
                     </div>
 
-<div className={style.cardContainer}>
-<div className={style.cardBlue}>
-        <Card
-            title="All"
-            content={String(employeeData.absent)} // Display the number of absent employees
-            icon="All"
-        />
-    </div>
-    <div className={style.cardGreen}>
-        <Card
-             title="Present Employees"
-             content={String(employeeData.present)} 
-             icon="Present" 
-        />
-    </div>
-  
-    <div className={style.cardYellow}>
-        <Card
-          title="Employees on Leave"
-          content={String(employeeData.onLeave)} // Display the number of employees on leave
-          icon="On Leave"
-      />
-    </div>
-    <div className={style.cardPurple}>
-        <Card
-          title="Remote Employees"
-          content={String(employeeData.remote)} // Display the number of remote employees
-          icon="Remote"
-      />
-    </div>
-</div>
+                    <div className={style.cardContainer}>
+                        <div className={style.cardBlue}>
+                            <Card
+                                title="All"
+                                content={String(employeeData.absent)}
+                                icon="All"
+                            />
+                        </div>
+                        <div className={style.cardGreen}>
+                            <Card
+                                title="Present Employees"
+                                content={String(employeeData.present)}
+                                icon="Present"
+                            />
+                        </div>
+
+                        <div className={style.cardYellow}>
+                            <Card
+                                title="Employees on Leave"
+                                content={String(employeeData.onLeave)} // Display the number of employees on leave
+                                icon="On Leave"
+                            />
+                        </div>
+                        <div className={style.cardPurple}>
+                            <Card
+                                title="Remote Employees"
+                                content={String(employeeData.remote)} // Display the number of remote employees
+                                icon="Remote"
+                            />
+                        </div>
+                    </div>
 
                     <div className={style.middleRow}>
                         <Notes />

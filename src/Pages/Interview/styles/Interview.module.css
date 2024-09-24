@@ -8,7 +8,6 @@
     height: 90.9vh;
     padding: 20px;
     overflow: hidden;
-
 }
 
 .filterContainer {
@@ -22,7 +21,7 @@
 }
 
 .filterField {
-    background-color: #e0dfff; 
+    background-color: #e0dfff;
     border: 1px solid #bcc2cc;
     border-radius: 5px;
     padding: 10px;

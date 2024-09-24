@@ -10,6 +10,7 @@ import { FileUploadProvider } from '../../Context/FileUpoadProvider'
 import { ProfileProvider } from './Context/ProfileProvider'
 import Selecter from '@/Components/Input/components/Select/Selecter'
 import Toast from '@/Components/Toast/Toast'
+import { TitleCaser } from '@/Helpers/TitleCaser'
 
 const ProfileFormContext = () => {
     const { uploadImage, previewImage } = useFileUpload()
@@ -48,46 +49,55 @@ const ProfileFormContext = () => {
 
             <div>
                 <div
-                    className={style.profile}
-                    style={{ position: 'relative', display: 'inline-block' }}
-                >
-                    <Avatar
-                        src={previewImage || user.imageUrl}
-                        style={{
-                            width: '150px',
-                            height: '150px',
-                            borderRadius: '50%',
-                        }}
-                    />
-                    {isCurrentUser && (
-                        <div
-                            style={{
-                                position: 'absolute',
-                                bottom: '1px',
-                                right: '10px',
-
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                cursor: 'pointer',
-                            }}
-                        >
-                            <Image onChange={uploadImage} />
-                        </div>
-                    )}
-                </div>
-                <div
                     style={{
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        marginTop: '15px',
                     }}
                 >
-                    <div style={{ fontSize: '30px', color: '#000000' }}>
-                        {`${user.firstName} ${user.lastName}`}
+                    <div
+                        style={{
+                            position: 'relative',
+                            display: 'inline-block',
+                        }}
+                    >
+                        <Avatar
+                            src={previewImage || user.imageUrl}
+                            style={{
+                                width: '150px',
+                                height: '150px',
+                                borderRadius: '50%',
+                            }}
+                        />
+
+                        {isCurrentUser && (
+                            <div
+                                style={{
+                                    position: 'absolute',
+                                    bottom: '5px',
+                                    right: '5px',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    cursor: 'pointer',
+                                    backgroundColor: '#fff',
+                                    borderRadius: '50%',
+                                    padding: '5px',
+                                }}
+                            >
+                                <Image onChange={uploadImage} />
+                            </div>
+                        )}
                     </div>
-                    <div style={{ color: '#000000' }}>{user.auth.email}</div>
+
+                    <div style={{ marginTop: '15px', textAlign: 'center' }}>
+                        <div style={{ fontSize: '30px', color: '#000000' }}>
+                            {`${TitleCaser(user.firstName)} ${TitleCaser(user.lastName)}`}
+                        </div>
+                        <div style={{ color: '#000000' }}>
+                            {user.auth.email}
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -137,7 +147,7 @@ const ProfileFormContext = () => {
                     <Selecter
                         options={Places}
                         multiple={false}
-                       disabled={!isAdmin}
+                        disabled={!isAdmin}
                         width="350px"
                         label="Places of Birth"
                         name="pob"
@@ -149,7 +159,8 @@ const ProfileFormContext = () => {
 
             <div className={style.forms}>
                 <div className={style.inputWidth}>
-                    <Selecter disabled={!isAdmin}
+                    <Selecter
+                        disabled={!isAdmin}
                         width="100%"
                         name="gender"
                         label="Gender"
@@ -186,7 +197,8 @@ const ProfileFormContext = () => {
                     />
                 </div>
                 <div className={style.inputWidth}>
-                    <Selecter   disabled={!isAdmin}
+                    <Selecter
+                        disabled={!isAdmin}
                         multiple={false}
                         onChange={handlePositionChange}
                         options={position}

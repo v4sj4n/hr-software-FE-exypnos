@@ -116,6 +116,7 @@ export const HeaderContent = () => {
                                         padding: '20px',
                                         borderBottom: '1px solid #eee',
                                         textAlign: 'center',
+                                        justifyContent: 'center',
                                     }}
                                 >
                                     <img
@@ -135,6 +136,7 @@ export const HeaderContent = () => {
                                         </strong>
                                         <p
                                             style={{
+                                                maxWidth: '60px',
                                                 margin: 0,
                                                 fontSize: '14px',
                                                 color: theme.palette.text

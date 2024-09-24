@@ -17,30 +17,40 @@ const PrivateRoute = () => {
     return (
         <>
             <SidebarHeaderProvider>
-            <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
-                <Header />
-                <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-                    <SideBar />
-                    <main
-                        style={{
-                            backgroundColor: theme.palette.background.default,
-                            color: theme.palette.text.primary,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            width: '100%',
-                            height: '100%',
-                            padding: '20px',
-                            overflow: 'auto',
-                        }}
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: '100vh',
+                        overflow: 'hidden',
+                    }}
+                >
+                    <Header />
+                    <div
+                        style={{ display: 'flex', flex: 1, overflow: 'hidden' }}
                     >
-                        <BreadcrumbComponent />
-                        <div style={{ flex: 1 }}>
-                            <Outlet />
-                        </div>
-                    </main>
+                        <SideBar />
+                        <main
+                            style={{
+                                backgroundColor:
+                                    theme.palette.background.default,
+                                color: theme.palette.text.primary,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                width: '100%',
+                                height: '100%',
+                                padding: '20px',
+                                overflow: 'auto',
+                            }}
+                        >
+                            <BreadcrumbComponent />
+                            <div style={{ flex: 1 }}>
+                                <Outlet />
+                            </div>
+                        </main>
+                    </div>
                 </div>
-            </div>
-        </SidebarHeaderProvider>
+            </SidebarHeaderProvider>
         </>
     )
 }

@@ -90,6 +90,7 @@ const About = () => {
                 <div
                     data-aos="fade-up"
                     data-aos-duration="2000"
+                    
                     className={styles.infoSection}
                 >
                     <h2 style={themeStyle}>Our Mission</h2>

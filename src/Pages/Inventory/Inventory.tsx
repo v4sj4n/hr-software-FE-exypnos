@@ -6,6 +6,7 @@ import Button from '@/Components/Button/Button'
 import { ModalComponent } from '@/Components/Modal/Modal'
 import { InventoryTable } from './components/InventoryTable.tsx'
 import { CreateItemForm } from './components/Form/CreateItemForm.tsx'
+import { ForbiddenResource } from '@/Components/ForbiddenResource/ForbiddenResource.tsx'
 
 function InventoryBaseComponent() {
     const {
@@ -14,29 +15,31 @@ function InventoryBaseComponent() {
         handleCloseCreateModalOpen,
     } = useContext(InventoryContext)
     return (
-        <main className={style.main}>
-            <ModalComponent
-                open={createModalOpen}
-                handleClose={handleCloseCreateModalOpen}
-            >
-                <CreateItemForm />
-            </ModalComponent>
-            <InventoryTable />
-            <div
-                style={{
-                    display: 'flex',
-                    justifyContent: 'end',
-                    marginTop: '1rem',
-                }}
-            >
-                <Button
-                    type={ButtonTypes.PRIMARY}
-                    btnText="Add an Item"
-                    onClick={handleOpenCreateModalOpen}
-                    width="12rem"
-                />
-            </div>
-        </main>
+        <ForbiddenResource>
+            <main className={style.main}>
+                <ModalComponent
+                    open={createModalOpen}
+                    handleClose={handleCloseCreateModalOpen}
+                >
+                    <CreateItemForm />
+                </ModalComponent>
+                <InventoryTable />
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'end',
+                        marginTop: '1rem',
+                    }}
+                >
+                    <Button
+                        type={ButtonTypes.PRIMARY}
+                        btnText="Add an Item"
+                        onClick={handleOpenCreateModalOpen}
+                        width="12rem"
+                    />
+                </div>
+            </main>
+        </ForbiddenResource>
     )
 }
 
