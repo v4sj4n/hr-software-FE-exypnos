@@ -52,7 +52,7 @@ function InterviewKanbanContent() {
         color: theme.palette.text.primary,
     }
     return (
-        <div className={style.kanbanBoard}>
+        <div className={style.kanbanBoard} >
             <div className={style.filterContainer}>
                 <Selecter
                     name="currentPhase"
