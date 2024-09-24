@@ -2,7 +2,7 @@ import React from 'react'
 
 export interface User {
     email: string
-    _id: number
+    _id: string
     name: string
     firstName: string
     lastName: string

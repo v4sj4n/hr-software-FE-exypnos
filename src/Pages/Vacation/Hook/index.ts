@@ -80,96 +80,51 @@ export const useGetUserWithVacations = () => {
     })
 }
 
-export const useUpdateVacation = () => {
-    const { searchParams } = useContext(VacationContext)
-    const queryClient = useQueryClient()
-
-    return useMutation({
-        mutationFn: ({ vacation }: { vacation: VacationFormFields }) =>
-            updateVacation(
-                searchParams.get('selectedVacation') as string,
-                vacation,
-            ),
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ['vacations'],
-            })
-            queryClient.invalidateQueries({
-                queryKey: ['vacation'],
-            })
-            queryClient.invalidateQueries({
-                queryKey: [searchParams.get('selectedVacation') as string],
-            })
-        },
-    })
-}
 export const useCreateVacation = () => {
     const queryClient = useQueryClient()
-
+    const { createVacationToggler, setErrors, setToastConfigs } =
+        useContext(VacationContext)
     return useMutation({
         mutationFn: ({ vacation }: { vacation: CreateVacationFormFields }) =>
             createVacation(vacation),
+
+        onError(error) {
+            console.log('error', error)
+
+            setToastConfigs({
+                isOpen: true,
+                message: 'Failed to create vacation',
+                severity: 'error',
+            })
+            if (error instanceof AxiosError)
+                setErrors({
+                    createError: error?.response?.data.message,
+                    updateError: null,
+                })
+            else {
+                setErrors({
+                    createError: 'an error happened, a vacation wasnt created',
+                    updateError: null,
+                })
+            }
+        },
         onSuccess: () => {
+            setToastConfigs({
+                isOpen: true,
+                message: 'Vacation created successfully',
+                severity: 'success',
+            })
+            createVacationToggler()
+        },
+        onSettled: () => {
             queryClient.invalidateQueries({
                 queryKey: ['vacations'],
             })
         },
     })
 }
-
-export const useUpdateVacationForm = (vacation: UseQueryResult<any, Error>) => {
-    const { setErrors, setToastConfigs, handleCloseVacationModalOpen } =
-        useContext(VacationContext)
-    const updater = useUpdateVacation()
-
-    const form = useForm({
-        defaultValues: {
-            status: vacation.data.status,
-            type: vacation.data.type,
-            startDate: dayjs(vacation.data.startDate).format('YYYY-MM-DD'),
-            endDate: dayjs(vacation.data.endDate).format('YYYY-MM-DD'),
-        },
-        validatorAdapter: valibotValidator(),
-        onSubmit: async ({ value }) => {
-            value.endDate = dayjs(value.endDate).toISOString()
-            value.startDate = dayjs(value.startDate).toISOString()
-            updater.mutate({ vacation: value })
-            if (updater.isError) {
-                setToastConfigs({
-                    isOpen: true,
-                    message:
-                        updater.error?.message || 'Failed to update vacation',
-                    severity: 'error',
-                })
-                if (updater.error instanceof AxiosError)
-                    setErrors({
-                        createError: null,
-                        updateError: updater.error.response?.data,
-                    })
-                else {
-                    setErrors({
-                        createError: null,
-                        updateError: 'something happened',
-                    })
-                }
-            } else {
-                setToastConfigs({
-                    isOpen: true,
-                    message: 'Vacation updated successfully',
-                    severity: 'success',
-                })
-                handleCloseVacationModalOpen()
-            }
-        },
-    })
-    return { form }
-}
-
 export const useCreateVacationForm = () => {
-    const { createVacationToggler, setErrors, setToastConfigs } =
-        useContext(VacationContext)
-
-    const { mutate, isError, error: mutationError } = useCreateVacation()
+    const vacationCreator = useCreateVacation()
 
     const form = useForm<{
         description: string
@@ -184,36 +139,82 @@ export const useCreateVacationForm = () => {
             endDate: dayjs(new Date()).add(3, 'day').format('YYYY-MM-DD'),
         },
         onSubmit: async ({ value }) => {
-            mutate({ vacation: value })
-            if (isError) {
-                setToastConfigs({
-                    isOpen: true,
-                    message:
-                        mutationError?.message || 'Failed to create vacation',
-                    severity: 'error',
-                })
-                if (mutationError instanceof AxiosError)
-                    setErrors({
-                        createError: mutationError.response?.data,
-                        updateError: null,
-                    })
-                else {
-                    setErrors({
-                        createError: 'something happened',
-                        updateError: null,
-                    })
-                }
-            } else {
-                setToastConfigs({
-                    isOpen: true,
-                    message: 'Vacation created successfully',
-                    severity: 'success',
-                })
-                createVacationToggler()
-            }
+            vacationCreator.mutate({ vacation: value })
         },
     })
 
+    return { form }
+}
+
+export const useUpdateVacation = () => {
+    const { setErrors, setToastConfigs, handleCloseVacationModalOpen } =
+        useContext(VacationContext)
+    const { searchParams } = useContext(VacationContext)
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: ({ vacation }: { vacation: VacationFormFields }) =>
+            updateVacation(
+                searchParams.get('selectedVacation') as string,
+                vacation,
+            ),
+        onError(error) {
+            setToastConfigs({
+                isOpen: true,
+                message: error?.message || 'Failed to update vacation',
+                severity: 'error',
+            })
+            if (error instanceof AxiosError)
+                setErrors({
+                    createError: null,
+                    updateError: error.response?.data.message,
+                })
+            else {
+                setErrors({
+                    createError: null,
+                    updateError: 'something happened',
+                })
+            }
+        },
+        onSuccess: () => {
+            setToastConfigs({
+                isOpen: true,
+                message: 'Vacation updated successfully',
+                severity: 'success',
+            })
+            handleCloseVacationModalOpen()
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries({
+                queryKey: ['vacations'],
+            })
+            queryClient.invalidateQueries({
+                queryKey: ['vacation'],
+            })
+            queryClient.invalidateQueries({
+                queryKey: [searchParams.get('selectedVacation') as string],
+            })
+        },
+    })
+}
+
+export const useUpdateVacationForm = (vacation: UseQueryResult<any, Error>) => {
+    const updater = useUpdateVacation()
+
+    const form = useForm({
+        defaultValues: {
+            status: vacation.data.status,
+            type: vacation.data.type,
+            startDate: dayjs(vacation.data.startDate).format('YYYY-MM-DD'),
+            endDate: dayjs(vacation.data.endDate).format('YYYY-MM-DD'),
+        },
+        validatorAdapter: valibotValidator(),
+        onSubmit: async ({ value }) => {
+            value.endDate = dayjs(value.endDate).toISOString()
+            value.startDate = dayjs(value.startDate).toISOString()
+            updater.mutate({ vacation: value })
+        },
+    })
     return { form }
 }
 

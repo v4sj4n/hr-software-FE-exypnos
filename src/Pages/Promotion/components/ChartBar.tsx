@@ -47,10 +47,12 @@ export default function ChartBar({ id }: { id: string }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await AxiosInstance.get<Salary[]>(`/salary/user/${id}?graph=true`)
-                const processedData = response.data.map(item => ({
+                const response = await AxiosInstance.get<Salary[]>(
+                    `/salary/user/${id}?graph=true`,
+                )
+                const processedData = response.data.map((item) => ({
                     ...item,
-                    month: getMonthName(Number(item.month) + 1)
+                    month: getMonthName(Number(item.month) + 1),
                 }))
                 setDataset(processedData)
             } catch (error) {
@@ -83,12 +85,17 @@ export default function ChartBar({ id }: { id: string }) {
                         slots={{
                             axisContent: (props: ChartsAxisContentProps) => {
                                 const { dataIndex } = props
-                                const data = dataIndex !== null && dataIndex !== undefined ? dataset[dataIndex] : undefined
+                                const data =
+                                    dataIndex !== null &&
+                                    dataIndex !== undefined
+                                        ? dataset[dataIndex]
+                                        : undefined
 
                                 return (
                                     <div
                                         style={{
-                                            backgroundColor: theme.palette.background.paper,
+                                            backgroundColor:
+                                                theme.palette.background.paper,
                                             padding: '10px',
                                             borderRadius: '5px',
                                             boxShadow: `0 4px 6px ${theme.palette.grey[500]}`,
@@ -96,11 +103,22 @@ export default function ChartBar({ id }: { id: string }) {
                                     >
                                         <p>Month: {data?.month ?? ''}</p>
                                         <p>Year: {data?.year ?? ''}</p>
-                                        <p>Net Salary: {data?.netSalary ?? ''}</p>
-                                        <p>Gross Salary: {data?.grossSalary ?? ''}</p>
+                                        <p>
+                                            Net Salary: {data?.netSalary ?? ''}
+                                        </p>
+                                        <p>
+                                            Gross Salary:{' '}
+                                            {data?.grossSalary ?? ''}
+                                        </p>
                                         <p>Bonus: {data?.bonus ?? ''}</p>
-                                        <p>Health Insurance: {data?.healthInsurance ?? ''}</p>
-                                        <p>Social Security: {data?.socialSecurity ?? ''}</p>
+                                        <p>
+                                            Health Insurance:{' '}
+                                            {data?.healthInsurance ?? ''}
+                                        </p>
+                                        <p>
+                                            Social Security:{' '}
+                                            {data?.socialSecurity ?? ''}
+                                        </p>
                                     </div>
                                 )
                             },

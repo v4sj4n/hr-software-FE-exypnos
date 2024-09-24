@@ -30,7 +30,9 @@ export default function Rating({ id }: { id: string }) {
     const [open, setOpen] = useState(false)
     const [toastOpen, setToastOpen] = useState(false)
     const [toastMessage, setToastMessage] = useState('')
-    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>('success')
+    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
+        'success',
+    )
 
     const handleOpen = (rating: Rating) => {
         setUpdateRating(rating)
@@ -87,7 +89,11 @@ export default function Rating({ id }: { id: string }) {
         const fetchData = async () => {
             try {
                 let response
-                if (currentUser?.role === 'pm' && currentUser?._id && currentUser._id.toString() !== id) {
+                if (
+                    currentUser?.role === 'pm' &&
+                    currentUser?._id &&
+                    currentUser._id.toString() !== id
+                ) {
                     response = await AxiosInstance.get(`/rating/user/${id}`, {
                         params: {
                             pmId: currentUser._id,
@@ -125,28 +131,56 @@ export default function Rating({ id }: { id: string }) {
             />
 
             <Card backgroundColor="rgba(255, 255, 255, 0.7)">
-                <h3 style={{ margin: ' 0 0 10px  0 ', color: '#2457a3', padding: '10px' }}>
+                <h3
+                    style={{
+                        margin: ' 0 0 10px  0 ',
+                        color: '#2457a3',
+                        padding: '10px',
+                    }}
+                >
                     Rating
                 </h3>
-                {!ratings || ratings.length === 0  && <div>No ratings found</div>}
+                {!ratings ||
+                    (ratings.length === 0 && <div>No ratings found</div>)}
                 <div className={style.secondDiv}>
                     {ratings &&
                         ratings.map((rating) => (
                             <Card
                                 key={rating._id}
-                                backgroundColor={theme.palette.background.default}
+                                backgroundColor={
+                                    theme.palette.background.default
+                                }
                                 padding="10px"
                             >
                                 <h4>{rating.projectId.name}</h4>
                                 <div className={style.grid}>
-                                    <BasicRating type="Productivity Score" value={rating.productivityScore} />
-                                    <BasicRating type="Team Collaboration Score" value={rating.teamCollaborationScore} />
-                                    <BasicRating type="Technical Skill Level" value={rating.technicalSkillLevel} />
-                                    <BasicRating type="Client Feedback Rating" value={rating.clientFeedbackRating} />
+                                    <BasicRating
+                                        type="Productivity Score"
+                                        value={rating.productivityScore}
+                                    />
+                                    <BasicRating
+                                        type="Team Collaboration Score"
+                                        value={rating.teamCollaborationScore}
+                                    />
+                                    <BasicRating
+                                        type="Technical Skill Level"
+                                        value={rating.technicalSkillLevel}
+                                    />
+                                    <BasicRating
+                                        type="Client Feedback Rating"
+                                        value={rating.clientFeedbackRating}
+                                    />
                                 </div>
                                 {(currentUser.role === 'hr' ||
-                                    (currentUser.role === 'pm' && currentUser._id.toString() !== id)) && (
-                                    <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                                    (currentUser.role === 'pm' &&
+                                        currentUser._id.toString() !== id)) && (
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'flex-end',
+                                            width: '100%',
+                                        }}
+                                    >
                                         <Button
                                             type={ButtonTypes.SECONDARY}
                                             btnText=""
@@ -167,34 +201,69 @@ export default function Rating({ id }: { id: string }) {
                 </div>
 
                 {open && updateRating && (
-                    <ModalComponent open={open} handleClose={() => setOpen(false)}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <ModalComponent
+                        open={open}
+                        handleClose={() => setOpen(false)}
+                    >
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                            }}
+                        >
                             <h3>Change Rating</h3>
-                            <CloseIcon style={{ cursor: 'pointer' }} onClick={() => setOpen(false)} />
+                            <CloseIcon
+                                style={{ cursor: 'pointer' }}
+                                onClick={() => setOpen(false)}
+                            />
                         </div>
                         <ChangeRating
                             label="Productivity Score"
                             name="productivityScore"
                             value={updateRating.productivityScore}
-                            onChange={(event, value) => handleEditChange(event, value, 'productivityScore')}
+                            onChange={(event, value) =>
+                                handleEditChange(
+                                    event,
+                                    value,
+                                    'productivityScore',
+                                )
+                            }
                         />
                         <ChangeRating
                             label="Team Collaboration Score"
                             name="teamCollaborationScore"
                             value={updateRating.teamCollaborationScore}
-                            onChange={(event, value) => handleEditChange(event, value, 'teamCollaborationScore')}
+                            onChange={(event, value) =>
+                                handleEditChange(
+                                    event,
+                                    value,
+                                    'teamCollaborationScore',
+                                )
+                            }
                         />
                         <ChangeRating
                             label="Technical Skill Level"
                             name="technicalSkillLevel"
                             value={updateRating.technicalSkillLevel}
-                            onChange={(event, value) => handleEditChange(event, value, 'technicalSkillLevel')}
+                            onChange={(event, value) =>
+                                handleEditChange(
+                                    event,
+                                    value,
+                                    'technicalSkillLevel',
+                                )
+                            }
                         />
                         <ChangeRating
                             label="Client Feedback Rating"
                             name="clientFeedbackRating"
                             value={updateRating.clientFeedbackRating}
-                            onChange={(event, value) => handleEditChange(event, value, 'clientFeedbackRating')}
+                            onChange={(event, value) =>
+                                handleEditChange(
+                                    event,
+                                    value,
+                                    'clientFeedbackRating',
+                                )
+                            }
                         />
 
                         <Button

@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import { useChat } from '../context/ChatContext'
 import { Box, TextField, IconButton, InputAdornment } from '@mui/material'
-import { Send as SendIcon, AttachFile as AttachFileIcon } from '@mui/icons-material'
+import {
+    Send as SendIcon,
+    AttachFile as AttachFileIcon,
+} from '@mui/icons-material'
 import { useSocket } from '../context/SocketContext'
 import AxiosInstance from '@/Helpers/Axios'
 
@@ -98,7 +101,14 @@ const SendMessage: React.FC = () => {
     }
 
     return (
-        <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', marginTop: 2 }}>
+        <Box
+            sx={{
+                display: 'flex',
+                gap: 1.5,
+                alignItems: 'center',
+                marginTop: 2,
+            }}
+        >
             <TextField
                 fullWidth
                 label="Type a message..."

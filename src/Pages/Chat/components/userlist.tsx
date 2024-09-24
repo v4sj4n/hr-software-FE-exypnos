@@ -39,16 +39,15 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
 
     useEffect(() => {
         const newSocket = io('https://seashell-app-rvw8f.ondigitalocean.app', {
-          transports: ['websocket'],  
-          withCredentials: true,     
-        });
-        setSocket(newSocket);
-      
+            transports: ['websocket'],
+            withCredentials: true,
+        })
+        setSocket(newSocket)
+
         return () => {
-          newSocket.close();
-        };
-      }, []);
-      
+            newSocket.close()
+        }
+    }, [])
 
     useEffect(() => {
         if (socket) {
@@ -137,7 +136,7 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
         const activeUsers = users.filter((user) =>
             activeUserIds.includes(user._id),
         )
-        console.log('Filtered active users:', activeUsers) 
+        console.log('Filtered active users:', activeUsers)
 
         if (searchActiveChatsQuery.trim()) {
             return activeUsers.filter((user) =>
@@ -165,7 +164,7 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
     const handleSelectUser = async (userId: string) => {
         console.log('Selected Recipient ID:', userId)
         setRecipientId(userId)
-        setSelectedChatId(userId) 
+        setSelectedChatId(userId)
         setLoading(true)
         setError(null)
 
