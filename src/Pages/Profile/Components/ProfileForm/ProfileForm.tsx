@@ -40,7 +40,6 @@ const ProfileFormContext = () => {
 
     return (
         <div className={style.container}>
-            {/* <div className={style.title}>Personal Information</div> */}
             <Toast
                 open={updateToastOpen}
                 message={updateToastMessage}
@@ -49,49 +48,47 @@ const ProfileFormContext = () => {
             />
 
             <div>
-                <div
-                    className={style.profile}
-                    style={{ position: 'relative', display: 'inline-block' }}
-                >
-                    <Avatar
-                        src={previewImage || user.imageUrl}
-                        style={{
-                            width: '150px',
-                            height: '150px',
-                            borderRadius: '50%',
-                        }}
-                    />
-                    {isCurrentUser && (
-                        <div
-                            style={{
-                                position: 'absolute',
-                                bottom: '1px',
-                                right: '10px',
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div style={{ position: 'relative', display: 'inline-block' }}>
+        <Avatar
+            src={previewImage || user.imageUrl}
+            style={{
+                width: '150px',
+                height: '150px',
+                borderRadius: '50%',
+            }}
+        />
 
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                cursor: 'pointer',
-                            }}
-                        >
-                            <Image onChange={uploadImage} />
-                        </div>
-                    )}
-                </div>
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        marginTop: '15px',
-                    }}
-                >
-                    <div style={{ fontSize: '30px', color: '#000000' }}>
-                        {`${user.firstName} ${user.lastName}`}
-                    </div>
-                    <div style={{ color: '#000000' }}>{user.auth.email}</div>
-                </div>
+        {isCurrentUser && (
+            <div
+                style={{
+                    position: 'absolute',
+                    bottom: '5px', 
+                    right: '5px',  
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                    backgroundColor: '#fff', 
+                    borderRadius: '50%',    
+                    padding: '5px',         
+                }}
+            >
+                <Image onChange={uploadImage} />
             </div>
+        )}
+    </div>
+
+    <div style={{ marginTop: '15px', textAlign: 'center' }}>
+        <div style={{ fontSize: '30px', color: '#000000' }}>
+            {`${user.firstName} ${user.lastName}`}
+        </div>
+        <div style={{ color: '#000000' }}>{user.auth.email}</div>
+    </div>
+</div>
+</div>
+
+
 
             <div className={style.forms}></div>
 

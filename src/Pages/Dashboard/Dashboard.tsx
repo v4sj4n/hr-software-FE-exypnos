@@ -95,7 +95,7 @@ const DashboardContent: React.FC = () => {
 <div className={style.cardBlue}>
         <Card
             title="All"
-            content={String(employeeData.absent)} // Display the number of absent employees
+            content={String(employeeData.absent)} 
             icon="All"
         />
     </div>
