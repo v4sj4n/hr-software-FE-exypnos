@@ -1,18 +1,11 @@
-export interface User {
+export interface Message {
     _id: string
-    token?: string
-    name: string
-    firstName: string
-    lastName: string
-    email: string
-    phone: string
-    role: string
+    conversationId: string
+    senderId: string
+    text: string
 }
 
-export interface Message {
-    senderId: string
-    recipientId: string
-    message: string
-    timestamp: string
-    read?: boolean
+export interface Conversation {
+    _id: string
+    name: string
 }
