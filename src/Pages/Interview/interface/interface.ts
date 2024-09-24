@@ -1,4 +1,4 @@
-import { Dispatch } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import { DropResult } from 'react-beautiful-dnd'
 
 export interface Interview {
@@ -58,6 +58,9 @@ export interface InterviewContextType {
     setEndDate: Dispatch<React.SetStateAction<string>>
     filteredInterviews: Interview[]
     isFiltered: boolean
+    showFilter: boolean
+    setShowFilter: Dispatch<SetStateAction<boolean>>
+
 
     fetchFilteredInterviews: (
         currentPhase?: string,
