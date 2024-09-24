@@ -183,7 +183,7 @@ h3 {
     transition: box-shadow 0.4s ease;
     animation:
         gradient-flow 5s ease infinite,
-        continuous-pulse 4s ease-in-out infinite; 
+        continuous-pulse 4s ease-in-out infinite;
 }
 
 .welcome * {

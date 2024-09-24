@@ -25,7 +25,9 @@ export const useGetAllEvents = () => {
             fetchEvents(searchEvent || '', pageParam, currentUserId),
         initialPageParam: 0,
         getNextPageParam: (lastPage, allPages) => {
-            return lastPage.totalPages > allPages.length ? allPages.length : undefined
+            return lastPage.totalPages > allPages.length
+                ? allPages.length
+                : undefined
         },
         enabled: !!currentUserId,
     })

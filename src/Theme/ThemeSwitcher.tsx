@@ -28,7 +28,7 @@ const DropdownButton = styled(IconButton)({
 })
 
 const ThemeSwitcher: React.FC = () => {
-    const { toggleTheme } = useThemeContext()
+    const { toggleTheme, isPurpleTheme } = useThemeContext()
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -40,10 +40,14 @@ const ThemeSwitcher: React.FC = () => {
     }
 
     const handleThemeChange = (theme: string) => {
-        toggleTheme()
+        if (
+            (isPurpleTheme && theme === 'blue') ||
+            (!isPurpleTheme && theme === 'purple')
+        ) {
+            toggleTheme()
+        }
         handleClose()
     }
-
     return (
         <Box
             display="flex"

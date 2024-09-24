@@ -41,7 +41,7 @@ function EventsContentAndComponents() {
         isLoading,
         onSearchChange,
         searchEvent,
-        hasNextPage
+        hasNextPage,
     } = useGetAllEvents()
 
     const { ref, inView } = useInView()

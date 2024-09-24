@@ -1,12 +1,10 @@
-
 .filterContainer {
     display: flex;
     justify-content: start;
     gap: 15px;
     margin-bottom: 20px;
-    padding: .25rem;
+    padding: 0.25rem;
     border-radius: 10px;
-
 }
 
 .filterField {
@@ -14,7 +12,6 @@
     border: 0.3px solid #bcc2cc;
     padding: 10px;
     font-size: 14px;
-    
 }
 
 .kanbanColumns {
@@ -75,7 +72,7 @@
 
 .tabs {
     margin-bottom: 10px;
-   padding: 10px;
+    padding: 10px;
 }
 
 .MuiTab-root {

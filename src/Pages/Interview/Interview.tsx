@@ -57,36 +57,35 @@ function InterviewKanbanContent() {
     }
     return (
         <div className={style.kanbanBoard}>
-            <div style={{
-                display: 'flex',
-                justifyContent: 'flex-start',
-                marginBottom: 2,
-                alignItems: "center"
-            }}>
-
-            <Tabs
-                value={currentTab}
-                onChange={handleTabChange}
-                aria-label="Kanban board tabs"
-                className={style.tabs}
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    marginBottom: 2,
+                    alignItems: 'center',
+                }}
             >
-                {phases.map((phase) => (
-                    <Tab
-                        key={phase}
-                        value={phase}
-                        label={phase.toUpperCase()}
-                    />
-                ))}
-
-
-            </Tabs>
-            <Button
-                        btnText=""
-                        borderColor="transparent"
-                        type={ButtonTypes.SECONDARY}
-                        onClick={() => setShowFilter((prev) => !prev)}
-                        icon={showFilter ? <Close /> : <FilterList />}
-                    />
+                <Tabs
+                    value={currentTab}
+                    onChange={handleTabChange}
+                    aria-label="Kanban board tabs"
+                    className={style.tabs}
+                >
+                    {phases.map((phase) => (
+                        <Tab
+                            key={phase}
+                            value={phase}
+                            label={phase.toUpperCase()}
+                        />
+                    ))}
+                </Tabs>
+                <Button
+                    btnText=""
+                    borderColor="transparent"
+                    type={ButtonTypes.SECONDARY}
+                    onClick={() => setShowFilter((prev) => !prev)}
+                    icon={showFilter ? <Close /> : <FilterList />}
+                />
             </div>
 
             <Collapse in={showFilter} unmountOnExit>

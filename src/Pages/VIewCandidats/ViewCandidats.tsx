@@ -156,7 +156,10 @@ export default function ViewCandidats() {
                     <div className={style.section}>
                         <div className={style.label}>Technologies Used</div>
                         <div className={style.value}>
-                        {applicant?.technologiesUsed?.replace(/^\[|\]|"/g, '') || "None specified"}
+                            {applicant?.technologiesUsed?.replace(
+                                /^\[|\]|"/g,
+                                '',
+                            ) || 'None specified'}
                         </div>
                     </div>
                     <div className={style.border}></div>{' '}

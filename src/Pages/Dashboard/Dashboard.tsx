@@ -27,11 +27,10 @@ const DashboardContent: React.FC = () => {
         return () => clearTimeout(timeout)
     }, [])
 
-const { currentUser } = useAuth()
+    const { currentUser } = useAuth()
     if (isLoading) return <p>Loading...</p>
     if (error) return <p>{error}</p>
 
-    
     const userName = currentUser ? currentUser.firstName : 'User'
     const isAdmin = currentUser?.role === 'hr'
 
@@ -40,7 +39,7 @@ const { currentUser } = useAuth()
             navigate(`/profile/${currentUser._id}`)
         }
     }
-   
+
     return (
         <div className={style.dashboardContainer}>
             <div className={style.mainContent}>
@@ -104,7 +103,7 @@ const { currentUser } = useAuth()
                         <div className={style.cardYellow}>
                             <Card
                                 title="Employees on Leave"
-                                content={String(employeeData.onLeave)} 
+                                content={String(employeeData.onLeave)}
                                 icon="On Leave"
                             />
                         </div>

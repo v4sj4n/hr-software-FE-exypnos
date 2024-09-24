@@ -413,7 +413,7 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({
                 scheduleType: 'schedule',
                 setScheduleType: () => {},
                 showFilter,
-                setShowFilter
+                setShowFilter,
             }}
         >
             {children}

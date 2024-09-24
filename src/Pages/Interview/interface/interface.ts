@@ -61,7 +61,6 @@ export interface InterviewContextType {
     showFilter: boolean
     setShowFilter: Dispatch<SetStateAction<boolean>>
 
-
     fetchFilteredInterviews: (
         currentPhase?: string,
         status?: string,
