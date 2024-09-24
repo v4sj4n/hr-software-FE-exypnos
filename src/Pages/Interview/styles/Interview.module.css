@@ -1,23 +1,23 @@
-.kanbanBoard {
+/* .kanbanBoard {
     display: flex;
     flex-direction: column;
     background: rgba(255, 255, 255, 0.7);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    height: 90.9vh;
+    height: 100%;
+    min-height: 120vh;
     padding: 20px;
-    overflow: hidden;
-}
+} */
 
 .filterContainer {
     display: flex;
+    justify-content: start;
     gap: 15px;
     margin-bottom: 20px;
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.7);
+    padding: .25rem;
     border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
 }
 
 .filterField {
@@ -85,8 +85,7 @@
 }
 
 .tabs {
-    margin-bottom: 20px;
-    border-bottom: 2px solid #c4bfea;
+    margin-bottom: 10px;
 }
 
 .MuiTab-root {

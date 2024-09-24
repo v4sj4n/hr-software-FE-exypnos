@@ -30,6 +30,7 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({
     const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
         'success',
     )
+    const [showFilter, setShowFilter] = useState(false)
     const phases = [
         'first_interview',
         'second_interview',
@@ -411,6 +412,8 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({
                 setFilteredInterviews,
                 scheduleType: 'schedule',
                 setScheduleType: () => {},
+                showFilter,
+                setShowFilter
             }}
         >
             {children}

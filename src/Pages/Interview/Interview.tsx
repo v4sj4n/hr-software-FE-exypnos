@@ -2,7 +2,7 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import CheckIcon from '@mui/icons-material/Check'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditCalendarIcon from '@mui/icons-material/EditCalendar'
-import { Tooltip, Tabs, Tab, useTheme } from '@mui/material'
+import { Tooltip, Tabs, Tab, useTheme, Collapse } from '@mui/material'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { useInterviewContext } from './Context/InterviewContext'
 import style from './styles/Interview.module.css'
@@ -11,6 +11,7 @@ import RescheduleModal from './Component/ScheduleForm'
 import Input from '@/Components/Input/Index'
 import Selecter from '@/Components/Input/components/Select/Selecter'
 import { InterviewProvider } from './Context/InterviewProvider'
+import { Close, FilterList } from '@mui/icons-material'
 function InterviewKanbanContent() {
     const {
         loading,
@@ -39,7 +40,10 @@ function InterviewKanbanContent() {
         setEndDate,
         filteredInterviews,
         isFiltered,
+        showFilter,
+        setShowFilter,
     } = useInterviewContext()
+    const theme = useTheme()
 
     if (loading) return <div>Loading...</div>
     if (error) {
@@ -47,63 +51,18 @@ function InterviewKanbanContent() {
             error instanceof Error ? error.message : 'Unknown error'
         return <div>Error loading interviews: {errorMessage}</div>
     }
-    const theme = useTheme()
+
     const applicantCountStyle = {
         color: theme.palette.text.primary,
     }
     return (
         <div className={style.kanbanBoard}>
-            <div className={style.filterContainer}>
-                <Selecter
-                    name="currentPhase"
-                    label="Current Phase"
-                    multiple={false}
-                    value={currentPhase}
-                    width="250px"
-                    options={phases}
-                    onChange={(newValue) =>
-                        setCurrentPhase(
-                            Array.isArray(newValue) ? newValue[0] : newValue,
-                        )
-                    }
-                />
-                <Input
-                    IsUsername
-                    name=""
-                    shrink
-                    label="Start Date"
-                    type="date"
-                    value={startDate || ''}
-                    width="250px"
-                    onChange={(e) => setStartDate(e.target.value)}
-                    className={style.filterField}
-                />
-                <Input
-                    IsUsername
-                    name=""
-                    label="End Date"
-                    type="date"
-                    shrink
-                    value={endDate || ''}
-                    width="250px"
-                    onChange={(e) => setEndDate(e.target.value)}
-                    className={style.filterField}
-                />
-                <Button
-                    type={ButtonTypes.PRIMARY}
-                    width="170px"
-                    btnText="Apply Filter"
-                    onClick={handleApplyFilter}
-                />
-                {isFiltered && (
-                    <Button
-                        type={ButtonTypes.SECONDARY}
-                        width="170px"
-                        btnText="Clear Filter"
-                        onClick={handleClearFilter}
-                    />
-                )}
-            </div>
+            <div style={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+                marginBottom: 2,
+                alignItems: "center"
+            }}>
 
             <Tabs
                 value={currentTab}
@@ -118,8 +77,73 @@ function InterviewKanbanContent() {
                         label={phase.toUpperCase()}
                     />
                 ))}
-            </Tabs>
 
+
+            </Tabs>
+            <Button
+                        btnText=""
+                        borderColor="transparent"
+                        type={ButtonTypes.SECONDARY}
+                        onClick={() => setShowFilter((prev) => !prev)}
+                        icon={showFilter ? <Close /> : <FilterList />}
+                    />
+            </div>
+
+            <Collapse in={showFilter} unmountOnExit>
+                <div className={style.filterContainer}>
+                    <Selecter
+                        name="currentPhase"
+                        label="Current Phase"
+                        multiple={false}
+                        value={currentPhase}
+                        width="200px"
+                        options={phases}
+                        onChange={(newValue) =>
+                            setCurrentPhase(
+                                Array.isArray(newValue)
+                                    ? newValue[0]
+                                    : newValue,
+                            )
+                        }
+                    />
+                    <Input
+                        IsUsername
+                        name=""
+                        shrink
+                        label="Start Date"
+                        type="date"
+                        value={startDate || ''}
+                        width="150px"
+                        onChange={(e) => setStartDate(e.target.value)}
+                        className={style.filterField}
+                    />
+                    <Input
+                        IsUsername
+                        name=""
+                        label="End Date"
+                        type="date"
+                        shrink
+                        value={endDate || ''}
+                        width="150px"
+                        onChange={(e) => setEndDate(e.target.value)}
+                        className={style.filterField}
+                    />
+                    <Button
+                        type={ButtonTypes.PRIMARY}
+                        width="130px"
+                        btnText="Apply Filter"
+                        onClick={handleApplyFilter}
+                    />
+                    {isFiltered && (
+                        <Button
+                            type={ButtonTypes.SECONDARY}
+                            width="130px"
+                            btnText="Clear Filter"
+                            onClick={handleClearFilter}
+                        />
+                    )}
+                </div>
+            </Collapse>
             <DragDropContext onDragEnd={onDragEnd}>
                 <div className={style.kanbanColumns}>
                     <div key={currentTab} className={style.kanbanColumn}>
