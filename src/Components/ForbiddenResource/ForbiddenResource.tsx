@@ -16,5 +16,8 @@ export const ForbiddenResource = ({ children }: { children: ReactElement }) => {
             </div>
         )
     }
-    return <>{children}</>
+
+    if (userRole !== null) {
+        return <>{children}</>
+    }
 }

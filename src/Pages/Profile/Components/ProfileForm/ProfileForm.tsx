@@ -10,7 +10,7 @@ import { FileUploadProvider } from '../../Context/FileUpoadProvider'
 import { ProfileProvider } from './Context/ProfileProvider'
 import Selecter from '@/Components/Input/components/Select/Selecter'
 import Toast from '@/Components/Toast/Toast'
-// import {handleCancel} from './../ProfileForm/Hook/Index'
+import { TitleCaser } from '@/Helpers/TitleCaser'
 
 const ProfileFormContext = () => {
     const { uploadImage, previewImage } = useFileUpload()
@@ -92,7 +92,7 @@ const ProfileFormContext = () => {
 
                     <div style={{ marginTop: '15px', textAlign: 'center' }}>
                         <div style={{ fontSize: '30px', color: '#000000' }}>
-                            {`${user.firstName} ${user.lastName}`}
+                            {`${TitleCaser(user.firstName)} ${TitleCaser(user.lastName)}`}
                         </div>
                         <div style={{ color: '#000000' }}>
                             {user.auth.email}
