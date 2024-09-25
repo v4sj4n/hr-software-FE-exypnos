@@ -55,42 +55,36 @@ export const UserList = ({ onSelectConversation }: any) => {
     }, [currentUser?._id]);
 
     useEffect(() => {
-        if (socket && !socketInitialized.current) {
-            // Prevent setting up listeners multiple times
-            socketInitialized.current = true;
-
-            // Handle room joining
-            socket.on('joinRoom', (conversationId) => {
-                console.log(`Joining conversation room: ${conversationId}`);
-                socket.emit('joinRoom', conversationId);
+        if (socket && currentUser?._id) {
+          // Join the user's personal room
+          socket.emit('joinRoom', currentUser._id);
+          console.log(`User ${currentUser._id} joined their own room`);
+      
+          // Set up socket listener for new conversations
+          socket.on('newConversation', (newConversation) => {
+            console.log('New conversation received via socket:', newConversation);
+            setConversations((prevConversations) => {
+                // Check if the conversation already exists
+                const exists = prevConversations.some(
+                    (conversations) => conversations._id === newConversation._id
+                );
+                if (!exists) {
+                    return [...prevConversations, newConversation];
+                }
+                return prevConversations;
             });
 
-            // Handle new conversation
-            socket.on('newConversation', (newConversation) => {
-                console.log('New conversation received:', newConversation);
-                setConversations((prevConversations) => {
-                    const isParticipant = newConversation.participants.includes(
-                        currentUser?._id
-                    );
-                    if (isParticipant) {
-                        return [...prevConversations, newConversation];
-                    }
-                    return prevConversations;
-                });
-
-                // Automatically join the conversation room for the new conversation
-                socket.emit('joinRoom', newConversation._id);
-            });
+            // Automatically join the new conversation room
+            socket.emit('joinRoom', newConversation._id);
+          });
+      
+          // Clean up the listener when the component unmounts or currentUser changes
+          return () => {
+            socket.off('newConversation');
+          };
         }
-
-        return () => {
-            if (socket) {
-                socket.off('joinRoom');
-                socket.off('newConversation');
-                socketInitialized.current = false; // Reset for future component mounts
-            }
-        };
-    }, [socket, currentUser?._id]);
+      }, [socket, currentUser?._id]);
+      
 
     const handleSelectUser = async (user: any, message: string) => {
         setOpenModal(false);
