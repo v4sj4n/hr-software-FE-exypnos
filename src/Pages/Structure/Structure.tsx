@@ -19,7 +19,7 @@ import { useCreateProject, useDeleteProject, useGetProject } from './Hook/Index'
 import { ModalComponent } from '@/Components/Modal/Modal'
 
 function Structure() {
-    const { projects, setProjects } = useGetProject()
+    const { projects, setProjects,fetchProjects } = useGetProject()
     const transformProjectData = (
         projects: ProjectData[],
         handleOpenModal: (projectId: string) => void,
@@ -150,7 +150,7 @@ function Structure() {
     const handleCreateAndUpdateUI = async () => {
         const newProject = await handleCreateProject()
         if (newProject) {
-            setProjects((prevProjects) => [...prevProjects, newProject])
+           fetchProjects()
         }
     }
 
