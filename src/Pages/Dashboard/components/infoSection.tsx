@@ -5,9 +5,14 @@ import { useQuery } from '@tanstack/react-query'
 import { EventsProvider } from '@/Pages/Events/Context/EventsProvider'
 import { useEvents } from '@/Pages/Events/Context/EventsContext'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 const InfoSectionContent: React.FC = () => {
+
+    const {currentUser} = useAuth()
+    const id = currentUser?._id
+
     const fetchEventsDashboard = async () => {
-        const response = await AxiosInstance.get(`/event`)
+        const response = await AxiosInstance.get(`/event/user/${id}`)
 
         console.log('Fetched eventsDahboardddd:', response.data)
         return response.data

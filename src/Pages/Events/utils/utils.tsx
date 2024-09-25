@@ -1,21 +1,33 @@
 import AxiosInstance from '@/Helpers/Axios'
 import { EventsData } from '../Interface/Events'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
 
-export const fetchEvents = async (
-    search: string,
-    pageParam: number,
-    currentUserId: number | undefined,
-): Promise<{ data: EventsData[]; totalPages: number }> => {
-    const Limit = 6
-    if (!currentUserId) {
-        console.error('Current user ID is undefined')
-        return { data: [], totalPages: 0 }
+
+export const useFetchEvent = () => {
+    const { currentUser } = useAuth()
+  
+    const isAdminOrHR = currentUser?.role === 'hr' || currentUser?.role === 'admin'
+    const currentUserId = currentUser?._id
+  
+    const fetchEvents = async (
+      search: string,
+      pageParam: number,
+    ): Promise<{ data: EventsData[]; totalPages: number }> => {
+      const limit = 6
+      const baseUrl = isAdminOrHR ? '/event' : `/event/user/${currentUserId}`
+      
+      try {
+        const response = await AxiosInstance.get(
+          `${baseUrl}?search=${search}&page=${pageParam}&limit=${limit}`
+        )
+        
+        return response.data
+      } catch (error) {
+        console.error('Error fetching events:', error)
+        throw error
+      }
     }
-    const response = await AxiosInstance.get<{
-        data: EventsData[]
-        totalPages: number
-    }>(
-        `/event/user/${currentUserId}?search=${search}&page=${pageParam}&limit=${Limit}`,
-    )
-    return response.data
-}
+  
+    return { fetchEvents }
+  }
+

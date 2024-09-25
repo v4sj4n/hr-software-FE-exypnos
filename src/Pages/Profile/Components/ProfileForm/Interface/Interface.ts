@@ -18,12 +18,14 @@ export interface ProfileContextType {
     genderOptions: string[]
     Places: string[]
     position: string[]
+    engagement: string[]
     handleUpdatePayroll: (
         event: React.FormEvent<HTMLButtonElement>,
     ) => Promise<void>
     handleGenderChange: (value: string | string[]) => void
     handlePositionChange: (value: string | string[]) => void
     handlePlaceChange: (value: string | string[]) => void
+    handleEngagementChange: (value: string | string[]) => void
     updateToastOpen: boolean
     updateToastMessage: string
     updateToastSeverity: 'success' | 'error'

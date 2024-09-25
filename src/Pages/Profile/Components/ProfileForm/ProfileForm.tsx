@@ -32,6 +32,8 @@ const ProfileFormContext = () => {
         handleCancel,
         handlePositionChange,
         position,
+        engagement, 
+        handleEngagementChange
     } = useProfile()
 
     if (!user) {
@@ -195,6 +197,7 @@ const ProfileFormContext = () => {
                         onChange={handleChange}
                         value={user.firstName}
                     />
+    
                 </div>
                 <div className={style.inputWidth}>
                     <Selecter
@@ -206,8 +209,20 @@ const ProfileFormContext = () => {
                         label="Position"
                         width="350px"
                         value={user.position}
-                    />
+                    />  
                 </div>
+                <div className={style.inputWidth}>
+                    <Selecter
+                        disabled={!isAdmin}
+                        multiple={false}
+                        onChange={handleEngagementChange}
+                        options={engagement}
+                        name="engagement"
+                        label="Engagement"
+                        width="350px"
+                        value={user.engagement}
+                    />
+                    </div>
             </div>
             <div className={style.border}> </div>
             {isAdmin ? (

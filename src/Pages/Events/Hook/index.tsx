@@ -7,22 +7,23 @@ import {
     useMutation,
     useQueryClient,
 } from '@tanstack/react-query'
-import { fetchEvents } from '../utils/utils'
+import { useFetchEvent } from '../utils/utils'
 import axios from 'axios'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 export const useGetAllEvents = () => {
     const [searchParams, setSearchParams] = useSearchParams()
+    const {fetchEvents}  = useFetchEvent()
     const [searchEvent, setSearchEvent] = useState(
         searchParams.get('search') || '',
     )
     const { currentUser } = useAuth()
     const currentUserId = currentUser?._id
-
+    
     const query = useInfiniteQuery({
-        queryKey: ['events', searchEvent, currentUserId],
+        queryKey: ['events', searchEvent],
         queryFn: ({ pageParam = 0 }) =>
-            fetchEvents(searchEvent || '', pageParam, currentUserId),
+            fetchEvents(searchEvent || '', pageParam),
         initialPageParam: 0,
         getNextPageParam: (lastPage, allPages) => {
             return lastPage.totalPages > allPages.length

@@ -21,6 +21,9 @@ export const useGetAndUpdateUserById = () => {
 
     const isCurrentUser = currentUser?._id === id
     const isAdmin = userRole === 'hr'
+  const engagement=[
+        'full_time_remote','full_time_on_site','part_time_remote','part_time_on_site', 'internship','external',
+    ]
     const genderOptions = ['Male', 'Female']
     const [isCancel, setIsCancel] = useState(false)
 
@@ -153,6 +156,17 @@ export const useGetAndUpdateUserById = () => {
         })
     }
 
+    const handleEngagementChange = (value: string | string[]) => {
+        if (!isAdmin) return
+        setUser((prevUser) => {
+            if (!prevUser) return null
+            return {
+                ...prevUser,
+                engagement: Array.isArray(value) ? value[0] : value,
+            }
+        })
+    }
+
     const handlePlaceChange = (value: string | string[]) => {
         if (!isAdmin) return
         setUser((prevUser) => {
@@ -180,18 +194,18 @@ export const useGetAndUpdateUserById = () => {
             dob: user.dob,
             gender: user.gender,
             email: user.auth.email,
+            engagement: user.engagement,
         }
 
-        setIsLoading(true)
         try {
             const response = await AxiosInstance.patch(
                 `/user/${id}`,
                 userToUpdate,
             )
-            console.log('User updated successfully:', response.data)
             setUpdateToastOpen(true)
             setUpdateToastMessage('User updated successfully')
             setUpdateToastSeverity('success')
+            setUser(response.data)
         } catch (error: unknown) {
             if (error instanceof AxiosError) {
                 setUpdateToastOpen(true)
@@ -226,6 +240,8 @@ export const useGetAndUpdateUserById = () => {
         setIsCancel,
         position,
         handlePositionChange,
+        engagement,
+        handleEngagementChange
     }
 }
 
