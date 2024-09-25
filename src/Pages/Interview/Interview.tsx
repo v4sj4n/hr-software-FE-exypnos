@@ -13,6 +13,8 @@ import Selecter from '@/Components/Input/components/Select/Selecter'
 import { InterviewProvider } from './Context/InterviewProvider'
 import { Close, FilterList } from '@mui/icons-material'
 import { ForbiddenResource } from '@/Components/ForbiddenResource/ForbiddenResource'
+import { Loader } from '@/Components/Loader/Loader'
+
 function InterviewKanbanContent() {
     const {
         loading,
@@ -46,7 +48,8 @@ function InterviewKanbanContent() {
     } = useInterviewContext()
     const theme = useTheme()
 
-    if (loading) return <div>Loading...</div>
+    if (loading) return <div> <Loader/>
+    </div>
     if (error) {
         const errorMessage =
             error instanceof Error ? error.message : 'Unknown error'
