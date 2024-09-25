@@ -188,10 +188,10 @@ export default function ViewCandidats() {
                         flexDirection: 'column',
                     }}
                 >
-                    <div className={style.label}>Create Interview:</div>
+                    <div className={style.label}>Create First Interview:</div>
                     <Button
                         type={ButtonTypes.PRIMARY}
-                        btnText="Create Interview"
+                        btnText="Create  Interview"
                         width="100%"
                         onClick={() => handleOpenModal('active')}
                     />
