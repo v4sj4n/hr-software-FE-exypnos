@@ -136,9 +136,12 @@ export const HeaderContent = () => {
                                         </strong>
                                         <p
                                             style={{
-                                                maxWidth: '60px',
                                                 margin: 0,
                                                 fontSize: '14px',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                alignItems: 'center',
+                                                padding:'5px',
                                                 color: theme.palette.text
                                                     .secondary,
                                             }}
