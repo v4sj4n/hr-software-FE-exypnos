@@ -1,5 +1,5 @@
-.Wrap{
-padding: 20px;
+.Wrap {
+    padding: 20px;
     width: 100%;
     overflow-y: auto;
     max-height: 500px;
@@ -7,36 +7,35 @@ padding: 20px;
     scrollbar-width: none;
 }
 
-.selectedEvent{
+.selectedEvent {
     display: flex;
     flex-direction: column;
 }
 
-.flex{
+.flex {
     display: flex;
     justify-content: space-between;
     color: rgb(44, 56, 68);
     font-weight: 500;
 }
 
-.title{
+.title {
     font-size: 18px;
 }
 
-.border{
+.border {
     border-bottom: 2px solid #ebebeb;
     width: 100%;
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-
-.description{
+.description {
     color: rgb(44, 56, 68);
     margin-bottom: 15px;
 }
 
-.descripLabel{
+.descripLabel {
     color: rgb(44, 56, 68);
     font-weight: 500;
     display: flex;

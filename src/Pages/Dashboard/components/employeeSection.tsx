@@ -20,9 +20,9 @@ const EmployeeSection: React.FC = () => {
     console.log('UserProfileData', UserProfileData)
 
     return (
-        <div style={{paddingBottom:"20px"}}>
+        <div style={{ paddingBottom: '20px' }}>
             <h2>Team</h2>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap:"10px" }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                 {UserProfileData?.map((employee: UserProfileData) => (
                     <div
                         key={employee._id}
@@ -48,7 +48,7 @@ const EmployeeSection: React.FC = () => {
                                     navigate(`/profile/${employee._id}`)
                                 }
                             />
-                            <p style={{margin:"3px"}}>
+                            <p style={{ margin: '3px' }}>
                                 {employee.firstName} {employee.lastName}
                             </p>
                         </div>

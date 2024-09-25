@@ -57,42 +57,48 @@ const SelectedEventCard = () => {
                     {selectedEvent.description}
                 </div>
                 <div className={style.descripLabel}>
-                    <div><CalendarTodayIcon
-                        sx={{ height: 20, width: 20, color: '#6b7280' }}
-                    />
+                    <div>
+                        <CalendarTodayIcon
+                            sx={{ height: 20, width: 20, color: '#6b7280' }}
+                        />
                     </div>
                     <div>Date Range</div>
                 </div>
-                <div className={style.description}>  {formatDate(selectedEvent.startDate)} -{' '}
-                    {formatDate(selectedEvent.endDate)}</div>
+                <div className={style.description}>
+                    {' '}
+                    {formatDate(selectedEvent.startDate)} -{' '}
+                    {formatDate(selectedEvent.endDate)}
+                </div>
 
-     
-                    <div className={style.descripLabel}>
-                        <div><LocationOnOutlinedIcon
+                <div className={style.descripLabel}>
+                    <div>
+                        <LocationOnOutlinedIcon
                             sx={{ height: 20, width: 20, color: '#6b7280' }}
                         />
-                        </div>
-                        <div>Location</div>
                     </div>
-                    <div className={style.description}>  {selectedEvent.location}</div>
+                    <div>Location</div>
                 </div>
-                <div style={{ width: '100%', height: '100%' }}>
-                    <MapComponent
-                        onLocationChange={(address, lat, lng) =>
-                            console.log(address, lat, lng)
-                        }
-                        savedLocation={selectedEvent.location}
-                        showInput={false}
-                    />
+                <div className={style.description}>
+                    {' '}
+                    {selectedEvent.location}
                 </div>
-                {selectedEvent.poll && (
-                    <EventPoll
-                        poll={selectedEvent.poll}
-                        eventId={selectedEvent._id}
-                        userId={currentUser?._id}
-                    />
-                )}
-        
+            </div>
+            <div style={{ width: '100%', height: '100%' }}>
+                <MapComponent
+                    onLocationChange={(address, lat, lng) =>
+                        console.log(address, lat, lng)
+                    }
+                    savedLocation={selectedEvent.location}
+                    showInput={false}
+                />
+            </div>
+            {selectedEvent.poll && (
+                <EventPoll
+                    poll={selectedEvent.poll}
+                    eventId={selectedEvent._id}
+                    userId={currentUser?._id}
+                />
+            )}
         </div>
     )
 }

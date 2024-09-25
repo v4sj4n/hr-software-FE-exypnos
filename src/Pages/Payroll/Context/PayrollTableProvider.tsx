@@ -60,18 +60,18 @@ export const PayrollProvider: React.FC<{ children: React.ReactNode }> = ({
         payrollData.map((payrollItem: any, index: number) => ({
             id: page * pageSize + index + 1,
             originalId: payrollItem.userId._id,
-            netSalary: `${payrollItem.netSalary}${payrollItem.currency}`,
-            healthInsurance: `${payrollItem.healthInsurance}${payrollItem.currency}`,
+            netSalary: `${Number(payrollItem.netSalary).toLocaleString()}${payrollItem.currency}`,
+            healthInsurance: `${Number(payrollItem.healthInsurance).toLocaleString()}${payrollItem.currency}`,
             month: getMonthName(payrollItem.month),
             workingDays: payrollItem.workingDays,
             tax: payrollItem.tax,
-            socialSecurity: payrollItem.socialSecurity,
+            socialSecurity: Number(payrollItem.socialSecurity).toLocaleString(),
             fullName: `${payrollItem.userId.firstName} ${payrollItem.userId.lastName}`,
-            grossSalary: payrollItem.grossSalary,
+            grossSalary: Number(payrollItem.grossSalary).toLocaleString(),
             year: payrollItem.year,
             bonusDescription: payrollItem.bonusDescription,
             currency: payrollItem.currency,
-            bonus: payrollItem.bonus,
+            bonus: Number(payrollItem.bonus).toLocaleString(),
             userId: payrollItem.userId._id,
         })) ?? []
 

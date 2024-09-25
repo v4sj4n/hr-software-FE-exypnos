@@ -25,7 +25,7 @@ function ChangePassContent() {
     return (
         <>
             <div className={style.container}>
-            <Toast
+                <Toast
                     severity={toastSeverity}
                     open={toastOpen}
                     message={toastMessage}
@@ -33,7 +33,7 @@ function ChangePassContent() {
                 />
                 <div className={style.title}>Change Password </div>
                 <div className={style.text}>
-                Update your password to keep your account secure.
+                    Update your password to keep your account secure.
                 </div>
                 <Input
                     label="Current Password"
@@ -43,13 +43,13 @@ function ChangePassContent() {
                     onClick={handleShowEye}
                     onChange={handleChange}
                     value={currentPassword}
-                    placeholder='Enter your current password'
+                    placeholder="Enter your current password"
                     width="350px"
                 />
                 <Input
                     label="New Password"
                     name="newPassword"
-                    placeholder='Enter your new password'
+                    placeholder="Enter your new password"
                     isPassword
                     type={showPassword}
                     onClick={handleShowEye}
@@ -60,7 +60,7 @@ function ChangePassContent() {
                 <Input
                     label="Confirm Password"
                     name="confirmPassword"
-                    placeholder='Enter your confirm password'
+                    placeholder="Enter your confirm password"
                     isPassword
                     type={showPassword}
                     onClick={handleShowEye}
