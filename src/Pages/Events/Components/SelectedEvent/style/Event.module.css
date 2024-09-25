@@ -32,7 +32,8 @@
 
 .description {
     color: rgb(44, 56, 68);
-    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
 }
 
 .descripLabel {

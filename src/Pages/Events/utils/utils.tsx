@@ -2,7 +2,6 @@ import AxiosInstance from '@/Helpers/Axios'
 import { EventsData } from '../Interface/Events'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
 
-
 export const useFetchEvent = () => {
     const { currentUser } = useAuth()
   
