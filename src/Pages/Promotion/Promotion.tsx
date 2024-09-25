@@ -8,6 +8,7 @@ import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 import AxiosInstance from '@/Helpers/Axios'
 import { Button } from '@mui/material'
 import DrawerComponent from '@/Components/Drawer/Drawer'
+import { Loader } from '@/Components/Loader/Loader.tsx'
 
 type TeamMember = {
     _id: string
@@ -24,12 +25,17 @@ export default function Promotion() {
     const [id, setId] = useState<string>('')
     const [name, setName] = useState<string>('')
     const [buttonText, setButtonText] = useState('Look At Team Members')
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+        setLoading(true)
         if (currentUser) {
             if (currentUser.role === 'hr' || currentUser.role === 'pm') {
                 fetchTeamMembers()
             }
+            setTimeout(() => {
+                setLoading(false)
+            }, 500)
             setId(currentUser._id.toString())
             setName(`${currentUser.firstName} ${currentUser.lastName}`)
         }
@@ -80,55 +86,57 @@ export default function Promotion() {
 
     return (
         <>
-            <div style={{ display: 'flex' }}>
-                <h3 style={{ position: 'absolute', top: '95px', right: '10%' }}>
-                    {name}
-                </h3>
-            </div>
-            <div className={style.container}>
-                <DrawerComponent open={openDrawer} onClose={handleDrawerClose}>
-                    <h1>Team Members</h1>
-                    {teamMembers.map((member) =>
-                        member._id !== currentUser._id.toString() ? (
-                            <div
-                                key={member._id}
-                                className={style.member}
-                                onClick={() =>
-                                    handelTeamMemberClick(member._id)
-                                }
-                            >
-                                <h5>
-                                    {member.firstName} {member.lastName}
-                                </h5>
-                                <p>{member.grade}</p>
-                                <p>{member.position}</p>
-                            </div>
-                        ) : null,
-                    )}
-                </DrawerComponent>
-                <div className={style.firstDiv}>
-                    <Card
-                        padding="20px"
-                        backgroundColor="rgba(255, 255, 255, 0.7)"
+            {loading && <Loader />}
+            {!loading && (
+                <div className={style.container}>
+                    <DrawerComponent
+                        open={openDrawer}
+                        onClose={handleDrawerClose}
                     >
-                        <ChartBar id={id} />
-                    </Card>
-                    <Rating id={id} />
-                </div>
-                <div className={style.thirdDiv}>
-                    {(currentUser.role === 'hr' ||
-                        currentUser.role === 'pm') && (
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={handleClickButton}
+                        <h1>Team Members</h1>
+                        {teamMembers.map((member) =>
+                            member._id !== currentUser._id.toString() ? (
+                                <div
+                                    key={member._id}
+                                    className={style.member}
+                                    onClick={() =>
+                                        handelTeamMemberClick(member._id)
+                                    }
+                                >
+                                    <p style={{ fontWeight: '700' }}>
+                                        {member.firstName} {member.lastName}
+                                    </p>
+                                    <p>{member.grade}</p>
+                                    <p>{member.position}</p>
+                                </div>
+                            ) : null,
+                        )}
+                    </DrawerComponent>
+                    <div className={style.firstDiv}>
+                        <Card
+                            padding="20px"
+                            backgroundColor="rgba(255, 255, 255, 0.7)"
                         >
-                            {buttonText}
-                        </Button>
-                    )}
-                    <PromotionCard id={id} />
+                            <h3>{name}</h3>
+                            <ChartBar id={id} />
+                        </Card>
+                        <Rating id={id} />
+                    </div>
+                    <div className={style.thirdDiv}>
+                        {(currentUser.role === 'hr' ||
+                            currentUser.role === 'pm') && (
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleClickButton}
+                            >
+                                {buttonText}
+                            </Button>
+                        )}
+                        <PromotionCard id={id} />
+                    </div>
                 </div>
-            </div>
+            )}
         </>
     )
 }

@@ -126,7 +126,7 @@ export default function ChartBar({ id }: { id: string }) {
                     />
                 </BarChart>
             ) : (
-                <p>Loading...</p>
+                <p>No payroll to be show</p>
             )}
         </div>
     )
