@@ -111,21 +111,20 @@ const DashboardContent: React.FC = () => {
                             <Card
                                 title="Remote
                                 "
-                                content={String(employeeData.remote)} 
+                                content={String(employeeData.remote)}
                                 icon="Remote"
                             />
                         </div>
                     </div>
 
                     <div className={style.middleRow}>
-                       
                         <Card1
                             padding="20px"
                             borderRadius="10px"
                             flex="0.8"
                             backgroundColor="rgba(255, 255, 255, 0.7)"
                         >
-                             <Notes />
+                            <Notes />
                         </Card1>
                         <Card1
                             padding="20px"
@@ -148,7 +147,6 @@ const DashboardContent: React.FC = () => {
                     </div>
                     <Card1
                         backgroundColor="rgba(255, 255, 255, 0.7)"
-                      
                         border="15px"
                         marginTop="20px"
                         borderRadius="10px"

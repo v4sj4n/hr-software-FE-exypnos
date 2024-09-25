@@ -18,24 +18,24 @@ function CandidatesCoontext() {
     } = useCandidateContext()
 
     return (
-       <ForbiddenResource>
-         <>
-            {isPending ? (
-                <Loader />
-            ) : (
-                <DataTable
-                    getRowId={getRowId}
-                    columns={columns}
-                    rows={rows}
-                    handleRowClick={handleRowClick}
-                    totalPages={totalPages}
-                    page={page}
-                    pageSize={pageSize}
-                    onPaginationModelChange={handlePaginationModelChange}
-                />
-            )}
-        </>
-       </ForbiddenResource>
+        <ForbiddenResource>
+            <>
+                {isPending ? (
+                    <Loader />
+                ) : (
+                    <DataTable
+                        getRowId={getRowId}
+                        columns={columns}
+                        rows={rows}
+                        handleRowClick={handleRowClick}
+                        totalPages={totalPages}
+                        page={page}
+                        pageSize={pageSize}
+                        onPaginationModelChange={handlePaginationModelChange}
+                    />
+                )}
+            </>
+        </ForbiddenResource>
     )
 }
 

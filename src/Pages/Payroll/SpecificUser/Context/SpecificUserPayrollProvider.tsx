@@ -37,17 +37,17 @@ export const PayrollProviderSpecific: React.FC<{
         payrollId.map((payrollData: any, index: number) => ({
             id: page * pageSize + index + 1,
             originalId: payrollData.userId._id,
-            netSalary: `${payrollData.netSalary}${payrollData.currency}`,
-            healthInsurance: `${payrollData.healthInsurance}${payrollData.currency}`,
+            netSalary: `${Number(payrollData.netSalary).toLocaleString()}${payrollData.currency}`,
+            healthInsurance: `${Number(payrollData.healthInsurance).toLocaleString()}${payrollData.currency}`,
             month: getMonthName(payrollData.month),
             workingDays: payrollData.workingDays,
-            socialSecurity: payrollData.socialSecurity,
+            socialSecurity: Number(payrollData.socialSecurity).toLocaleString(),
             fullName: `${payrollData.userId.firstName} ${payrollData.userId.lastName}`,
-            grossSalary: payrollData.grossSalary,
+            grossSalary: Number(payrollData.grossSalary).toLocaleString(),
             year: payrollData.year,
             bonusDescription: payrollData.bonusDescription,
             currency: payrollData.currency,
-            bonus: payrollData.bonus,
+            bonus: Number(payrollData.bonus).toLocaleString(),
             userId: payrollData.userId._id,
         })) ?? []
 

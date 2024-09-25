@@ -36,11 +36,9 @@
     width: 100%;
 }
 
-
-
-.description{ 
+.description {
     color: rgb(44, 56, 68);
-   
+
     flex-direction: column;
     width: 100%;
     word-break: break-word;

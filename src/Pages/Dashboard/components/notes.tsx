@@ -126,7 +126,7 @@ export const Notes = () => {
     }
 
     return (
-       <div>
+        <div>
             <div
                 style={{
                     display: 'flex',
@@ -321,7 +321,7 @@ export const Notes = () => {
                     }
                 />
             </ModalComponent>
-            </div>
+        </div>
     )
 }
 
