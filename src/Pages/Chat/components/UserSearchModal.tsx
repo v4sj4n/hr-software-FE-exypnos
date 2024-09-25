@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import {
     Dialog,
     DialogTitle,
@@ -6,19 +6,19 @@ import {
     DialogActions,
     TextField,
     Button,
-    List,
-    ListItem,
-    ListItemText,
     CircularProgress,
-} from '@mui/material'
-import { useGetAllUsers } from '@/Pages/Employees/Hook'
-import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
-import { UserProfileData } from '@/Pages/Employees/interfaces/Employe'
+    Autocomplete,
+    Box,
+    Typography,
+} from '@mui/material';
+import { useGetAllUsers } from '@/Pages/Employees/Hook';
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
+import { UserProfileData } from '@/Pages/Employees/interfaces/Employe';
 
 interface UserSearchModalProps {
-    open: boolean
-    onSelectUser: (user: any, message: string) => Promise<void>
-    onClose: () => void
+    open: boolean;
+    onSelectUser: (user: any, message: string) => Promise<void>;
+    onClose: () => void;
 }
 
 export const UserSearchModal = ({
@@ -26,16 +26,17 @@ export const UserSearchModal = ({
     onSelectUser,
     onClose,
 }: UserSearchModalProps) => {
-    const [search, setSearch] = useState('')
-    const [filteredUsers, setFilteredUsers] = useState<any[]>([])
-    const [message, setMessage] = useState('')
-    const { data: users = [] } = useGetAllUsers()
-    const { currentUser } = useAuth()
+    const [search, setSearch] = useState('');
+    const [filteredUsers, setFilteredUsers] = useState<UserProfileData[]>([]);
+    const [selectedUser, setSelectedUser] = useState<UserProfileData | null>(null);
+    const [message, setMessage] = useState('');
+    const { data: users = [] } = useGetAllUsers();
+    const { currentUser } = useAuth();
 
     useEffect(() => {
         if (!search) {
-            setFilteredUsers([])
-            return
+            setFilteredUsers([]);
+            return;
         }
 
         const filtered = users
@@ -47,77 +48,81 @@ export const UserSearchModal = ({
                         .includes(search.toLowerCase()),
             )
             .map((user: UserProfileData) => ({
-                _id: user._id.toString(),
-                email: user.auth.email,
-                firstName: user.firstName,
-                lastName: user.lastName,
+                ...user,
                 name: `${user.firstName} ${user.lastName}`,
-                phone: user.phone,
-                imageUrl: user.imageUrl,
-                role: '',
-            }))
+            }));
 
-        setFilteredUsers(filtered)
-    }, [search, currentUser?._id])
+        setFilteredUsers(filtered);
+    }, [search, currentUser?._id]);
 
-    const handleListItemClick = async (user: any) => {
-        if (message.trim()) {
-            await onSelectUser(user, message)
-            setMessage('')
-            onClose()
-        } else {
-            console.error('Message cannot be empty.')
+    const handleSendClick = async () => {
+        if (selectedUser && message.trim()) {
+            await onSelectUser(selectedUser, message);
+            setMessage('');
+            setSelectedUser(null);
+            onClose();
         }
-    }
+    };
 
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-            <DialogTitle>Search Users</DialogTitle>
+            <DialogTitle>Select a User & Send a Message</DialogTitle>
             <DialogContent>
-                <TextField
-                    fullWidth
-                    label="Search for a user"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    autoFocus
-                />
-                {search && filteredUsers.length === 0 && (
-                    <CircularProgress
-                        style={{ display: 'block', margin: '20px auto' }}
-                    />
-                )}
-                <List>
-                    {filteredUsers.map((user) => (
-                        <ListItem
-                            key={user._id}
-                            button
-                            onClick={() => handleListItemClick(user)}
-                            disableTouchRipple
-                            style={{ zIndex: 1 }}
-                        >
-                            <ListItemText
-                                primary={`${user.firstName} ${user.lastName}`}
+                <Box mb={2}>
+                    <Autocomplete
+                        options={filteredUsers}
+                        getOptionLabel={(user) => `${user.firstName} ${user.lastName}`|| ''}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="Search for a user"
+                                variant="outlined"
+                                onChange={(e) => setSearch(e.target.value)}
+                                autoFocus
                             />
-                        </ListItem>
-                    ))}
-                </List>
-                <TextField
-                    fullWidth
-                    label="Message"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    margin="normal"
-                />
+                        )}
+                        onChange={(event, newValue) => setSelectedUser(newValue)}
+                        isOptionEqualToValue={(option, value) =>
+                            option._id === value._id
+                        }
+                    />
+                    {search && filteredUsers.length === 0 && (
+                        <Box display="flex" justifyContent="center" mt={2}>
+                            <CircularProgress />
+                        </Box>
+                    )}
+                </Box>
+
+                <Box mb={2}>
+                    <TextField
+                        fullWidth
+                        label="Message"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        variant="outlined"
+                    />
+                </Box>
+                
+                {selectedUser && (
+                    <Box mb={2}>
+                        <Typography variant="body2">
+                            Selected User: {selectedUser.firstName} {selectedUser.lastName}
+                        </Typography>
+                    </Box>
+                )}
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose}>Cancel</Button>
+                <Button onClick={onClose} color="secondary">
+                    Cancel
+                </Button>
                 <Button
-                    onClick={() => handleListItemClick(filteredUsers[0])}
-                    disabled={!message.trim()}
+                    onClick={handleSendClick}
+                    color="primary"
+                    disabled={!selectedUser || !message.trim()}
                 >
                     Send Message
                 </Button>
             </DialogActions>
         </Dialog>
-    )
-}
+    );
+};

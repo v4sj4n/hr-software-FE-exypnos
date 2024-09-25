@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import AxiosInstance from '@/Helpers/Axios'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 import { UserSearchModal } from '@/Pages/chat/components/UserSearchModal'
@@ -14,6 +14,7 @@ import {
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { useGetAllUsers } from '@/Pages/Employees/Hook'
+import { SocketContext } from '../context/SocketContext'
 
 export const UserList = ({ onSelectConversation }: any) => {
     const [conversations, setConversations] = useState<any[]>([])
@@ -23,6 +24,7 @@ export const UserList = ({ onSelectConversation }: any) => {
     const [error, setError] = useState<string | null>(null)
     const { currentUser } = useAuth()
     const { data: users = [] } = useGetAllUsers()
+    const socket = useContext(SocketContext)
 
     useEffect(() => {
         const fetchConversations = async () => {
@@ -46,57 +48,98 @@ export const UserList = ({ onSelectConversation }: any) => {
         }
     }, [currentUser?._id])
 
-    const handleSelectUser = async (user: any, message: string) => {
-        setOpenModal(false);
+    useEffect(() => {
+        if (socket) {
+            socket.on('joinRoom', (conversationId) => {
+                console.log(`Joining conversation room: ${conversationId}`);
+                socket.emit('joinRoom', conversationId);
+            });
     
+            socket.on('newConversation', (newConversation) => {
+                console.log('New conversation received:', newConversation);
+                setConversations((prevConversations) => {
+                    const isParticipant = newConversation.participants.includes(currentUser?._id);
+                    if (isParticipant) {
+                        return [...prevConversations, newConversation];
+                    }
+                    return prevConversations;
+                });
+            });
+        }
+    
+        return () => {
+            if (socket) {
+                socket.off('joinRoom');
+                socket.off('newConversation');
+            }
+        };
+    }, [socket, currentUser?._id]);
+    
+
+    const handleSelectUser = async (user: any, message: string) => {
+        setOpenModal(false)
+
         const existingConversation = conversations.find((conversation) => {
-            const participants = conversation.participants;
+            const participants = conversation.participants
             return (
                 participants.includes(user._id) &&
                 participants.includes(currentUser?._id)
-            );
-        });
-    
-        let conversationId;
+            )
+        })
+
+        let conversationId
         if (existingConversation) {
-            console.log('Conversation already exists:', existingConversation._id);
-            conversationId = existingConversation._id;
-    
+            console.log(
+                'Conversation already exists:',
+                existingConversation._id,
+            )
+            conversationId = existingConversation._id
+
             try {
                 await AxiosInstance.post('/messages', {
                     conversationId,
                     text: message,
                     senderId: currentUser?._id,
-                });
-                onSelectConversation(conversationId);
+                })
+                onSelectConversation(conversationId)
             } catch (error) {
-                console.error('Error sending message:', error);
-                setError('Failed to send message.');
+                console.error('Error sending message:', error)
+                setError('Failed to send message.')
             }
         } else {
             try {
                 const response = await AxiosInstance.post('/conversations', {
                     conversation: {
-                        participants: [String(user._id), String(currentUser?._id)],
+                        participants: [
+                            String(user._id),
+                            String(currentUser?._id),
+                        ],
                     },
                     message: {
                         senderId: currentUser?._id,
                         text: message,
                     },
-                });
-                conversationId = response.data.conversation._id;
+                })
+                conversationId = response.data.conversation._id
                 setConversations((prevConversations) => [
                     ...prevConversations,
                     response.data.conversation,
-                ]);
-    
-                onSelectConversation(conversationId);
+                ])
+
+                onSelectConversation(conversationId)
             } catch (error) {
-                console.error('Error creating conversation:', error);
-                setError('Failed to create conversation.');
+                console.error('Error creating conversation:', error)
+                setError('Failed to create conversation.')
             }
         }
-    };
+    }
+
+    useEffect(() => {
+        if (socket && currentUser?._id) {
+            socket.emit('joinRoom', currentUser._id);
+            console.log(`User ${currentUser._id} joined their own room`);
+        }
+    }, [socket, currentUser?._id]);
 
     const getConversationName = (conversation: any) => {
         const participant = conversation.participants.find(
