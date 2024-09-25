@@ -1,23 +1,34 @@
-import { useState, useContext } from 'react'
-import { SocketContext } from '../context/SocketContext'
-import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+import { useState, useContext } from 'react';
+import AxiosInstance from '@/Helpers/Axios';
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
+import { SocketContext } from '@/Pages/chat/context/SocketContext';
 
 export const ChatInput = ({ conversationId }: { conversationId: string }) => {
-    const [message, setMessage] = useState('')
-    const { socket } = useContext(SocketContext) // Ensure socket is not null
-    const { currentUser } = useAuth() // Properly get currentUser
+    const [message, setMessage] = useState('');
+    const socket = useContext(SocketContext);
+    const { currentUser } = useAuth();
 
-    const sendMessage = () => {
-        if (socket && message.trim()) {
-            // Check if socket exists
-            socket.emit('message', {
-                conversationId,
-                text: message,
-                senderId: currentUser?._id,
-            })
-            setMessage('')
+    const sendMessage = async () => {
+        if (message.trim()) {
+            try {
+                await AxiosInstance.post('/messages', {
+                    conversationId,
+                    text: message,
+                    senderId: currentUser?._id,
+                });
+
+                socket?.emit('message', {
+                    conversationId,
+                    text: message,
+                    senderId: currentUser?._id,
+                });
+
+                setMessage('');
+            } catch (error) {
+                console.error('Error sending message:', error);
+            }
         }
-    }
+    };
 
     return (
         <div>
@@ -28,5 +39,5 @@ export const ChatInput = ({ conversationId }: { conversationId: string }) => {
             />
             <button onClick={sendMessage}>Send</button>
         </div>
-    )
-}
+    );
+};
