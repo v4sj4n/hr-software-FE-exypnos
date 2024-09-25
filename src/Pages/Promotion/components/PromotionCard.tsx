@@ -41,17 +41,18 @@ export default function PromotionCard({ id }: { id: string }) {
         startDate: '',
     })
     const PositionType = [
-        'hr',
-        'ceo',
-        'designer',
-        'backend_developer',
-        'frontend_developer',
-        'fullstack_developer',
-        'tester',
-        'devops',
+        'Hr',
+        'Ceo',
+        'Designer',
+        'Backend Developer',
+        'Frontend Developer',
+        'Fullstack Developer',
+        'Tester',
+        'Devops',
     ]
 
-    const GradeType = ['junior', 'mid', 'senior']
+    const GradeType = ['Junior', 'Mid', 'Senior']
+
     const theme = useTheme()
 
     useEffect(() => {
@@ -171,6 +172,7 @@ export default function PromotionCard({ id }: { id: string }) {
                 padding="10px"
             >
                 <h3>Promotion</h3>
+                {promotions.length === 0 && <p>No promotions found</p>}
                 {promotions.map((item) => (
                     <Card
                         key={item._id}
@@ -316,6 +318,7 @@ export default function PromotionCard({ id }: { id: string }) {
                                         type="datetime-local"
                                         name="startDate"
                                         label="Start Date"
+                                        shrink
                                         value={formData.startDate}
                                         onChange={handleInputChange}
                                     />
