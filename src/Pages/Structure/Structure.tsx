@@ -17,9 +17,13 @@ import CloseIcon from '@mui/icons-material/Close'
 import Toast from '@/Components/Toast/Toast'
 import { useCreateProject, useDeleteProject, useGetProject } from './Hook/Index'
 import { ModalComponent } from '@/Components/Modal/Modal'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 function Structure() {
-    const { projects, setProjects } = useGetProject()
+    const { projects, setProjects,fetchProjects } = useGetProject()
+    const {currentUser } = useAuth()
+    const hrOrAmin = currentUser?.role === 'hr' || currentUser?.role === 'admin' || currentUser?.role === 'pm'
+
     const transformProjectData = (
         projects: ProjectData[],
         handleOpenModal: (projectId: string) => void,
@@ -150,7 +154,7 @@ function Structure() {
     const handleCreateAndUpdateUI = async () => {
         const newProject = await handleCreateProject()
         if (newProject) {
-            setProjects((prevProjects) => [...prevProjects, newProject])
+           fetchProjects()
         }
     }
 
@@ -173,13 +177,13 @@ function Structure() {
                 message={toastMessage}
                 onClose={handleCloseToast}
             />
-            <div className={styles.search}>
+           { hrOrAmin && <div className={styles.search}>
                 <Button
                     onClick={handleOpenDrawer}
                     btnText="Add Project"
                     type={ButtonTypes.PRIMARY}
                 />
-            </div>
+            </div>}
             <DrawerComponent open={openDrawer} onClose={handleCloseDrawer}>
                 <div className={styles.create}>
                     Create New Project
