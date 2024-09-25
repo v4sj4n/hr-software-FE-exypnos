@@ -145,7 +145,7 @@ const ProfileFormContext = () => {
                         value={user.dob}
                     />
                 </div>
-                <div className={style.inputWidth}>
+                <div className={style.inputWidth} >
                     <Selecter
                         options={Places}
                         multiple={false}
@@ -155,6 +155,7 @@ const ProfileFormContext = () => {
                         name="pob"
                         onChange={handlePlaceChange}
                         value={user.pob}
+                        
                     />
                 </div>
             </div>

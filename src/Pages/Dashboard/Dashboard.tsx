@@ -11,6 +11,7 @@ import { useAuth } from '@/ProtectedRoute/Context/AuthContext.tsx'
 import { useEffect, useState } from 'react'
 import Weather from './components/Weather.tsx'
 import { Notes } from './components/notes.tsx'
+import { Loader } from '@/Components/Loader/Loader.tsx'
 
 const DashboardContent: React.FC = () => {
     const { employeeData, isLoading, error } = useDashboardContext()
@@ -28,7 +29,7 @@ const DashboardContent: React.FC = () => {
     }, [])
 
     const { currentUser } = useAuth()
-    if (isLoading) return <p>Loading...</p>
+    if (isLoading) return <p><Loader/></p>
     if (error) return <p>{error}</p>
 
     const userName = currentUser ? currentUser.firstName : 'User'
