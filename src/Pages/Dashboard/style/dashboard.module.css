@@ -72,7 +72,7 @@
 .cardBlue:hover,
 .cardYellow:hover,
 .cardPurple:hover {
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 13px rgba(0, 0, 0, 0.2);
     transform: translateY(-5px);
 }
 
@@ -166,7 +166,7 @@ h3 {
     display: flex;
     gap: 0.333rem;
 
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 10px rgba(109, 105, 105, 0.1);
     transition:
         box-shadow 0.3s ease,
         transform 0.3s ease;
@@ -179,7 +179,7 @@ h3 {
 }
 
 .welcome:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
     transition: box-shadow 0.4s ease;
     animation:
         gradient-flow 5s ease infinite,

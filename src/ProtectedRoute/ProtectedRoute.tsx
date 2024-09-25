@@ -34,7 +34,7 @@ const PrivateRoute = () => {
                             style={{
                                 backgroundColor:
                                     theme.palette.background.default,
-                                color: theme.palette.text.primary,
+                                 color: theme.palette.text.primary,
                                 display: 'flex',
                                 flexDirection: 'column',
                                 width: '100%',

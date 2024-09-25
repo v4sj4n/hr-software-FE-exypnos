@@ -45,13 +45,14 @@
     background-color: transparent;
     border: 1px solid #000;
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
     flex-direction: row;
     gap: 10px;
     font-size: large;
     transition: all 0.3s ease;
     cursor: pointer;
+    padding: 10px;
 }
 
 .member:hover {
