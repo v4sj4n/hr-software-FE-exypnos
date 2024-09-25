@@ -1,18 +1,18 @@
-import { useState, useContext } from 'react';
-import AxiosInstance from '@/Helpers/Axios';
-import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
-import { SocketContext } from '@/Pages/chat/context/SocketContext';
+import { useState, useContext } from 'react'
+import AxiosInstance from '@/Helpers/Axios'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+import { SocketContext } from '@/Pages/chat/context/SocketContext'
 
 interface ChatInputProps {
-    conversationId: string;
+    conversationId: string
 }
 
 export const ChatInput: React.FC<ChatInputProps> = ({ conversationId }) => {
-    const [message, setMessage] = useState<string>('');
-    const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState<boolean>(false);
-    const socket = useContext(SocketContext);
-    const { currentUser } = useAuth();
+    const [message, setMessage] = useState<string>('')
+    const [error, setError] = useState<string | null>(null)
+    const [loading, setLoading] = useState<boolean>(false)
+    const socket = useContext(SocketContext)
+    const { currentUser } = useAuth()
 
     const sendMessage = async () => {
         if (message.trim()) {
@@ -21,43 +21,32 @@ export const ChatInput: React.FC<ChatInputProps> = ({ conversationId }) => {
                     conversationId,
                     text: message,
                     senderId: currentUser?._id,
-                    createdAt: new Date().toISOString(),
-                };
+                    // Optionally include a temporary ID or timestamp if needed
+                }
 
                 try {
-                    setLoading(true);
-                    setError(null);
+                    setLoading(true)
+                    setError(null)
 
-                    socket.emit('sendMessage', newMessage);
-                    console.log('Message sent via socket:', newMessage);
+                    // Emit the message to the server via socket
+                    socket.emit('sendMessage', newMessage)
+                    console.log('Message sent via socket:', newMessage)
 
-                    const response = await AxiosInstance.post('/messages', {
-                        conversationId,
-                        text: message,
-                        senderId: currentUser?._id,
-                    });
-
-                    console.log('Message saved to database:', response.data);
-
-                    setMessage('');
+                    setMessage('')
                 } catch (error: any) {
-                    console.error('Error sending message:', error);
-                    if (error.response) {
-                        setError(`Failed to send message: ${error.response.data.message}`);
-                    } else {
-                        setError('Failed to send message. Please try again.');
-                    }
+                    console.error('Error sending message:', error)
+                    setError('Failed to send message. Please try again.')
                 } finally {
-                    setLoading(false);
+                    setLoading(false)
                 }
             } else {
-                setError('Socket is not connected. Unable to send message.');
-                console.error('Socket is not connected, cannot send message');
+                setError('Socket is not connected. Unable to send message.')
+                console.error('Socket is not connected, cannot send message')
             }
         } else {
-            setError('Message cannot be empty.');
+            setError('Message cannot be empty.')
         }
-    };
+    }
 
     return (
         <div>
@@ -72,5 +61,5 @@ export const ChatInput: React.FC<ChatInputProps> = ({ conversationId }) => {
             </button>
             {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
-    );
-};
+    )
+}
