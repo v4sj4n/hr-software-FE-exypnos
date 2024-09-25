@@ -9,7 +9,7 @@ const Chat = () => {
 
     // Check if the context is null
     if (!chatContext) {
-        return <div>Loading...</div> // or handle it in any other appropriate way
+        return <div>Loading...</div> 
     }
 
     const { selectedConversation, setSelectedConversation } = chatContext

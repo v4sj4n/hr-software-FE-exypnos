@@ -39,16 +39,12 @@ export const MessagesList: React.FC<MessagesListProps> = ({ conversationId }) =>
         `/conversations/${conversationId}/messages`
       );
 
-      // Replace the messages state with the fetched data
       setMessages(data);
 
-      console.log('Messages fetched:', data);
 
       if (data.length === 0) {
-        console.log('No messages in this conversation.');
       }
     } catch (error) {
-      console.error('Error fetching messages:', error);
       setError('Failed to fetch messages. Please try again.');
     } finally {
       setLoading(false);
@@ -57,15 +53,12 @@ export const MessagesList: React.FC<MessagesListProps> = ({ conversationId }) =>
 
   useEffect(() => {
     if (socket && conversationId) {
-      // Leave the previous room if it exists
       if (previousConversationId.current && previousConversationId.current !== conversationId) {
         socket.emit('leaveRoom', previousConversationId.current);
-        console.log(`Left room: ${previousConversationId.current}`);
       }
 
       // Join the new room
       socket.emit('joinRoom', conversationId);
-      console.log(`Joined room: ${conversationId}`);
 
       previousConversationId.current = conversationId;
 
@@ -87,7 +80,6 @@ export const MessagesList: React.FC<MessagesListProps> = ({ conversationId }) =>
       socket.on('receiveMessage', handleMessage);
 
       return () => {
-        // Clean up the listener when the component unmounts or conversationId changes
         socket.off('receiveMessage', handleMessage);
       };
     }

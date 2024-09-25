@@ -21,27 +21,22 @@ export const ChatInput: React.FC<ChatInputProps> = ({ conversationId }) => {
                     conversationId,
                     text: message,
                     senderId: currentUser?._id,
-                    // Optionally include a temporary ID or timestamp if needed
                 }
 
                 try {
                     setLoading(true)
                     setError(null)
 
-                    // Emit the message to the server via socket
                     socket.emit('sendMessage', newMessage)
-                    console.log('Message sent via socket:', newMessage)
 
                     setMessage('')
                 } catch (error: any) {
-                    console.error('Error sending message:', error)
                     setError('Failed to send message. Please try again.')
                 } finally {
                     setLoading(false)
                 }
             } else {
                 setError('Socket is not connected. Unable to send message.')
-                console.error('Socket is not connected, cannot send message')
             }
         } else {
             setError('Message cannot be empty.')
