@@ -56,6 +56,7 @@ const SelectedEventCard = () => {
                 <div className={style.description}>
                     {selectedEvent.description}
                 </div>
+                     <div className={style.border}></div>
                 <div className={style.descripLabel}>
                     <div>
                         <CalendarTodayIcon
@@ -69,7 +70,7 @@ const SelectedEventCard = () => {
                     {formatDate(selectedEvent.startDate)} -{' '}
                     {formatDate(selectedEvent.endDate)}
                 </div>
-
+                <div className={style.border}></div>
                 <div className={style.descripLabel}>
                     <div>
                         <LocationOnOutlinedIcon
@@ -83,6 +84,7 @@ const SelectedEventCard = () => {
                     {selectedEvent.location}
                 </div>
             </div>
+            <div className={style.border}></div>
             <div style={{ width: '100%', height: '100%' }}>
                 <MapComponent
                     onLocationChange={(address, lat, lng) =>
