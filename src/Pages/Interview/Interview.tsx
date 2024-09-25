@@ -12,6 +12,7 @@ import Input from '@/Components/Input/Index'
 import Selecter from '@/Components/Input/components/Select/Selecter'
 import { InterviewProvider } from './Context/InterviewProvider'
 import { Close, FilterList } from '@mui/icons-material'
+import { ForbiddenResource } from '@/Components/ForbiddenResource/ForbiddenResource'
 function InterviewKanbanContent() {
     const {
         loading,
@@ -390,7 +391,9 @@ function InterviewKanbanContent() {
 
 const InterviewKanban = () => (
     <InterviewProvider>
-        <InterviewKanbanContent />
+        <ForbiddenResource>
+            <InterviewKanbanContent />
+        </ForbiddenResource>
     </InterviewProvider>
 )
 
