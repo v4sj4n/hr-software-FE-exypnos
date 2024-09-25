@@ -56,7 +56,7 @@ const SelectedEventCard = () => {
                 <div className={style.description}>
                     {selectedEvent.description}
                 </div>
-                     <div className={style.border}></div>
+                <div className={style.border}></div>
                 <div className={style.descripLabel}>
                     <div>
                         <CalendarTodayIcon

@@ -32,8 +32,8 @@ const ProfileFormContext = () => {
         handleCancel,
         handlePositionChange,
         position,
-        engagement, 
-        handleEngagementChange
+        engagement,
+        handleEngagementChange,
     } = useProfile()
 
     if (!user) {
@@ -145,7 +145,7 @@ const ProfileFormContext = () => {
                         value={user.dob}
                     />
                 </div>
-                <div className={style.inputWidth} >
+                <div className={style.inputWidth}>
                     <Selecter
                         options={Places}
                         multiple={false}
@@ -155,7 +155,6 @@ const ProfileFormContext = () => {
                         name="pob"
                         onChange={handlePlaceChange}
                         value={user.pob}
-                        
                     />
                 </div>
             </div>
@@ -198,7 +197,6 @@ const ProfileFormContext = () => {
                         onChange={handleChange}
                         value={user.firstName}
                     />
-    
                 </div>
                 <div className={style.inputWidth}>
                     <Selecter
@@ -210,7 +208,7 @@ const ProfileFormContext = () => {
                         label="Position"
                         width="350px"
                         value={user.position}
-                    />  
+                    />
                 </div>
                 <div className={style.inputWidth}>
                     <Selecter
@@ -223,7 +221,7 @@ const ProfileFormContext = () => {
                         width="350px"
                         value={user.engagement}
                     />
-                    </div>
+                </div>
             </div>
             <div className={style.border}> </div>
             {isAdmin ? (

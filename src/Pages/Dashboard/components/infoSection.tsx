@@ -7,8 +7,7 @@ import { useEvents } from '@/Pages/Events/Context/EventsContext'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 const InfoSectionContent: React.FC = () => {
-
-    const {currentUser} = useAuth()
+    const { currentUser } = useAuth()
     const id = currentUser?._id
 
     const fetchEventsDashboard = async () => {

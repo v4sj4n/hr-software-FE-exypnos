@@ -21,8 +21,13 @@ export const useGetAndUpdateUserById = () => {
 
     const isCurrentUser = currentUser?._id === id
     const isAdmin = userRole === 'hr'
-  const engagement=[
-        'full_time_remote','full_time_on_site','part_time_remote','part_time_on_site', 'internship','external',
+    const engagement = [
+        'full_time_remote',
+        'full_time_on_site',
+        'part_time_remote',
+        'part_time_on_site',
+        'internship',
+        'external',
     ]
     const genderOptions = ['Male', 'Female']
     const [isCancel, setIsCancel] = useState(false)
@@ -241,7 +246,7 @@ export const useGetAndUpdateUserById = () => {
         position,
         handlePositionChange,
         engagement,
-        handleEngagementChange
+        handleEngagementChange,
     }
 }
 

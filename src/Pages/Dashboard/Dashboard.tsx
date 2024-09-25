@@ -29,7 +29,12 @@ const DashboardContent: React.FC = () => {
     }, [])
 
     const { currentUser } = useAuth()
-    if (isLoading) return <p><Loader/></p>
+    if (isLoading)
+        return (
+            <p>
+                <Loader />
+            </p>
+        )
     if (error) return <p>{error}</p>
 
     const userName = currentUser ? currentUser.firstName : 'User'
