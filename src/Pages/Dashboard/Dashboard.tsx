@@ -88,13 +88,13 @@ const DashboardContent: React.FC = () => {
                         <div className={style.cardBlue}>
                             <Card
                                 title="All"
-                                content={String(employeeData.absent)}
+                                content={String(employeeData.all)}
                                 icon="All"
                             />
                         </div>
                         <div className={style.cardGreen}>
                             <Card
-                                title="Present Employees"
+                                title="Present "
                                 content={String(employeeData.present)}
                                 icon="Present"
                             />
@@ -102,14 +102,15 @@ const DashboardContent: React.FC = () => {
 
                         <div className={style.cardYellow}>
                             <Card
-                                title="Employees on Leave"
+                                title=" On Leave"
                                 content={String(employeeData.onLeave)}
                                 icon="On Leave"
                             />
                         </div>
                         <div className={style.cardPurple}>
                             <Card
-                                title="Remote Employees"
+                                title="Remote
+                                "
                                 content={String(employeeData.remote)} 
                                 icon="Remote"
                             />

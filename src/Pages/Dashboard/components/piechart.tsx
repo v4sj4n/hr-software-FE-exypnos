@@ -3,7 +3,7 @@ import { PieChart } from '@mui/x-charts'
 const PieChartComponent = () => {
     const data = [
         { value: 50, label: 'Present' },
-        { value: 10, label: 'Absent' },
+        { value: 10, label: 'All' },
         { value: 15, label: 'On Leave' },
         { value: 20, label: 'Remote' },
     ]

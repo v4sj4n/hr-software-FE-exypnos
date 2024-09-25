@@ -3,7 +3,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react'
 
 interface EmployeeData {
     present: number
-    absent: number
+    all: number
     onLeave: number
     remote: number
 }
@@ -24,7 +24,7 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
     const [employeeData, setEmployeeData] = useState<EmployeeData>({
         present: 0,
-        absent: 0,
+        all: 0,
         onLeave: 0,
         remote: 0,
     })
@@ -53,15 +53,15 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({
                 const present = presentResponse?.data
                 const onLeave = onLeaveResponse?.data
                 const remote = remoteResponse?.data
-                const absent = present + remote
+                const all = present + remote
 
-                setEmployeeData({ present, onLeave, remote, absent })
+                setEmployeeData({ present, onLeave, remote, all })
 
                 console.log('Updated Employee Data:', {
                     present,
                     onLeave,
                     remote,
-                    absent,
+                    all,
                 })
             } catch (error) {
                 console.error('Failed to fetch employee data:', error)
