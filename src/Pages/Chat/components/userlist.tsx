@@ -26,7 +26,6 @@ export const UserList = ({ onSelectConversation }: any) => {
   const { data: users = [] } = useGetAllUsers();
   const socket = useContext(SocketContext);
   const isFetching = useRef(false);
-  const socketInitialized = useRef(false);
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -58,7 +57,7 @@ export const UserList = ({ onSelectConversation }: any) => {
     if (socket && currentUser?._id) {
       socket.emit('joinRoom', currentUser._id);
 
-      socket.on('newConversation', (newConversation) => {
+      const handleNewConversation = (newConversation: { _id: any; }) => {
         setConversations((prevConversations) => {
           const exists = prevConversations.some(
             (conv) => conv._id === newConversation._id,
@@ -72,10 +71,12 @@ export const UserList = ({ onSelectConversation }: any) => {
         });
 
         socket.emit('joinRoom', newConversation._id);
-      });
+      };
+
+      socket.on('newConversation', handleNewConversation);
 
       return () => {
-        socket.off('newConversation');
+        socket.off('newConversation', handleNewConversation);
       };
     }
   }, [socket, currentUser?._id]);
@@ -118,11 +119,11 @@ export const UserList = ({ onSelectConversation }: any) => {
           },
         });
         conversationId = response.data.conversation._id;
-        setConversations((prevConversations) => [
-          ...prevConversations,
-          response.data.conversation,
-        ]);
 
+        // Do not manually add the new conversation to the state here
+        // The socket event 'newConversation' will handle updating the state
+
+        // Optionally, navigate to the new conversation
         onSelectConversation(conversationId);
       } catch (error) {
         console.error('Error creating conversation:', error);
@@ -130,12 +131,6 @@ export const UserList = ({ onSelectConversation }: any) => {
       }
     }
   };
-
-  useEffect(() => {
-    if (socket && currentUser?._id) {
-      socket.emit('joinRoom', currentUser._id);
-    }
-  }, [socket, currentUser?._id]);
 
   const getConversationName = (conversation: any) => {
     const participant = conversation.participants.find(
@@ -197,9 +192,7 @@ export const UserList = ({ onSelectConversation }: any) => {
                 button
                 onClick={() => onSelectConversation(conversation._id)}
               >
-                <ListItemText
-                  primary={getConversationName(conversation)}
-                />
+                <ListItemText primary={getConversationName(conversation)} />
               </ListItem>
             ))}
           {conversations.filter((conversation) =>
