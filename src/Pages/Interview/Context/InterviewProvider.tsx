@@ -31,6 +31,8 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({
         'success',
     )
     const [showFilter, setShowFilter] = useState(false)
+    const [sortByDate, setSortByDate] = useState(false) 
+
     const phases = [
         'first_interview',
         'second_interview',
@@ -77,8 +79,20 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({
                     }
                 },
             )
+            const sortedInterviews = mappedInterviews.sort((a, b) => {
+                const aDate =
+                    a.currentPhase === 'second_interview'
+                        ? new Date(a.secondInterviewDate!).getTime()
+                        : new Date(a.firstInterviewDate!).getTime()
+                const bDate =
+                    b.currentPhase === 'second_interview'
+                        ? new Date(b.secondInterviewDate!).getTime()
+                        : new Date(b.firstInterviewDate!).getTime()
 
-            setInterviews(mappedInterviews)
+                return aDate - bDate 
+            })
+
+            setInterviews(sortedInterviews)
             setFilteredInterviews(mappedInterviews)
         }
     }, [interviewsData])
