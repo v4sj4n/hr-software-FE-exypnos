@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState, useRef } from 'react';
-import AxiosInstance from '@/Helpers/Axios';
-import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
-import { UserSearchModal } from '@/Pages/chat/components/UserSearchModal';
+import { useContext, useEffect, useState, useRef } from 'react'
+import AxiosInstance from '@/Helpers/Axios'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+import { UserSearchModal } from '@/Pages/chat/components/UserSearchModal'
 import {
     List,
     ListItem,
@@ -11,107 +11,122 @@ import {
     Box,
     CircularProgress,
     Typography,
-} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import { useGetAllUsers } from '@/Pages/Employees/Hook';
-import { SocketContext } from '../context/SocketContext';
+} from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import { useGetAllUsers } from '@/Pages/Employees/Hook'
+import { SocketContext } from '../context/SocketContext'
 
 export const UserList = ({ onSelectConversation }: any) => {
-    const [conversations, setConversations] = useState<any[]>([]);
-    const [search, setSearch] = useState('');
-    const [openModal, setOpenModal] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const { currentUser } = useAuth();
-    const { data: users = [] } = useGetAllUsers();
-    const socket = useContext(SocketContext);
-    const isFetching = useRef(false); // Track if fetch is in progress
-    const socketInitialized = useRef(false); // Track if socket events are initialized
+    const [conversations, setConversations] = useState<any[]>([])
+    const [search, setSearch] = useState('')
+    const [openModal, setOpenModal] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+    const { currentUser } = useAuth()
+    const { data: users = [] } = useGetAllUsers()
+    const socket = useContext(SocketContext)
+    const isFetching = useRef(false) // Track if fetch is in progress
+    const socketInitialized = useRef(false) // Track if socket events are initialized
 
     useEffect(() => {
         const fetchConversations = async () => {
-            if (isFetching.current) return; // Prevent duplicate fetching
-            setLoading(true);
-            setError(null);
-            isFetching.current = true;
+            if (isFetching.current) return // Prevent duplicate fetching
+            setLoading(true)
+            setError(null)
+            isFetching.current = true
 
             try {
                 const response = await AxiosInstance.get(
-                    `/conversations/user/${currentUser?._id}`
-                );
-                setConversations(response.data);
+                    `/conversations/user/${currentUser?._id}`,
+                )
+                setConversations(response.data)
             } catch (error) {
-                console.error('Error fetching conversations:', error);
-                setError('Failed to fetch conversations.');
+                console.error('Error fetching conversations:', error)
+                setError('Failed to fetch conversations.')
             } finally {
-                setLoading(false);
-                isFetching.current = false;
+                setLoading(false)
+                isFetching.current = false
             }
-        };
+        }
 
         if (currentUser?._id) {
-            fetchConversations();
+            fetchConversations()
         }
-    }, [currentUser?._id]);
+    }, [currentUser?._id])
 
     useEffect(() => {
         if (socket && currentUser?._id) {
-          // Join the user's personal room
-          socket.emit('joinRoom', currentUser._id);
-          console.log(`User ${currentUser._id} joined their own room`);
-      
-          // Set up socket listener for new conversations
-          socket.on('newConversation', (newConversation) => {
-            console.log('New conversation received via socket:', newConversation);
-            setConversations((prevConversations) => {
-                // Check if the conversation already exists
-                const exists = prevConversations.some(
-                    (conversations) => conversations._id === newConversation._id
-                );
-                if (!exists) {
-                    return [...prevConversations, newConversation];
-                }
-                return prevConversations;
-            });
+            // Join the user's personal room
+            socket.emit('joinRoom', currentUser._id)
+            console.log(`User ${currentUser._id} joined their own room`)
 
-            // Automatically join the new conversation room
-            socket.emit('joinRoom', newConversation._id);
-          });
-      
-          // Clean up the listener when the component unmounts or currentUser changes
-          return () => {
-            socket.off('newConversation');
-          };
+            // Set up socket listener for new conversations
+            socket.on('newConversation', (newConversation) => {
+                console.log('New conversation received via socket:', newConversation._id);
+              
+                setConversations((prevConversations) => {
+                  console.log(
+                    'Existing conversations:',
+                    prevConversations.map((conv) => conv._id)
+                  );
+              
+                  const exists = prevConversations.some((conv) => {
+                    console.log(
+                      `Comparing existing conv ID: ${conv._id} with new conv ID: ${newConversation._id}`
+                    );
+                    return conv._id === newConversation._id;
+                  });
+              
+                  if (!exists) {
+                    console.log('Adding new conversation to state:', newConversation._id);
+                    return [...prevConversations, newConversation];
+                  }
+              
+                  console.log('Conversation already exists in state:', newConversation._id);
+                  return prevConversations;
+                });
+              
+                // Automatically join the new conversation room
+                socket.emit('joinRoom', newConversation._id);
+              });
+              
+
+            // Clean up the listener when the component unmounts or currentUser changes
+            return () => {
+                socket.off('newConversation')
+            }
         }
-      }, [socket, currentUser?._id]);
-      
+    }, [socket, currentUser?._id])
 
     const handleSelectUser = async (user: any, message: string) => {
-        setOpenModal(false);
+        setOpenModal(false)
 
         const existingConversation = conversations.find((conversation) => {
-            const participants = conversation.participants;
+            const participants = conversation.participants
             return (
                 participants.includes(user._id) &&
                 participants.includes(currentUser?._id)
-            );
-        });
+            )
+        })
 
-        let conversationId;
+        let conversationId
         if (existingConversation) {
-            console.log('Conversation already exists:', existingConversation._id);
-            conversationId = existingConversation._id;
+            console.log(
+                'Conversation already exists:',
+                existingConversation._id,
+            )
+            conversationId = existingConversation._id
 
             try {
                 await AxiosInstance.post('/messages', {
                     conversationId,
                     text: message,
                     senderId: currentUser?._id,
-                });
-                onSelectConversation(conversationId);
+                })
+                onSelectConversation(conversationId)
             } catch (error) {
-                console.error('Error sending message:', error);
-                setError('Failed to send message.');
+                console.error('Error sending message:', error)
+                setError('Failed to send message.')
             }
         } else {
             try {
@@ -126,35 +141,35 @@ export const UserList = ({ onSelectConversation }: any) => {
                         senderId: currentUser?._id,
                         text: message,
                     },
-                });
-                conversationId = response.data.conversation._id;
+                })
+                conversationId = response.data.conversation._id
                 setConversations((prevConversations) => [
                     ...prevConversations,
                     response.data.conversation,
-                ]);
+                ])
 
-                onSelectConversation(conversationId);
+                onSelectConversation(conversationId)
             } catch (error) {
-                console.error('Error creating conversation:', error);
-                setError('Failed to create conversation.');
+                console.error('Error creating conversation:', error)
+                setError('Failed to create conversation.')
             }
         }
-    };
+    }
 
     useEffect(() => {
         if (socket && currentUser?._id) {
-            socket.emit('joinRoom', currentUser._id);
-            console.log(`User ${currentUser._id} joined their own room`);
+            socket.emit('joinRoom', currentUser._id)
+            console.log(`User ${currentUser._id} joined their own room`)
         }
-    }, [socket, currentUser?._id]);
+    }, [socket, currentUser?._id])
 
     const getConversationName = (conversation: any) => {
         const participant = conversation.participants.find(
-            (participantId: string) => participantId !== currentUser?._id
-        );
-        const user = users.find((user: any) => user._id === participant);
-        return user ? `${user?.firstName} ${user?.lastName}` : 'Unknown User';
-    };
+            (participantId: string) => participantId !== currentUser?._id,
+        )
+        const user = users.find((user: any) => user._id === participant)
+        return user ? `${user?.firstName} ${user?.lastName}` : 'Unknown User'
+    }
 
     return (
         <Box
@@ -172,7 +187,9 @@ export const UserList = ({ onSelectConversation }: any) => {
                 borderRadius: '12px',
             }}
         >
-            <Box sx={{ display: 'flex', alignItems: 'center', paddingBottom: 2 }}>
+            <Box
+                sx={{ display: 'flex', alignItems: 'center', paddingBottom: 2 }}
+            >
                 <TextField
                     fullWidth
                     variant="outlined"
@@ -200,21 +217,25 @@ export const UserList = ({ onSelectConversation }: any) => {
                         .filter((conversation) =>
                             getConversationName(conversation)
                                 .toLowerCase()
-                                .includes(search.toLowerCase())
+                                .includes(search.toLowerCase()),
                         )
                         .map((conversation: any) => (
                             <ListItem
                                 key={conversation._id}
                                 button
-                                onClick={() => onSelectConversation(conversation._id)}
+                                onClick={() =>
+                                    onSelectConversation(conversation._id)
+                                }
                             >
-                                <ListItemText primary={getConversationName(conversation)} />
+                                <ListItemText
+                                    primary={getConversationName(conversation)}
+                                />
                             </ListItem>
                         ))}
                     {conversations.filter((conversation) =>
                         getConversationName(conversation)
                             .toLowerCase()
-                            .includes(search.toLowerCase())
+                            .includes(search.toLowerCase()),
                     ).length === 0 && (
                         <ListItem>
                             <ListItemText primary="No conversations match your search" />
@@ -233,5 +254,5 @@ export const UserList = ({ onSelectConversation }: any) => {
                 onClose={() => setOpenModal(false)}
             />
         </Box>
-    );
-};
+    )
+}
