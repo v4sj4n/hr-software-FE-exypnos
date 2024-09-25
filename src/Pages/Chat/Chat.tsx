@@ -1,30 +1,27 @@
-import { useContext } from 'react'
-import { MessagesList } from './components/MessagesList'
-import { ChatContext } from './context/ChatContext'
-import { UserList } from './components/userlist'
-import { ChatInput } from './components/chatinput'
+import React from 'react';
+import ConversationList from './components/ConversationList';
+import ChatWindow from './components/ChatWindow';
 
-const Chat = () => {
-    const chatContext = useContext(ChatContext)
+import useChat from './hooks/useChat';
 
-    // Check if the context is null
-    if (!chatContext) {
-        return <div>Loading...</div> // or handle it in any other appropriate way
-    }
+const Chat: React.FC = () => {
+  const { conversations, messages, selectedConversation, selectConversation, sendMessage } = useChat();
 
-    const { selectedConversation, setSelectedConversation } = chatContext
+  return (
+    <div style={{ display: 'flex' }}>
+      <ConversationList 
+        conversations={conversations} 
+        selectConversation={selectConversation} 
+      />
+      {selectedConversation && (
+        <ChatWindow 
+          messages={messages} 
+          sendMessage={sendMessage} 
+        />
+      )}
+      <NewConversationModal />
+    </div>
+  );
+};
 
-    return (
-        <div style={{ display: 'flex' }}>
-            <UserList onSelectConversation={setSelectedConversation} />
-            {selectedConversation && (
-                <div>
-                    <MessagesList conversationId={selectedConversation} />
-                    <ChatInput conversationId={selectedConversation} />
-                </div>
-            )}
-        </div>
-    )
-}
-
-export default Chat
+export default Chat;
