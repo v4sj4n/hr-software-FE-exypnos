@@ -2,6 +2,7 @@ import DataTable from '@/Components/Table/Table'
 import { useCandidateContext } from './Context/CandidateTableContext'
 import { CandidateProvider } from './Context/CandidateTableProvider'
 import { Loader } from '@/Components/Loader/Loader'
+import { ForbiddenResource } from '@/Components/ForbiddenResource/ForbiddenResource'
 
 function CandidatesCoontext() {
     const {
@@ -17,7 +18,8 @@ function CandidatesCoontext() {
     } = useCandidateContext()
 
     return (
-        <>
+       <ForbiddenResource>
+         <>
             {isPending ? (
                 <Loader />
             ) : (
@@ -33,6 +35,7 @@ function CandidatesCoontext() {
                 />
             )}
         </>
+       </ForbiddenResource>
     )
 }
 

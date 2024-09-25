@@ -157,7 +157,7 @@ h3 {
 }
 
 .welcome {
-    background-image: url('./../../../../public/Images/blue.jpg');
+    background-image: url('/Images/blue.jpg');
     background-size: 200% 200%;
     color: #1e299ebd;
     border-radius: 15px;
