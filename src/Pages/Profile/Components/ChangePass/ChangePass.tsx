@@ -24,17 +24,17 @@ function ChangePassContent() {
 
     return (
         <>
-            <div className={style.container}>
+           
                 <Toast
                     severity={toastSeverity}
                     open={toastOpen}
                     message={toastMessage}
                     onClose={handleToastClose}
                 />
-                <div className={style.title}>Change Password </div>
                 <div className={style.text}>
                     Update your password to keep your account secure.
                 </div>
+                <div style={{display:"flex", gap:"20px", marginBottom:"20px"}}>
                 <Input
                     label="Current Password"
                     name="currentPassword"
@@ -44,7 +44,7 @@ function ChangePassContent() {
                     onChange={handleChange}
                     value={currentPassword}
                     placeholder="Enter your current password"
-                    width="350px"
+                 width="430px"
                 />
                 <Input
                     label="New Password"
@@ -55,8 +55,9 @@ function ChangePassContent() {
                     onClick={handleShowEye}
                     onChange={handleChange}
                     value={newPassword}
-                    width="350px"
+                    width="430px"
                 />
+                </div>
                 <Input
                     label="Confirm Password"
                     name="confirmPassword"
@@ -66,17 +67,17 @@ function ChangePassContent() {
                     onClick={handleShowEye}
                     onChange={handleChange}
                     value={confirmPassword}
-                    width="350px"
+                      width="430px"
                 />
                 {error && <div style={{ color: '#d32f2f' }}>{error}</div>}
                 <Button
                     type={ButtonTypes.PRIMARY}
                     btnText="Update Pass"
                     onClick={handleUpdatePassword}
-                    width="350px"
-                    marginTop="9px"
+                    width="430px"
+                    marginTop="20px"
                 />
-            </div>
+       
         </>
     )
 }
