@@ -17,7 +17,7 @@ export const useGetAllMessages = ({
             return
         }
 
-        console.log('Fetching messages for conversation ID:', conversationId) // Debugging log
+        console.log('Fetching messages for conversation ID:', conversationId)
 
         const fetchMessages = async () => {
             try {
@@ -25,7 +25,7 @@ export const useGetAllMessages = ({
                     `/conversations/${conversationId}/messages`
                 )
                 setMessages(data)
-                console.log('Messages fetched:', data) // Debugging log to see fetched data
+                console.log('Messages fetched:', data)
             } catch (error) {
                 console.error('Error fetching messages:', error)
             }
@@ -35,7 +35,7 @@ export const useGetAllMessages = ({
 
         if (socket) {
             socket.on('message', (newMessage: Message) => {
-                console.log('New message received:', newMessage) // Debugging log for new messages
+                console.log('New message received:', newMessage)
                 setMessages((prevMessages) => [...prevMessages, newMessage])
             })
 
@@ -43,7 +43,7 @@ export const useGetAllMessages = ({
                 socket.off('message')
             }
         }
-    }, [conversationId, socket]) // This ensures useEffect triggers when conversationId changes
+    }, [conversationId, socket])
 
     return { messages }
 }

@@ -18,7 +18,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ conversationId }) => {
         if (message.trim()) {
             if (socket?.connected) {
                 const newMessage = {
-                    conversationId, // Ensure the conversationId is the correct, existing one
+                    conversationId,
                     text: message,
                     senderId: currentUser?._id,
                     createdAt: new Date().toISOString(),
@@ -28,21 +28,25 @@ export const ChatInput: React.FC<ChatInputProps> = ({ conversationId }) => {
                     setLoading(true);
                     setError(null);
 
-                    // Emit the message to the room via socket
                     socket.emit('sendMessage', newMessage);
                     console.log('Message sent via socket:', newMessage);
 
-                    // Save the message to the database via API
-                    await AxiosInstance.post('/messages', {
-                        conversationId, // Make sure the correct conversationId is sent
+                    const response = await AxiosInstance.post('/messages', {
+                        conversationId,
                         text: message,
                         senderId: currentUser?._id,
                     });
 
-                    setMessage(''); // Clear input after sending
-                } catch (error) {
+                    console.log('Message saved to database:', response.data);
+
+                    setMessage('');
+                } catch (error: any) {
                     console.error('Error sending message:', error);
-                    setError('Failed to send message. Please try again.');
+                    if (error.response) {
+                        setError(`Failed to send message: ${error.response.data.message}`);
+                    } else {
+                        setError('Failed to send message. Please try again.');
+                    }
                 } finally {
                     setLoading(false);
                 }
