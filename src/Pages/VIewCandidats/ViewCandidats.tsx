@@ -248,7 +248,7 @@ export default function ViewCandidats() {
                             gap: '20px',
                         }}
                     >
-                        <div className={style.title}>Notify Applicant.</div>
+                        <div className={style.title}>Notify Applicant</div>
                         <Input
                             IsUsername
                             type="datetime-local"
