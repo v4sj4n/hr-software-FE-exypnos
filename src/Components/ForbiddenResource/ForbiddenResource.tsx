@@ -4,7 +4,6 @@ import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 import { ReactElement } from 'react'
 export const ForbiddenResource = ({ children }: { children: ReactElement }) => {
     const { userRole } = useAuth()
-    console.log(userRole)
     if (['dev', 'pm'].includes(userRole as string)) {
         return (
             <div className={style.container}>
