@@ -32,8 +32,8 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
         handleCancel,
         handlePositionChange,
         position,
-        engagement, 
-        handleEngagementChange
+        engagement,
+        handleEngagementChange,
     } = useGetAndUpdateUserById()
 
     const {
@@ -89,8 +89,8 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
         handleCancel,
         handlePositionChange,
         position,
-        engagement, 
-        handleEngagementChange
+        engagement,
+        handleEngagementChange,
     }
 
     return (

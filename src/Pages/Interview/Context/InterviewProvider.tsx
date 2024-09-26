@@ -31,7 +31,7 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({
         'success',
     )
     const [showFilter, setShowFilter] = useState(false)
-    const [sortByDate, setSortByDate] = useState(false) 
+    const [sortByDate, setSortByDate] = useState(false)
 
     const phases = [
         'first_interview',
@@ -89,7 +89,7 @@ export const InterviewProvider: React.FC<{ children: React.ReactNode }> = ({
                         ? new Date(b.secondInterviewDate!).getTime()
                         : new Date(b.firstInterviewDate!).getTime()
 
-                return aDate - bDate 
+                return aDate - bDate
             })
 
             setInterviews(sortedInterviews)

@@ -16,7 +16,7 @@ function InventoryBaseComponent() {
     } = useContext(InventoryContext)
     return (
         <ForbiddenResource>
-            <main className={style.main}>
+            <main>
                 <ModalComponent
                     open={createModalOpen}
                     handleClose={handleCloseCreateModalOpen}
@@ -24,13 +24,7 @@ function InventoryBaseComponent() {
                     <CreateItemForm />
                 </ModalComponent>
                 <InventoryTable />
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'end',
-                        marginTop: '1rem',
-                    }}
-                >
+                <div className={style.buttonDivStyle}>
                     <Button
                         type={ButtonTypes.PRIMARY}
                         btnText="Add an Item"

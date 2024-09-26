@@ -141,7 +141,7 @@ export const HeaderContent = () => {
                                                 display: 'flex',
                                                 flexDirection: 'column',
                                                 alignItems: 'center',
-                                                padding:'5px',
+                                                padding: '5px',
                                                 color: theme.palette.text
                                                     .secondary,
                                             }}

@@ -1,6 +1,6 @@
 import { PieChart } from '@mui/x-charts'
 import { useDashboardContext } from './../context/hook.tsx'
-import  { useEffect } from 'react'
+import { useEffect } from 'react'
 
 const PieChartComponent = () => {
     const { employeeData, isLoading, error } = useDashboardContext()
@@ -18,8 +18,8 @@ const PieChartComponent = () => {
     }
 
     const data = [
-        { value: employeeData.present , label: 'Present' },
-        { value: employeeData.all , label: 'All' },
+        { value: employeeData.present, label: 'Present' },
+        { value: employeeData.all, label: 'All' },
         { value: employeeData.onLeave, label: 'On Leave' },
         { value: employeeData.remote, label: 'Remote' },
     ]

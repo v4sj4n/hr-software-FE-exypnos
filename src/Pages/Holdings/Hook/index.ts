@@ -60,6 +60,9 @@ export const useGetItem = () => {
 }
 
 export const useHandleItemAssigner = () => {
+    const { handleCloseOnModal: handleClose, setToastConfigs } =
+        useContext(HoldingsContext)
+
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: ({
@@ -71,29 +74,21 @@ export const useHandleItemAssigner = () => {
             userId: string
             date: string
         }) => handleItemAssign(assetId, userId, date),
-        onSettled: () => {
-            queryClient.invalidateQueries({
-                queryKey: ['usersWithHoldings'],
-            })
-            queryClient.invalidateQueries({
-                queryKey: ['userHoldings'],
+        onError: () => {
+            setToastConfigs({
+                isOpen: true,
+                message: 'Error assigning item',
+                severity: 'error',
             })
         },
-    })
-}
-
-export const useHandleItemReturner = () => {
-    const queryClient = useQueryClient()
-    return useMutation({
-        mutationFn: ({
-            assetId,
-            status,
-            returnDate,
-        }: {
-            assetId: string
-            status: string
-            returnDate: string
-        }) => handleItemReturn(assetId, status, returnDate),
+        onSuccess: () => {
+            setToastConfigs({
+                isOpen: true,
+                message: 'Item assigned successfully',
+                severity: 'success',
+            })
+            handleClose()
+        },
         onSettled: () => {
             queryClient.invalidateQueries({
                 queryKey: ['usersWithHoldings'],
@@ -107,11 +102,7 @@ export const useHandleItemReturner = () => {
 
 export const useAssignAssetForm = () => {
     const { mutateAsync, error } = useHandleItemAssigner()
-    const {
-        searchParams,
-        handleCloseOnModal: handleClose,
-        setToastConfigs,
-    } = useContext(HoldingsContext)
+    const { searchParams } = useContext(HoldingsContext)
 
     const form = useForm({
         defaultValues: {
@@ -124,29 +115,53 @@ export const useAssignAssetForm = () => {
                 userId: searchParams.get('selectedUser') as string,
                 date: value.date,
             })
-            if (error) {
-                setToastConfigs({
-                    isOpen: true,
-                    message: 'Error assigning item',
-                    severity: 'error',
-                })
-            } else {
-                setToastConfigs({
-                    isOpen: true,
-                    message: 'Item assigned successfully',
-                    severity: 'success',
-                })
-                handleClose()
-            }
         },
         validatorAdapter: valibotValidator(),
     })
-    return { form }
+    return { form, error }
+}
+
+export const useHandleItemReturner = () => {
+    const queryClient = useQueryClient()
+    const { handleCloseOnModal: handleClose, setToastConfigs } =
+        useContext(HoldingsContext)
+    return useMutation({
+        mutationFn: ({
+            assetId,
+            status,
+            returnDate,
+        }: {
+            assetId: string
+            status: string
+            returnDate: string
+        }) => handleItemReturn(assetId, status, returnDate),
+        onError() {
+            setToastConfigs({
+                isOpen: true,
+                message: 'Error returning item',
+                severity: 'error',
+            })
+        },
+        onSuccess: () => {
+            setToastConfigs({
+                isOpen: true,
+                message: 'Item returned successfully',
+                severity: 'success',
+            })
+            handleClose()
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries({
+                queryKey: ['usersWithHoldings'],
+            })
+            queryClient.invalidateQueries({
+                queryKey: ['userHoldings'],
+            })
+        },
+    })
 }
 
 export const useReturnAssetForm = () => {
-    const { handleCloseOnModal: handleClose, setToastConfigs } =
-        useContext(HoldingsContext)
     const itemGetter = useGetItem()
 
     const { mutateAsync, error } = useHandleItemReturner()
@@ -158,30 +173,14 @@ export const useReturnAssetForm = () => {
         },
 
         onSubmit: async ({ value }) => {
-            console.log(value)
             await mutateAsync({
-                assetId: itemGetter.data._id,
+                assetId: itemGetter.data!._id,
                 status: value.status,
                 returnDate: value.returnDate,
             })
-            console.log(error)
-            if (error) {
-                setToastConfigs({
-                    isOpen: true,
-                    message: 'Error returning item',
-                    severity: 'error',
-                })
-            } else {
-                setToastConfigs({
-                    isOpen: true,
-                    message: 'Item returned successfully',
-                    severity: 'success',
-                })
-                handleClose()
-            }
         },
         validatorAdapter: valibotValidator(),
     })
 
-    return { form, itemGetter }
+    return { form, itemGetter, error }
 }

@@ -48,8 +48,13 @@ function InterviewKanbanContent() {
     } = useInterviewContext()
     const theme = useTheme()
 
-    if (loading) return <div> <Loader/>
-    </div>
+    if (loading)
+        return (
+            <div>
+                {' '}
+                <Loader />
+            </div>
+        )
     if (error) {
         const errorMessage =
             error instanceof Error ? error.message : 'Unknown error'

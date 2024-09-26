@@ -11,12 +11,13 @@ import Selecter from '@/Components/Input/components/Select/Selecter'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import { picklist } from 'valibot'
 import style from '../../style/returnAssetModal.module.scss'
+import { AxiosError } from 'axios'
 
 export const ReturnAssetModal = () => {
     const { searchParams, handleCloseOnModal: handleClose } =
         useContext(HoldingsContext)
-    const { form, itemGetter } = useReturnAssetForm()
-
+    const { form, itemGetter, error } = useReturnAssetForm()
+    console.log(error)
     return (
         <ModalComponent
             open={!!searchParams.get('ownedItem')}
@@ -119,6 +120,11 @@ export const ReturnAssetModal = () => {
                                         )}
                                     />
                                 </div>
+                                {error && error instanceof AxiosError && (
+                                    <ErrorText>
+                                        {error.response?.data.message}
+                                    </ErrorText>
+                                )}
                                 <div className={style.formButtonContainer}>
                                     <Button
                                         type={ButtonTypes.PRIMARY}

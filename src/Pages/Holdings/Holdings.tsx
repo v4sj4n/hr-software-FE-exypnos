@@ -7,7 +7,7 @@ import { ForbiddenResource } from '@/Components/ForbiddenResource/ForbiddenResou
 function HoldingsComponent() {
     return (
         <ForbiddenResource>
-            <main className={style.main}>
+            <main>
                 <HoldingsSearchFilter />
                 <div className={style.mainContainer}>
                     <EmployeesWithHoldings />

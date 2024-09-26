@@ -43,7 +43,7 @@ export interface UserProfileData {
     file: string
     genderOptions: string
     position: string
-    engagement: string,
+    engagement: string
     _id: number
 }
 

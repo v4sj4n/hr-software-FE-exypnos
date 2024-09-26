@@ -1,7 +1,6 @@
 import { MouseEvent, useContext, useEffect } from 'react'
 import { VacationProvider, VacationContext } from './VacationContext'
 import { VacationTable } from './components/VacationTable'
-import style from './style/vacation.module.scss'
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { EmployeesWithVacations } from './components/EmployeesWithVacations'
 import Button from '@/Components/Button/Button'
@@ -38,7 +37,7 @@ function VacationComponent() {
     }, [searchParams, setSearchParams, userRole])
 
     return (
-        <main className={style.main}>
+        <main>
             <div
                 style={{
                     display: 'flex',

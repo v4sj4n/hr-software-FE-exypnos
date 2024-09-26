@@ -92,10 +92,6 @@ const ProfileFormContext = () => {
                             onChange={handlePlaceChange}
                             value={user.pob}
                         />
-
-
-
-
                         <Selecter
                             disabled={!isAdmin}
                             multiple={false}
@@ -117,6 +113,7 @@ const ProfileFormContext = () => {
                             label="LastName"
                             onChange={handleChange}
                             value={user.lastName}
+
                         />
                         <Input
                             icon={<p className={style.numberPrefix}>+355</p>}

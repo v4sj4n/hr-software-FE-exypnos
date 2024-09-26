@@ -20,9 +20,12 @@ import { ModalComponent } from '@/Components/Modal/Modal'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 function Structure() {
-    const { projects, setProjects,fetchProjects } = useGetProject()
-    const {currentUser } = useAuth()
-    const hrOrAmin = currentUser?.role === 'hr' || currentUser?.role === 'admin' || currentUser?.role === 'pm'
+    const { projects, setProjects, fetchProjects } = useGetProject()
+    const { currentUser } = useAuth()
+    const hrOrAmin =
+        currentUser?.role === 'hr' ||
+        currentUser?.role === 'admin' ||
+        currentUser?.role === 'pm'
 
     const transformProjectData = (
         projects: ProjectData[],
@@ -154,7 +157,7 @@ function Structure() {
     const handleCreateAndUpdateUI = async () => {
         const newProject = await handleCreateProject()
         if (newProject) {
-           fetchProjects()
+            fetchProjects()
         }
     }
 
@@ -177,13 +180,15 @@ function Structure() {
                 message={toastMessage}
                 onClose={handleCloseToast}
             />
-           { hrOrAmin && <div className={styles.search}>
-                <Button
-                    onClick={handleOpenDrawer}
-                    btnText="Add Project"
-                    type={ButtonTypes.PRIMARY}
-                />
-            </div>}
+            {hrOrAmin && (
+                <div className={styles.search}>
+                    <Button
+                        onClick={handleOpenDrawer}
+                        btnText="Add Project"
+                        type={ButtonTypes.PRIMARY}
+                    />
+                </div>
+            )}
             <DrawerComponent open={openDrawer} onClose={handleCloseDrawer}>
                 <div className={styles.create}>
                     Create New Project

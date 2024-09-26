@@ -13,13 +13,13 @@ import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 export const useGetAllEvents = () => {
     const [searchParams, setSearchParams] = useSearchParams()
-    const {fetchEvents}  = useFetchEvent()
+    const { fetchEvents } = useFetchEvent()
     const [searchEvent, setSearchEvent] = useState(
         searchParams.get('search') || '',
     )
     const { currentUser } = useAuth()
     const currentUserId = currentUser?._id
-    
+
     const query = useInfiniteQuery({
         queryKey: ['events', searchEvent],
         queryFn: ({ pageParam = 0 }) =>
