@@ -1,10 +1,12 @@
 import { Asset } from '@/Pages/Holdings/TAsset'
-import { Vacation } from '@/Pages/Vacation/TVacation'
+import { Vacation } from '@/Pages/Vacation/types'
 import { ExpandLess, ExpandMore } from '@mui/icons-material'
 import { Collapse } from '@mui/material'
 import { Dispatch, MouseEvent, ReactNode } from 'react'
 import style from './SimpleCollapsableCard.module.scss'
 import Card from '../Card/Card'
+import { TitleCaser } from '@/Helpers/TitleCaser'
+import { FormatPhoneNumber } from '@/Helpers/FormatPhoneNumber'
 
 type SimpleCollapsableCardProps = {
     user: {
@@ -71,10 +73,11 @@ export default function SimpleCollapsableCard({
                     />
                     <div>
                         <h3>
-                            {firstName} {lastName}
+                            {TitleCaser(firstName)} {TitleCaser(lastName)}
                         </h3>
                         <p>
-                            {phone} - {role}
+                            {FormatPhoneNumber(`+355${phone}`)} -{' '}
+                            {role.toUpperCase()}
                         </p>
                     </div>
                 </div>

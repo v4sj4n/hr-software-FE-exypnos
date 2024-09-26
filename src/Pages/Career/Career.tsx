@@ -1,22 +1,21 @@
-import { useState } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import style from './Style/Career.module.css'
 import Button from '@/Components/Button/Button'
-
+import { EventsData } from './Interfaces/interface'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import {
     useGetAllEvents,
     useCreateEvent,
     useUpdateEvent,
     useDeleteEvent,
-    EventsData,
 } from './Hook'
 import { ModalComponent } from '@/Components/Modal/Modal'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import { useAuth } from '@/Context/AuthProvider'
 import Workers from '/public/Images/happy workers.webp'
 import worker3 from '/public/Images/happyWork3.jpeg'
 import worker2 from '/public/Images/happyWorkers2.jpg'
 import { Link } from 'react-router-dom'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext.tsx'
 
 export const Careers = () => {
     const { events, setEvents, isLoading } = useGetAllEvents()
@@ -36,37 +35,47 @@ export const Careers = () => {
     const [showForm, setShowForm] = useState(false)
     const [filter, setFilter] = useState<string>('')
 
-    const toggleForm = () => {
-        setShowForm(!showForm)
-    }
+    // Toggle form display
+    const toggleForm = useCallback(() => {
+        setShowForm((prev) => !prev)
+    }, [])
 
-    const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFilter(e.target.value)
-    }
-
-    const filteredEvents = events.filter(
-        (event) =>
-            event.title.toLowerCase().includes(filter.toLowerCase()) ||
-            event.description.toLowerCase().includes(filter.toLowerCase()),
+    // Handle filter input change
+    const handleFilterChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            setFilter(e.target.value)
+        },
+        [],
     )
+
+    // Memoized filtered events to optimize performance
+    const filteredEvents = useMemo(() => {
+        return events.filter(
+            (event) =>
+                event.title.toLowerCase().includes(filter.toLowerCase()) ||
+                event.description.toLowerCase().includes(filter.toLowerCase()),
+        )
+    }, [events, filter])
 
     const [openDropdown, setOpenDropdown] = useState<string | number | null>(
         null,
     )
 
-    const toggleDropdown = (eventId: string) => {
-        if (openDropdown === eventId) {
-            setOpenDropdown(null)
-        } else {
-            setOpenDropdown(eventId)
-        }
-    }
+    // Toggle dropdown menu
+    const toggleDropdown = useCallback((eventId: string) => {
+        setOpenDropdown((prev) => (prev === eventId ? null : eventId))
+    }, [])
 
-    const handleEditClick = (event: EventsData) => {
-        setEditingEvent(event)
-        setShowForm(true)
-    }
-    const isAdmin = currentUser?.role === 'admin'
+    // Handle edit button click
+    const handleEditClick = useCallback(
+        (event: EventsData) => {
+            setEditingEvent(event)
+            setShowForm(true)
+        },
+        [setEditingEvent],
+    )
+
+    const isAdmin = currentUser?.role === 'hr'
 
     return (
         <div className={style.body}>
@@ -89,20 +98,6 @@ export const Careers = () => {
                     />
                 </div>
 
-                {/* {isAdmin ? (
-                    <div className={style.createButton}>
-                        <Button
-                            btnText="New Job"
-                            color="#007bff"
-                            backgroundColor="white"
-                            type={ButtonTypes.PRIMARY}
-                            onClick={toggleForm}
-                        />
-                    </div>
-                ) : (
-                    ''
-                )} */}
-
                 <div className={style.jobList}>
                     {isLoading ? (
                         <p>Loading events...</p>
@@ -123,7 +118,7 @@ export const Careers = () => {
                                         <Link to={'/recruitment'}>Apply</Link>
                                     </div>
                                 </div>
-                                {isAdmin ? (
+                                {isAdmin && (
                                     <div className={style.dropdownContainer}>
                                         <MoreHorizIcon
                                             onClick={() =>
@@ -154,8 +149,6 @@ export const Careers = () => {
                                             </div>
                                         )}
                                     </div>
-                                ) : (
-                                    ''
                                 )}
                             </div>
                         ))

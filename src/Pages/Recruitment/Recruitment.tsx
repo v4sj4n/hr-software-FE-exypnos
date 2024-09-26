@@ -34,7 +34,9 @@ function RecruitmentBase() {
         fileName,
         setFileName,
     } = useContext(RecruitmentContext)
+
     const { form } = useRecruitmentForm()
+
     return (
         <main className={style.background}>
             <Card
@@ -216,8 +218,8 @@ function RecruitmentBase() {
                         }) => (
                             <div>
                                 <Selecter
-                                     width='100%'
-
+                                    disabled={false}
+                                    width="100%"
                                     label="Applying Method"
                                     name="applicationMethod"
                                     multiple={false}
@@ -303,7 +305,8 @@ function RecruitmentBase() {
                         }) => (
                             <div className={style.spanTwoDiv}>
                                 <Selecter
-                                width='100%'
+                                    disabled={false}
+                                    width="100%"
                                     multiple={false}
                                     label="Experience"
                                     name="experience"
@@ -333,8 +336,8 @@ function RecruitmentBase() {
                         }) => (
                             <div className={style.spanTwoDiv}>
                                 <Selecter
-                                 width='100%'
-
+                                    disabled={false}
+                                    width="100%"
                                     options={technologies}
                                     multiple
                                     label="Technologies"
@@ -415,7 +418,7 @@ function RecruitmentBase() {
                     />
                     <MyButton
                         type={ButtonTypes.TERTIARY}
-                        // width='70px'
+                        width="100%"
                         btnText={
                             form.state.isSubmitting ? 'Submitting...' : 'Submit'
                         }

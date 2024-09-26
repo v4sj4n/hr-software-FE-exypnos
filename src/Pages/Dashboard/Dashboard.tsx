@@ -1,106 +1,150 @@
-import { useAuth } from '@/Context/AuthProvider.tsx'
 import Card1 from '../../Components/Card/Card.tsx'
 import style from '../Dashboard/style/dashboard.module.css'
-import Calendar from './components/calendar.tsx'
 import Card from './components/card.tsx'
 import InfoSection from './components/infoSection.tsx'
 import PieChartComponent from './components/piechart.tsx'
 import { DashboardProvider, useDashboardContext } from './context/hook.tsx'
 import { greeter } from '@/Helpers/Greeter.tsx'
-import { UserProfileData } from '../Employees/interfaces/Employe.ts'
-import { useQuery } from '@tanstack/react-query'
-import AxiosInstance from '@/Helpers/Axios.tsx'
 import { useNavigate } from 'react-router-dom'
+import EmployeeSection from './components/employeeSection.tsx'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext.tsx'
+import { useEffect, useState } from 'react'
+import Weather from './components/Weather.tsx'
+import { Notes } from './components/notes.tsx'
+import { Loader } from '@/Components/Loader/Loader.tsx'
 
 const DashboardContent: React.FC = () => {
-    const { employeeData } = useDashboardContext()
+    const { employeeData, isLoading, error } = useDashboardContext()
     greeter()
+    const navigate = useNavigate()
+
+    const [animateOnLogin, setAnimateOnLogin] = useState(true)
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setAnimateOnLogin(false)
+        }, 10000)
+
+        return () => clearTimeout(timeout)
+    }, [])
 
     const { currentUser } = useAuth()
+    if (isLoading)
+        return (
+            <p>
+                <Loader />
+            </p>
+        )
+    if (error) return <p>{error}</p>
+
     const userName = currentUser ? currentUser.firstName : 'User'
     const isAdmin = currentUser?.role === 'hr'
 
-    const fetchUserProfile = async () => {
-        const response = await AxiosInstance.get('/user')
-        console.log('Fetched user profile:', response.data)
-        return response.data
+    const handleNavigateToProfile = () => {
+        if (currentUser) {
+            navigate(`/profile/${currentUser._id}`)
+        }
     }
 
-    const { data: UserProfileData } = useQuery({
-        queryKey: ['userProfile'],
-        queryFn: fetchUserProfile,
-    })
-
-    console.log('UserProfileData', UserProfileData)
-    const navigate = useNavigate()
     return (
         <div className={style.dashboardContainer}>
             <div className={style.mainContent}>
                 <div className={style.rightContent}>
-                    <div className={style.welcome}>
-                        <h2>
-                            {greeter()} {userName}!
-                        </h2>
-                        {isAdmin ? (
-                            <p>Here's what's happening with your team today</p>
-                        ) : (
-                            ''
-                        )}
+                    <div className={style.welcomeContainer}>
+                        <div
+                            className={`${style.welcome} ${animateOnLogin ? style.animate : ''}`}
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                width: '100%',
+                            }}
+                        >
+                            <div style={{ flex: 1 }}>
+                                <h1>
+                                    {greeter()}{' '}
+                                    <span
+                                        onClick={handleNavigateToProfile}
+                                        className={style.userNameClickable}
+                                        style={{
+                                            cursor: 'pointer',
+                                            transform: 'scale(1.1)',
+                                        }}
+                                    >
+                                        {userName}
+                                    </span>
+                                    !
+                                </h1>
+                                {isAdmin ? (
+                                    <p>
+                                        Here's what's happening with your team
+                                        today
+                                    </p>
+                                ) : (
+                                    <p>Let’s achieve your goals today!</p>
+                                )}
+                            </div>
+                            <div style={{ flex: 'none' }}>
+                                <Weather />
+                            </div>
+                        </div>
                     </div>
+
                     <div className={style.cardContainer}>
+                        <div className={style.cardBlue}>
+                            <Card
+                                title="All"
+                                content={String(employeeData.all)}
+                                icon="All"
+                            />
+                        </div>
                         <div className={style.cardGreen}>
                             <Card
-                                title="Present"
-                                content={employeeData.present.toString()}
+                                title="Present "
+                                content={String(employeeData.present)}
                                 icon="Present"
                             />
                         </div>
-                        <div className={style.cardBlue}>
-                            <Card
-                                title="Absent"
-                                content={employeeData.absent.toString()}
-                                icon="Absent"
-                            />
-                        </div>
+
                         <div className={style.cardYellow}>
                             <Card
-                                title="On Leave"
-                                content={employeeData.onLeave.toString()}
+                                title=" On Leave"
+                                content={String(employeeData.onLeave)}
                                 icon="On Leave"
                             />
                         </div>
                         <div className={style.cardPurple}>
                             <Card
-                                title="Remote"
-                                content={employeeData.remote.toString()}
+                                title="Remote
+                                "
+                                content={String(employeeData.remote)}
                                 icon="Remote"
                             />
                         </div>
                     </div>
+
                     <div className={style.middleRow}>
                         <Card1
                             padding="20px"
-                            borderRadius="15px"
-                            flex="1"
+                            borderRadius="10px"
+                            flex="0.8"
                             backgroundColor="rgba(255, 255, 255, 0.7)"
                         >
-                            <h2 style={{ justifyContent: 'flex-start' }}>
-                                Calendar
-                            </h2>
-                            <Calendar />
+                            <Notes />
                         </Card1>
                         <Card1
                             padding="20px"
-                            borderRadius="15px"
-                            flex="2"
+                            borderRadius="10px"
+                            flex="1.2"
                             backgroundColor="rgba(255, 255, 255, 0.7)"
                         >
                             <InfoSection />
                         </Card1>
+
                         <Card1
+                            borderRadius="10px"
+                            flex="1"
                             padding="20px"
-                            borderRadius="15px"
-                            flex="2"
                             backgroundColor="rgba(255, 255, 255, 0.7)"
                         >
                             <h2>Employee Status</h2>
@@ -109,49 +153,12 @@ const DashboardContent: React.FC = () => {
                     </div>
                     <Card1
                         backgroundColor="rgba(255, 255, 255, 0.7)"
-                        padding="20px"
                         border="15px"
                         marginTop="20px"
-                        borderRadius="15px"
+                        borderRadius="10px"
                         flex="1"
                     >
-                        <h2>Team</h2>
-                        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                            {UserProfileData?.map(
-                                (employee: UserProfileData) => (
-                                    <div
-                                        key={employee._id}
-                                        style={{
-                                            margin: '10px',
-                                            padding: '10px',
-                                            backgroundColor: 'transparent',
-                                            textAlign: 'center',
-                                        }}
-                                    >
-                                        <img
-                                            src={employee.imageUrl}
-                                            alt={`${employee.firstName} ${employee.lastName}`}
-                                            style={{
-                                                width: '100px',
-                                                height: '100px',
-                                                borderRadius: '50%',
-                                                objectFit: 'cover',
-                                                cursor: 'pointer',
-                                            }}
-                                            onClick={() =>
-                                                navigate(
-                                                    `/profile/${employee._id}`,
-                                                )
-                                            }
-                                        />
-                                        <p>
-                                            {employee.firstName}{' '}
-                                            {employee.lastName}
-                                        </p>
-                                    </div>
-                                ),
-                            )}
-                        </div>
+                        <EmployeeSection />
                     </Card1>
                 </div>
             </div>

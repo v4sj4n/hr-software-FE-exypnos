@@ -1,8 +1,10 @@
 import Input from '../../../../Components/Input/Index'
 import Button from '../../../../Components/Button/Button'
 import { ButtonTypes } from '../../../../Components/Button/ButtonTypes'
-import { usePassword } from './Context/Hook'
+import { usePassword } from './Context/PasswordContext'
 import { PasswordProvider } from './Context/PasswordProvider'
+import Toast from '@/Components/Toast/Toast'
+import style from './style/ChangePass.module.css'
 
 function ChangePassContent() {
     const {
@@ -10,68 +12,72 @@ function ChangePassContent() {
         newPassword,
         confirmPassword,
         error,
-        success,
         handleChange,
         handleUpdatePassword,
+        toastMessage,
+        toastOpen,
+        toastSeverity,
+        handleToastClose,
+        handleShowEye,
+        showPassword,
     } = usePassword()
 
     return (
         <>
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '15px',
-                }}
-            >
-                {success && <div style={{ color: 'green' }}>{success}</div>}
-                <div>
-                    To change your password add your current password then your
-                    new password.
+           
+                <Toast
+                    severity={toastSeverity}
+                    open={toastOpen}
+                    message={toastMessage}
+                    onClose={handleToastClose}
+                />
+                <div className={style.text}>
+                    Update your password to keep your account secure.
                 </div>
+                <div style={{display:"flex", gap:"20px", marginBottom:"20px"}}>
                 <Input
                     label="Current Password"
                     name="currentPassword"
                     isPassword
-                    type="password"
+                    type={showPassword}
+                    onClick={handleShowEye}
                     onChange={handleChange}
                     value={currentPassword}
-                    width="350px"
+                    placeholder="Enter your current password"
+                 width="430px"
                 />
                 <Input
                     label="New Password"
                     name="newPassword"
+                    placeholder="Enter your new password"
                     isPassword
-                    type="password"
+                    type={showPassword}
+                    onClick={handleShowEye}
                     onChange={handleChange}
                     value={newPassword}
-                    width="350px"
+                    width="430px"
                 />
-
+                </div>
                 <Input
                     label="Confirm Password"
                     name="confirmPassword"
+                    placeholder="Enter your confirm password"
                     isPassword
-                    type="password"
+                    type={showPassword}
+                    onClick={handleShowEye}
                     onChange={handleChange}
                     value={confirmPassword}
-                    width="350px"
+                      width="430px"
                 />
                 {error && <div style={{ color: '#d32f2f' }}>{error}</div>}
                 <Button
                     type={ButtonTypes.PRIMARY}
                     btnText="Update Pass"
                     onClick={handleUpdatePassword}
-                    width="350px"
-                    marginTop="9px"
+                    width="430px"
+                    marginTop="20px"
                 />
-            </div>
-            <Button
-                type={ButtonTypes.SECONDARY}
-                btnText="Forget Password"
-                width="350px"
-                marginTop="9px"
-            />
+       
         </>
     )
 }

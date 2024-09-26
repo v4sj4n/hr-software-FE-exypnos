@@ -12,6 +12,7 @@ import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import { minLength, nonEmpty, pipe, string } from 'valibot'
 import style from '../../style/assignAssetModal.module.scss'
 import { useAssignAssetForm } from '../../Hook'
+import { AxiosError } from 'axios'
 
 export const AssignAssetModal = () => {
     const {
@@ -27,7 +28,7 @@ export const AssignAssetModal = () => {
         setAutocompleteValueAssignAsset: setAutocompleteValue,
     } = useContext(HoldingsContext)
 
-    const { form } = useAssignAssetForm()
+    const { form, error } = useAssignAssetForm()
 
     const fetchAssets = useCallback(async () => {
         const { data } = await AxiosInstance.get<Asset[]>(
@@ -178,7 +179,9 @@ export const AssignAssetModal = () => {
                         </>
                     )}
                 />
-
+                {error && error instanceof AxiosError && (
+                    <ErrorText>{error.response?.data.message}</ErrorText>
+                )}
                 <div className={style.buttonsContainer}>
                     <Button
                         btnText="Assign"

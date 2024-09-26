@@ -41,6 +41,9 @@ export interface UserProfileData {
     firstName: string
     imageUrl: string
     file: string
+    genderOptions: string
+    position: string
+    engagement: string
     _id: number
 }
 

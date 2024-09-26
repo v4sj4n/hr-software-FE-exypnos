@@ -8,6 +8,7 @@ import {
 import {
     createVacation,
     getAllVacations,
+    getMyVacations,
     getUsersWithVacations,
     getUserWithVacations,
     getVacation,
@@ -21,6 +22,7 @@ import { useForm } from '@tanstack/react-form'
 import dayjs from 'dayjs'
 import { valibotValidator } from '@tanstack/valibot-form-adapter'
 import { AxiosError } from 'axios'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 export const useGetVacations = () => {
     const { searchParams } = useContext(VacationContext)
@@ -78,7 +80,75 @@ export const useGetUserWithVacations = () => {
     })
 }
 
+export const useCreateVacation = () => {
+    const queryClient = useQueryClient()
+    const { createVacationToggler, setErrors, setToastConfigs } =
+        useContext(VacationContext)
+    return useMutation({
+        mutationFn: ({ vacation }: { vacation: CreateVacationFormFields }) =>
+            createVacation(vacation),
+
+        onError(error) {
+            console.log('error', error)
+
+            setToastConfigs({
+                isOpen: true,
+                message: 'Failed to create vacation',
+                severity: 'error',
+            })
+            if (error instanceof AxiosError)
+                setErrors({
+                    createError: error?.response?.data.message,
+                    updateError: null,
+                })
+            else {
+                setErrors({
+                    createError: 'an error happened, a vacation wasnt created',
+                    updateError: null,
+                })
+            }
+        },
+        onSuccess: () => {
+            setToastConfigs({
+                isOpen: true,
+                message: 'Vacation created successfully',
+                severity: 'success',
+            })
+            createVacationToggler()
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries({
+                queryKey: ['vacations'],
+            })
+        },
+    })
+}
+export const useCreateVacationForm = () => {
+    const vacationCreator = useCreateVacation()
+
+    const form = useForm<{
+        description: string
+        type: 'vacation' | 'sick' | 'personal' | 'maternity'
+        startDate: string
+        endDate: string
+    }>({
+        defaultValues: {
+            description: '',
+            type: 'vacation',
+            startDate: dayjs(new Date()).add(1, 'day').format('YYYY-MM-DD'),
+            endDate: dayjs(new Date()).add(3, 'day').format('YYYY-MM-DD'),
+        },
+        onSubmit: async ({ value }) => {
+            vacationCreator.mutate({ vacation: value })
+        },
+    })
+
+    return { form }
+}
+
 export const useUpdateVacation = () => {
+    const { setErrors, setToastConfigs, handleCloseVacationModalOpen } =
+        useContext(VacationContext)
     const { searchParams } = useContext(VacationContext)
     const queryClient = useQueryClient()
 
@@ -88,7 +158,33 @@ export const useUpdateVacation = () => {
                 searchParams.get('selectedVacation') as string,
                 vacation,
             ),
+        onError(error) {
+            setToastConfigs({
+                isOpen: true,
+                message: error?.message || 'Failed to update vacation',
+                severity: 'error',
+            })
+            if (error instanceof AxiosError)
+                setErrors({
+                    createError: null,
+                    updateError: error.response?.data.message,
+                })
+            else {
+                setErrors({
+                    createError: null,
+                    updateError: 'something happened',
+                })
+            }
+        },
         onSuccess: () => {
+            setToastConfigs({
+                isOpen: true,
+                message: 'Vacation updated successfully',
+                severity: 'success',
+            })
+            handleCloseVacationModalOpen()
+        },
+        onSettled: () => {
             queryClient.invalidateQueries({
                 queryKey: ['vacations'],
             })
@@ -101,23 +197,8 @@ export const useUpdateVacation = () => {
         },
     })
 }
-export const useCreateVacation = () => {
-    const queryClient = useQueryClient()
-
-    return useMutation({
-        mutationFn: ({ vacation }: { vacation: CreateVacationFormFields }) =>
-            createVacation(vacation),
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ['vacations'],
-            })
-        },
-    })
-}
 
 export const useUpdateVacationForm = (vacation: UseQueryResult<any, Error>) => {
-    const { setErrors, setToastConfigs, handleCloseVacationModalOpen } =
-        useContext(VacationContext)
     const updater = useUpdateVacation()
 
     const form = useForm({
@@ -132,85 +213,15 @@ export const useUpdateVacationForm = (vacation: UseQueryResult<any, Error>) => {
             value.endDate = dayjs(value.endDate).toISOString()
             value.startDate = dayjs(value.startDate).toISOString()
             updater.mutate({ vacation: value })
-            if (updater.isError) {
-                setToastConfigs({
-                    isOpen: true,
-                    message:
-                        updater.error?.message || 'Failed to update vacation',
-                    severity: 'error',
-                })
-                if (updater.error instanceof AxiosError)
-                    setErrors({
-                        createError: null,
-                        updateError: updater.error.response?.data,
-                    })
-                else {
-                    setErrors({
-                        createError: null,
-                        updateError: 'something happened',
-                    })
-                }
-            } else {
-                setToastConfigs({
-                    isOpen: true,
-                    message: 'Vacation updated successfully',
-                    severity: 'success',
-                })
-                handleCloseVacationModalOpen()
-            }
         },
     })
     return { form }
 }
 
-export const useCreateVacationForm = () => {
-    const { createVacationToggler, setErrors, setToastConfigs } =
-        useContext(VacationContext)
-
-    const { mutate, isError, error: mutationError } = useCreateVacation()
-
-    const form = useForm<{
-        description: string
-        type: 'vacation' | 'sick' | 'personal' | 'maternity'
-        startDate: string
-        endDate: string
-    }>({
-        defaultValues: {
-            description: '',
-            type: 'vacation',
-            startDate: dayjs(new Date()).format('YYYY-MM-DD'),
-            endDate: dayjs(new Date()).add(2, 'day').format('YYYY-MM-DD'),
-        },
-        onSubmit: async ({ value }) => {
-            mutate({ vacation: value })
-            if (isError) {
-                setToastConfigs({
-                    isOpen: true,
-                    message:
-                        mutationError?.message || 'Failed to create vacation',
-                    severity: 'error',
-                })
-                if (mutationError instanceof AxiosError)
-                    setErrors({
-                        createError: mutationError.response?.data,
-                        updateError: null,
-                    })
-                else {
-                    setErrors({
-                        createError: 'something happened',
-                        updateError: null,
-                    })
-                }
-            } else {
-                setToastConfigs({
-                    isOpen: true,
-                    message: 'Vacation created successfully',
-                    severity: 'success',
-                })
-                createVacationToggler()
-            }
-        },
+export const useGetMyVacations = () => {
+    const { currentUser } = useAuth()
+    return useQuery({
+        queryKey: ['myvacations', currentUser?._id],
+        queryFn: () => getMyVacations(currentUser?._id as string),
     })
-
-    return { form }
 }

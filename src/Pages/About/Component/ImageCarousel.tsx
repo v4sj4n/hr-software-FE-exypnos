@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import styles from './Carousel.module.css'
-
 
 interface Image {
     src: string
@@ -38,10 +37,10 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
 
     useEffect(() => {
         if (autoPlay && !isHovered) {
-            const interval = setInterval(nextSlide, autoPlayInterval);
-            return () => clearInterval(interval);
+            const interval = setInterval(nextSlide, autoPlayInterval)
+            return () => clearInterval(interval)
         }
-    }, [autoPlay, isHovered, autoPlayInterval]);
+    }, [autoPlay, isHovered, autoPlayInterval])
 
     return (
         <div
@@ -49,14 +48,20 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <div 
-                className={styles.carouselInner} 
+            <div
+                className={styles.carouselInner}
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
                 {images.map((image, index) => (
                     <div key={index} className={styles.carouselItem}>
-                        <img src={image.src} alt={image.alt} className={styles.carouselImage} />
-                        {image.name && <p className={styles.imageName}>{image.name}</p>}
+                        <img
+                            src={image.src}
+                            alt={image.alt}
+                            className={styles.carouselImage}
+                        />
+                        {image.name && (
+                            <p className={styles.imageName}>{image.name}</p>
+                        )}
                     </div>
                 ))}
             </div>
@@ -87,4 +92,4 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
     )
 }
 
-export default ImageCarousel;
+export default ImageCarousel

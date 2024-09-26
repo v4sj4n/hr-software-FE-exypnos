@@ -1,7 +1,8 @@
 import DataTable from '@/Components/Table/Table'
 import { useCandidateContext } from './Context/CandidateTableContext'
 import { CandidateProvider } from './Context/CandidateTableProvider'
-import { RingLoader } from 'react-spinners'
+import { Loader } from '@/Components/Loader/Loader'
+import { ForbiddenResource } from '@/Components/ForbiddenResource/ForbiddenResource'
 
 function CandidatesCoontext() {
     const {
@@ -16,31 +17,25 @@ function CandidatesCoontext() {
         isPending,
     } = useCandidateContext()
 
-
     return (
-        <> {
-            isPending ? (<div
-                style={{
-                    display: 'flex',
-                    fontSize: '30px',
-                    justifyContent: 'center',
-                    marginTop: '200px',
-                }}
-            >
-                <RingLoader />
-            </div>) :
-                <DataTable
-                    getRowId={getRowId}
-                    columns={columns}
-                    rows={rows}
-                    handleRowClick={handleRowClick}
-                    totalPages={totalPages}
-                    page={page}
-                    pageSize={pageSize}
-                    onPaginationModelChange={handlePaginationModelChange}
-                />
-        }
-        </>
+        <ForbiddenResource>
+            <>
+                {isPending ? (
+                    <Loader />
+                ) : (
+                    <DataTable
+                        getRowId={getRowId}
+                        columns={columns}
+                        rows={rows}
+                        handleRowClick={handleRowClick}
+                        totalPages={totalPages}
+                        page={page}
+                        pageSize={pageSize}
+                        onPaginationModelChange={handlePaginationModelChange}
+                    />
+                )}
+            </>
+        </ForbiddenResource>
     )
 }
 

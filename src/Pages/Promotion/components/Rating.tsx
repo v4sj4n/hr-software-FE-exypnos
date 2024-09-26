@@ -9,8 +9,9 @@ import EditIcon from '@mui/icons-material/Edit'
 import { useTheme } from '@mui/material/styles'
 import { ModalComponent } from '@/Components/Modal/Modal'
 import CloseIcon from '@mui/icons-material/Close'
-import { useAuth } from '@/Context/AuthProvider'
 import Toast from '@/Components/Toast/Toast'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+import axios from 'axios'
 
 export type Rating = {
     _id: string
@@ -66,7 +67,6 @@ export default function Rating({ id }: { id: string }) {
                 `/rating/${updateRating._id}`,
                 updatedRating,
             )
-            console.log('Rating updated successfully:', response.data)
             setRatings((prevRatings) =>
                 (prevRatings ?? []).map((rating) =>
                     rating._id === updateRating._id ? response.data : rating,
@@ -76,46 +76,72 @@ export default function Rating({ id }: { id: string }) {
             setToastOpen(true)
             setToastMessage('Rating updated successfully')
             setToastSeverity('success')
-        } catch (error) {
-            setToastOpen(true)
-            setToastMessage(`Error updating rating: ${error}`)
-            setToastSeverity('error')
-            console.error('Error updating rating:', error)
+        } catch (error: unknown) {
+            if (error instanceof axios.AxiosError) {
+                setToastMessage(error.response?.data.message)
+                setToastOpen(true)
+                setToastSeverity('error')
+            }
         }
     }
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await AxiosInstance.get(`/rating/user?id=${id}`)
-            setRatings(response.data)
+            try {
+                let response
+                if (
+                    currentUser?.role === 'pm' &&
+                    currentUser?._id &&
+                    currentUser._id.toString() !== id
+                ) {
+                    response = await AxiosInstance.get(`/rating/user/${id}`, {
+                        params: {
+                            pmId: currentUser._id,
+                        },
+                    })
+                } else {
+                    response = await AxiosInstance.get(`/rating/user/${id}`)
+                }
+                setRatings(response.data)
+            } catch (error) {
+                console.error('Error fetching ratings:', error)
+            }
         }
 
-        fetchData()
-    }, [id])
+        if (currentUser) {
+            fetchData()
+        }
+    }, [id, currentUser])
 
     const handleCloseToast = () => {
         setToastOpen(false)
     }
 
+    if (!currentUser) {
+        return <div>Loading...</div>
+    }
+
     return (
         <>
             <Toast
-                severity={toastSeverity }
+                severity={toastSeverity}
                 open={toastOpen}
-                message={ toastMessage }
-                onClose={ handleCloseToast}
+                message={toastMessage}
+                onClose={handleCloseToast}
             />
 
             <Card backgroundColor="rgba(255, 255, 255, 0.7)">
                 <h3
                     style={{
-                        padding: 0,
                         margin: ' 0 0 10px  0 ',
                         color: '#2457a3',
+                        padding: '10px',
                     }}
                 >
                     Rating
                 </h3>
+                {!ratings ||
+                    (ratings.length === 0 && <div>No ratings found</div>)}
                 <div className={style.secondDiv}>
                     {ratings &&
                         ratings.map((rating) => (
@@ -124,6 +150,7 @@ export default function Rating({ id }: { id: string }) {
                                 backgroundColor={
                                     theme.palette.background.default
                                 }
+                                padding="10px"
                             >
                                 <h4>{rating.projectId.name}</h4>
                                 <div className={style.grid}>
@@ -144,7 +171,9 @@ export default function Rating({ id }: { id: string }) {
                                         value={rating.clientFeedbackRating}
                                     />
                                 </div>
-                                {currentUser?.role === 'hr' && (
+                                {(currentUser.role === 'hr' ||
+                                    (currentUser.role === 'pm' &&
+                                        currentUser._id.toString() !== id)) && (
                                     <div
                                         style={{
                                             display: 'flex',
@@ -186,7 +215,7 @@ export default function Rating({ id }: { id: string }) {
                             <CloseIcon
                                 style={{ cursor: 'pointer' }}
                                 onClick={() => setOpen(false)}
-                            />{' '}
+                            />
                         </div>
                         <ChangeRating
                             label="Productivity Score"

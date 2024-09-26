@@ -18,5 +18,5 @@ export interface Poll {
 export interface EventPollProps {
     poll: Poll
     eventId: number
-    userId: number | undefined
+    userId: string | undefined
 }

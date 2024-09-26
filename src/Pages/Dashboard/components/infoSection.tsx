@@ -1,11 +1,17 @@
 import style from '../style/infoSection.module.css'
 import { EventsData } from '../../Events/Interface/Events'
-import dayjs from 'dayjs'
 import AxiosInstance from '@/Helpers/Axios'
 import { useQuery } from '@tanstack/react-query'
-const InfoSection: React.FC = () => {
+import { EventsProvider } from '@/Pages/Events/Context/EventsProvider'
+import { useEvents } from '@/Pages/Events/Context/EventsContext'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+const InfoSectionContent: React.FC = () => {
+    const { currentUser } = useAuth()
+    const id = currentUser?._id
+
     const fetchEventsDashboard = async () => {
-        const response = await AxiosInstance.get(`/event`)
+        const response = await AxiosInstance.get(`/event/user/${id}`)
 
         console.log('Fetched eventsDahboardddd:', response.data)
         return response.data
@@ -17,7 +23,8 @@ const InfoSection: React.FC = () => {
     })
 
     console.log('events', events)
-
+    const { formatDate } = useEvents()
+    const navigate = useNavigate()
     return (
         <div className={style.infoSection}>
             <h2>Upcoming Events</h2>
@@ -38,19 +45,33 @@ const InfoSection: React.FC = () => {
                                     width: '100%',
                                 }}
                             >
-                                <h3>{event.title}</h3>
-                                <span>
-                                    {dayjs(event.startDate).format(
-                                        'ddd DD MMM YYYY',
-                                    )}
-                                </span>
+                                <h3
+                                    onClick={() =>
+                                        navigate(`/events?event=${event._id}`)
+                                    }
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    {event.title}
+                                </h3>
+                                <span>{formatDate(event.startDate)}</span>
                             </div>
-                            <p>{event.description}</p>
+
+                            <p className={style.description}>
+                                {event.description}
+                            </p>
                         </div>
                     </li>
                 ))}
             </ul>
         </div>
+    )
+}
+
+const InfoSection: React.FC = () => {
+    return (
+        <EventsProvider>
+            <InfoSectionContent />
+        </EventsProvider>
     )
 }
 

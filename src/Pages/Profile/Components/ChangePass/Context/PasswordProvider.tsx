@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { PasswordContext, PasswordContextType } from './PasswordContext'
+import { PasswordContext, PasswordContextType } from '../Interface/Interface'
 import AxiosInstance from '../../../../../Helpers/Axios'
-import { AxiosError } from 'axios'
 
 export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
@@ -10,7 +9,12 @@ export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({
     const [newPassword, setNewPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [error, setError] = useState('')
-    const [success, setSuccess] = useState('')
+    const [toastOpen, setToastOpen] = useState(false)
+    const [toastMessage, setToastMessage] = useState('')
+    const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
+        'success',
+    )
+    const [showPassword, setShowPassword] = useState(false)
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
@@ -46,8 +50,6 @@ export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({
         event: React.FormEvent<HTMLButtonElement>,
     ) => {
         event.preventDefault()
-        setError('')
-        setSuccess('')
 
         if (!validatePasswords()) {
             return
@@ -59,23 +61,27 @@ export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({
                 newPassword,
             })
 
-            if (response.status === 200) {
-                setSuccess('Password updated successfully')
+            if (response.status === 201) {
+                setToastOpen(true)
+                setToastMessage('Paswword chnaged successfully')
+                setToastSeverity('success')
                 setCurrentPassword('')
                 setNewPassword('')
                 setConfirmPassword('')
             }
         } catch (error: unknown) {
-            if (error instanceof AxiosError && error.response?.data) {
-                const errorData = error.response.data
-                setError(
-                    errorData.message ||
-                        'An error occurred while updating the password',
-                )
-            } else {
-                setError('An error occurred while updating the password')
-            }
+            setToastMessage('Error updating password')
+            setToastSeverity('error')
+            setToastOpen(true)
         }
+    }
+
+    const handleToastClose = () => {
+        setToastOpen(false)
+    }
+
+    const handleShowEye = () => {
+        setShowPassword(!showPassword)
     }
 
     const contextValue: PasswordContextType = {
@@ -83,9 +89,14 @@ export const PasswordProvider: React.FC<{ children: React.ReactNode }> = ({
         newPassword,
         confirmPassword,
         error,
-        success,
+        toastMessage,
+        toastOpen,
+        toastSeverity,
         handleChange,
         handleUpdatePassword,
+        handleToastClose,
+        handleShowEye,
+        showPassword,
     }
 
     return (

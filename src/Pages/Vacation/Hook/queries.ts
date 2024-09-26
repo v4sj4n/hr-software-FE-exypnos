@@ -18,6 +18,12 @@ export const getAllVacations = async (
         .data
 }
 
+export const getMyVacations = async (
+    id: string,
+): Promise<{ data: UserWithVacation }> => {
+    return await AxiosInstance.get(`/vacation/user/${id}`)
+}
+
 export const getUsersWithVacations = async ({
     pageParam,
     search,

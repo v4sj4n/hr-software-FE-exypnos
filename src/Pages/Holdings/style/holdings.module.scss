@@ -12,10 +12,6 @@
     @include pageTitle;
 }
 
-.main {
-    @include mainPage;
-}
-
 @media (max-width: 785px) {
     .titleHeading {
         .title {
@@ -33,6 +29,7 @@
 .mainContainer {
     display: flex;
     gap: 0.5rem;
+    justify-content: center;
 }
 
 .selectedUserContainer {

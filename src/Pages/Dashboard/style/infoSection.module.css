@@ -35,3 +35,16 @@
     gap: 0.25rem;
     width: 100%;
 }
+
+.description {
+    color: rgb(44, 56, 68);
+
+    flex-direction: column;
+    width: 100%;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}

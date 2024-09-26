@@ -6,6 +6,7 @@ const Card: React.FC<CardProps> = ({
     padding,
     borderRadius,
     height,
+    overflow,
     gap,
     flex,
     className,
@@ -18,7 +19,6 @@ const Card: React.FC<CardProps> = ({
     marginTop,
     onClick,
 }) => {
-
     return (
         <div
             className={`${styles.card} ${className || ''}`}
@@ -26,7 +26,7 @@ const Card: React.FC<CardProps> = ({
                 ...style,
                 width: width || '100%',
                 flex: flex || '0',
-                padding: padding || '1rem',
+                padding: padding || '1.2rem',
                 borderRadius: borderRadius || '4px',
                 gap: gap || '0',
                 height: height || 'auto',
@@ -35,6 +35,7 @@ const Card: React.FC<CardProps> = ({
                 position: position || 'static',
                 alignContent: alignSelf || 'flex-start',
                 marginTop: marginTop || '0',
+                overflow: overflow || 'visible',
             }}
             onClick={onClick}
         >

@@ -1,28 +1,10 @@
 import { useState, useEffect } from 'react'
 import AxiosInstance from '@/Helpers/Axios'
-
-export interface EventsData {
-    _id: number
-    title: string
-    description: string
-    location: string
-    type: string
-}
-
-export interface EventsCreationData {
-    title: string
-    description: string
-    location: string
-    type: string
-}
-
-export enum EventType {
-    SPORTS = 'sports',
-    CAREER = 'career',
-    TRAINING = 'training',
-    TEAMBUILDING = 'teambuilding',
-    OTHER = 'other',
-}
+import {
+    EventsData,
+    EventsCreationData,
+    EventType,
+} from '../Interfaces/interface'
 
 // Hook to fetch all events
 export const useGetAllEvents = () => {

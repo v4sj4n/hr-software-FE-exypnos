@@ -1,8 +1,7 @@
-import { Dispatch } from "react"
-import { DropResult } from "react-beautiful-dnd"
-import { applicantsData } from "../Hook"
+import { Dispatch, SetStateAction } from 'react'
+import { DropResult } from 'react-beautiful-dnd'
 
-export interface Interview extends applicantsData {
+export interface Interview {
     phase: string
     firstName: string
     lastName: string
@@ -20,6 +19,7 @@ export interface Interview extends applicantsData {
     customSubject: string
     startDate: string
     endDate: string
+    notes: string
 }
 
 export interface InterviewContextType {
@@ -58,16 +58,49 @@ export interface InterviewContextType {
     setEndDate: Dispatch<React.SetStateAction<string>>
     filteredInterviews: Interview[]
     isFiltered: boolean
+    showFilter: boolean
+    setShowFilter: Dispatch<SetStateAction<boolean>>
 
-
-   fetchFilteredInterviews: (
-    currentPhase?: string,
-    status?: string,
-    startDate?: Date,
-    endDate?: Date,
-) => Promise<Interview[]>
+    fetchFilteredInterviews: (
+        currentPhase?: string,
+        status?: string,
+        startDate?: Date,
+        endDate?: Date,
+    ) => Promise<Interview[]>
 
     setFilteredInterviews: Dispatch<React.SetStateAction<Interview[]>>
     scheduleType: 'schedule' | 'reschedule'
     setScheduleType: Dispatch<React.SetStateAction<'schedule' | 'reschedule'>>
+}
+
+export interface RescheduleModalProps {
+    open: boolean
+    handleClose: () => void
+    handleSchedule: (
+        interviewDate: string,
+        notes: string,
+        customMessage: string,
+        customSubject: string,
+        useCustomEmail: boolean,
+    ) => void
+    selectedInterview: Interview
+    isReschedule: boolean
+}
+export interface applicantsData {
+    customMessage: string
+    customSubject: string
+    forEach(arg0: (applicant: applicantsData) => void): unknown
+    firstName: string
+    lastName: string
+    phoneNumber: string
+    email: string
+    positionApplied: string
+    status: string
+    _id: string
+    firstInterviewDate?: string
+    secondInterviewDate?: string
+    notes: string
+    message: string
+    currentPhase: string
+    isDeleted?: boolean
 }

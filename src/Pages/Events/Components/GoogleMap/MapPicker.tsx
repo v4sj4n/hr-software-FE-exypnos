@@ -5,7 +5,8 @@ import SearchIcon from '@mui/icons-material/Search'
 
 const mapContainerStyle = {
     width: '100%',
-    height: '400px',
+    height: '300px',
+    borderRadius: '10px',
 }
 
 const center = {

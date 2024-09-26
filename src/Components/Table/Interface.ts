@@ -1,4 +1,9 @@
-import { GridColDef, GridPaginationModel, GridRowParams, GridValidRowModel } from "@mui/x-data-grid"
+import {
+    GridColDef,
+    GridPaginationModel,
+    GridRowParams,
+    GridValidRowModel,
+} from '@mui/x-data-grid'
 
 export interface TableProps {
     initialValue?: string
@@ -13,7 +18,6 @@ export interface TableProps {
     rednderHeader?: (params: React.ChangeEvent<HTMLInputElement>) => void
     rendeerCell?: (params: React.ChangeEvent<HTMLInputElement>) => void
 }
-
 
 export interface DataTableProps<T extends GridValidRowModel> {
     rows: T[]

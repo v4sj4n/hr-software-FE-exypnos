@@ -1,17 +1,10 @@
-import { createContext } from 'react'
+import { useContext } from 'react'
+import { PasswordContext, PasswordContextType } from '../Interface/Interface'
 
-export interface PasswordContextType {
-    currentPassword: string
-    newPassword: string
-    confirmPassword: string
-    error: string
-    success: string
-    handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-    handleUpdatePassword: (
-        event: React.FormEvent<HTMLButtonElement>,
-    ) => Promise<void>
+export const usePassword = (): PasswordContextType => {
+    const context = useContext(PasswordContext)
+    if (context === undefined) {
+        throw new Error('usePassword must be used within a PasswordProvider')
+    }
+    return context
 }
-
-export const PasswordContext = createContext<PasswordContextType | undefined>(
-    undefined,
-)

@@ -2,10 +2,7 @@ import { useTheme } from '@mui/material/styles'
 import AxiosInstance from '@/Helpers/Axios'
 import { BarChart } from '@mui/x-charts/BarChart'
 import { axisClasses } from '@mui/x-charts/ChartsAxis'
-import { DatasetType } from '@mui/x-charts/internals'
 import { useEffect, useState } from 'react'
-
-
 import {
     ChartsAxisContentProps,
     ChartsTooltip,
@@ -25,7 +22,7 @@ export type Salary = {
 }
 
 export default function ChartBar({ id }: { id: string }) {
-    const [dataset, setDataset] = useState<DatasetType>([])
+    const [dataset, setDataset] = useState<Salary[]>([])
     const theme = useTheme()
 
     const chartSetting = {
@@ -41,24 +38,26 @@ export default function ChartBar({ id }: { id: string }) {
             [`& .${axisClasses.directionY} .${axisClasses.label}`]: {
                 transform: 'translateX(-10px)',
             },
-            '.css-1qdzy9k-MuiBarElement-root': {
-                fill: theme.palette.primary.main, 
-            },
             '.MuiChartsLegend-mark': {
-                fill: theme.palette.primary.main, 
+                fill: theme.palette.primary.main,
             },
         },
     }
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await AxiosInstance<Salary[]>(
-                `/salary/user/${id}?graph=true`,
-            )
-            response.data.forEach((item) => {
-                item.month = getMonthName(Number(item.month) + 1)
-            })
-            setDataset(response.data)
+            try {
+                const response = await AxiosInstance.get<Salary[]>(
+                    `/salary/user/${id}?graph=true`,
+                )
+                const processedData = response.data.map((item) => ({
+                    ...item,
+                    month: getMonthName(Number(item.month) + 1),
+                }))
+                setDataset(processedData)
+            } catch (error) {
+                console.error('Error fetching salary data:', error)
+            }
         }
 
         fetchData()
@@ -76,6 +75,7 @@ export default function ChartBar({ id }: { id: string }) {
                             hideTooltip: true,
                         },
                     ]}
+                    colors={[theme.palette.primary.main]}
                     {...chartSetting}
                     tooltip={{
                         trigger: 'none',
@@ -85,7 +85,11 @@ export default function ChartBar({ id }: { id: string }) {
                         slots={{
                             axisContent: (props: ChartsAxisContentProps) => {
                                 const { dataIndex } = props
-                                const data = dataset[dataIndex]
+                                const data =
+                                    dataIndex !== null &&
+                                    dataIndex !== undefined
+                                        ? dataset[dataIndex]
+                                        : undefined
 
                                 return (
                                     <div
@@ -99,8 +103,13 @@ export default function ChartBar({ id }: { id: string }) {
                                     >
                                         <p>Month: {data?.month ?? ''}</p>
                                         <p>Year: {data?.year ?? ''}</p>
-                                        <p>Net Salary: {data?.netSalary ?? ''}</p>
-                                        <p>Gross Salary: {data?.grossSalary ?? ''}</p>
+                                        <p>
+                                            Net Salary: {data?.netSalary ?? ''}
+                                        </p>
+                                        <p>
+                                            Gross Salary:{' '}
+                                            {data?.grossSalary ?? ''}
+                                        </p>
                                         <p>Bonus: {data?.bonus ?? ''}</p>
                                         <p>
                                             Health Insurance:{' '}
@@ -117,7 +126,7 @@ export default function ChartBar({ id }: { id: string }) {
                     />
                 </BarChart>
             ) : (
-                <p>Loading...</p>
+                <p>No payroll to be show</p>
             )}
         </div>
     )

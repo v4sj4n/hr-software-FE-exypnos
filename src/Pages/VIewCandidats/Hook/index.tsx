@@ -33,22 +33,10 @@ export const useApplicantById = () => {
         if (modalAction === 'active') {
             handleAccept()
             setShowConfirmationModal(true)
-            // } else if (modalAction === 'reject') {
-            //     handleReject()
         }
         setShowModal(false)
     }
 
-    // const handleReject = async () => {
-    //     try {
-    //         await AxiosInstance.patch(`/applicant/${id}`, {
-    //             status: 'rejected',
-    //         })
-    //         fetchApplicant()
-    //     } catch (error) {
-    //         console.error('Error rejecting applicant:', error)
-    //     }
-    // };
     const handleAccept = async () => {
         try {
             await AxiosInstance.patch(`/applicant/${id}`, {
@@ -78,7 +66,6 @@ export const useApplicantById = () => {
 
         try {
             await AxiosInstance.patch(`/applicant/${id}`, {
-                // status: 'accepted',
                 firstInterviewDate: firstInterviewDate,
                 customMessage: customMessage,
                 customSubject: customSubject,

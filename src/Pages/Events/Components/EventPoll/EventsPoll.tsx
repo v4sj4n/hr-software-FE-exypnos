@@ -3,8 +3,8 @@ import Checkbox from '@mui/material/Checkbox'
 import { Tooltip } from '@mui/material'
 import styles from './style/EventsPoll.module.css'
 import AxiosInstance from '@/Helpers/Axios'
-import { useAuth } from '@/Context/AuthProvider'
 import { EventPollProps, Poll, PollOption, Voter } from './Interface/Interface'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 const EventPoll: React.FC<EventPollProps> = ({ poll, eventId, userId }) => {
     const { currentUser } = useAuth()

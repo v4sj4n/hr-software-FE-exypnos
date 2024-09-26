@@ -2,9 +2,6 @@ $red-color: #d32f2f;
 $green-color: #02a700;
 $gray-color: gray;
 
-@mixin mainPage {
-}
-
 @mixin pageHeading {
     display: grid;
     grid-auto-flow: column;
@@ -31,4 +28,10 @@ $gray-color: gray;
     gap: 0.5rem;
     height: 80svh;
     overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }

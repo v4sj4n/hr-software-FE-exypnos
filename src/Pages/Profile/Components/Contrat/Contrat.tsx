@@ -1,10 +1,11 @@
 import Input from '../../../../Components/Input/Index'
 import { ButtonTypes } from '../../../../Components/Button/ButtonTypes'
 import Button from '../../../../Components/Button/Button'
-import style from '../ProfileForm/ProfileForm.module.css'
+import style from '../ProfileForm/style/ProfileForm.module.css'
 import { ProfileProvider } from '../ProfileForm/Context/ProfileProvider'
-import { useCreatePayroll, useUpdatePayroll } from '../ProfileForm/Context/Hook'
+import { useCreatePayroll, useUpdatePayroll } from '../ProfileForm/Hook/Index'
 import Toast from '@/Components/Toast/Toast'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 
 const ContratContent = () => {
     const {
@@ -27,8 +28,11 @@ const ContratContent = () => {
         handleCreateToastClose,
     } = useCreatePayroll()
 
+    const { currentUser } = useAuth()
+    const isHr = currentUser?.role === 'hr'
+
     return (
-        <div className={style.container}>
+        <div >
             <Toast
                 severity={EditingPayroll ? toastSeverity : createToastSeverity}
                 open={EditingPayroll ? toastOpen : createToastOpen}
@@ -37,15 +41,28 @@ const ContratContent = () => {
                     EditingPayroll ? handleToastClose : handleCreateToastClose
                 }
             />
-            <div className={style.title}>Payroll Information</div>
-            <div className={style.forms}>
+            <div
+                style={{
+                   
+                    display: 'flex',
+                    fontSize: '25px',
+                    color: '#333',
+                    fontWeight: '700',
+                    marginBottom: '20px',
+
+                }}
+            >
+                Payroll 
+            </div>
+             <div style={{display:"flex", gap:"20px", marginBottom:"20px"}}>
                 <Input
                     IsUsername
                     type="number"
                     label="WorkingDays"
+                    disabled={!isHr}
                     name="workingDays"
                     shrink={true}
-                    width={350}
+                    width="430px"
                     value={
                         EditingPayroll
                             ? EditingPayroll?.workingDays
@@ -61,8 +78,9 @@ const ContratContent = () => {
                     IsUsername
                     shrink={true}
                     name="grossSalary"
+                    disabled={!isHr}
                     label="Gross salary"
-                    width={350}
+                      width="430px"
                     value={
                         EditingPayroll
                             ? EditingPayroll?.grossSalary
@@ -74,43 +92,100 @@ const ContratContent = () => {
                             : handleChangePayroll
                     }
                 />
-            </div>
+                </div>
+                <Input
+                    IsUsername
+                    shrink={true}
+                             width="430px"
+                    disabled={!isHr}
+                    name="extraHours"
+                    label="Extra Hours"
+                    value={
+                        EditingPayroll
+                            ? EditingPayroll?.extraHours
+                            : payroll.extraHours
+                    }
+                    onChange={
+                        EditingPayroll
+                            ? handleUpdateChangePayroll
+                            : handleChangePayroll
+                    }
+                />
+           
             <div className={style.border}></div>
 
-            <div className={style.title}>Add Bonus</div>
+            <div
+                style={{
+                    alignItems: 'center',
+                    display: 'flex',
+                    fontSize: '25px',
+                    color: '#333',
+                    fontWeight: '700',
+                    margin: '20px 0',
+                }}
+            >
+                Add Bonus
+            </div>
 
             <div
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    width: '350px',
+                    width:"430px",
                     gap: '20px',
                 }}
             >
-                <Input IsUsername label="Bonus" name="bonus" />
+                <Input
+                    IsUsername
+                    label="Bonus"
+                    name="bonus"
+                    shrink={true}
+                    value={
+                        EditingPayroll ? EditingPayroll?.bonus : payroll.bonus
+                    }
+                    disabled={!isHr}
+                    onChange={
+                        EditingPayroll
+                            ? handleUpdateChangePayroll
+                            : handleChangePayroll
+                    }
+                />
                 <Input
                     IsUsername
                     label="Bonus Description"
                     name="bonusDescription"
-                    type="textarea"
+                    disabled={!isHr}
                     multiline={true}
                     rows={3}
-                />
-            </div>
-
-            <div className={style.inputWidth}>
-                <Button
-                    type={ButtonTypes.PRIMARY}
-                    btnText={
-                        EditingPayroll ? 'Update Payroll' : 'Create Payroll'
-                    }
-                    onClick={
+                    value={
                         EditingPayroll
-                            ? handleUpdatePayroll
-                            : handleCreatePayroll
+                            ? EditingPayroll?.bonusDescription
+                            : payroll.bonusDescription
                     }
-                    width="350px"
+                    onChange={
+                        EditingPayroll
+                            ? handleUpdateChangePayroll
+                            : handleChangePayroll
+                    }
                 />
+                <div className={style.inputWidth}>
+                    {isHr && (
+                        <Button
+                            type={ButtonTypes.PRIMARY}
+                            btnText={
+                                EditingPayroll
+                                    ? 'Update Payroll'
+                                    : 'Create Payroll'
+                            }
+                            onClick={
+                                EditingPayroll
+                                    ? handleUpdatePayroll
+                                    : handleCreatePayroll
+                            }
+                                  width="430px"
+                        />
+                    )}
+                </div>
             </div>
         </div>
     )

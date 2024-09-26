@@ -1,11 +1,26 @@
 import { PieChart } from '@mui/x-charts'
+import { useDashboardContext } from './../context/hook.tsx'
+import { useEffect } from 'react'
 
 const PieChartComponent = () => {
+    const { employeeData, isLoading, error } = useDashboardContext()
+
+    useEffect(() => {
+        console.log('Employee Data in PieChartComponent:', employeeData)
+    }, [employeeData])
+
+    if (isLoading) {
+        return <div>Loading...</div>
+    }
+
+    if (error) {
+        return <div>{error}</div>
+    }
+
     const data = [
-        { value: 50, label: 'Present' },
-        { value: 10, label: 'Absent' },
-        { value: 15, label: 'On Leave' },
-        { value: 20, label: 'Remote' },
+        { value: employeeData.present, label: 'Present' },
+        { value: employeeData.onLeave, label: 'On Leave' },
+        { value: employeeData.remote, label: 'Remote' },
     ]
 
     return (
@@ -13,9 +28,9 @@ const PieChartComponent = () => {
             height={300}
             series={[
                 {
-                    data: [...data],
+                    data: data, 
                     innerRadius: 30,
-                    outerRadius: 105,
+                    outerRadius: 100,
                     paddingAngle: 2.5,
                     cornerRadius: 5,
                     startAngle: 0,

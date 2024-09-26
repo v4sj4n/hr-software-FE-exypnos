@@ -4,8 +4,8 @@
     left: 0;
     top: 62px;
     z-index: 1;
-    height: 100%;
-    /* background-image: linear-gradient(180deg, #d8b4f2, #8f56cfbd); */
+    height: 100vh;
+    transition: width 0.3s ease;
 }
 
 .toggleButton {
@@ -21,6 +21,11 @@
 .toggleButton:hover {
     background-color: transparent;
 }
+.active {
+    background-color: rgba(0, 123, 255, 0.1);
+    border-left: 6px solid #007bff;
+    font-weight: bold;
+}
 
 .navbar {
     margin-top: 0.8rem;
@@ -29,25 +34,42 @@
     flex-direction: column;
 }
 .item {
-    padding: 0 20px;
-    margin-bottom: 10px;
-    position: relative;
     display: flex;
     align-items: center;
-    position: relative;}
-.item:hover {
-    background: white;
+    justify-content: space-between;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition:
+        background-color 0.3s ease,
+        transform 0.3s ease;
+    border-radius: 8px;
 }
-.item:hover .icon {
-    color: #2457A3;
+.item.active {
+    background-color: rgba(
+        255,
+        255,
+        255,
+        0.1
+    ); /* or any color that fits your theme */
+    font-weight: bold;
+}
 
+.item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(1px);
 }
+
 .item:hover .link {
     color: black;
     transform: translateY(-1px);
     opacity: 1;
-    transform: translateX(10px);
-} 
+}
+
+.dropdownItem.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    font-weight: bold;
+}
+
 .link {
     color: rgba(0, 0, 0, 0.8);
     display: flex;
@@ -87,7 +109,10 @@
     font-size: 16px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     background: transparent;
-    transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
+    transition:
+        background-color 0.5s ease,
+        color 0.5s ease,
+        box-shadow 0.5s ease;
     cursor: pointer;
     text-decoration: none;
 }
@@ -104,23 +129,71 @@
     margin-right: 10px;
     color: rgba(0, 0, 0, 0.8);
     font-size: larger;
+    transition:
+        transform 0.3s ease,
+        color 0.3s ease,
+        box-shadow 0.3s ease; 
 }
 .navClosed {
     width: 65px;
+    transition: width 0.3s ease;
 }
 .navClosed .dropdownMenu {
     display: none;
 }
 .navOpen {
-    width: 230px;
+    display: flex;
+    animation: fadeIn 0.3s ease;
+    width: 200px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .text {
-    margin: 0;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    font-size: 18px;
 }
-
 .iconTextContainer {
     display: flex;
     align-items: center;
     gap: 4px;
 }
+
+.icon:hover {
+    transform: scale(1.2);
+}
+
+@media (max-width: 768px) {
+    .sidebarContainer {
+        width: 65px;
+    }
+
+    .navOpen {
+        width: 65px;
+    }
+
+    .text {
+        display: none;
+    }
+
+    .navbar {
+        align-items: center;
+    }
+
+    .toggleButton {
+        top: 20px;
+        left: 6px;
+        background: transparent;
+    }
+}
+

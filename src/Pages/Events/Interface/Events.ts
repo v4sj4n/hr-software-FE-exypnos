@@ -1,4 +1,4 @@
-import { UseMutateFunction } from '@tanstack/react-query'
+import React from 'react'
 
 export interface EventsData {
     _id: number | number
@@ -33,7 +33,6 @@ export interface EventsCreationData {
     startDate: string
     endDate: string
     location: string
-
     participants: string[]
     photo: File[]
     type: string
@@ -48,8 +47,8 @@ export interface EventsCreationData {
 }
 
 export interface EventsContextProps {
-    createEvent: UseMutateFunction<any, Error, void, unknown>
-    updateEvent: UseMutateFunction<any, Error, void, unknown>
+    createEvent: () => void
+    updateEvent: () => void
     handleDelete: (id: string | number) => void
     handleEditChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     handleOptionChange: (index: number, value: string) => void
@@ -66,8 +65,6 @@ export interface EventsContextProps {
     handleEditOptionChange: (index: number, value: string) => void
     toggleForm: () => void
     handleToggleForm: () => void
-    handleToastClose: () => void
-    handleUpdateToastClose: () => void
     showModal: boolean
     closeModal: () => void
     handleDeleteEventModal: (eventToDeleteId: string | number) => void
@@ -75,18 +72,12 @@ export interface EventsContextProps {
     setShowEventModal: React.Dispatch<React.SetStateAction<boolean>>
     selectedEvent: EventsData | null
     setSelectedEvent: React.Dispatch<React.SetStateAction<EventsData | null>>
-    updateToastMessage: string
-    updateToastOpen: boolean
-    updateToastSeverity: 'success' | 'error'
     editPollQuestion: string
     setEditParticipants: React.Dispatch<React.SetStateAction<string[]>>
     editPollOptions: string[]
     type: string
     pollQuestion: string
     pollOptions: string[]
-    toastOpen: boolean
-    toastMessage: string
-    toastSeverity: 'success' | 'error'
     endDate: string
     isAdmin: boolean
     typesofEvent: string[]
@@ -102,7 +93,16 @@ export interface EventsContextProps {
     handleFileUpload: (files: File[]) => void
     eventPhotos: File[]
     handleLocationChange: (address: string) => void
+    handleMapChange: (address: string) => void
     hideToast?: () => void
     createdEvents: EventsData[]
     formatDate: (date: string) => string
+    severityB: 'success' | 'error'
+    openToastB: boolean
+    toastMessageB: string
+    closeToastB: () => void
 }
+
+export const EventsContext = React.createContext<
+    EventsContextProps | undefined
+>(undefined)

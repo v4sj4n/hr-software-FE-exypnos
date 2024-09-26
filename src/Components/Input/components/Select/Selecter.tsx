@@ -2,14 +2,20 @@ import { Autocomplete, TextField } from '@mui/material'
 import { useState } from 'react'
 import { inputStyles } from '../../Styles'
 
+interface Option {
+    label: string
+    value: string
+}
+
 interface SelecterProps {
     value: string | string[]
     onChange: (value: string | string[]) => void
-    options: string[]
+    options: Option[] | string[]
     multiple: boolean
     label: string
     name: string
     width: string
+    disabled: boolean
 }
 
 const Selecter = ({
@@ -20,18 +26,42 @@ const Selecter = ({
     label,
     name,
     width,
+    disabled,
 }: SelecterProps) => {
     const [isOpen, setIsOpen] = useState(false)
 
+    const normalizedOptions: Option[] = options.map((option) =>
+        typeof option === 'string' ? { label: option, value: option } : option,
+    )
+
     const handleChange = (
         event: React.SyntheticEvent,
-        newValue: string | string[] | null,
+        newValue: Option | Option[] | null,
     ) => {
         event.preventDefault()
         if (newValue !== null) {
-            onChange(newValue)
+            if (multiple) {
+                onChange((newValue as Option[]).map((option) => option.value))
+            } else {
+                onChange((newValue as Option).value)
+            }
         } else {
-            onChange([])
+            onChange(multiple ? [] : '')
+        }
+    }
+
+    const getValue = () => {
+        if (multiple) {
+            return normalizedOptions.filter((option) =>
+                Array.isArray(value)
+                    ? value.includes(option.value)
+                    : value === option.value,
+            )
+        } else {
+            return (
+                normalizedOptions.find((option) => option.value === value) ||
+                null
+            )
         }
     }
 
@@ -42,8 +72,10 @@ const Selecter = ({
             multiple={multiple}
             onOpen={() => setIsOpen(true)}
             onClose={() => setIsOpen(false)}
-            options={options}
-            value={multiple ? (value as string[]) : (value as string)}
+            disabled={false || disabled}
+            options={normalizedOptions}
+            getOptionLabel={(option: Option) => option.label}
+            value={getValue()}
             onChange={handleChange}
             renderInput={(params) => (
                 <TextField
@@ -69,6 +101,5 @@ const Selecter = ({
         />
     )
 }
-
 
 export default Selecter
