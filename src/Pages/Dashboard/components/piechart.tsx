@@ -19,7 +19,6 @@ const PieChartComponent = () => {
 
     const data = [
         { value: employeeData.present, label: 'Present' },
-        { value: employeeData.all, label: 'All' },
         { value: employeeData.onLeave, label: 'On Leave' },
         { value: employeeData.remote, label: 'Remote' },
     ]
@@ -29,7 +28,7 @@ const PieChartComponent = () => {
             height={300}
             series={[
                 {
-                    data: data, // Use dynamic employee data here
+                    data: data, 
                     innerRadius: 30,
                     outerRadius: 100,
                     paddingAngle: 2.5,

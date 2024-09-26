@@ -5,7 +5,6 @@
     top: 62px;
     z-index: 1;
     height: 100vh;
-    width: 200px;
     transition: width 0.3s ease;
 }
 
@@ -133,7 +132,7 @@
     transition:
         transform 0.3s ease,
         color 0.3s ease,
-        box-shadow 0.3s ease; /* Smooth zoom effect */
+        box-shadow 0.3s ease; 
 }
 .navClosed {
     width: 65px;
@@ -198,21 +197,3 @@
     }
 }
 
-@media (max-width: 576px) {
-    .sidebarContainer {
-        position: fixed;
-        width: 0;
-        overflow: hidden;
-        z-index: 999;
-        transition: width 0.3s ease;
-    }
-
-    .sidebarContainer.open {
-        width: 200px;
-    }
-
-    .toggleButton {
-        top: 10px;
-        left: 10px;
-    }
-}
