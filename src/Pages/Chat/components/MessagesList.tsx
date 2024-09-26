@@ -44,6 +44,7 @@ export const MessagesList: React.FC<MessagesListProps> = ({ conversationId }) =>
       setMessages(data);
     } catch (error) {
       setError('Failed to fetch messages. Please try again.');
+      console.error('Fetch messages error:', error);
     } finally {
       setLoading(false);
     }
@@ -51,12 +52,26 @@ export const MessagesList: React.FC<MessagesListProps> = ({ conversationId }) =>
 
   useEffect(() => {
     if (socket && conversationId) {
+      // Leave the previous conversation room with acknowledgment
       if (previousConversationId.current && previousConversationId.current !== conversationId) {
-        socket.emit('leaveRoom', previousConversationId.current);
+        socket.emit('leaveRoom', previousConversationId.current, (ack: any) => {
+          if (ack.status === 'ok') {
+            console.log(`Left room: ${previousConversationId.current}`);
+          } else {
+            console.error(`Failed to leave room: ${previousConversationId.current}`, ack.error);
+          }
+        });
       }
 
-      socket.emit('joinRoom', conversationId);
-      previousConversationId.current = conversationId;
+      // Join the new conversation room with acknowledgment
+      socket.emit('joinRoom', conversationId, (ack: any) => {
+        if (ack.status === 'ok') {
+          console.log(`Joined room: ${conversationId}`);
+          previousConversationId.current = conversationId;
+        } else {
+          console.error(`Failed to join room: ${conversationId}`, ack.error);
+        }
+      });
 
       const handleMessage = (newMessage: Message) => {
         if (newMessage.conversationId === conversationId) {

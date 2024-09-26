@@ -56,7 +56,7 @@ export const UserList = ({ onSelectConversation }: any) => {
 
   useEffect(() => {
     if (socket && currentUser?._id) {
-      socket.emit('joinRoom', currentUser._id);
+      // No need to emit 'joinRoom' for user room here; it's handled in SocketProvider
 
       const handleNewConversation = (newConversation: { _id: any; }) => {
         setConversations((prevConversations) => {
@@ -71,7 +71,14 @@ export const UserList = ({ onSelectConversation }: any) => {
           return prevConversations;
         });
 
-        socket.emit('joinRoom', newConversation._id);
+        // Join the new conversation room with acknowledgment
+        socket.emit('joinRoom', newConversation._id, (ack: any) => {
+          if (ack.status === 'ok') {
+            console.log(`Joined new conversation room: ${newConversation._id}`);
+          } else {
+            console.error(`Failed to join new conversation room: ${newConversation._id}`, ack.error);
+          }
+        });
       };
 
       socket.on('newConversation', handleNewConversation);

@@ -27,10 +27,18 @@ export const ChatInput: React.FC<ChatInputProps> = ({ conversationId }) => {
                     setLoading(true);
                     setError(null);
 
-                    socket.emit('sendMessage', newMessage);
-
-                    setMessage('');
+                    // Emit 'sendMessage' with acknowledgment
+                    socket.emit('sendMessage', newMessage, (ack: any) => {
+                        if (ack.status === 'ok') {
+                            console.log('Message sent successfully');
+                            setMessage('');
+                        } else {
+                            console.error('Failed to send message:', ack.error);
+                            setError('Failed to send message. Please try again.');
+                        }
+                    });
                 } catch (error: any) {
+                    console.error('Send message error:', error);
                     setError('Failed to send message. Please try again.');
                 } finally {
                     setLoading(false);
