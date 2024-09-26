@@ -22,12 +22,12 @@ export const useGetAndUpdateUserById = () => {
     const isCurrentUser = currentUser?._id === id
     const isAdmin = userRole === 'hr'
     const engagement = [
-        'full_time_remote',
-        'full_time_on_site',
-        'part_time_remote',
-        'part_time_on_site',
-        'internship',
-        'external',
+         'Full Time Remote',
+         'Full Time On Site',
+         'Part Time Remote',
+         'Part Time On Site',
+         'Internship',
+         'External',
     ]
     const genderOptions = ['Male', 'Female']
     const [isCancel, setIsCancel] = useState(false)
@@ -70,13 +70,16 @@ export const useGetAndUpdateUserById = () => {
         'Selenicë',
     ]
 
+
     const position = [
-        'designer',
-        'backend_developer',
-        'frontend_developer',
-        'fullstack_developer',
-        'tester',
-        'devops',
+        'Hr',
+        'Ceo',
+        'Designer',
+        'Backend Developer',
+        'Frontend Developer',
+        'Fullstack Developer',
+        'Tester',
+        'Devops',
     ]
 
     useEffect(() => {
