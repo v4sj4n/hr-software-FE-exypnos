@@ -194,12 +194,14 @@ export const UserList = ({ onSelectConversation }: any) => {
                 }}
                 sx={{
                   '&:hover': {
-                    backgroundColor: '#f0f0f0', // Background color on hover
+                    backgroundColor: '#bbdefb', // Background color on hover
+                    borderRadius: '12px',
                   },
                   backgroundColor:
                     conversation._id === selectedConversationId
-                      ? '#e0e0e0' // Background color for the selected conversation
+                      ? '#2196f3' 
                       : 'inherit',
+                  borderRadius: '12px', 
                 }}
               >
                 <ListItemText primary={getConversationName(conversation)} />

@@ -14,16 +14,16 @@
     max-width: 60%;
   }
   
-  /* Update the sent class to change the background color to blue */
+
   .sent {
-    background-color: #0a7ffd7c; /* Light blue for sent messages */
+    background-color: #0a7ffd7c; 
     align-self: flex-end;
     text-align: right;
   }
   
   /* No changes to the received class */
   .received {
-    background-color: #ffffff; /* Light pink for received messages */
+    background-color: #ffffff; 
     align-self: flex-start;
     text-align: left;
   }
