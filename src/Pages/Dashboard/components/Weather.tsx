@@ -81,7 +81,7 @@ const Weather = () => {
                     <div
                         style={{
                             width: '145px',
-                            height: '120px',
+                            height: '105px',
                             backgroundImage: weatherData
                                 ? `url(${getBackgroundImage(weatherData.weather[0].description)})`
                                 : 'none',

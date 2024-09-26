@@ -1,24 +1,15 @@
-import { User } from '@/Pages/Chat/Interfaces/types'
-const API_URL = import.meta.env.VITE_API_URL
-
-function getAuthToken(): string | null {
-    return localStorage.getItem('access_token')
-}
+import AxiosInstance from '@/Helpers/Axios'
+import { User } from '@/ProtectedRoute/Interface/Interface'
 
 export async function fetchUsers(page = 1, limit = 10): Promise<User[]> {
     try {
-        const response = await fetch(
-            `${API_URL}/user?page=${page}&limit=${limit}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${getAuthToken()}`,
-                },
-            },
+        const response = await AxiosInstance.get(
+            `/user?page=${page}&limit=${limit}`,
         )
-        if (!response.ok) {
-            throw new Error(`Error fetching users: ${response.statusText}`)
+        if (!response) {
+            throw new Error(`Error fetching users: ${response}`)
         }
-        const users: User[] = await response.json()
+        const users: User[] = await response.data
         return users
     } catch (error) {
         console.error('Error fetching users:', error)
