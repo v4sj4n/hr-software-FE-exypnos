@@ -2,7 +2,6 @@ import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
 import { createContext, useEffect, useState, useContext } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-const API_URL = import.meta.env.VITE_API_URL;
 
 export const SocketContext = createContext<Socket | null>(null);
 
@@ -17,7 +16,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     useEffect(() => {
         const token = getAuthToken();
         if (currentUser && token) {
-            const socketConnection: Socket = io(API_URL, {
+            const socketConnection: Socket = io("https://seashell-app-rvw8f.ondigitalocean.app", {
                 auth: {
                     token,
                 },

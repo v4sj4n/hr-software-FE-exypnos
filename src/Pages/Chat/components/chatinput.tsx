@@ -1,5 +1,4 @@
 import { useState, useContext } from 'react';
-import AxiosInstance from '@/Helpers/Axios';
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
 import { SocketContext } from '@/Pages/chat/context/SocketContext';
 import styles from '@/Pages/chat/styles/chat.module.css'; 
