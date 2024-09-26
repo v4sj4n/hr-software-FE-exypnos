@@ -22,6 +22,7 @@ export const UserList = ({ onSelectConversation }: any) => {
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null); // State to track selected conversation
   const { currentUser } = useAuth();
   const { data: users = [] } = useGetAllUsers();
   const socket = useContext(SocketContext);
@@ -103,6 +104,7 @@ export const UserList = ({ onSelectConversation }: any) => {
           senderId: currentUser?._id,
         });
         onSelectConversation(conversationId);
+        setSelectedConversationId(conversationId); // Set the selected conversation
       } catch (error) {
         console.error('Error sending message:', error);
         setError('Failed to send message.');
@@ -119,12 +121,8 @@ export const UserList = ({ onSelectConversation }: any) => {
           },
         });
         conversationId = response.data.conversation._id;
-
-        // Do not manually add the new conversation to the state here
-        // The socket event 'newConversation' will handle updating the state
-
-        // Optionally, navigate to the new conversation
         onSelectConversation(conversationId);
+        setSelectedConversationId(conversationId); // Set the selected conversation
       } catch (error) {
         console.error('Error creating conversation:', error);
         setError('Failed to create conversation.');
@@ -190,7 +188,19 @@ export const UserList = ({ onSelectConversation }: any) => {
               <ListItem
                 key={conversation._id}
                 button
-                onClick={() => onSelectConversation(conversation._id)}
+                onClick={() => {
+                  onSelectConversation(conversation._id);
+                  setSelectedConversationId(conversation._id); // Set the selected conversation
+                }}
+                sx={{
+                  '&:hover': {
+                    backgroundColor: '#f0f0f0', // Background color on hover
+                  },
+                  backgroundColor:
+                    conversation._id === selectedConversationId
+                      ? '#e0e0e0' // Background color for the selected conversation
+                      : 'inherit',
+                }}
               >
                 <ListItemText primary={getConversationName(conversation)} />
               </ListItem>

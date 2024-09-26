@@ -1,18 +1,19 @@
-import { useState, useContext } from 'react'
-import AxiosInstance from '@/Helpers/Axios'
-import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
-import { SocketContext } from '@/Pages/chat/context/SocketContext'
+import { useState, useContext } from 'react';
+import AxiosInstance from '@/Helpers/Axios';
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
+import { SocketContext } from '@/Pages/chat/context/SocketContext';
+import styles from '@/Pages/chat/styles/chat.module.css'; 
 
 interface ChatInputProps {
-    conversationId: string
+    conversationId: string;
 }
 
 export const ChatInput: React.FC<ChatInputProps> = ({ conversationId }) => {
-    const [message, setMessage] = useState<string>('')
-    const [error, setError] = useState<string | null>(null)
-    const [loading, setLoading] = useState<boolean>(false)
-    const socket = useContext(SocketContext)
-    const { currentUser } = useAuth()
+    const [message, setMessage] = useState<string>('');
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const socket = useContext(SocketContext);
+    const { currentUser } = useAuth();
 
     const sendMessage = async () => {
         if (message.trim()) {
@@ -21,40 +22,55 @@ export const ChatInput: React.FC<ChatInputProps> = ({ conversationId }) => {
                     conversationId,
                     text: message,
                     senderId: currentUser?._id,
-                }
+                };
 
                 try {
-                    setLoading(true)
-                    setError(null)
+                    setLoading(true);
+                    setError(null);
 
-                    socket.emit('sendMessage', newMessage)
+                    socket.emit('sendMessage', newMessage);
 
-                    setMessage('')
+                    setMessage('');
                 } catch (error: any) {
-                    setError('Failed to send message. Please try again.')
+                    setError('Failed to send message. Please try again.');
                 } finally {
-                    setLoading(false)
+                    setLoading(false);
                 }
             } else {
-                setError('Socket is not connected. Unable to send message.')
+                setError('Socket is not connected. Unable to send message.');
             }
         } else {
-            setError('Message cannot be empty.')
+            setError('Message cannot be empty.');
         }
-    }
+    };
+
+    // Handle Enter key press
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && !loading) {
+            sendMessage();
+        }
+    };
 
     return (
-        <div>
-            <input
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Type a message"
-                disabled={loading}
-            />
-            <button onClick={sendMessage} disabled={loading}>
-                {loading ? 'Sending...' : 'Send'}
-            </button>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+        <div className={styles.chatInputContainer}>
+            <div className={styles.inputWrapper}>
+                <input
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Type a message"
+                    disabled={loading}
+                    className={styles.chatInput}
+                    onKeyDown={handleKeyPress} // Listen for key press
+                />
+                <button
+                    onClick={sendMessage}
+                    disabled={loading}
+                    className={`${styles.sendButton} ${loading ? styles.sendButtonDisabled : ''}`}
+                >
+                    {loading ? 'Sending...' : 'Send'}
+                </button>
+            </div>
+            {error && <p style={{ color: 'red', marginTop: '5px' }}>{error}</p>}
         </div>
-    )
-}
+    );
+};

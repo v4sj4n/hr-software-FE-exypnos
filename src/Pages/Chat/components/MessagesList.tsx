@@ -1,6 +1,8 @@
 import { useEffect, useState, useContext, useRef } from 'react';
 import { SocketContext } from '@/Pages/chat/context/SocketContext';
 import AxiosInstance from '@/Helpers/Axios';
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
+import styles from '@/Pages/chat/styles/chat.module.css'; // Import the CSS module
 
 interface Message {
   _id: string;
@@ -19,10 +21,10 @@ export const MessagesList: React.FC<MessagesListProps> = ({ conversationId }) =>
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const socket = useContext(SocketContext);
+  const { currentUser } = useAuth(); // Get the current user
   const previousConversationId = useRef<string | null>(null);
 
   useEffect(() => {
-    // Clear messages when conversationId changes
     setMessages([]);
 
     if (conversationId) {
@@ -40,10 +42,6 @@ export const MessagesList: React.FC<MessagesListProps> = ({ conversationId }) =>
       );
 
       setMessages(data);
-
-
-      if (data.length === 0) {
-      }
     } catch (error) {
       setError('Failed to fetch messages. Please try again.');
     } finally {
@@ -57,12 +55,9 @@ export const MessagesList: React.FC<MessagesListProps> = ({ conversationId }) =>
         socket.emit('leaveRoom', previousConversationId.current);
       }
 
-      // Join the new room
       socket.emit('joinRoom', conversationId);
-
       previousConversationId.current = conversationId;
 
-      // Set up socket listener for incoming messages
       const handleMessage = (newMessage: Message) => {
         if (newMessage.conversationId === conversationId) {
           setMessages((prevMessages) => {
@@ -86,14 +81,17 @@ export const MessagesList: React.FC<MessagesListProps> = ({ conversationId }) =>
   }, [socket, conversationId]);
 
   return (
-    <div>
+    <div className={styles.messagesList}>
       {loading ? (
         <p>Loading messages...</p>
       ) : error ? (
         <p>{error}</p>
       ) : messages.length > 0 ? (
         messages.map((message) => (
-          <div key={message._id}>
+          <div 
+            key={message._id} 
+            className={`${styles.message} ${message.senderId === currentUser?._id ? styles.sent : styles.received}`} // Correctly apply styles based on current user
+          >
             <p>{message.text}</p>
             <small>{new Date(message.createdAt).toLocaleTimeString()}</small>
           </div>
