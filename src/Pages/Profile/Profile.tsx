@@ -83,7 +83,7 @@ function ProfileContent() {
 
 
     return (
-        <div style={{margin:"auto", left:"0"}}>
+        <div style={{margin:"auto", left:"0", display:"flex", justifyContent:'center'}}>
             <Box sx={{ width: '66.5%', bgcolor: 'background.paper', padding:"20px", borderRadius:"5px", border:"1px solid #ebebeb" }}>
                 <div
                     style={{
@@ -145,8 +145,8 @@ function ProfileContent() {
                     margin: '0 ',  
                     minHeight: 'unset',
                     padding: "0",
-                    '& ..css-19kzrtu': {  // Target all MuiBox-root classes
-                        padding: '0 !important',  // Set padding to 0 and make it !important
+                    '& ..css-19kzrtu': { 
+                        padding: '0 !important', 
                     },
                 }}>
                     <Tabs
