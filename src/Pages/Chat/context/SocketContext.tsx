@@ -21,6 +21,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
                     token,
                 },
                 transports: ['websocket'],
+                secure: true,
             });
     
             socketConnection.on('connect', () => {
