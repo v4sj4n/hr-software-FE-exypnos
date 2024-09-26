@@ -32,7 +32,7 @@ const ContratContent = () => {
     const isHr = currentUser?.role === 'hr'
 
     return (
-        <div className={style.container} style={{ width: '800px' }}>
+        <div >
             <Toast
                 severity={EditingPayroll ? toastSeverity : createToastSeverity}
                 open={EditingPayroll ? toastOpen : createToastOpen}
@@ -43,20 +43,18 @@ const ContratContent = () => {
             />
             <div
                 style={{
-                    alignItems: 'center',
+                   
                     display: 'flex',
-                    fontSize: '35px',
+                    fontSize: '25px',
                     color: '#333',
                     fontWeight: '700',
-                    padding: '20px',
+                    marginBottom: '20px',
+
                 }}
             >
-                Payroll Information
+                Payroll 
             </div>
-            <div
-                className={style.forms}
-                style={{ display: 'flex', flexDirection: 'column' }}
-            >
+             <div style={{display:"flex", gap:"20px", marginBottom:"20px"}}>
                 <Input
                     IsUsername
                     type="number"
@@ -64,7 +62,7 @@ const ContratContent = () => {
                     disabled={!isHr}
                     name="workingDays"
                     shrink={true}
-                    width={300}
+                    width="430px"
                     value={
                         EditingPayroll
                             ? EditingPayroll?.workingDays
@@ -82,7 +80,7 @@ const ContratContent = () => {
                     name="grossSalary"
                     disabled={!isHr}
                     label="Gross salary"
-                    width={300}
+                      width="430px"
                     value={
                         EditingPayroll
                             ? EditingPayroll?.grossSalary
@@ -94,10 +92,11 @@ const ContratContent = () => {
                             : handleChangePayroll
                     }
                 />
+                </div>
                 <Input
                     IsUsername
                     shrink={true}
-                    width={300}
+                             width="430px"
                     disabled={!isHr}
                     name="extraHours"
                     label="Extra Hours"
@@ -112,17 +111,17 @@ const ContratContent = () => {
                             : handleChangePayroll
                     }
                 />
-            </div>
+           
             <div className={style.border}></div>
 
             <div
                 style={{
                     alignItems: 'center',
                     display: 'flex',
-                    fontSize: '35px',
+                    fontSize: '25px',
                     color: '#333',
                     fontWeight: '700',
-                    padding: '20px',
+                    margin: '20px 0',
                 }}
             >
                 Add Bonus
@@ -132,7 +131,7 @@ const ContratContent = () => {
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    width: '300px',
+                    width:"430px",
                     gap: '20px',
                 }}
             >
@@ -183,7 +182,7 @@ const ContratContent = () => {
                                     ? handleUpdatePayroll
                                     : handleCreatePayroll
                             }
-                            width="300px"
+                                  width="430px"
                         />
                     )}
                 </div>
