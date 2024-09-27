@@ -106,14 +106,11 @@ function InterviewKanbanContent() {
                         value={currentPhase}
                         width="200px"
                         options={phases}
-                        onChange={(newValue) =>
-                            setCurrentPhase(
-                                Array.isArray(newValue)
-                                    ? newValue[0]
-                                    : newValue,
-                            )
-                        }
-                    />
+                        onChange={(newValue) => setCurrentPhase(
+                            Array.isArray(newValue)
+                                ? newValue[0]
+                                : newValue
+                        )} disabled={false}                    />
                     <Input
                         IsUsername
                         name=""

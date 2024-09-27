@@ -15,7 +15,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     useEffect(() => {
         const token = getAuthToken();
         if (currentUser && token) {
-            const socketConnection: Socket = io("https://seashell-app-rvw8f.ondigitalocean.app", {
+            const socketConnection: Socket = io("http://localhost:3000", {
                 auth: {
                     token,
                 },
