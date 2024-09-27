@@ -52,11 +52,11 @@ export const ChatInput: React.FC<ChatInputProps> = ({ conversationId }) => {
         }
     }
 
-    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter' && !loading) {
-            sendMessage()
-        }
-    }
+    // const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    //     if (e.key === 'Enter' && !loading) {
+    //         sendMessage()
+    //     }
+    // }
 
     return (
         <div className={styles.chatInputContainer}>
