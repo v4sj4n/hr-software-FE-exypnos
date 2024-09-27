@@ -25,7 +25,6 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
             socketConnection.on('connect', () => {
                 console.log('Socket connected:', socketConnection.id);
-                // Join the user's personal room upon connection
                 socketConnection.emit('joinRoom', currentUser._id, (ack: any) => {
                     if (ack.status === 'ok') {
                         console.log(`Joined user room: ${currentUser._id}`);
@@ -43,10 +42,8 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
                 console.error('Socket connection error:', err);
             });
 
-            // Handle reconnection
             socketConnection.on('reconnect', (attemptNumber) => {
                 console.log(`Socket reconnected after ${attemptNumber} attempts`);
-                // Re-join the user's personal room upon reconnection
                 socketConnection.emit('joinRoom', currentUser._id, (ack: any) => {
                     if (ack.status === 'ok') {
                         console.log(`Re-joined user room: ${currentUser._id}`);

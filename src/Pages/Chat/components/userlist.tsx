@@ -22,7 +22,7 @@ export const UserList = ({ onSelectConversation }: any) => {
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null); // State to track selected conversation
+  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null); 
   const { currentUser } = useAuth();
   const { data: users = [] } = useGetAllUsers();
   const socket = useContext(SocketContext);
@@ -56,7 +56,6 @@ export const UserList = ({ onSelectConversation }: any) => {
 
   useEffect(() => {
     if (socket && currentUser?._id) {
-      // No need to emit 'joinRoom' for user room here; it's handled in SocketProvider
 
       const handleNewConversation = (newConversation: { _id: any; }) => {
         setConversations((prevConversations) => {
@@ -71,7 +70,6 @@ export const UserList = ({ onSelectConversation }: any) => {
           return prevConversations;
         });
 
-        // Join the new conversation room with acknowledgment
         socket.emit('joinRoom', newConversation._id, (ack: any) => {
           if (ack.status === 'ok') {
             console.log(`Joined new conversation room: ${newConversation._id}`);
@@ -111,7 +109,7 @@ export const UserList = ({ onSelectConversation }: any) => {
           senderId: currentUser?._id,
         });
         onSelectConversation(conversationId);
-        setSelectedConversationId(conversationId); // Set the selected conversation
+        setSelectedConversationId(conversationId); 
       } catch (error) {
         console.error('Error sending message:', error);
         setError('Failed to send message.');
@@ -129,7 +127,7 @@ export const UserList = ({ onSelectConversation }: any) => {
         });
         conversationId = response.data.conversation._id;
         onSelectConversation(conversationId);
-        setSelectedConversationId(conversationId); // Set the selected conversation
+        setSelectedConversationId(conversationId); 
       } catch (error) {
         console.error('Error creating conversation:', error);
         setError('Failed to create conversation.');
@@ -197,11 +195,11 @@ export const UserList = ({ onSelectConversation }: any) => {
                 button
                 onClick={() => {
                   onSelectConversation(conversation._id);
-                  setSelectedConversationId(conversation._id); // Set the selected conversation
+                  setSelectedConversationId(conversation._id); 
                 }}
                 sx={{
                   '&:hover': {
-                    backgroundColor: '#bbdefb', // Background color on hover
+                    backgroundColor: '#bbdefb', 
                     borderRadius: '12px',
                   },
                   backgroundColor:

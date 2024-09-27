@@ -2,7 +2,7 @@ import { useEffect, useState, useContext, useRef } from 'react';
 import { SocketContext } from '@/Pages/chat/context/SocketContext';
 import AxiosInstance from '@/Helpers/Axios';
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
-import styles from '@/Pages/chat/styles/chat.module.css'; // Import the CSS module
+import styles from '@/Pages/chat/styles/chat.module.css'; 
 
 interface Message {
   _id: string;
@@ -21,7 +21,7 @@ export const MessagesList: React.FC<MessagesListProps> = ({ conversationId }) =>
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const socket = useContext(SocketContext);
-  const { currentUser } = useAuth(); // Get the current user
+  const { currentUser } = useAuth(); 
   const previousConversationId = useRef<string | null>(null);
 
   useEffect(() => {
@@ -52,7 +52,6 @@ export const MessagesList: React.FC<MessagesListProps> = ({ conversationId }) =>
 
   useEffect(() => {
     if (socket && conversationId) {
-      // Leave the previous conversation room with acknowledgment
       if (previousConversationId.current && previousConversationId.current !== conversationId) {
         socket.emit('leaveRoom', previousConversationId.current, (ack: any) => {
           if (ack.status === 'ok') {
@@ -63,7 +62,6 @@ export const MessagesList: React.FC<MessagesListProps> = ({ conversationId }) =>
         });
       }
 
-      // Join the new conversation room with acknowledgment
       socket.emit('joinRoom', conversationId, (ack: any) => {
         if (ack.status === 'ok') {
           console.log(`Joined room: ${conversationId}`);
@@ -105,7 +103,7 @@ export const MessagesList: React.FC<MessagesListProps> = ({ conversationId }) =>
         messages.map((message) => (
           <div 
             key={message._id} 
-            className={`${styles.message} ${message.senderId === currentUser?._id ? styles.sent : styles.received}`} // Correctly apply styles based on current user
+            className={`${styles.message} ${message.senderId === currentUser?._id ? styles.sent : styles.received}`} 
           >
             <p>{message.text}</p>
             <small>{new Date(message.createdAt).toLocaleTimeString()}</small>

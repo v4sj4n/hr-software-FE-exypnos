@@ -1,18 +1,18 @@
-import { useState, useContext } from 'react';
-import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
-import { SocketContext } from '@/Pages/chat/context/SocketContext';
-import styles from '@/Pages/chat/styles/chat.module.css'; 
+import { useState, useContext } from 'react'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+import { SocketContext } from '@/Pages/chat/context/SocketContext'
+import styles from '@/Pages/chat/styles/chat.module.css'
 
 interface ChatInputProps {
-    conversationId: string;
+    conversationId: string
 }
 
 export const ChatInput: React.FC<ChatInputProps> = ({ conversationId }) => {
-    const [message, setMessage] = useState<string>('');
-    const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState<boolean>(false);
-    const socket = useContext(SocketContext);
-    const { currentUser } = useAuth();
+    const [message, setMessage] = useState<string>('')
+    const [error, setError] = useState<string | null>(null)
+    const [loading, setLoading] = useState<boolean>(false)
+    const socket = useContext(SocketContext)
+    const { currentUser } = useAuth()
 
     const sendMessage = async () => {
         if (message.trim()) {
@@ -21,63 +21,68 @@ export const ChatInput: React.FC<ChatInputProps> = ({ conversationId }) => {
                     conversationId,
                     text: message,
                     senderId: currentUser?._id,
-                };
+                }
 
                 try {
-                    setLoading(true);
-                    setError(null);
+                    setLoading(true)
+                    setError(null)
 
-                    // Emit 'sendMessage' with acknowledgment
                     socket.emit('sendMessage', newMessage, (ack: any) => {
                         if (ack.status === 'ok') {
-                            console.log('Message sent successfully');
-                            setMessage('');
+                            console.log('Message sent successfully')
+                            setMessage('')
                         } else {
-                            console.error('Failed to send message:', ack.error);
-                            setError('Failed to send message. Please try again.');
+                            console.error('Failed to send message:', ack.error)
+                            setError(
+                                'Failed to send message. Please try again.',
+                            )
                         }
-                    });
+                    })
                 } catch (error: any) {
-                    console.error('Send message error:', error);
-                    setError('Failed to send message. Please try again.');
+                    console.error('Send message error:', error)
+                    setError('Failed to send message. Please try again.')
                 } finally {
-                    setLoading(false);
+                    setLoading(false)
                 }
             } else {
-                setError('Socket is not connected. Unable to send message.');
+                setError('Socket is not connected. Unable to send message.')
             }
         } else {
-            setError('Message cannot be empty.');
+            setError('Message cannot be empty.')
         }
-    };
+    }
 
-    // Handle Enter key press
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' && !loading) {
-            sendMessage();
+            sendMessage()
         }
-    };
+    }
 
     return (
         <div className={styles.chatInputContainer}>
-            <div className={styles.inputWrapper}>
+            <form
+                className={styles.inputWrapper}
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    if (!loading) sendMessage()
+                }}
+            >
                 <input
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Type a message"
                     disabled={loading}
                     className={styles.chatInput}
-                    onKeyDown={handleKeyPress} // Listen for key press
                 />
                 <button
-                    onClick={sendMessage}
+                    type="submit"
                     disabled={loading}
                     className={`${styles.sendButton} ${loading ? styles.sendButtonDisabled : ''}`}
                 >
                     {loading ? 'Sending...' : 'Send'}
                 </button>
-            </div>
-            {error && <p style={{ color: 'red', marginTop: '5px' }}>{error}</p>}
+            </form>
+            {error && <p className={styles.errorMessage}>{error}</p>}
         </div>
-    );
-};
+    )
+}

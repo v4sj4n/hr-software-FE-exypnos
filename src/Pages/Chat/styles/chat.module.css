@@ -1,10 +1,10 @@
 .messagesList {
     padding: 10px;
-    max-height: 70vh; /* Increase height */
+    max-height: 70vh; 
     overflow-y: auto;
     display: flex;
-    flex-direction: column; /* Align messages vertically */
-    width: 50vw; /* Increase width */
+    flex-direction: column; 
+    width: 50vw;
   }
   
   .message {
@@ -21,18 +21,11 @@
     text-align: right;
   }
   
-  /* No changes to the received class */
   .received {
     background-color: #ffffff; 
     align-self: flex-start;
     text-align: left;
   }
-
-
-
-
-
-
 
 
   .chatInputContainer {
@@ -48,7 +41,7 @@
   
   .chatInput {
     flex: 1;
-    padding: 10px;
+    padding: 15px;
     border-radius: 20px;
     border: 1px solid #ccc;
     outline: none;
@@ -68,3 +61,53 @@
     cursor: not-allowed;
   }
   
+
+/* Existing styles... */
+
+.errorMessage {
+  color: red;
+  margin-top: 5px;
+  font-size: 0.9em;
+}
+
+/* Add a smooth transition for message background colors */
+.message {
+  transition: background-color 0.3s ease;
+}
+
+/* Add hover effect for send button */
+.sendButton:hover:not(.sendButtonDisabled) {
+  background-color: #0056b3;
+}
+
+/* Add timestamp styling */
+.timestamp {
+  font-size: 0.75em;
+  color: #666;
+  margin-top: 5px;
+}
+
+/* Style for the input focus state */
+.chatInput:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .messagesList {
+      width: 100vw;
+  }
+
+  .chatInputContainer {
+      padding: 20px;
+  }
+
+  .chatInput {
+      padding: 10px;
+  }
+
+  .sendButton {
+      padding: 8px 16px;
+  }
+}
