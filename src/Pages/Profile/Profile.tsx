@@ -50,6 +50,8 @@ function ProfileContent() {
     const handleChangeProfile = (_event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+
+    React
     const getInformationHeading = () => {
         switch(value) {
             case 0:

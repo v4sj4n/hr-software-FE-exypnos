@@ -31,7 +31,6 @@ export const TooltipImproved: React.FC<TooltipImprovedProps> = ({
     offset = [0, 0],
     useJoy = false,
 }) => {
-    // Ensure children is a valid React element
     if (!isValidElement(children)) {
         console.warn('TooltipImproved: children must be a valid React element')
         return children

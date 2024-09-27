@@ -119,6 +119,8 @@ export const useGetAndUpdateUserById = () => {
             }
         })
     }
+
+    
     const handleCancel = async () => {
         if (!isAdmin) {
             setError('Only admins can delete users')

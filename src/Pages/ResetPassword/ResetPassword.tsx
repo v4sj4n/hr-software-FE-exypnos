@@ -9,7 +9,7 @@ import { ResetPasswordForm } from './Components/ResetPasswordForm'
 import { ForgetPasswordForm } from './Components/ForgetPasswordForm'
 
 const ResetPasswordComponent = () => {
-    // SearchParams undestructured to not get ts errors :)
+
     const sP = useSearchParams()
 
     return (

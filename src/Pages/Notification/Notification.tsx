@@ -164,7 +164,6 @@ const NotificationDropdown: React.FC = () => {
                             mt: 2,
                             p: 1,
                             width: 450,
-                            // bgcolor: theme.palette.background.default,
                             boxShadow: 1,
                             borderRadius: 1,
                             overflow: 'hidden',

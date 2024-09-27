@@ -45,9 +45,7 @@ const ProfileFormContext = () => {
                 onClose={handleUpdateToastClose}
             />
             <div className={style.container}>
-                {/* <div className={style.title}>Profile Information</div> */}
                 <div style={{ display: "flex", gap: "20px" }}>
-
                     <div style={{ display: 'flex', flexDirection: 'column', gap: "20px" }}>
                         <Input
                             IsUsername
@@ -58,9 +56,6 @@ const ProfileFormContext = () => {
                             onChange={handleChange}
                             value={user.firstName}
                         />
-
-
-
                         <Input
                             IsUsername
                             type="email"
@@ -195,12 +190,8 @@ const ProfileFormContext = () => {
                     )
                 )}
             </div>
-
             <div className={style.border}> </div>
-
-
         </div>
-
     )
 }
 

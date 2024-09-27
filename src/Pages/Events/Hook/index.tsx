@@ -62,12 +62,13 @@ export const useGetAllEvents = () => {
 }
 
 export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
-    const queryClient = useQueryClient()
+   
     const [toastOpen, setToastOpen] = useState(false)
     const [toastMessage, setToastMessage] = useState('')
     const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
         'success',
-    )
+    ) 
+    const queryClient = useQueryClient()
     const [eventPhotos, setEventPhotos] = useState<File[]>([])
     const [createdEvents, setCreatedEvents] = useState<EventsData[]>([])
 
@@ -182,7 +183,6 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
         } else if (name === 'location') {
             setEvent((prevEvent) => ({
                 ...prevEvent,
-
                 location: value,
             }))
         } else {
@@ -245,12 +245,13 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
 }
 
 export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
-    const queryClient = useQueryClient()
+  
     const [editingEvent, setEditingEvent] = useState<EventsData | null>(null)
     const [showEditDrawer, setEditDrawer] = useState(false)
     const [includePollInEdit, setIncludePollInEdit] = useState(false)
     const [editPollQuestion, setEditPollQuestion] = useState('')
-    const [editPollOptions, setEditPollOptions] = useState<string[]>(['', ''])
+    const [editPollOptions, setEditPollOptions] = useState<string[]>(['', '']) 
+     const queryClient = useQueryClient()
     const [updateToastOpen, setUpdateToastOpen] = useState(false)
     const [updateToastMessage, setUpdateToastMessage] = useState('')
     const [updatedEvent, setUpdatedEvent] = useState<EventsData[]>([])
@@ -441,9 +442,9 @@ export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
 }
 
 export const useDeleteEvent = () => {
-    const queryClient = useQueryClient()
     const [showModal, setShowModal] = useState(false)
     const [deletedEvents, setDeletedEvents] = useState([] as EventsData[])
+    const queryClient = useQueryClient()
     const [eventToDeleteId, setEventToDeleteId] = useState<string | number>('')
     const handleDeleteEventModal = (eventToDeleteId: string | number) => {
         setEventToDeleteId(eventToDeleteId)
