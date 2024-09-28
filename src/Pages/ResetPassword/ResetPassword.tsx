@@ -1,22 +1,22 @@
 import logo from '/Images/image_1-removebg-preview.png'
 import style from './Styles/ResetPassword.module.css'
 
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link as RouterLink, useSearchParams } from 'react-router-dom'
 import img from '/Images/HeroImage.png'
 import Card from '@/Components/Card/Card'
 import { ResetPasswordProvider } from './ResetPasswordContext'
 import { ResetPasswordForm } from './Components/ResetPasswordForm'
 import { ForgetPasswordForm } from './Components/ForgetPasswordForm'
+import { Link, Typography } from '@mui/joy'
 
 const ResetPasswordComponent = () => {
-
     const sP = useSearchParams()
 
     return (
         <div className={style.container}>
             <div className={style.content}>
                 <img className={style.img} alt="img" src={img} />
-                <Link className={style.slogan} to="/">
+                <Link component={RouterLink} className={style.slogan} to="/">
                     Code With Love
                 </Link>
             </div>
@@ -24,14 +24,19 @@ const ResetPasswordComponent = () => {
                 <div className={style.cardLogoStyle}>
                     <img className={style.img2} alt="img" src={logo} />
                 </div>
-                <div className={style.title}>Forgot Password</div>
+                <Typography level="title-lg">Forgot Password</Typography>
 
                 {sP[0].get('token') ? (
                     <ResetPasswordForm />
                 ) : (
                     <ForgetPasswordForm />
                 )}
-                <Link to="/" style={{ textAlign: 'center', color: 'black' }}>
+                <Link
+                    component={RouterLink}
+                    to="/"
+                    color="neutral"
+                    style={{ alignSelf: 'center' }}
+                >
                     Back to Login
                 </Link>
             </Card>

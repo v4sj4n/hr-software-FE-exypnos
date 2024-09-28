@@ -1,16 +1,8 @@
-import MyButton from '../../Components/Button/Button'
-import { ButtonTypes } from '../../Components/Button/ButtonTypes'
-import Input from '../../Components/Input/Index'
 import logo from '/Images/recruitmentLogo.png'
 import image from '/Images/Vector-illustration-of-communication-Graphics-69695603-1-removebg-preview.png'
-import Card from '../../Components/Card/Card'
-import Button from '@mui/material/Button'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import { useContext } from 'react'
-import Toast from '@/Components/Toast/Toast'
-import { ValidationError } from '@tanstack/react-form'
-import Selecter from '@/Components/Input/components/Select/Selecter'
 import style from './style/Recruitment.module.css'
 import { valibotValidator } from '@tanstack/valibot-form-adapter'
 import {
@@ -24,10 +16,23 @@ import {
 } from './Context/RecruitmentContext'
 import { useRecruitmentForm } from './Hook'
 import { RecruitmentSchema } from '@/Schemas/Recruitment/Recruitment.schema'
+import {
+    Input,
+    Card,
+    Stack,
+    FormControl,
+    FormLabel,
+    FormHelperText,
+    Select,
+    Option,
+    Button,
+} from '@mui/joy'
+import Toast from '@/NewComponents/Toast'
 
 function RecruitmentBase() {
     const {
         error,
+        setError,
         showModal,
         setShowModal,
         fileInputRef,
@@ -39,16 +44,11 @@ function RecruitmentBase() {
 
     return (
         <main className={style.background}>
-            <Card
-                gap="20px"
-                padding="30px"
-                borderRadius=".8rem"
-                className={style.cardContainer}
-            >
-                <div className={style.header}>
+            <Card className={style.cardContainer}>
+                <Stack className={style.header}>
                     <img className={style.companyLogo} alt="img" src={logo} />
                     <div className={style.title}>Apply to Codevider</div>
-                </div>
+                </Stack>
                 <form
                     onSubmit={(e) => {
                         e.preventDefault()
@@ -62,25 +62,24 @@ function RecruitmentBase() {
                         validators={{
                             onChange: RecruitmentSchema.entries.firstName,
                         }}
-                        children={({
-                            handleChange,
-                            state: {
-                                value,
-                                meta: { errors },
-                            },
-                        }) => (
-                            <div>
+                        children={(field) => (
+                            <FormControl
+                                error={field.state.meta.errors.length > 0}
+                            >
+                                <FormLabel>First Name</FormLabel>
                                 <Input
-                                    label="First Name"
-                                    name="firstName"
-                                    IsUsername
-                                    value={value}
+                                    type="text"
+                                    placeholder="Enter your first name"
+                                    value={field.state.value}
+                                    fullWidth
                                     onChange={(e) =>
-                                        handleChange(e.target.value)
+                                        field.handleChange(e.target.value)
                                     }
                                 />
-                                {<ErrorRenderer errors={errors} />}
-                            </div>
+                                <FormHelperText>
+                                    {field.state.meta.errors}
+                                </FormHelperText>
+                            </FormControl>
                         )}
                     />
 
@@ -90,25 +89,24 @@ function RecruitmentBase() {
                         validators={{
                             onChange: RecruitmentSchema.entries.lastName,
                         }}
-                        children={({
-                            handleChange,
-                            state: {
-                                value,
-                                meta: { errors },
-                            },
-                        }) => (
-                            <div>
+                        children={(field) => (
+                            <FormControl
+                                error={field.state.meta.errors.length > 0}
+                            >
+                                <FormLabel>Last Name</FormLabel>
                                 <Input
-                                    label="Last Name"
-                                    name="lastName"
-                                    IsUsername
-                                    value={value}
+                                    type="text"
+                                    placeholder="Enter your last name"
+                                    value={field.state.value}
+                                    fullWidth
                                     onChange={(e) =>
-                                        handleChange(e.target.value)
+                                        field.handleChange(e.target.value)
                                     }
                                 />
-                                {<ErrorRenderer errors={errors} />}
-                            </div>
+                                <FormHelperText>
+                                    {field.state.meta.errors}
+                                </FormHelperText>
+                            </FormControl>
                         )}
                     />
                     <form.Field
@@ -117,25 +115,25 @@ function RecruitmentBase() {
                         validators={{
                             onChange: RecruitmentSchema.entries.email,
                         }}
-                        children={({
-                            state: {
-                                value,
-                                meta: { errors },
-                            },
-                            handleChange,
-                        }) => (
-                            <div>
+                        children={(field) => (
+                            <FormControl
+                                error={field.state.meta.errors.length > 0}
+                            >
+                                <FormLabel>Email</FormLabel>
                                 <Input
-                                    label="Email"
-                                    name="Email"
-                                    IsUsername
-                                    value={value}
-                                    onChange={(e) =>
-                                        handleChange(e.target.value)
-                                    }
+                                    type="email"
+                                    placeholder="Enter your email"
+                                    value={field.state.value}
+                                    fullWidth
+                                    onChange={(e) => {
+                                        field.handleChange(e.target.value)
+                                        setError(null)
+                                    }}
                                 />
-                                {<ErrorRenderer errors={errors} />}
-                            </div>
+                                <FormHelperText>
+                                    {field.state.meta.errors}
+                                </FormHelperText>
+                            </FormControl>
                         )}
                     />
 
@@ -145,27 +143,23 @@ function RecruitmentBase() {
                         validators={{
                             onChange: RecruitmentSchema.entries.dob,
                         }}
-                        children={({
-                            state: {
-                                value,
-                                meta: { errors },
-                            },
-                            handleChange,
-                        }) => (
-                            <div>
+                        children={(field) => (
+                            <FormControl
+                                error={field.state.meta.errors.length > 0}
+                            >
+                                <FormLabel>Date of birth</FormLabel>
                                 <Input
-                                    label="Date of birth"
-                                    name="dob"
-                                    IsUsername
                                     type="date"
-                                    shrink={true}
-                                    value={value}
+                                    value={field.state.value}
+                                    fullWidth
                                     onChange={(e) =>
-                                        handleChange(e.target.value)
+                                        field.handleChange(e.target.value)
                                     }
                                 />
-                                {<ErrorRenderer errors={errors} />}
-                            </div>
+                                <FormHelperText>
+                                    {field.state.meta.errors}
+                                </FormHelperText>
+                            </FormControl>
                         )}
                     />
                     <form.Field
@@ -174,31 +168,26 @@ function RecruitmentBase() {
                         validators={{
                             onChange: RecruitmentSchema.entries.phoneNumber,
                         }}
-                        children={({
-                            state: {
-                                value,
-                                meta: { errors },
-                            },
-                            handleChange,
-                        }) => (
-                            <div>
+                        children={(field) => (
+                            <FormControl
+                                error={field.state.meta.errors.length > 0}
+                            >
+                                <FormLabel>Phone number</FormLabel>
                                 <Input
-                                    icon={
-                                        <p className={style.numberPrefix}>
-                                            +355
-                                        </p>
-                                    }
-                                    iconPosition="start"
-                                    label="Phone Number"
-                                    name="phoneNumber"
-                                    IsUsername
-                                    value={value}
-                                    onChange={(e) =>
-                                        handleChange(e.target.value)
-                                    }
+                                    type="number"
+                                    startDecorator={'+355'}
+                                    placeholder="Enter your last name"
+                                    value={field.state.value}
+                                    fullWidth
+                                    onChange={(e) => {
+                                        setError(null)
+                                        field.handleChange(e.target.value)
+                                    }}
                                 />
-                                {<ErrorRenderer errors={errors} />}
-                            </div>
+                                <FormHelperText>
+                                    {field.state.meta.errors}
+                                </FormHelperText>
+                            </FormControl>
                         )}
                     />
 
@@ -209,28 +198,30 @@ function RecruitmentBase() {
                             onChange:
                                 RecruitmentSchema.entries.applicationMethod,
                         }}
-                        children={({
-                            state: {
-                                value,
-                                meta: { errors },
-                            },
-                            handleChange,
-                        }) => (
-                            <div>
-                                <Selecter
-                                    disabled={false}
-                                    width="100%"
-                                    label="Applying Method"
-                                    name="applicationMethod"
-                                    multiple={false}
-                                    options={foundMethod}
-                                    value={value}
-                                    onChange={(newValue) =>
-                                        handleChange(newValue as string)
-                                    }
-                                />
-                                {<ErrorRenderer errors={errors} />}
-                            </div>
+                        children={(field) => (
+                            <FormControl
+                                error={field.state.meta.errors.length > 0}
+                            >
+                                <FormLabel>How did you found out?</FormLabel>
+                                <Select
+                                    value={field.state.value}
+                                    onChange={(e, newValue) => {
+                                        e?.preventDefault()
+                                        field.handleChange(newValue as string)
+                                    }}
+                                >
+                                    {foundMethod.map((method) => {
+                                        return (
+                                            <Option value={method}>
+                                                {method}
+                                            </Option>
+                                        )
+                                    })}
+                                </Select>
+                                <FormHelperText>
+                                    {field.state.meta.errors}
+                                </FormHelperText>
+                            </FormControl>
                         )}
                     />
 
@@ -240,25 +231,24 @@ function RecruitmentBase() {
                         validators={{
                             onChange: RecruitmentSchema.entries.positionApplied,
                         }}
-                        children={({
-                            state: {
-                                value,
-                                meta: { errors },
-                            },
-                            handleChange,
-                        }) => (
-                            <div>
+                        children={(field) => (
+                            <FormControl
+                                error={field.state.meta.errors.length > 0}
+                            >
+                                <FormLabel>Work Position</FormLabel>
                                 <Input
-                                    label="Work position"
-                                    name="positionApplied"
-                                    IsUsername
-                                    value={value}
+                                    type="text"
+                                    placeholder="Enter your work position"
+                                    value={field.state.value}
+                                    fullWidth
                                     onChange={(e) =>
-                                        handleChange(e.target.value)
+                                        field.handleChange(e.target.value)
                                     }
                                 />
-                                {<ErrorRenderer errors={errors} />}
-                            </div>
+                                <FormHelperText>
+                                    {field.state.meta.errors}
+                                </FormHelperText>
+                            </FormControl>
                         )}
                     />
 
@@ -269,25 +259,24 @@ function RecruitmentBase() {
                             onChange:
                                 RecruitmentSchema.entries.salaryExpectations,
                         }}
-                        children={({
-                            state: {
-                                value,
-                                meta: { errors },
-                            },
-                            handleChange,
-                        }) => (
-                            <div>
+                        children={(field) => (
+                            <FormControl
+                                error={field.state.meta.errors.length > 0}
+                            >
+                                <FormLabel>Salary Expectations</FormLabel>
                                 <Input
-                                    label="Wage expectation"
-                                    name="salaryExpectations"
-                                    IsUsername
-                                    value={value}
+                                    type="text"
+                                    placeholder="Enter your salary expectations"
+                                    value={field.state.value}
+                                    fullWidth
                                     onChange={(e) =>
-                                        handleChange(e.target.value)
+                                        field.handleChange(e.target.value)
                                     }
                                 />
-                                {<ErrorRenderer errors={errors} />}
-                            </div>
+                                <FormHelperText>
+                                    {field.state.meta.errors}
+                                </FormHelperText>
+                            </FormControl>
                         )}
                     />
                     <form.Field
@@ -296,28 +285,31 @@ function RecruitmentBase() {
                         validators={{
                             onChange: RecruitmentSchema.entries.experience,
                         }}
-                        children={({
-                            state: {
-                                value,
-                                meta: { errors },
-                            },
-                            handleChange,
-                        }) => (
-                            <div className={style.spanTwoDiv}>
-                                <Selecter
-                                    disabled={false}
-                                    width="100%"
-                                    multiple={false}
-                                    label="Experience"
-                                    name="experience"
-                                    options={experience}
-                                    value={value as string}
-                                    onChange={(newValue) =>
-                                        handleChange(newValue as string)
-                                    }
-                                />
-                                {<ErrorRenderer errors={errors} />}
-                            </div>
+                        children={(field) => (
+                            <FormControl
+                                error={field.state.meta.errors.length > 0}
+                            >
+                                <FormLabel>Experience</FormLabel>
+                                <Select
+                                    placeholder="Enter your experience"
+                                    value={field.state.value}
+                                    onChange={(e, newValue) => {
+                                        e?.preventDefault()
+                                        field.handleChange(newValue as string)
+                                    }}
+                                >
+                                    {experience.map((method) => {
+                                        return (
+                                            <Option value={method}>
+                                                {method}
+                                            </Option>
+                                        )
+                                    })}
+                                </Select>
+                                <FormHelperText>
+                                    {field.state.meta.errors}
+                                </FormHelperText>
+                            </FormControl>
                         )}
                     />
                     <form.Field
@@ -327,28 +319,32 @@ function RecruitmentBase() {
                             onChange:
                                 RecruitmentSchema.entries.technologiesUsed,
                         }}
-                        children={({
-                            state: {
-                                value,
-                                meta: { errors },
-                            },
-                            handleChange,
-                        }) => (
-                            <div className={style.spanTwoDiv}>
-                                <Selecter
-                                    disabled={false}
-                                    width="100%"
-                                    options={technologies}
+                        children={(field) => (
+                            <FormControl
+                                error={field.state.meta.errors.length > 0}
+                            >
+                                <FormLabel>Technologies</FormLabel>
+                                <Select
                                     multiple
-                                    label="Technologies"
-                                    name="technologiesUsed"
-                                    onChange={(newValue) =>
-                                        handleChange(newValue as [])
-                                    }
-                                    value={value}
-                                />
-                                <ErrorRenderer errors={errors} />
-                            </div>
+                                    placeholder="Enter your technologies"
+                                    value={field.state.value}
+                                    onChange={(e, newValue) => {
+                                        e?.preventDefault()
+                                        field.handleChange(newValue)
+                                    }}
+                                >
+                                    {technologies.map((method) => {
+                                        return (
+                                            <Option value={method}>
+                                                {method}
+                                            </Option>
+                                        )
+                                    })}
+                                </Select>
+                                <FormHelperText>
+                                    {field.state.meta.errors}
+                                </FormHelperText>
+                            </FormControl>
                         )}
                     />
 
@@ -368,25 +364,21 @@ function RecruitmentBase() {
                                 }
                             },
                         }}
-                        children={({
-                            state: {
-                                meta: { errors },
-                            },
-                            handleChange,
-                        }) => (
+                        children={(field) => (
                             <div className={style.fileInput}>
                                 <p>{fileName || 'No file selected'}</p>
                                 <Button
-                                    component="label"
-                                    variant="contained"
-                                    startIcon={<CloudUploadIcon />}
-                                    style={{
-                                        backgroundColor: '#2469FF',
-                                        color: '#FFFFFF',
-                                        boxShadow: 'none',
-                                        fontFamily: 'Outfit, sans-serif',
-                                    }}
+                                    color="primary"
+                                    variant="soft"
+                                    startDecorator={<CloudUploadIcon />}
+                                    sx={{ marginBottom: 2 }}
                                     fullWidth
+                                    onClick={() => {
+                                        const el = fileInputRef.current
+                                        if (el) {
+                                            el.click()
+                                        }
+                                    }}
                                 >
                                     Upload CV
                                     <input
@@ -396,35 +388,37 @@ function RecruitmentBase() {
                                             const file =
                                                 e.target.files?.[0] || null
                                             setFileName(file?.name || null)
-                                            handleChange(e.target.files)
+                                            field.handleChange(e.target.files)
                                         }}
                                         accept=".pdf,.doc,.docx"
                                         ref={fileInputRef}
                                     />
                                 </Button>
-                                {<ErrorRenderer errors={errors} />}
+                                {field.state.meta.errors.length > 0 && (
+                                    <ErrorText>
+                                        {field.state.meta.errors}
+                                    </ErrorText>
+                                )}
                             </div>
                         )}
                     />
-                    <MyButton
-                        type={ButtonTypes.SECONDARY}
-                        btnText="Reset"
-                        width="100%"
+                    <Button
+                        variant="soft"
+                        type="button"
                         onClick={() => {
-                            console.log('Resetting form')
                             form.reset()
                             setFileName(null)
                         }}
-                    />
-                    <MyButton
-                        type={ButtonTypes.TERTIARY}
-                        width="100%"
-                        btnText={
-                            form.state.isSubmitting ? 'Submitting...' : 'Submit'
-                        }
+                    >
+                        Reset
+                    </Button>
+                    <Button
+                        type="submit"
+                        loading={form.state.isSubmitting}
                         disabled={form.state.isSubmitting}
-                        isSubmit
-                    />
+                    >
+                        Submit
+                    </Button>
                 </form>
                 {error && <ErrorText>{error}</ErrorText>}
             </Card>
@@ -445,17 +439,5 @@ export default function Recruitment() {
         <RecruitmentProvider>
             <RecruitmentBase />
         </RecruitmentProvider>
-    )
-}
-
-const ErrorRenderer: React.FC<{ errors: ValidationError[] | null }> = ({
-    errors,
-}) => {
-    return (
-        <>
-            {errors && errors.length > 0 ? (
-                <ErrorText>{errors.map((error) => error).join(', ')}</ErrorText>
-            ) : null}
-        </>
     )
 }

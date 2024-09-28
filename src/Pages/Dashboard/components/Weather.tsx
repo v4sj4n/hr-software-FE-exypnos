@@ -70,7 +70,7 @@ const Weather = () => {
                         width: '100%',
                         display: 'flex',
                         padding: '5px',
-                        height:'110px',
+                        height: '110px',
                         alignContent: 'center',
                     }}
                 >

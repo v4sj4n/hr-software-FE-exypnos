@@ -32,9 +32,15 @@
 
 .cardContainer {
     display: flex;
-    gap: 20px;
+    gap: 1rem;
     margin-bottom: 20px;
     flex-wrap: wrap;
+
+    * {
+        flex: 1;
+        display: flex;
+        align-items: center;
+    }
 }
 
 .cardGreen,

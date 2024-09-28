@@ -32,7 +32,7 @@ const ContratContent = () => {
     const isHr = currentUser?.role === 'hr'
 
     return (
-        <div >
+        <div>
             <Toast
                 severity={EditingPayroll ? toastSeverity : createToastSeverity}
                 open={EditingPayroll ? toastOpen : createToastOpen}
@@ -43,18 +43,16 @@ const ContratContent = () => {
             />
             <div
                 style={{
-                   
                     display: 'flex',
                     fontSize: '25px',
                     color: '#333',
                     fontWeight: '700',
                     marginBottom: '20px',
-
                 }}
             >
-                Payroll 
+                Payroll
             </div>
-             <div style={{display:"flex", gap:"20px", marginBottom:"20px"}}>
+            <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
                 <Input
                     IsUsername
                     type="number"
@@ -80,7 +78,7 @@ const ContratContent = () => {
                     name="grossSalary"
                     disabled={!isHr}
                     label="Gross salary"
-                      width="430px"
+                    width="430px"
                     value={
                         EditingPayroll
                             ? EditingPayroll?.grossSalary
@@ -92,26 +90,26 @@ const ContratContent = () => {
                             : handleChangePayroll
                     }
                 />
-                </div>
-                <Input
-                    IsUsername
-                    shrink={true}
-                             width="430px"
-                    disabled={!isHr}
-                    name="extraHours"
-                    label="Extra Hours"
-                    value={
-                        EditingPayroll
-                            ? EditingPayroll?.extraHours
-                            : payroll.extraHours
-                    }
-                    onChange={
-                        EditingPayroll
-                            ? handleUpdateChangePayroll
-                            : handleChangePayroll
-                    }
-                />
-           
+            </div>
+            <Input
+                IsUsername
+                shrink={true}
+                width="430px"
+                disabled={!isHr}
+                name="extraHours"
+                label="Extra Hours"
+                value={
+                    EditingPayroll
+                        ? EditingPayroll?.extraHours
+                        : payroll.extraHours
+                }
+                onChange={
+                    EditingPayroll
+                        ? handleUpdateChangePayroll
+                        : handleChangePayroll
+                }
+            />
+
             <div className={style.border}></div>
 
             <div
@@ -131,7 +129,7 @@ const ContratContent = () => {
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    width:"430px",
+                    width: '430px',
                     gap: '20px',
                 }}
             >
@@ -182,7 +180,7 @@ const ContratContent = () => {
                                     ? handleUpdatePayroll
                                     : handleCreatePayroll
                             }
-                                  width="430px"
+                            width="430px"
                         />
                     )}
                 </div>

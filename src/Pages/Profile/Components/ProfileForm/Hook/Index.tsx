@@ -22,12 +22,12 @@ export const useGetAndUpdateUserById = () => {
     const isCurrentUser = currentUser?._id === id
     const isAdmin = userRole === 'hr'
     const engagement = [
-         'Full Time Remote',
-         'Full Time On Site',
-         'Part Time Remote',
-         'Part Time On Site',
-         'Internship',
-         'External',
+        'Full Time Remote',
+        'Full Time On Site',
+        'Part Time Remote',
+        'Part Time On Site',
+        'Internship',
+        'External',
     ]
     const genderOptions = ['Male', 'Female']
     const [isCancel, setIsCancel] = useState(false)
@@ -69,7 +69,6 @@ export const useGetAndUpdateUserById = () => {
         'Bajram Curri',
         'Selenicë',
     ]
-
 
     const position = [
         'Hr',
@@ -120,7 +119,6 @@ export const useGetAndUpdateUserById = () => {
         })
     }
 
-    
     const handleCancel = async () => {
         if (!isAdmin) {
             setError('Only admins can delete users')

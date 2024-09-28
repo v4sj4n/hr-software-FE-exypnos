@@ -11,7 +11,7 @@ import { SidebarHeaderContext } from '@/ProtectedRoute/SidebarHeaderContext'
 import { EventsProvider } from '@/Pages/Events/Context/EventsProvider'
 import NotificationDropdown from '@/Pages/Notification/Notification'
 import { ClickAwayListener } from '@mui/material'
-import ThemeSwitcher from '@/Theme/ThemeSwitcher'
+// import ThemeSwitcher from '@/Theme/ThemeSwitcher'
 import { useTheme } from '@mui/material/styles'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 import MarkChatUnreadOutlinedIcon from '@mui/icons-material/MarkChatUnreadOutlined'
@@ -68,11 +68,6 @@ export const HeaderContent = () => {
                 )}
             </div>
             <div className={style.headerRight}>
-                <div className={style.icon} style={dropdownItemStyle}>
-                    {' '}
-                    <ThemeSwitcher />
-                </div>
-
                 <div
                     className={style.icon}
                     style={dropdownItemStyle}

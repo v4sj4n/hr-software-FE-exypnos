@@ -9,7 +9,6 @@ import Selecter from '@/Components/Input/components/Select/Selecter'
 import Toast from '@/Components/Toast/Toast'
 
 const ProfileFormContext = () => {
-
     const {
         user,
         isCurrentUser,
@@ -28,7 +27,7 @@ const ProfileFormContext = () => {
         handlePositionChange,
         position,
         engagement,
-        handleEngagementChange
+        handleEngagementChange,
     } = useProfile()
 
     if (!user) {
@@ -36,7 +35,6 @@ const ProfileFormContext = () => {
     }
 
     return (
-
         <div>
             <Toast
                 open={updateToastOpen}
@@ -45,8 +43,14 @@ const ProfileFormContext = () => {
                 onClose={handleUpdateToastClose}
             />
             <div className={style.container}>
-                <div style={{ display: "flex", gap: "20px" }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: "20px" }}>
+                <div style={{ display: 'flex', gap: '20px' }}>
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '20px',
+                        }}
+                    >
                         <Input
                             IsUsername
                             label="FirstName"
@@ -98,8 +102,13 @@ const ProfileFormContext = () => {
                             value={user.engagement}
                         />
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: "20px" }}>
-
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '20px',
+                        }}
+                    >
                         <Input
                             IsUsername
                             name="lastName"
@@ -108,7 +117,6 @@ const ProfileFormContext = () => {
                             label="LastName"
                             onChange={handleChange}
                             value={user.lastName}
-
                         />
                         <Input
                             icon={<p className={style.numberPrefix}>+355</p>}
@@ -122,7 +130,7 @@ const ProfileFormContext = () => {
                             onChange={handleChange}
                             value={user.phone}
                         />
-                         <Selecter
+                        <Selecter
                             disabled={!isAdmin}
                             multiple={false}
                             onChange={handlePositionChange}
@@ -142,7 +150,6 @@ const ProfileFormContext = () => {
                             multiple={false}
                             value={user.gender}
                         />
-
                     </div>
                 </div>
                 {isAdmin ? (

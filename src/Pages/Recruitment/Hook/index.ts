@@ -20,10 +20,10 @@ export const useRecruitmentForm = () => {
         technologiesUsed: string[]
     }>({
         defaultValues: {
-            applicationMethod: '',
+            applicationMethod: 'LinkedIn',
             dob: new Date().toISOString().split('T')[0],
             email: '',
-            experience: '',
+            experience: '0-1 year',
             file: null,
             firstName: '',
             lastName: '',
@@ -32,7 +32,7 @@ export const useRecruitmentForm = () => {
             salaryExpectations: '',
             technologiesUsed: [],
         },
-        onSubmit: async ({ value }) => {
+        onSubmit: async ({ value, formApi }) => {
             try {
                 const formData = new FormData()
                 formData.append('applicationMethod', value.applicationMethod)
@@ -64,6 +64,7 @@ export const useRecruitmentForm = () => {
                 if ([200, 201].includes(response.status)) {
                     console.log(true)
                     setShowModal(true)
+                    formApi.reset()
                 }
             } catch (err: unknown) {
                 if (err instanceof AxiosError) {

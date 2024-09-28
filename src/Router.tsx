@@ -22,9 +22,9 @@ import EmailConfirmation from './Pages/Recruitment/Component/EmailConfirmation.t
 import NotFound from './Pages/NotFound/NotFound.tsx'
 import Promotion from './Pages/Promotion/Promotion.tsx'
 import ResetPassword from './Pages/ResetPassword/ResetPassword.tsx'
-import { SocketProvider } from './Pages/chat/context/SocketContext.tsx'
-import { ChatProvider } from './Pages/chat/context/ChatContext.tsx'
-import Chat from './Pages/chat/Chat.tsx'
+import { SocketProvider } from '@/Pages/Chat/context/SocketContext.tsx'
+import { ChatProvider } from '@/Pages/Chat/context/ChatContext.tsx'
+// import Chat from '@/Pages/Chat/Chat.tsx'
 
 export default function Router() {
     const router = createBrowserRouter([
@@ -117,16 +117,6 @@ export default function Router() {
                 {
                     path: '/inventory',
                     element: <Inventory />,
-                },
-                {
-                    path: '/chat',
-                    element: (
-                        <SocketProvider>
-                            <ChatProvider>
-                                <Chat />
-                            </ChatProvider>
-                        </SocketProvider>
-                    ),
                 },
             ],
         },

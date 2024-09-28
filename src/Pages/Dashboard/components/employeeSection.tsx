@@ -4,6 +4,7 @@ import { UserProfileData } from './../../Employees/interfaces/Employe'
 import { useQuery } from '@tanstack/react-query'
 import AxiosInstance from '@/Helpers/Axios'
 import style from './../style/dashboard.module.css'
+import { Avatar, Typography } from '@mui/joy'
 
 const EmployeeSection: React.FC = () => {
     const navigate = useNavigate()
@@ -21,7 +22,9 @@ const EmployeeSection: React.FC = () => {
 
     return (
         <div style={{ paddingBottom: '20px' }}>
-            <h2>Team</h2>
+            <Typography level="h3" color="primary" gutterBottom>
+                Team
+            </Typography>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                 {UserProfileData?.map((employee: UserProfileData) => (
                     <div
@@ -34,7 +37,7 @@ const EmployeeSection: React.FC = () => {
                         }}
                     >
                         <div className={style.employeeImage}>
-                            <img
+                            <Avatar
                                 src={employee.imageUrl}
                                 alt={`${employee.firstName} ${employee.lastName}`}
                                 style={{

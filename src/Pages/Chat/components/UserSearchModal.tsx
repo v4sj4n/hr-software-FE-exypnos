@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 import {
     Dialog,
     DialogTitle,
@@ -10,15 +10,15 @@ import {
     Autocomplete,
     Box,
     Typography,
-} from '@mui/material';
-import { useGetAllUsers } from '@/Pages/Employees/Hook';
-import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
-import { UserProfileData } from '@/Pages/Employees/interfaces/Employe';
+} from '@mui/material'
+import { useGetAllUsers } from '@/Pages/Employees/Hook'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+import { UserProfileData } from '@/Pages/Employees/interfaces/Employe'
 
 interface UserSearchModalProps {
-    open: boolean;
-    onSelectUser: (user: any, message: string) => Promise<void>;
-    onClose: () => void;
+    open: boolean
+    onSelectUser: (user: any, message: string) => Promise<void>
+    onClose: () => void
 }
 
 export const UserSearchModal = ({
@@ -26,17 +26,19 @@ export const UserSearchModal = ({
     onSelectUser,
     onClose,
 }: UserSearchModalProps) => {
-    const [search, setSearch] = useState('');
-    const [filteredUsers, setFilteredUsers] = useState<UserProfileData[]>([]);
-    const [selectedUser, setSelectedUser] = useState<UserProfileData | null>(null);
-    const [message, setMessage] = useState('');
-    const { data: users = [] } = useGetAllUsers();
-    const { currentUser } = useAuth();
+    const [search, setSearch] = useState('')
+    const [filteredUsers, setFilteredUsers] = useState<UserProfileData[]>([])
+    const [selectedUser, setSelectedUser] = useState<UserProfileData | null>(
+        null,
+    )
+    const [message, setMessage] = useState('')
+    const { data: users = [] } = useGetAllUsers()
+    const { currentUser } = useAuth()
 
     useEffect(() => {
         if (!search) {
-            setFilteredUsers([]);
-            return;
+            setFilteredUsers([])
+            return
         }
 
         const filtered = users
@@ -50,19 +52,19 @@ export const UserSearchModal = ({
             .map((user: UserProfileData) => ({
                 ...user,
                 name: `${user.firstName} ${user.lastName}`,
-            }));
+            }))
 
-        setFilteredUsers(filtered);
-    }, [search, currentUser?._id]);
+        setFilteredUsers(filtered)
+    }, [search, currentUser?._id])
 
     const handleSendClick = async () => {
         if (selectedUser && message.trim()) {
-            await onSelectUser(selectedUser, message);
-            setMessage('');
-            setSelectedUser(null);
-            onClose();
+            await onSelectUser(selectedUser, message)
+            setMessage('')
+            setSelectedUser(null)
+            onClose()
         }
-    };
+    }
 
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
@@ -71,7 +73,9 @@ export const UserSearchModal = ({
                 <Box mb={2}>
                     <Autocomplete
                         options={filteredUsers}
-                        getOptionLabel={(user) => `${user.firstName} ${user.lastName}`|| ''}
+                        getOptionLabel={(user) =>
+                            `${user.firstName} ${user.lastName}` || ''
+                        }
                         renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -81,7 +85,9 @@ export const UserSearchModal = ({
                                 autoFocus
                             />
                         )}
-                        onChange={(event, newValue) => setSelectedUser(newValue)}
+                        onChange={(event, newValue) =>
+                            setSelectedUser(newValue)
+                        }
                         isOptionEqualToValue={(option, value) =>
                             option._id === value._id
                         }
@@ -102,11 +108,12 @@ export const UserSearchModal = ({
                         variant="outlined"
                     />
                 </Box>
-                
+
                 {selectedUser && (
                     <Box mb={2}>
                         <Typography variant="body2">
-                            Selected User: {selectedUser.firstName} {selectedUser.lastName}
+                            Selected User: {selectedUser.firstName}{' '}
+                            {selectedUser.lastName}
                         </Typography>
                     </Box>
                 )}
@@ -124,5 +131,5 @@ export const UserSearchModal = ({
                 </Button>
             </DialogActions>
         </Dialog>
-    );
-};
+    )
+}

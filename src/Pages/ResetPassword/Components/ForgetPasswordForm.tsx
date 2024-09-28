@@ -1,11 +1,10 @@
-import Button from '@/Components/Button/Button'
-import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import { email, nonEmpty, pipe, string } from 'valibot'
 import { useFormForgetPassword } from '../Hook'
-import Input from '@/Components/Input/Index'
 import style from '../Styles/ResetPassword.module.css'
-import Toast from '@/Components/Toast/Toast'
+import Toast from '@/NewComponents/Toast'
+import { Button, FormControl, FormHelperText, FormLabel, Input } from '@mui/joy'
+import { Email } from '@mui/icons-material'
 
 export const ForgetPasswordForm = () => {
     const { form, error, isError, isSuccess } = useFormForgetPassword()
@@ -28,28 +27,24 @@ export const ForgetPasswordForm = () => {
                     ),
                 }}
                 children={(field) => (
-                    <div>
+                    <FormControl error={field.state.meta.errors.length > 0}>
+                        <FormLabel>Email</FormLabel>
                         <Input
-                            IsUsername
-                            type="email"
-                            label={'Email'}
-                            name="email"
-                            width="350px"
+                            startDecorator={<Email />}
+                            placeholder="Enter your email"
                             value={field.state.value}
+                            fullWidth
                             onChange={(e) => field.handleChange(e.target.value)}
                         />
-                        {field.state.meta.errors && (
-                            <ErrorText>{field.state.meta.errors}</ErrorText>
-                        )}
-                    </div>
+                        <FormHelperText>
+                            {field.state.meta.errors}
+                        </FormHelperText>
+                    </FormControl>
                 )}
             />
-            <Button
-                type={ButtonTypes.PRIMARY}
-                isSubmit
-                disabled={form.state.isSubmitting}
-                btnText={form.state.isSubmitting ? 'Submitting...' : 'Submit'}
-            />
+            <Button type="submit" loading={form.state.isSubmitting}>
+                Reset
+            </Button>
             {isError && <ErrorText>{error?.message}</ErrorText>}
             <Toast
                 severity="success"

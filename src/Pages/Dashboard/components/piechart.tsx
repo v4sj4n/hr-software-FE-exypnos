@@ -1,6 +1,7 @@
 import { PieChart } from '@mui/x-charts'
 import { useDashboardContext } from './../context/hook.tsx'
 import { useEffect } from 'react'
+import { Typography } from '@mui/joy'
 
 const PieChartComponent = () => {
     const { employeeData, isLoading, error } = useDashboardContext()
@@ -24,21 +25,27 @@ const PieChartComponent = () => {
     ]
 
     return (
-        <PieChart
-            height={300}
-            series={[
-                {
-                    data: data, 
-                    innerRadius: 30,
-                    outerRadius: 100,
-                    paddingAngle: 2.5,
-                    cornerRadius: 5,
-                    startAngle: 0,
-                    endAngle: 360,
-                    cx: 125,
-                },
-            ]}
-        />
+        <>
+            <Typography level="h3" color="primary" gutterBottom>
+                Employee Status
+            </Typography>
+
+            <PieChart
+                height={300}
+                series={[
+                    {
+                        data: data,
+                        innerRadius: 30,
+                        outerRadius: 100,
+                        paddingAngle: 2.5,
+                        cornerRadius: 5,
+                        startAngle: 0,
+                        endAngle: 360,
+                        cx: 125,
+                    },
+                ]}
+            />
+        </>
     )
 }
 

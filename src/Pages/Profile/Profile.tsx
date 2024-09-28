@@ -1,28 +1,28 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import { useAuth } from '@/ProtectedRoute/Context/AuthContext';
-import { useParams } from 'react-router-dom';
-import ProfileForm from './Components/ProfileForm/ProfileForm';
-import Contrat from './Components/Contrat/Contrat';
-import ChangePass from './Components/ChangePass/ChangePass';
-import Image from '@/Components/uploads/uploadImage';
-import { Avatar } from '@mui/material';
-import { useFileUpload } from './Context/Hook';
-import { useProfile } from './Components/ProfileForm/Context/ProfileContext';
-import { FileUploadProvider } from './Context/FileUpoadProvider';
-import { ProfileProvider } from './Components/ProfileForm/Context/ProfileProvider';
+import * as React from 'react'
+import Box from '@mui/material/Box'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
+import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+import { useParams } from 'react-router-dom'
+import ProfileForm from './Components/ProfileForm/ProfileForm'
+import Contrat from './Components/Contrat/Contrat'
+import ChangePass from './Components/ChangePass/ChangePass'
+import Image from '@/Components/uploads/uploadImage'
+import { Avatar } from '@mui/material'
+import { useFileUpload } from './Context/Hook'
+import { useProfile } from './Components/ProfileForm/Context/ProfileContext'
+import { FileUploadProvider } from './Context/FileUpoadProvider'
+import { ProfileProvider } from './Components/ProfileForm/Context/ProfileProvider'
 import style from './style/Profile.module.css'
 
 interface TabPanelProps {
-    children?: React.ReactNode;
-    index: number;
-    value: number;
+    children?: React.ReactNode
+    index: number
+    value: number
 }
 
 function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
+    const { children, value, index, ...other } = props
 
     return (
         <div
@@ -34,65 +34,82 @@ function TabPanel(props: TabPanelProps) {
         >
             {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
         </div>
-    );
+    )
 }
 
 function ProfileContent() {
-    const [value, setValue] = React.useState(0);
-    const { currentUser } = useAuth();
-    const { id } = useParams();
+    const [value, setValue] = React.useState(0)
+    const { currentUser } = useAuth()
+    const { id } = useParams()
     const { uploadImage, previewImage } = useFileUpload()
     const { user, isCurrentUser } = useProfile()
 
-    const currentUserId = currentUser?._id === id;
-    const hr = currentUser?.role === 'hr';
+    const currentUserId = currentUser?._id === id
+    const hr = currentUser?.role === 'hr'
 
-    const handleChangeProfile = (_event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
-    };
+    const handleChangeProfile = (
+        _event: React.SyntheticEvent,
+        newValue: number,
+    ) => {
+        setValue(newValue)
+    }
 
     React
     const getInformationHeading = () => {
-        switch(value) {
+        switch (value) {
             case 0:
-                return "Profile Information";
+                return 'Profile Information'
             case 1:
-                return "Payroll Information";
+                return 'Payroll Information'
             case 2:
-                return "Change Password";
+                return 'Change Password'
             default:
-                return "";
+                return ''
         }
-    };
+    }
 
     const tabStyle = {
         flex: 1,
         maxWidth: 'none',
         textTransform: 'none' as const,
         fontWeight: 'normal',
-        fontSize: '14px', 
-        fontFamily: "Outfit, sans-serif",
+        fontSize: '14px',
+        fontFamily: 'Outfit, sans-serif',
         color: '#000',
         opacity: 0.7,
-        minHeight: 'unset',  
-    };
+        minHeight: 'unset',
+    }
 
     const selectedTabStyle = {
         ...tabStyle,
         opacity: 1,
         fontWeight: 'bold',
-    };
-
+    }
 
     return (
-        <div style={{margin:"auto", left:"0", display:"flex", justifyContent:'center'}}>
-            <Box sx={{ width: '66.5%', bgcolor: 'background.paper', padding:"20px", borderRadius:"5px", border:"1px solid #ebebeb" }}>
+        <div
+            style={{
+                margin: 'auto',
+                left: '0',
+                display: 'flex',
+                justifyContent: 'center',
+            }}
+        >
+            <Box
+                sx={{
+                    width: '66.5%',
+                    bgcolor: 'background.paper',
+                    padding: '20px',
+                    borderRadius: '5px',
+                    border: '1px solid #ebebeb',
+                }}
+            >
                 <div
                     style={{
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        padding:"20px"
+                        padding: '20px',
                     }}
                 >
                     <div
@@ -140,17 +157,19 @@ function ProfileContent() {
                     </div>
                 </div>
                 <div className={style.title}>{getInformationHeading()}</div>
-                <Box sx={{ 
-                    backgroundColor: '#f0f0f0', 
-                    borderRadius: "5px", 
-                    maxWidth: '100%',  
-                    margin: '0 ',  
-                    minHeight: 'unset',
-                    padding: "0",
-                    '& ..css-19kzrtu': { 
-                        padding: '0 !important', 
-                    },
-                }}>
+                <Box
+                    sx={{
+                        backgroundColor: '#f0f0f0',
+                        borderRadius: '5px',
+                        maxWidth: '100%',
+                        margin: '0 ',
+                        minHeight: 'unset',
+                        padding: '0',
+                        '& ..css-19kzrtu': {
+                            padding: '0 !important',
+                        },
+                    }}
+                >
                     <Tabs
                         value={value}
                         onChange={handleChangeProfile}
@@ -163,52 +182,68 @@ function ProfileContent() {
                                 backgroundColor: 'transparent',
                                 borderRadius: '5px',
                                 padding: '5px',
-                                minHeight: 'unset', 
+                                minHeight: 'unset',
                             },
                         }}
                     >
-                        <Tab 
-                            label="Profile" 
+                        <Tab
+                            label="Profile"
                             style={value === 0 ? selectedTabStyle : tabStyle}
                             sx={{
                                 borderRadius: '5px',
-                                backgroundColor: value === 0 ? 'white' : 'transparent',
+                                backgroundColor:
+                                    value === 0 ? 'white' : 'transparent',
                                 '&.Mui-selected': {
                                     backgroundColor: 'white',
                                 },
                                 '&:hover': {
-                                    backgroundColor: value === 0 ? 'white' : 'rgba(0, 0, 0, 0.04)',
+                                    backgroundColor:
+                                        value === 0
+                                            ? 'white'
+                                            : 'rgba(0, 0, 0, 0.04)',
                                 },
                             }}
                         />
                         {(currentUserId || hr) && (
-                            <Tab 
-                                label="Payroll" 
-                                style={value === 1 ? selectedTabStyle : tabStyle}
+                            <Tab
+                                label="Payroll"
+                                style={
+                                    value === 1 ? selectedTabStyle : tabStyle
+                                }
                                 sx={{
                                     borderRadius: '5px',
-                                    backgroundColor: value === 1 ? 'white' : 'transparent',
+                                    backgroundColor:
+                                        value === 1 ? 'white' : 'transparent',
                                     '&.Mui-selected': {
                                         backgroundColor: 'white',
                                     },
                                     '&:hover': {
-                                        backgroundColor: value === 1 ? 'white' : 'rgba(0, 0, 0, 0.04)',
+                                        backgroundColor:
+                                            value === 1
+                                                ? 'white'
+                                                : 'rgba(0, 0, 0, 0.04)',
                                     },
                                 }}
                             />
                         )}
                         {currentUserId && (
-                            <Tab 
-                                label="Change Password" 
-                                style={value === 2 ? selectedTabStyle : tabStyle}
+                            <Tab
+                                label="Change Password"
+                                style={
+                                    value === 2 ? selectedTabStyle : tabStyle
+                                }
                                 sx={{
                                     borderRadius: '5px',
-                                    backgroundColor: value === 2 ? 'white' : 'transparent',
+                                    backgroundColor:
+                                        value === 2 ? 'white' : 'transparent',
                                     '&.Mui-selected': {
                                         backgroundColor: 'white',
                                     },
                                     '&:hover': {
-                                        backgroundColor: value === 2 ? 'white' : 'rgba(0, 0, 0, 0.04)',
+                                        backgroundColor:
+                                            value === 2
+                                                ? 'white'
+                                                : 'rgba(0, 0, 0, 0.04)',
                                     },
                                 }}
                             />
@@ -230,7 +265,7 @@ function ProfileContent() {
                 )}
             </Box>
         </div>
-    );
+    )
 }
 
 const Profile: React.FC = () => {
@@ -243,4 +278,4 @@ const Profile: React.FC = () => {
     )
 }
 
-export default Profile;
+export default Profile

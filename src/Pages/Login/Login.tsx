@@ -1,19 +1,26 @@
 import { useContext, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { LoginContext, LoginProvider } from './LoginContext'
 import { useFormLogin } from './Hook'
 import { LoginSchema } from '@/Schemas/Login/Login.schema'
 import img from '/Images/HeroImage.png'
 import logo from '/Images/image_1-removebg-preview.png'
 import Card from '@/Components/Card/Card'
-import Input from '@/Components/Input/Index'
-import Button from '@/Components/Button/Button'
-import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import style from './styles/Login.module.css'
-import Toast from '@/Components/Toast/Toast'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 import { Loader } from '@/Components/Loader/Loader'
+import {
+    Button,
+    FormControl,
+    FormHelperText,
+    FormLabel,
+    IconButton,
+    Input,
+    Link,
+} from '@mui/joy'
+import { Email, Password, Visibility, VisibilityOff } from '@mui/icons-material'
+import Toast from '@/NewComponents/Toast'
 
 const LoginComponent = () => {
     const { isAuthenticated } = useAuth()
@@ -22,9 +29,9 @@ const LoginComponent = () => {
         checkingIsAuthenticated,
         setCheckingIsAuthenticated,
         error,
-        setError,
         setShowPassword,
         showPassword,
+        setError,
         searchParams,
         comeFromPasswordReset,
         setComeFromPasswordReset,
@@ -54,7 +61,7 @@ const LoginComponent = () => {
         <div className={style.container}>
             <div className={style.content}>
                 <img className={style.img} alt="img" src={img} />
-                <Link className={style.slogan} to="/">
+                <Link component={RouterLink} className={style.slogan} to="/">
                     Code With Love
                 </Link>
             </div>
@@ -62,7 +69,6 @@ const LoginComponent = () => {
                 <div className={style.cardLogoStyle}>
                     <img className={style.img2} alt="img" src={logo} />
                 </div>
-                <div className={style.title}>Login</div>
                 <form
                     className={style.formStyle}
                     onSubmit={(e) => {
@@ -77,25 +83,23 @@ const LoginComponent = () => {
                             onChange: LoginSchema.entries.email,
                         }}
                         children={(field) => (
-                            <div>
+                            <FormControl
+                                error={field.state.meta.errors.length > 0}
+                            >
+                                <FormLabel>Email</FormLabel>
                                 <Input
-                                    label="Email"
-                                    name="email"
-                                    IsUsername
-                                    width="350px"
-                                    type="email"
+                                    startDecorator={<Email />}
+                                    placeholder="Enter your email"
                                     value={field.state.value}
+                                    fullWidth
                                     onChange={(e) =>
                                         field.handleChange(e.target.value)
                                     }
                                 />
-
-                                {field.state.meta.errors && (
-                                    <ErrorText>
-                                        {field.state.meta.errors.join(', ')}
-                                    </ErrorText>
-                                )}
-                            </div>
+                                <FormHelperText>
+                                    {field.state.meta.errors}
+                                </FormHelperText>
+                            </FormControl>
                         )}
                     />
 
@@ -105,52 +109,59 @@ const LoginComponent = () => {
                             onChange: LoginSchema.entries.password,
                         }}
                         children={(field) => (
-                            <div>
+                            <FormControl
+                                error={field.state.meta.errors.length > 0}
+                            >
+                                <FormLabel>Password</FormLabel>
                                 <Input
-                                    label={'Password'}
-                                    id="outlined-adornment-password"
-                                    name="password"
-                                    type={showPassword}
-                                    onClick={() =>
-                                        setShowPassword(!showPassword)
+                                    type={showPassword ? 'text' : 'password'}
+                                    startDecorator={<Password />}
+                                    endDecorator={
+                                        <IconButton
+                                            variant="plain"
+                                            onClick={() =>
+                                                setShowPassword((prev) => !prev)
+                                            }
+                                        >
+                                            {showPassword ? (
+                                                <VisibilityOff />
+                                            ) : (
+                                                <Visibility />
+                                            )}
+                                        </IconButton>
                                     }
-                                    width="350px"
-                                    isPassword
+                                    placeholder="Enter your Password"
                                     value={field.state.value}
                                     onChange={(e) =>
                                         field.handleChange(e.target.value)
                                     }
                                 />
-                                {field.state.meta.errors && (
-                                    <ErrorText>
-                                        {field.state.meta.errors}
-                                    </ErrorText>
-                                )}
-                            </div>
+                                <FormHelperText>
+                                    {field.state.meta.errors}
+                                </FormHelperText>
+                            </FormControl>
                         )}
                     />
-                    <Button
-                        type={
-                            !form.state.isSubmitting
-                                ? ButtonTypes.PRIMARY
-                                : ButtonTypes.DISABLED
-                        }
-                        isSubmit
-                        btnText={
-                            !form.state.isSubmitting ? 'Login' : 'Logging in...'
-                        }
-                    />
+                    <Button type="submit" loading={form.state.isSubmitting}>
+                        Login
+                    </Button>
                     {error && <ErrorText>{error}</ErrorText>}
                 </form>
 
-                <Link to="/reset-password" className={style.forgotPassword}>
+                <Link
+                    component={RouterLink}
+                    to="/reset-password"
+                    color="neutral"
+                    alignSelf={'center'}
+                >
                     Forgot your password?
                 </Link>
 
                 <Toast
-                    message="Your password was updated successfully please login to access your account"
                     open={comeFromPasswordReset}
                     severity="success"
+                    message="Your password was updated successfully please login to
+                    access your account"
                     onClose={() => {
                         setComeFromPasswordReset(false)
                         setSearchParams((prev) => {

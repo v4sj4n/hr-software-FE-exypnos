@@ -1,4 +1,3 @@
-import Card1 from '../../Components/Card/Card.tsx'
 import style from '../Dashboard/style/dashboard.module.css'
 import Card from './components/card.tsx'
 import InfoSection from './components/infoSection.tsx'
@@ -12,6 +11,7 @@ import { useEffect, useState } from 'react'
 import Weather from './components/Weather.tsx'
 import { Notes } from './components/notes.tsx'
 import { Loader } from '@/Components/Loader/Loader.tsx'
+import { Card as JoyCard, Stack } from '@mui/joy'
 
 const DashboardContent: React.FC = () => {
     const { employeeData, isLoading, error } = useDashboardContext()
@@ -91,14 +91,14 @@ const DashboardContent: React.FC = () => {
                     </div>
 
                     <div className={style.cardContainer}>
-                        <div className={style.cardBlue}>
+                        <div>
                             <Card
                                 title="All"
                                 content={String(employeeData.all)}
                                 icon="All"
                             />
                         </div>
-                        <div className={style.cardGreen}>
+                        <div>
                             <Card
                                 title="Present "
                                 content={String(employeeData.present)}
@@ -106,14 +106,14 @@ const DashboardContent: React.FC = () => {
                             />
                         </div>
 
-                        <div className={style.cardYellow}>
+                        <div>
                             <Card
                                 title=" On Leave"
                                 content={String(employeeData.onLeave)}
                                 icon="On Leave"
                             />
                         </div>
-                        <div className={style.cardPurple}>
+                        <div>
                             <Card
                                 title="Remote
                                 "
@@ -123,43 +123,26 @@ const DashboardContent: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className={style.middleRow}>
-                        <Card1
-                            padding="20px"
-                            borderRadius="10px"
-                            flex="0.8"
-                            backgroundColor="rgba(255, 255, 255, 0.7)"
+                    <Stack direction="row" spacing={2.5}>
+                        <JoyCard
+                            sx={{ flex: 1 }}
+                            variant="outlined"
+                            color="neutral"
                         >
                             <Notes />
-                        </Card1>
-                        <Card1
-                            padding="20px"
-                            borderRadius="10px"
-                            flex="1.2"
-                            backgroundColor="rgba(255, 255, 255, 0.7)"
-                        >
+                        </JoyCard>
+                        <JoyCard sx={{ flex: 1.7 }}>
                             <InfoSection />
-                        </Card1>
+                        </JoyCard>
 
-                        <Card1
-                            borderRadius="10px"
-                            flex="1"
-                            padding="20px"
-                            backgroundColor="rgba(255, 255, 255, 0.7)"
-                        >
-                            <h2>Employee Status</h2>
+                        <JoyCard sx={{ flex: 1 }}>
                             <PieChartComponent />
-                        </Card1>
-                    </div>
-                    <Card1
-                        backgroundColor="rgba(255, 255, 255, 0.7)"
-                        border="15px"
-                        marginTop="20px"
-                        borderRadius="10px"
-                        flex="1"
-                    >
+                        </JoyCard>
+                    </Stack>
+
+                    <JoyCard sx={{ marginTop: '1.5rem' }}>
                         <EmployeeSection />
-                    </Card1>
+                    </JoyCard>
                 </div>
             </div>
         </div>

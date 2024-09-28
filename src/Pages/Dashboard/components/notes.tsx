@@ -19,6 +19,7 @@ import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material'
 import { NoteCreateSchema } from '@/Schemas/Notes/NoteCreate.schema'
 import { Note } from './note'
+import { Typography } from '@mui/joy'
 
 export type Note = {
     _id: string
@@ -133,7 +134,9 @@ export const Notes = () => {
                     justifyContent: 'space-between',
                 }}
             >
-                <h2>Notes</h2>
+                <Typography level="h3" color="primary" gutterBottom>
+                    Employee Status
+                </Typography>
             </div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateCalendar

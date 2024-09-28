@@ -18,9 +18,9 @@ createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <QueryClientProvider client={queryClient}>
             <AuthProvider>
-                <ThemeProvider>
-                    <Router />
-                </ThemeProvider>
+                {/* <ThemeProvider> */}
+                <Router />
+                {/* </ThemeProvider> */}
             </AuthProvider>
         </QueryClientProvider>
     </StrictMode>,

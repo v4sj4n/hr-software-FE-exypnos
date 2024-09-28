@@ -24,12 +24,6 @@
     align-items: center;
 }
 
-.form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
 .img {
     width: 510px;
     height: auto;
@@ -80,7 +74,7 @@
 .formStyle {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 0.75rem;
 }
 
 .checkIsAuthenticated {

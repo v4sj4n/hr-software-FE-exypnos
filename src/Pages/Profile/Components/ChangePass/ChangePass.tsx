@@ -24,17 +24,16 @@ function ChangePassContent() {
 
     return (
         <>
-           
-                <Toast
-                    severity={toastSeverity}
-                    open={toastOpen}
-                    message={toastMessage}
-                    onClose={handleToastClose}
-                />
-                <div className={style.text}>
-                    Update your password to keep your account secure.
-                </div>
-                <div style={{display:"flex", gap:"20px", marginBottom:"20px"}}>
+            <Toast
+                severity={toastSeverity}
+                open={toastOpen}
+                message={toastMessage}
+                onClose={handleToastClose}
+            />
+            <div className={style.text}>
+                Update your password to keep your account secure.
+            </div>
+            <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
                 <Input
                     label="Current Password"
                     name="currentPassword"
@@ -44,7 +43,7 @@ function ChangePassContent() {
                     onChange={handleChange}
                     value={currentPassword}
                     placeholder="Enter your current password"
-                 width="430px"
+                    width="430px"
                 />
                 <Input
                     label="New Password"
@@ -57,27 +56,26 @@ function ChangePassContent() {
                     value={newPassword}
                     width="430px"
                 />
-                </div>
-                <Input
-                    label="Confirm Password"
-                    name="confirmPassword"
-                    placeholder="Enter your confirm password"
-                    isPassword
-                    type={showPassword}
-                    onClick={handleShowEye}
-                    onChange={handleChange}
-                    value={confirmPassword}
-                      width="430px"
-                />
-                {error && <div style={{ color: '#d32f2f' }}>{error}</div>}
-                <Button
-                    type={ButtonTypes.PRIMARY}
-                    btnText="Update Pass"
-                    onClick={handleUpdatePassword}
-                    width="430px"
-                    marginTop="20px"
-                />
-       
+            </div>
+            <Input
+                label="Confirm Password"
+                name="confirmPassword"
+                placeholder="Enter your confirm password"
+                isPassword
+                type={showPassword}
+                onClick={handleShowEye}
+                onChange={handleChange}
+                value={confirmPassword}
+                width="430px"
+            />
+            {error && <div style={{ color: '#d32f2f' }}>{error}</div>}
+            <Button
+                type={ButtonTypes.PRIMARY}
+                btnText="Update Pass"
+                onClick={handleUpdatePassword}
+                width="430px"
+                marginTop="20px"
+            />
         </>
     )
 }

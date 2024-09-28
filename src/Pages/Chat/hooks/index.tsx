@@ -22,7 +22,7 @@ export const useGetAllMessages = ({
         const fetchMessages = async () => {
             try {
                 const { data } = await AxiosInstance.get(
-                    `/conversations/${conversationId}/messages`
+                    `/conversations/${conversationId}/messages`,
                 )
                 setMessages(data)
                 console.log('Messages fetched:', data)

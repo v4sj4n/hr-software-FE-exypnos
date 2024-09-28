@@ -6,6 +6,7 @@ import { EventsProvider } from '@/Pages/Events/Context/EventsProvider'
 import { useEvents } from '@/Pages/Events/Context/EventsContext'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+import { Typography } from '@mui/joy'
 const InfoSectionContent: React.FC = () => {
     const { currentUser } = useAuth()
     const id = currentUser?._id
@@ -27,7 +28,10 @@ const InfoSectionContent: React.FC = () => {
     const navigate = useNavigate()
     return (
         <div className={style.infoSection}>
-            <h2>Upcoming Events</h2>
+            <Typography level="h3" color="primary" gutterBottom>
+                Upcoming Events
+            </Typography>
+
             <ul
                 style={{
                     padding: 0,
@@ -45,20 +49,27 @@ const InfoSectionContent: React.FC = () => {
                                     width: '100%',
                                 }}
                             >
-                                <h3
+                                <Typography
+                                    level="h4"
+                                    color="primary"
                                     onClick={() =>
                                         navigate(`/events?event=${event._id}`)
                                     }
                                     style={{ cursor: 'pointer' }}
                                 >
                                     {event.title}
-                                </h3>
-                                <span>{formatDate(event.startDate)}</span>
+                                </Typography>
+                                <Typography>
+                                    {formatDate(event.startDate)}
+                                </Typography>
                             </div>
 
-                            <p className={style.description}>
+                            <Typography
+                                color="neutral"
+                                className={style.description}
+                            >
                                 {event.description}
-                            </p>
+                            </Typography>
                         </div>
                     </li>
                 ))}

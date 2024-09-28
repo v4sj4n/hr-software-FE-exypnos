@@ -62,12 +62,11 @@ export const useGetAllEvents = () => {
 }
 
 export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
-   
     const [toastOpen, setToastOpen] = useState(false)
     const [toastMessage, setToastMessage] = useState('')
     const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
         'success',
-    ) 
+    )
     const queryClient = useQueryClient()
     const [eventPhotos, setEventPhotos] = useState<File[]>([])
     const [createdEvents, setCreatedEvents] = useState<EventsData[]>([])
@@ -245,13 +244,12 @@ export const useCreateEvent = (handleCloseDrawer: () => void = () => {}) => {
 }
 
 export const useUpdateEvent = (handleCloseDrawer: () => void = () => {}) => {
-  
     const [editingEvent, setEditingEvent] = useState<EventsData | null>(null)
     const [showEditDrawer, setEditDrawer] = useState(false)
     const [includePollInEdit, setIncludePollInEdit] = useState(false)
     const [editPollQuestion, setEditPollQuestion] = useState('')
-    const [editPollOptions, setEditPollOptions] = useState<string[]>(['', '']) 
-     const queryClient = useQueryClient()
+    const [editPollOptions, setEditPollOptions] = useState<string[]>(['', ''])
+    const queryClient = useQueryClient()
     const [updateToastOpen, setUpdateToastOpen] = useState(false)
     const [updateToastMessage, setUpdateToastMessage] = useState('')
     const [updatedEvent, setUpdatedEvent] = useState<EventsData[]>([])

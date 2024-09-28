@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import AxiosInstance from '@/Helpers/Axios'
+import { Box, CircularProgress, Typography } from '@mui/joy'
 
 const EmailConfirmation: React.FC = () => {
     const { search } = useLocation()
@@ -43,30 +44,45 @@ const EmailConfirmation: React.FC = () => {
         }
     }, [status, navigate])
 
-    if (status === 'pending') {
-        return <div>Confirming your application...</div>
-    }
-
-    if (status === 'success') {
-        return (
-            <div>
-                <h1>Confirmation Successful!</h1>
-                <p>
-                    Your application has been confirmed. You will be redirected
-                    shortly.
-                </p>
-            </div>
-        )
-    }
-
     return (
-        <div>
-            <h1>Confirmation Failed</h1>
-            <p>
-                There was an issue with confirming your application. Please try
-                again later.
-            </p>
-        </div>
+        <Box
+            sx={{
+                height: '100svh',
+                width: '100svw',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
+            {status === 'pending' ? (
+                <Box>
+                    <Typography>Confirming</Typography>
+                    <CircularProgress />
+                </Box>
+            ) : status === 'success' ? (
+                <Box>
+                    <Typography level="title-lg">
+                        Confirmation Successful!
+                    </Typography>
+                    <Typography level="body-md">
+                        Your application has been confirmed. You will be
+                        redirected shortly.
+                    </Typography>
+                </Box>
+            ) : (
+                <Box>
+                    <Typography level="title-lg">
+                        Confirmation Failed
+                    </Typography>
+                    <Typography level="body-md">
+                        There was an issue confirming your application.
+                    </Typography>
+                    <Typography level="body-sm">
+                        Please try again later.
+                    </Typography>
+                </Box>
+            )}
+        </Box>
     )
 }
 

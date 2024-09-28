@@ -1,14 +1,20 @@
 import { useContext, useEffect } from 'react'
 import { useFormResetPassword } from '../Hook'
 import { ResetPasswordContext } from '../ResetPasswordContext'
-import Input from '@/Components/Input/Index'
 import { ErrorText } from '@/Components/Error/ErrorTextForm'
-import Button from '@/Components/Button/Button'
-import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { useNavigate } from 'react-router-dom'
 import style from '../Styles/ResetPassword.module.css'
 import { valibotValidator } from '@tanstack/valibot-form-adapter'
 import { minLength, nonEmpty, pipe, regex, string } from 'valibot'
+import {
+    Button,
+    FormControl,
+    FormHelperText,
+    FormLabel,
+    IconButton,
+    Input,
+} from '@mui/joy'
+import { Password, Visibility, VisibilityOff } from '@mui/icons-material'
 
 export const ResetPasswordForm = () => {
     const { form, error, isError, isSuccess } = useFormResetPassword()
@@ -52,21 +58,33 @@ export const ResetPasswordForm = () => {
                     ),
                 }}
                 children={(field) => (
-                    <div>
+                    <FormControl error={field.state.meta.errors.length > 0}>
+                        <FormLabel>New Password</FormLabel>
                         <Input
-                            isPassword
-                            type={newPasswordShow}
-                            onClick={() => setNewPasswordShow((prev) => !prev)}
-                            label="New Password"
-                            name="password"
-                            width="350px"
+                            type={newPasswordShow ? 'text' : 'password'}
+                            startDecorator={<Password />}
+                            endDecorator={
+                                <IconButton
+                                    variant="plain"
+                                    onClick={() =>
+                                        setNewPasswordShow((prev) => !prev)
+                                    }
+                                >
+                                    {newPasswordShow ? (
+                                        <VisibilityOff />
+                                    ) : (
+                                        <Visibility />
+                                    )}
+                                </IconButton>
+                            }
+                            placeholder="Enter your new Password"
                             value={field.state.value}
                             onChange={(e) => field.handleChange(e.target.value)}
                         />
-                        {field.state.meta.errors && (
-                            <ErrorText>{field.state.meta.errors}</ErrorText>
-                        )}
-                    </div>
+                        <FormHelperText>
+                            {field.state.meta.errors}
+                        </FormHelperText>
+                    </FormControl>
                 )}
             />
             <form.Field
@@ -81,31 +99,40 @@ export const ResetPasswordForm = () => {
                     },
                 }}
                 children={(field) => (
-                    <div>
+                    <FormControl error={field.state.meta.errors.length > 0}>
+                        <FormLabel>Confirm New Password</FormLabel>
                         <Input
-                            isPassword
-                            type={confirmNewPasswordShow}
-                            onClick={() =>
-                                setConfirmNewPasswordShow((prev) => !prev)
+                            type={confirmNewPasswordShow ? 'text' : 'password'}
+                            startDecorator={<Password />}
+                            endDecorator={
+                                <IconButton
+                                    variant="plain"
+                                    onClick={() =>
+                                        setConfirmNewPasswordShow(
+                                            (prev) => !prev,
+                                        )
+                                    }
+                                >
+                                    {confirmNewPasswordShow ? (
+                                        <VisibilityOff />
+                                    ) : (
+                                        <Visibility />
+                                    )}
+                                </IconButton>
                             }
-                            label="Confirm Password"
-                            name="confirmPassword"
-                            width="350px"
+                            placeholder="Confirm your new Password"
                             value={field.state.value}
                             onChange={(e) => field.handleChange(e.target.value)}
                         />
-                        {field.state.meta.errors && (
-                            <ErrorText>{field.state.meta.errors}</ErrorText>
-                        )}
-                    </div>
+                        <FormHelperText>
+                            {field.state.meta.errors}
+                        </FormHelperText>
+                    </FormControl>
                 )}
             />
-            <Button
-                type={ButtonTypes.PRIMARY}
-                isSubmit
-                disabled={form.state.isSubmitting}
-                btnText={form.state.isSubmitting ? 'Submitting...' : 'Submit'}
-            />
+            <Button type="submit" loading={form.state.isSubmitting}>
+                Reset
+            </Button>
             {isError && <ErrorText>{error?.message}</ErrorText>}
         </form>
     )
