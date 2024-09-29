@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 import Weather from './components/Weather.tsx'
 import { Notes } from './components/notes.tsx'
 import { Loader } from '@/Components/Loader/Loader.tsx'
-import { Card as JoyCard, Stack } from '@mui/joy'
+import { Card as JoyCard, Stack, Typography } from '@mui/joy'
 
 const DashboardContent: React.FC = () => {
     const { employeeData, isLoading, error } = useDashboardContext()
@@ -52,16 +52,10 @@ const DashboardContent: React.FC = () => {
                 <div className={style.rightContent}>
                     <div className={style.welcomeContainer}>
                         <div
-                            className={`${style.welcome} ${animateOnLogin ? style.animate : ''}`}
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                width: '100%',
-                            }}
+                            className={`flex justify-between items-center w-full ${style.welcome} ${animateOnLogin ? style.animate : ''} `}
                         >
-                            <div style={{ flex: 1 }}>
-                                <h1>
+                            <div className="flex-1">
+                                <Typography color="primary" level="h2">
                                     {greeter()}{' '}
                                     <span
                                         onClick={handleNavigateToProfile}
@@ -74,7 +68,7 @@ const DashboardContent: React.FC = () => {
                                         {userName}
                                     </span>
                                     !
-                                </h1>
+                                </Typography>
                                 {isAdmin ? (
                                     <p>
                                         Here's what's happening with your team
@@ -123,24 +117,22 @@ const DashboardContent: React.FC = () => {
                         </div>
                     </div>
 
-                    <Stack direction="row" spacing={2.5}>
+                    <Stack direction="row" spacing={2.0}>
                         <JoyCard
-                            sx={{ flex: 1 }}
-                            variant="outlined"
-                            color="neutral"
+                            className="flex-1"
                         >
                             <Notes />
                         </JoyCard>
-                        <JoyCard sx={{ flex: 1.7 }}>
+                        <JoyCard className="flex-[2]">
                             <InfoSection />
                         </JoyCard>
 
-                        <JoyCard sx={{ flex: 1 }}>
+                        <JoyCard className="flex-1">
                             <PieChartComponent />
                         </JoyCard>
                     </Stack>
 
-                    <JoyCard sx={{ marginTop: '1.5rem' }}>
+                    <JoyCard className="mt-5">
                         <EmployeeSection />
                     </JoyCard>
                 </div>

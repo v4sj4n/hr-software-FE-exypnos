@@ -1,12 +1,3 @@
-.sidebarContainer {
-    font-family: 'Outfit', sans-serif;
-    position: sticky;
-    left: 0;
-    top: 62px;
-    z-index: 1;
-    height: 100vh;
-    transition: width 0.3s ease;
-}
 
 .toggleButton {
     position: absolute;
@@ -134,18 +125,7 @@
         color 0.3s ease,
         box-shadow 0.3s ease;
 }
-.navClosed {
-    width: 65px;
-    transition: width 0.3s ease;
-}
-.navClosed .dropdownMenu {
-    display: none;
-}
-.navOpen {
-    display: flex;
-    animation: fadeIn 0.3s ease;
-    width: 200px;
-}
+
 
 @keyframes fadeIn {
     from {

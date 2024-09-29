@@ -7,18 +7,12 @@ import { useContext, useEffect } from 'react'
 import { VacationContext } from '../VacationContext'
 import { SelectedVacationModal } from './form/SelectedVacationModal'
 import { StatusBadge } from '@/Components/StatusBadge/StatusBadge'
-import Toast from '@/Components/Toast/Toast'
 import { Vacation } from '../types'
 import { Loader } from '@/Components/Loader/Loader'
 
 export const VacationTable = () => {
-    const {
-        searchParams,
-        setSearchParams,
-        handleOpenViewVacationModalOpen,
-        toastConfigs,
-        handleToastClose,
-    } = useContext(VacationContext)
+    const { searchParams, setSearchParams, handleOpenViewVacationModalOpen } =
+        useContext(VacationContext)
     const { data, error, isPending } = useGetVacations()
 
     useEffect(() => {
@@ -126,12 +120,6 @@ export const VacationTable = () => {
                 getRowId={getRowId}
             />
             {searchParams.get('selectedVacation') && <SelectedVacationModal />}
-            <Toast
-                open={toastConfigs.isOpen}
-                onClose={handleToastClose}
-                message={toastConfigs.message || ''}
-                severity={toastConfigs.severity}
-            />
         </>
     )
 }

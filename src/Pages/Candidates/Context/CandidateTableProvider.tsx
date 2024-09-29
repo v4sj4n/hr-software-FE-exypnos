@@ -6,9 +6,9 @@ import {
     GridRowParams,
 } from '@mui/x-data-grid'
 import { Link, useNavigate } from 'react-router-dom'
-import { StatusBadge } from '@/Components/StatusBadge/StatusBadge'
 import AxiosInstance from '@/Helpers/Axios'
 import { useQuery } from '@tanstack/react-query'
+import { Chip } from '@mui/joy'
 
 export const CandidateProvider: React.FC<{ children: any }> = ({
     children,
@@ -58,19 +58,19 @@ export const CandidateProvider: React.FC<{ children: any }> = ({
             field: 'status',
             headerName: 'Status',
             flex: 1.3,
-            renderCell: (params: GridRenderCellParams) => {
-                const color =
-                    params.value === 'active'
-                        ? 'green'
-                        : params.value === 'pending'
-                          ? 'orange'
-                          : params.value === 'rejected'
-                            ? 'red'
-                            : params.value === 'employed'
-                              ? 'purple'
-                              : ''
-                return <StatusBadge status={params.value} color={color} />
-            },
+            renderCell: (params: GridRenderCellParams) => (
+                <Chip
+                    color={
+                        params.value === 'active'
+                            ? 'success'
+                            : params.value === 'pending'
+                              ? 'warning'
+                              : 'danger'
+                    }
+                >
+                    {params.value}
+                </Chip>
+            ),
         },
         { field: 'phoneNumber', headerName: 'Phone', flex: 1.8 },
         { field: 'positionApplied', headerName: 'Position', flex: 1.8 },

@@ -1,19 +1,14 @@
-import { Cancel, CheckCircle, Info } from '@mui/icons-material'
 import { Snackbar } from '@mui/joy'
+import { CheckCircle, Info, XCircle } from '@phosphor-icons/react'
 
 interface ToastProps {
     open: boolean
     message: string
     onClose: () => void
-    severity?: 'success' | 'error'
+    severity?: 'success' | 'error' | 'info'
 }
 
-export default function Toast({
-    open,
-    message,
-    onClose,
-    severity,
-}: ToastProps) {
+export const Toast = ({ open, message, onClose, severity }: ToastProps) => {
     return (
         <Snackbar
             anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -30,11 +25,11 @@ export default function Toast({
             }
         >
             {severity === 'success' ? (
-                <CheckCircle />
+                <CheckCircle weight="fill" className="size-7" />
             ) : severity === 'error' ? (
-                <Cancel />
+                <XCircle weight="fill" className="size-7" />
             ) : (
-                <Info />
+                <Info weight="fill" className="size-7" />
             )}
             {message}
         </Snackbar>

@@ -20,7 +20,7 @@ import {
     Link,
 } from '@mui/joy'
 import { Email, Password, Visibility, VisibilityOff } from '@mui/icons-material'
-import Toast from '@/NewComponents/Toast'
+import {Toast} from '@/NewComponents/Toast'
 
 const LoginComponent = () => {
     const { isAuthenticated } = useAuth()

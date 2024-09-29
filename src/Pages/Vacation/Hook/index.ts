@@ -134,7 +134,7 @@ export const useCreateVacationForm = () => {
     }>({
         defaultValues: {
             description: '',
-            type: 'vacation',
+            type: 'personal',
             startDate: dayjs(new Date()).add(1, 'day').format('YYYY-MM-DD'),
             endDate: dayjs(new Date()).add(3, 'day').format('YYYY-MM-DD'),
         },

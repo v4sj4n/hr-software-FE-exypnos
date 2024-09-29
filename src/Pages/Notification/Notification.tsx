@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import {
-    Card,
-    Typography,
-    IconButton,
-    Badge,
-    Box,
-    ClickAwayListener,
-} from '@mui/material'
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
+import { Card, Typography, IconButton, Box, Badge } from '@mui/joy'
 import { useNavigate } from 'react-router-dom'
 import { useGetAllNotifications } from './Hook/index'
 import AxiosInstance from '@/Helpers/Axios'
-import { useTheme } from '@mui/material/styles'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+import { ClickAwayListener } from '@mui/material'
+import { Bell } from '@phosphor-icons/react'
 
 interface Notification {
     _id: number
@@ -26,7 +19,6 @@ interface Notification {
 
 const NotificationDropdown: React.FC = () => {
     const { currentUser } = useAuth()
-    const theme = useTheme()
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
     const { notifications, setNotifications } = useGetAllNotifications()
@@ -145,17 +137,17 @@ const NotificationDropdown: React.FC = () => {
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
             <Box sx={{ position: 'relative', display: 'inline-block' }}>
-                <IconButton color="inherit" onClick={handleToggleDropdown}>
-                    <Badge badgeContent={length} color="error">
-                        <NotificationsNoneIcon
-                            sx={{
-                                fontSize: 30,
-                                color: theme.palette.text.primary,
-                                backgroundColor: 'transparent',
-                            }}
-                        />
-                    </Badge>
-                </IconButton>
+                <Badge
+                    size="sm"
+                    badgeInset={5}
+                    color="danger"
+                    badgeContent={length}
+                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+                >
+                    <IconButton color="neutral" onClick={handleToggleDropdown}>
+                        <Bell className={`size-7 `} />
+                    </IconButton>
+                </Badge>
                 {isOpen && (
                     <Box
                         sx={{
@@ -206,20 +198,20 @@ const NotificationDropdown: React.FC = () => {
                                     >
                                         <Box>
                                             <Typography
-                                                variant="subtitle2"
+                                                level="title-lg"
                                                 sx={{ fontWeight: 'bold' }}
                                             >
                                                 {notification.title}
                                             </Typography>
                                             <Typography
-                                                variant="body2"
-                                                maxWidth="300px"
+                                                level="body-sm"
+                                                className="w-64"
                                             >
                                                 {notification.content}
                                             </Typography>
                                         </Box>
                                         <Typography
-                                            variant="subtitle2"
+                                            level="body-xs"
                                             onClick={(e) => {
                                                 e.stopPropagation()
                                                 removeNotification(notification)
@@ -246,7 +238,6 @@ const NotificationDropdown: React.FC = () => {
                                 bottom: 0,
                                 bgcolor: 'white',
                                 py: 1,
-                                borderTop: `1px solid ${theme.palette.divider}`,
                                 display: 'flex',
                                 justifyContent: 'space-between',
                             }}

@@ -8,6 +8,7 @@ import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { CreateVacationForm } from './components/form/CreateVacationForm'
 import SimpleEmployeeUI from './components/SimpleEmployee/SimpleEmployeeUI'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
+import { Toast } from '@/NewComponents/Toast'
 
 function VacationComponent() {
     const {
@@ -15,6 +16,8 @@ function VacationComponent() {
         setSearchParams,
         pageToggleChoices,
         createVacationToggler,
+        toastConfigs,
+        handleToastClose,
     } = useContext(VacationContext)
     const handleChange = (
         event: MouseEvent<HTMLElement>,
@@ -88,6 +91,12 @@ function VacationComponent() {
                 <SimpleEmployeeUI />
             )}
             {searchParams.get('createVacation') && <CreateVacationForm />}
+            <Toast
+                open={toastConfigs.isOpen}
+                onClose={handleToastClose}
+                message={toastConfigs.message}
+                severity={toastConfigs.severity}
+            />
         </main>
     )
 }

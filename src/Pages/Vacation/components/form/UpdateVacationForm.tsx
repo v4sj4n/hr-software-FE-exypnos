@@ -6,10 +6,11 @@ import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { useUpdateVacationForm } from '../../Hook'
 import { useContext } from 'react'
 import { VacationContext } from '../../VacationContext'
-import Selecter from '@/Components/Input/components/Select/Selecter'
-import Input from '@/Components/Input/Index'
-import { Vacation } from '../../types'
+import { Vacation, VacationStatus, VacationType } from '../../types'
 import style from '../../style/vacationForm.module.scss'
+import { Typography } from '@mui/joy'
+import { Input } from '@/NewComponents/Inputs/Input'
+import { Select } from '@/NewComponents/Inputs/Select'
 
 export const UpdateVacationForm: React.FC<{
     data: UseQueryResult<Vacation>
@@ -24,10 +25,10 @@ export const UpdateVacationForm: React.FC<{
     return (
         vacation.data && (
             <>
-                <h3 className={style.fullName}>
+                <Typography level="h3" className="pb-4">
                     {vacation.data.userId.firstName}{' '}
                     {vacation.data.userId.lastName}
-                </h3>
+                </Typography>
                 <form
                     onSubmit={(e) => {
                         e.preventDefault()
@@ -41,31 +42,22 @@ export const UpdateVacationForm: React.FC<{
                         validators={{
                             onChange: VacationSchema.entries.type,
                         }}
-                        children={({
-                            handleChange,
-                            state: {
-                                value,
-                                meta: { errors },
-                            },
-                        }) => (
-                            <div>
-                                <Selecter
-                                    label="Vacation Type"
-                                    name="Vacation Type"
-                                    multiple={false}
-                                    options={[
-                                        'vacation',
-                                        'sick',
-                                        'personal',
-                                        'maternity',
-                                    ]}
-                                    value={value}
-                                    onChange={(newValue) =>
-                                        handleChange(newValue)
-                                    }
-                                />
-                                {errors && <ErrorText>{errors}</ErrorText>}
-                            </div>
+                        children={(field) => (
+                            <Select
+                                label="Type"
+                                options={[
+                                    { value: 'vacation', label: 'Vacation' },
+                                    { value: 'sick', label: 'Sick' },
+                                    { value: 'personal', label: 'Personal' },
+                                    { value: 'maternity', label: 'Maternity' },
+                                ]}
+                                value={field.state.value}
+                                onChange={(e, newValue) => {
+                                    e?.preventDefault()
+                                    field.handleChange(newValue as VacationType)
+                                }}
+                                error={field.state.meta.errors.join(', ')}
+                            />
                         )}
                     />
 
@@ -74,30 +66,23 @@ export const UpdateVacationForm: React.FC<{
                         validators={{
                             onChange: VacationSchema.entries.status,
                         }}
-                        children={({
-                            handleChange,
-                            state: {
-                                value,
-                                meta: { errors },
-                            },
-                        }) => (
-                            <div>
-                                <Selecter
-                                    label="Vacation Status"
-                                    name="Vacation Status"
-                                    multiple={false}
-                                    options={[
-                                        'pending',
-                                        'accepted',
-                                        'rejected',
-                                    ]}
-                                    value={value}
-                                    onChange={(newValue) =>
-                                        handleChange(newValue)
-                                    }
-                                />
-                                {errors && <ErrorText>{errors}</ErrorText>}
-                            </div>
+                        children={(field) => (
+                            <Select
+                                label="Status"
+                                options={[
+                                    { value: 'accepted', label: 'Accepted' },
+                                    { value: 'pending', label: 'Pending' },
+                                    { value: 'rejected', label: 'Rejected' },
+                                ]}
+                                value={field.state.value}
+                                onChange={(e, newValue) => {
+                                    e?.preventDefault()
+                                    field.handleChange(
+                                        newValue as VacationStatus,
+                                    )
+                                }}
+                                error={field.state.meta.errors.join(', ')}
+                            />
                         )}
                     />
 
@@ -106,28 +91,16 @@ export const UpdateVacationForm: React.FC<{
                         validators={{
                             onChange: VacationSchema.entries.startDate,
                         }}
-                        children={({
-                            handleChange,
-                            state: {
-                                value,
-                                meta: { errors },
-                            },
-                        }) => (
-                            <div>
-                                <Input
-                                    IsUsername
-                                    name="Start Date"
-                                    label="Start Date"
-                                    type="date"
-                                    placeholder="Start Date"
-                                    shrink
-                                    value={value}
-                                    onChange={(e) =>
-                                        handleChange(e.target.value)
-                                    }
-                                />
-                                {errors && <ErrorText>{errors}</ErrorText>}
-                            </div>
+                        children={(field) => (
+                            <Input
+                                type="date"
+                                label="Start Date"
+                                value={field.state.value}
+                                onChange={(e) => {
+                                    field.handleChange(e.target.value)
+                                }}
+                                error={field.state.meta.errors.join(', ')}
+                            />
                         )}
                     />
 
@@ -136,28 +109,16 @@ export const UpdateVacationForm: React.FC<{
                         validators={{
                             onChange: VacationSchema.entries.endDate,
                         }}
-                        children={({
-                            handleChange,
-                            state: {
-                                value,
-                                meta: { errors },
-                            },
-                        }) => (
-                            <div>
-                                <Input
-                                    IsUsername
-                                    name="End Date"
-                                    label="End Date"
-                                    type="date"
-                                    placeholder="End Date"
-                                    shrink
-                                    value={value}
-                                    onChange={(e) =>
-                                        handleChange(e.target.value)
-                                    }
-                                />
-                                {errors && <ErrorText>{errors}</ErrorText>}
-                            </div>
+                        children={(field) => (
+                            <Input
+                                type="date"
+                                label="End Date"
+                                value={field.state.value}
+                                onChange={(e) => {
+                                    field.handleChange(e.target.value)
+                                }}
+                                error={field.state.meta.errors.join(', ')}
+                            />
                         )}
                     />
 

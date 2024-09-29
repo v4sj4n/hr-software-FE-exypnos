@@ -30,13 +30,13 @@ interface VacationContextType {
     handleCloseVacationModalOpen: () => void
     createVacationToggler: () => void
     toastConfigs: {
-        message: string | null
+        message: string
         severity: 'success' | 'error'
         isOpen: boolean
     }
     setToastConfigs: Dispatch<
         SetStateAction<{
-            message: string | null
+            message: string
             severity: 'success' | 'error'
             isOpen: boolean
         }>
@@ -66,7 +66,7 @@ const defaultContextValue: VacationContextType = {
     handleCloseVacationModalOpen: () => {},
     createVacationToggler: () => {},
     toastConfigs: {
-        message: null,
+        message: '',
         severity: 'success',
         isOpen: false,
     },
@@ -127,11 +127,11 @@ export const VacationProvider: FC<{ children: ReactNode }> = ({ children }) => {
         })
     }
     const [toastConfigs, setToastConfigs] = useState<{
-        message: string | null
+        message: string
         severity: 'success' | 'error'
         isOpen: boolean
     }>({
-        message: null,
+        message: '',
         severity: 'success',
         isOpen: false,
     })
@@ -139,7 +139,7 @@ export const VacationProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const handleToastClose = () => {
         setToastConfigs({
             isOpen: false,
-            message: null,
+            message: '',
             severity: 'success',
         })
     }

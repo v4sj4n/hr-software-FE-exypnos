@@ -27,7 +27,7 @@ import {
     Option,
     Button,
 } from '@mui/joy'
-import Toast from '@/NewComponents/Toast'
+import {Toast} from '@/NewComponents/Toast'
 
 function RecruitmentBase() {
     const {
@@ -212,7 +212,7 @@ function RecruitmentBase() {
                                 >
                                     {foundMethod.map((method) => {
                                         return (
-                                            <Option value={method}>
+                                            <Option key={method} value={method}>
                                                 {method}
                                             </Option>
                                         )
@@ -298,10 +298,13 @@ function RecruitmentBase() {
                                         field.handleChange(newValue as string)
                                     }}
                                 >
-                                    {experience.map((method) => {
+                                    {experience.map((exLevel) => {
                                         return (
-                                            <Option value={method}>
-                                                {method}
+                                            <Option
+                                                key={exLevel}
+                                                value={exLevel}
+                                            >
+                                                {exLevel}
                                             </Option>
                                         )
                                     })}
@@ -333,10 +336,10 @@ function RecruitmentBase() {
                                         field.handleChange(newValue)
                                     }}
                                 >
-                                    {technologies.map((method) => {
+                                    {technologies.map((tech) => {
                                         return (
-                                            <Option value={method}>
-                                                {method}
+                                            <Option key={tech} value={tech}>
+                                                {tech}
                                             </Option>
                                         )
                                     })}
@@ -402,6 +405,14 @@ function RecruitmentBase() {
                             </div>
                         )}
                     />
+
+                    <Button
+                        type="submit"
+                        loading={form.state.isSubmitting}
+                        disabled={form.state.isSubmitting}
+                    >
+                        Submit
+                    </Button>
                     <Button
                         variant="soft"
                         type="button"
@@ -411,13 +422,6 @@ function RecruitmentBase() {
                         }}
                     >
                         Reset
-                    </Button>
-                    <Button
-                        type="submit"
-                        loading={form.state.isSubmitting}
-                        disabled={form.state.isSubmitting}
-                    >
-                        Submit
                     </Button>
                 </form>
                 {error && <ErrorText>{error}</ErrorText>}

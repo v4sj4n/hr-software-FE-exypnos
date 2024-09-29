@@ -7,7 +7,7 @@ import { useEvents } from '@/Pages/Events/Context/EventsContext'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 import { Typography } from '@mui/joy'
-const InfoSectionContent: React.FC = () => {
+const InfoSectionContent = () => {
     const { currentUser } = useAuth()
     const id = currentUser?._id
 
@@ -32,30 +32,19 @@ const InfoSectionContent: React.FC = () => {
                 Upcoming Events
             </Typography>
 
-            <ul
-                style={{
-                    padding: 0,
-                }}
-            >
+            <ul className="p-0">
                 {events?.slice(0, 4).map((event: EventsData) => (
                     <li className={style.eventContainer} key={event._id}>
                         <span className={style.blueDot}></span>
                         <div className={style.eventData}>
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                    width: '100%',
-                                }}
-                            >
+                            <div className="flex justify-between items-center w-full">
                                 <Typography
                                     level="h4"
                                     color="primary"
                                     onClick={() =>
                                         navigate(`/events?event=${event._id}`)
                                     }
-                                    style={{ cursor: 'pointer' }}
+                                    className="pointer"
                                 >
                                     {event.title}
                                 </Typography>

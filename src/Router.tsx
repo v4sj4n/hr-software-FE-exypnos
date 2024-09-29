@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import ViewCandidats from './Pages/VIewCandidats/ViewCandidats.tsx'
+import ViewCandidates from './Pages/VIewCandidats/ViewCandidates.tsx'
 import PrivateRoute from './ProtectedRoute/ProtectedRoute.tsx'
 import Candidates from './Pages/Candidates/Candidates.tsx'
 import Dashboard from './Pages/Dashboard/Dashboard.tsx'
@@ -72,7 +72,7 @@ export default function Router() {
                 },
                 {
                     path: 'view/:id',
-                    element: <ViewCandidats />,
+                    element: <ViewCandidates />,
                 },
                 {
                     path: '/holdings',

@@ -7,19 +7,26 @@ import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay'
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton'
 import { ModalComponent } from '@/Components/Modal/Modal'
-import Input from '@/Components/Input/Index'
 import Button from '@/Components/Button/Button'
 import { ButtonTypes } from '@/Components/Button/ButtonTypes'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext'
 import { useNoteCreation, useGetNotes } from '../Hook'
-import { Checkbox, Collapse } from '@mui/material'
+import { Collapse } from '@mui/material'
 import { useForm } from '@tanstack/react-form'
 import { valibotValidator } from '@tanstack/valibot-form-adapter'
-import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material'
 import { NoteCreateSchema } from '@/Schemas/Notes/NoteCreate.schema'
+import {
+    Checkbox,
+    FormControl,
+    FormHelperText,
+    FormLabel,
+    Input,
+    Textarea,
+    Typography,
+} from '@mui/joy'
+import { NoteBlank } from '@phosphor-icons/react'
 import { Note } from './note'
-import { Typography } from '@mui/joy'
 
 export type Note = {
     _id: string
@@ -42,7 +49,7 @@ function ServerDay(
         <Badge
             key={day.toString()}
             overlap="circular"
-            badgeContent={isSelected ? '📋' : undefined}
+            badgeContent={isSelected ? <NoteBlank /> : undefined}
         >
             <PickersDay
                 {...other}
@@ -128,12 +135,7 @@ export const Notes = () => {
 
     return (
         <div>
-            <div
-                style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                }}
-            >
+            <div className="flex justify-between">
                 <Typography level="h3" color="primary" gutterBottom>
                     Employee Status
                 </Typography>
@@ -162,15 +164,13 @@ export const Notes = () => {
                 open={isNoteModalOpen}
                 handleClose={handleNoteModalClose}
             >
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}
-                >
-                    <h2>Notes</h2>
-                    <p>{dayjs(form.state.values.date).format('Do MMMM YY')}</p>
+                <div className="flex justify-between items-center mb-4">
+                    <Typography level="h3" color="primary">
+                        Notes
+                    </Typography>
+                    <Typography level="body-sm" color="neutral">
+                        {dayjs(form.state.values.date).format('Do MMMM YY')}
+                    </Typography>
                 </div>
                 {notes.filter(
                     (note) =>
@@ -212,88 +212,80 @@ export const Notes = () => {
                                 'dddd, MMMM Do YYYY',
                             )}
                         </h3>
-                        <div>
-                            <div>Title</div>
-                            <form.Field
-                                name="title"
-                                validators={{
-                                    onChange: NoteCreateSchema.entries.title,
-                                }}
-                                children={(field) => (
-                                    <>
+
+                        <form.Field
+                            name="title"
+                            validators={{
+                                onChange: NoteCreateSchema.entries.title,
+                            }}
+                            children={(field) => (
+                                <>
+                                    <FormControl
+                                        error={
+                                            field.state.meta.errors.length > 0
+                                        }
+                                    >
+                                        <FormLabel>Note Title</FormLabel>
                                         <Input
-                                            IsUsername
-                                            type="input"
-                                            name="title"
-                                            label="Title"
-                                            shrink={true}
+                                            type="text"
+                                            placeholder="Enter your Note Title"
                                             value={field.state.value}
+                                            fullWidth
                                             onChange={(e) =>
                                                 field.handleChange(
                                                     e.target.value,
                                                 )
                                             }
                                         />
-                                        {field.state.meta.errors ? (
-                                            <ErrorText>
-                                                {field.state.meta.errors.join(
-                                                    ', ',
-                                                )}
-                                            </ErrorText>
-                                        ) : null}
-                                    </>
-                                )}
-                            />
-                        </div>
-                        <div>
-                            <div>Description</div>
-                            <form.Field
-                                name="description"
-                                validators={{
-                                    onChange:
-                                        NoteCreateSchema.entries.description,
-                                }}
-                                children={(field) => (
-                                    <>
-                                        <Input
-                                            rows={4}
-                                            multiline={true}
-                                            IsUsername
-                                            type="input"
-                                            name="description"
-                                            label="Description"
-                                            shrink={true}
+                                        <FormHelperText>
+                                            {field.state.meta.errors}
+                                        </FormHelperText>
+                                    </FormControl>
+                                </>
+                            )}
+                        />
+
+                        <form.Field
+                            name="description"
+                            validators={{
+                                onChange: NoteCreateSchema.entries.description,
+                            }}
+                            children={(field) => (
+                                <>
+                                    <FormControl
+                                        error={
+                                            field.state.meta.errors.length > 0
+                                        }
+                                    >
+                                        <FormLabel>Note Description</FormLabel>
+                                        <Textarea
+                                            placeholder="Enter your Note Description"
                                             value={field.state.value}
+                                            minRows={3}
                                             onChange={(e) =>
                                                 field.handleChange(
                                                     e.target.value,
                                                 )
                                             }
                                         />
-                                        {field.state.meta.errors ? (
-                                            <ErrorText>
-                                                {field.state.meta.errors.join(
-                                                    ', ',
-                                                )}
-                                            </ErrorText>
-                                        ) : null}
-                                    </>
-                                )}
-                            />
-                        </div>
+                                        <FormHelperText>
+                                            {field.state.meta.errors}
+                                        </FormHelperText>
+                                    </FormControl>
+                                </>
+                            )}
+                        />
                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <div>Will be reminded</div>
                             <form.Field
                                 name="willBeReminded"
                                 children={(field) => (
                                     <Checkbox
+                                        variant="soft"
+                                        label="Will be reminded"
                                         checked={field.state.value}
                                         onChange={(e) =>
                                             field.handleChange(e.target.checked)
                                         }
-                                        inputProps={{
-                                            'aria-label': 'controlled',
-                                        }}
                                     />
                                 )}
                             />

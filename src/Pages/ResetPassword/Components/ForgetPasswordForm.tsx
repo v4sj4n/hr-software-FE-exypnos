@@ -2,7 +2,7 @@ import { ErrorText } from '@/Components/Error/ErrorTextForm'
 import { email, nonEmpty, pipe, string } from 'valibot'
 import { useFormForgetPassword } from '../Hook'
 import style from '../Styles/ResetPassword.module.css'
-import Toast from '@/NewComponents/Toast'
+import { Toast } from '@/NewComponents/Toast'
 import { Button, FormControl, FormHelperText, FormLabel, Input } from '@mui/joy'
 import { Email } from '@mui/icons-material'
 

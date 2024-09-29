@@ -14,8 +14,11 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import Workers from '/public/Images/happy workers.webp'
 import worker3 from '/public/Images/happyWork3.jpeg'
 import worker2 from '/public/Images/happyWorkers2.jpg'
-import { Link } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '@/ProtectedRoute/Context/AuthContext.tsx'
+import { Card, Link, Typography } from '@mui/joy'
+import { Input } from '@/NewComponents/Inputs/Input'
+import { MagnifyingGlass } from '@phosphor-icons/react'
 
 export const Careers = () => {
     const { events, setEvents, isLoading } = useGetAllEvents()
@@ -35,12 +38,10 @@ export const Careers = () => {
     const [showForm, setShowForm] = useState(false)
     const [filter, setFilter] = useState<string>('')
 
-    // Toggle form display
     const toggleForm = useCallback(() => {
         setShowForm((prev) => !prev)
     }, [])
 
-    // Handle filter input change
     const handleFilterChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
             setFilter(e.target.value)
@@ -48,7 +49,6 @@ export const Careers = () => {
         [],
     )
 
-    // Memoized filtered events to optimize performance
     const filteredEvents = useMemo(() => {
         return events.filter(
             (event) =>
@@ -61,12 +61,10 @@ export const Careers = () => {
         null,
     )
 
-    // Toggle dropdown menu
     const toggleDropdown = useCallback((eventId: string) => {
         setOpenDropdown((prev) => (prev === eventId ? null : eventId))
     }, [])
 
-    // Handle edit button click
     const handleEditClick = useCallback(
         (event: EventsData) => {
             setEditingEvent(event)
@@ -89,69 +87,96 @@ export const Careers = () => {
                 </div>
 
                 <div className={style.filter}>
-                    <input
-                        type="text"
-                        placeholder="Filter by title or description"
-                        value={filter}
-                        onChange={handleFilterChange}
-                        className={style.filterInput}
-                    />
+                    <Input
+                    type='text'
+                    placeholder="Filter by title or description"
+                    value={filter}
+                    onChange={handleFilterChange}
+                    startDecorator={<MagnifyingGlass />}
+                    size="lg"
+                    variant='outlined'
+                    color='primary'
+                     />
                 </div>
 
-                <div className={style.jobList}>
+                <div className="flex flex-wrap gap-5">
                     {isLoading ? (
                         <p>Loading events...</p>
                     ) : filteredEvents.length === 0 ? (
-                        <p>We did not find what you are looking for.</p>
+                        <p>No event found.</p>
                     ) : (
                         filteredEvents.map((event) => (
-                            <div key={event._id} className={style.jobCard}>
-                                <div className={style.jobCardContent}>
-                                    <h2>{event.title}</h2>
-                                    <p className={style.description}>
-                                        {event.description}
-                                    </p>
-                                    <p className={style.location}>
-                                        {event.location}
-                                    </p>
-                                    <div className={style.actions}>
-                                        <Link to={'/recruitment'}>Apply</Link>
-                                    </div>
-                                </div>
-                                {isAdmin && (
-                                    <div className={style.dropdownContainer}>
-                                        <MoreHorizIcon
-                                            onClick={() =>
-                                                toggleDropdown(
-                                                    event._id.toString(),
-                                                )
-                                            }
-                                            className={style.moreIcon}
-                                        />
-                                        {openDropdown === event._id && (
-                                            <div className={style.dropdownMenu}>
-                                                <button
-                                                    onClick={() =>
-                                                        handleEditClick(event)
-                                                    }
-                                                >
-                                                    Edit
-                                                </button>
-                                                <button
-                                                    onClick={() =>
-                                                        handleDeleteEventModal(
-                                                            event._id,
-                                                        )
-                                                    }
-                                                >
-                                                    Delete
-                                                </button>
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
+                            <Card
+                                variant="outlined"
+                                color="neutral"
+                                key={event._id}
+                                className="flex-1"
+                            >
+                                <Typography level="title-lg" color="primary">
+                                    {event.title}
+                                </Typography>
+                                <Typography level="body-md" color="neutral">
+                                    {event.description}
+                                </Typography>
+                                <Link
+                                    component={RouterLink}
+                                    to="/recruitment"
+                                    color="primary"
+                                    className="inline-block"
+                                >
+                                    Apply
+                                </Link>
+                            </Card>
                         ))
+
+                        // filteredEvents.map((event) => (
+                        //     <div key={event._id} className={style.jobCard}>
+                        //         <Card className={style.jobCardContent}>
+                        //             <h2>{event.title}</h2>
+                        //             <p className={style.description}>
+                        //                 {event.description}
+                        //             </p>
+                        //             <p className={style.location}>
+                        //                 {event.location}
+                        //             </p>
+                        //             <div className={style.actions}>
+                        //                 <Link to={'/recruitment'}>Apply</Link>
+                        //             </div>
+                        //         </Card>
+                        //         {isAdmin && (
+                        //             <div className={style.dropdownContainer}>
+                        //                 <MoreHorizIcon
+                        //                     onClick={() =>
+                        //                         toggleDropdown(
+                        //                             event._id.toString(),
+                        //                         )
+                        //                     }
+                        //                     className={style.moreIcon}
+                        //                 />
+                        //                 {openDropdown === event._id && (
+                        //                     <div className={style.dropdownMenu}>
+                        //                         <button
+                        //                             onClick={() =>
+                        //                                 handleEditClick(event)
+                        //                             }
+                        //                         >
+                        //                             Edit
+                        //                         </button>
+                        //                         <button
+                        //                             onClick={() =>
+                        //                                 handleDeleteEventModal(
+                        //                                     event._id,
+                        //                                 )
+                        //                             }
+                        //                         >
+                        //                             Delete
+                        //                         </button>
+                        //                     </div>
+                        //                 )}
+                        //             </div>
+                        //         )}
+                        //     </div>
+                        // ))
                     )}
                 </div>
 

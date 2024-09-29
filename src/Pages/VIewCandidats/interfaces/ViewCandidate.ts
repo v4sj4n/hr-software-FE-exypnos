@@ -9,7 +9,7 @@ export interface CandidateView {
     applicationMethod: string
     dob: string
     positionApplied: string
-    technologiesUsed: string[]
+    technologiesUsed: string
     salaryExpectations: string
     status: string
     cvAttachment: string

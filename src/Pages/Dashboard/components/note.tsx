@@ -1,6 +1,5 @@
 import { useNoteDeletion } from '../Hook'
-import Button from '@/Components/Button/Button'
-import { ButtonTypes } from '@/Components/Button/ButtonTypes'
+import { Button, Typography } from '@mui/joy'
 
 export const Note = ({
     title,
@@ -13,26 +12,20 @@ export const Note = ({
 }) => {
     const { mutate } = useNoteDeletion()
     return (
-        <div
-            style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-            }}
-        >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-                <h3 style={{ margin: 0 }}>{title}</h3>
-                <p style={{ margin: 0 }}>{description}</p>
+        <div className="flex justify-between items-center">
+            <div className="flex flex-col gap-0">
+                <Typography level="title-lg">{title}</Typography>
+                <Typography level="body-sm">{description}</Typography>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
                 <Button
-                    type={ButtonTypes.SECONDARY}
-                    border="none"
-                    textAlign="end"
-                    paddingTop="0"
-                    btnText="Remove"
+                    className="border-none text-end pt-0"
+                    variant="soft"
+                    color="neutral"
                     onClick={() => mutate({ noteId })}
-                />
+                >
+                    Remove
+                </Button>
             </div>
         </div>
     )

@@ -1,16 +1,17 @@
-import Card from '../../Components/Card/Card'
 import style from './styles/ViewCandidats.module.css'
 import { useApplicantById } from './Hook'
-import Button from '../../Components/Button/Button'
-import { ButtonTypes } from '../../Components/Button/ButtonTypes'
-import { ModalComponent } from '../../Components/Modal/Modal'
-import Input from '@/Components/Input/Index'
+import { Card, Checkbox, Chip } from '@mui/joy'
 import { useState } from 'react'
-import { Checkbox, FormControlLabel } from '@mui/material'
 import { FormatPhoneNumber } from '@/Helpers/FormatPhoneNumber'
 import { ForbiddenResource } from '@/Components/ForbiddenResource/ForbiddenResource'
+import { Box, Button, Typography } from '@mui/joy'
+import { Input } from '@/NewComponents/Inputs/Input'
+import { Textarea } from '@/NewComponents/Inputs/Textarea'
+import { Collapse } from '@mui/material'
+import dayjs from 'dayjs'
+import { Modal } from '@/NewComponents/Modal'
 
-export default function ViewCandidats() {
+export default function ViewCandidates() {
     const {
         applicant,
         showModal,
@@ -29,29 +30,16 @@ export default function ViewCandidats() {
     } = useApplicantById()
 
     const calculateAge = (dob: string): number => {
-        const birthDate = new Date(dob)
-        const today = new Date()
-        let age = today.getFullYear() - birthDate.getFullYear()
-        const monthDifference = today.getMonth() - birthDate.getMonth()
-
-        if (
-            monthDifference < 0 ||
-            (monthDifference === 0 && today.getDate() < birthDate.getDate())
-        ) {
-            age--
-        }
-        return age
+        return dayjs().diff(dayjs(dob), 'year')
     }
+
     const [useCustomEmail, setUseCustomEmail] = useState(false)
 
     return (
         <ForbiddenResource>
             <div className={style.container}>
                 <Card
-                    flex="2"
-                    borderRadius="5px"
-                    padding="32px"
-                    border="1px solid #ebebeb"
+                className="flex-[2]"
                 >
                     <div className={style.columContanier}>
                         <div className={style.column}>
@@ -141,38 +129,42 @@ export default function ViewCandidats() {
                                 </div>
                             </div>
                             <div className={style.border}></div>
-                            <div className={style.centerStatus}>
+                            <div className="flex flex-col gap-1">
                                 <div className={style.label}>Status</div>
-                                <div
-                                    className={`${style.value} ${
+                                <Chip
+                                    variant="soft"
+                                    color={
                                         applicant?.status === 'active'
-                                            ? style.statusActive
+                                            ? 'success'
                                             : applicant?.status === 'rejected'
-                                              ? style.statusRejected
-                                              : ''
-                                    }`}
+                                              ? 'danger'
+                                              : 'primary'
+                                    }
                                 >
                                     {applicant?.status}
-                                </div>
+                                </Chip>
                             </div>
                             <div className={style.border}></div>
                         </div>
                     </div>
                 </Card>
                 <Card
-                    flex="1"
-                    borderRadius="5px"
-                    padding="32px"
-                    border="1px solid #ebebeb"
+                    className="flex-[2_2_0%]"
                 >
                     <div className={style.section}>
                         <div className={style.section}>
                             <div className={style.label}>Technologies Used</div>
-                            <div className={style.value}>
-                                {applicant?.technologiesUsed?.replace(
-                                    /^\[|\]|"/g,
-                                    '',
-                                ) || 'None specified'}
+                            <div className="flex gap-2 my-2">
+                                {applicant?.technologiesUsed &&
+                                    JSON.parse(applicant?.technologiesUsed)
+                                        .sort((a: string, b: string) =>
+                                            a.localeCompare(b),
+                                        )
+                                        .map((tech: string) => (
+                                            <Chip key={tech} color="primary">
+                                                {tech}
+                                            </Chip>
+                                        ))}
                             </div>
                         </div>
                         <div className={style.border}></div>{' '}
@@ -205,118 +197,96 @@ export default function ViewCandidats() {
                             Create First Interview:
                         </div>
                         <Button
-                            type={ButtonTypes.PRIMARY}
-                            btnText="Create  Interview"
-                            width="100%"
+                            fullWidth
                             onClick={() => handleOpenModal('active')}
-                        />
+                        >
+                            Create Interview
+                        </Button>
                     </div>
                 </Card>
                 {showModal && (
-                    <ModalComponent
-                        open={showModal}
-                        handleClose={handleCloseModal}
-                    >
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '15px',
-                            }}
-                        >
-                            <div className={style.title}>Confirm Action</div>
-                            <div>
-                                {' '}
-                                Are you sure you want to confirm interview with
-                                this candidate?
-                            </div>
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    gap: '10px',
-                                    marginTop: '20px',
-                                }}
-                            >
+                    <Modal open={showModal} onClose={handleCloseModal}>
+                        <div className="flex flex-col gap-4">
+                            <Box>
+                                <Typography
+                                    level="title-lg"
+                                    className={style.title}
+                                >
+                                    Confirm {applicant?.firstName}
+                                </Typography>
+                                <Typography level="body-md">
+                                    Are you sure you want to confirm interview
+                                    with {applicant?.firstName}{' '}
+                                    {applicant?.lastName}?
+                                </Typography>
+                            </Box>
+                            <Box className="flex gap-3">
+                                <Button fullWidth onClick={handleConfirm}>
+                                    Confirm
+                                </Button>
                                 <Button
-                                    type={ButtonTypes.PRIMARY}
-                                    btnText="Confirm"
-                                    width="100%"
-                                    onClick={handleConfirm}
-                                />
-                                <Button
-                                    type={ButtonTypes.SECONDARY}
-                                    btnText="Cancel"
-                                    width="100%"
+                                    variant="soft"
+                                    fullWidth
                                     onClick={handleCloseModal}
-                                />
-                            </div>
+                                >
+                                    Cancel
+                                </Button>
+                            </Box>
                         </div>
-                    </ModalComponent>
+                    </Modal>
                 )}
 
                 {showConfirmationModal && (
-                    <ModalComponent
+                    <Modal
                         open={showConfirmationModal}
-                        handleClose={handleCloseConfirmationModal}
+                        onClose={handleCloseConfirmationModal}
                     >
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '20px',
-                            }}
-                        >
+                        <div className="flex flex-col gap-5">
                             <div className={style.title}>Notify Applicant</div>
                             <Input
-                                IsUsername
                                 type="datetime-local"
+                                label="Interview date & time"
                                 name="interviewDate"
-                                label="Date"
                                 value={firstInterviewDate}
                                 onChange={(e) =>
                                     setFirstInterviewDate(e.target.value)
                                 }
                             />
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        checked={useCustomEmail}
-                                        onChange={(e) =>
-                                            setUseCustomEmail(e.target.checked)
-                                        }
-                                        color="primary"
-                                    />
+                            <Checkbox
+                                color="primary"
+                                onChange={(e) =>
+                                    setUseCustomEmail(e.target.checked)
                                 }
                                 label="Use custom email"
+                                variant="soft"
                             />
-                            {useCustomEmail && (
+
+                            <Collapse in={useCustomEmail} unmountOnExit>
                                 <>
                                     <Input
-                                        IsUsername
-                                        type="textarea"
-                                        name="costumMessage"
+                                        type="text"
+                                        variant="soft"
                                         label="Subject"
-                                        multiline
-                                        rows={3}
-                                        value={customMessage}
-                                        onChange={(e) =>
-                                            setCustomMessage(e.target.value)
-                                        }
-                                    />
-                                    <Input
-                                        IsUsername
-                                        type="textarea"
                                         name="customSubject"
-                                        label="Message"
-                                        multiline
-                                        rows={3}
+                                        placeholder="Enter the subject of the email"
                                         value={customSubject}
                                         onChange={(e) =>
                                             setCustomSubject(e.target.value)
                                         }
                                     />
+                                    <Textarea
+                                        label="Message"
+                                        variant="soft"
+                                        minRows={3}
+                                        name="customMessage"
+                                        placeholder="Enter the message of the email"
+                                        value={customMessage}
+                                        onChange={(e) =>
+                                            setCustomMessage(e.target.value)
+                                        }
+                                    />
                                 </>
-                            )}
+                            </Collapse>
                             <div
                                 style={{
                                     display: 'flex',
@@ -324,21 +294,19 @@ export default function ViewCandidats() {
                                     marginTop: '20px',
                                 }}
                             >
+                                <Button fullWidth onClick={handleSend}>
+                                    Send
+                                </Button>
                                 <Button
-                                    type={ButtonTypes.PRIMARY}
-                                    btnText="Send"
-                                    width="100%"
-                                    onClick={handleSend}
-                                />
-                                <Button
-                                    type={ButtonTypes.SECONDARY}
-                                    btnText="Close"
-                                    width="100%"
+                                    fullWidth
+                                    variant="soft"
                                     onClick={handleCloseConfirmationModal}
-                                />
+                                >
+                                    Close
+                                </Button>
                             </div>
                         </div>
-                    </ModalComponent>
+                    </Modal>
                 )}
             </div>
         </ForbiddenResource>

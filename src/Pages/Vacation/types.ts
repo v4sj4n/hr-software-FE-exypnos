@@ -33,3 +33,15 @@ export type UsersWithVacations = {
     totalPages: number
     all: number
 }
+
+export enum VacationType {
+    VACATION = 'vacation',
+    SICK = 'sick',
+    PERSONAL = 'personal',
+    maternity= 'maternity',
+}
+export enum VacationStatus {
+    ACCEPTED = 'accepted',
+    PENDING = 'pending',
+    REJECTED = 'rejected',
+}

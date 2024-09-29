@@ -25,16 +25,11 @@ const EmployeeSection: React.FC = () => {
             <Typography level="h3" color="primary" gutterBottom>
                 Team
             </Typography>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+            <div className="flex flex-wrap gap-2">
                 {UserProfileData?.map((employee: UserProfileData) => (
                     <div
                         key={employee._id}
-                        style={{
-                            margin: '10px',
-                            padding: '10px',
-                            backgroundColor: 'transparent',
-                            textAlign: 'center',
-                        }}
+                        className="m-2 p-2 bg-transparent text-center"
                     >
                         <div className={style.employeeImage}>
                             <Avatar
@@ -51,7 +46,7 @@ const EmployeeSection: React.FC = () => {
                                     navigate(`/profile/${employee._id}`)
                                 }
                             />
-                            <p style={{ margin: '3px' }}>
+                            <p className="mt-2">
                                 {employee.firstName} {employee.lastName}
                             </p>
                         </div>
